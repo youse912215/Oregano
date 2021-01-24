@@ -12,6 +12,7 @@ Map_import::Map_import() {
 }
 
 Map_import::~Map_import() {
+	DeleteGraph(map_graph);
 }
 
 //---  現在マップと上下左右斜めの合計9マップを描画　---//
@@ -24,14 +25,14 @@ Map_import::~Map_import() {
 /// <param name="dis_y">y方向の中心からの距離</param>
 /// <param name="map_xy">マップの配列</param>
 void Map_import::current_map_drawing(const int& map_info, const int& dis_x, const int& dis_y,
-                                     int map_xy[area_height][area_width]) {
+                                     vector<vector<int>>& map) {
 
 	map_name(&column, &row, map_info); //マップ情報から列と行を取り出す
 	//マップの描画
 	for (int y = 0; y < map_height; y++) {
 		for (int x = 0; x < map_width; x++) {
 			//map_infoのチップをdestの位置に描画
-			if (map_xy[y][x] == map_info) {
+			if (map[y][x] == map_info) {
 				DrawRectGraph(
 					x * block_size + screen_x + map_between_distance * dis_x,
 					y * block_size + screen_y + map_between_distance * dis_y,

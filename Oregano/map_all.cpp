@@ -10,10 +10,10 @@ int Map_all::map_x = 6400; //x方向
 int Map_all::map_y = 6400; //y方向
 
 //初期化
-Map_all::Map_all() {
+Map_all::Map_all() : map_all(area_height, vector<int>(area_width)) {
 	initial_csv = "resource/csv/map_x08y08.csv"; //初期地点のマップ(中央)
-	map_width = sizeof(map_all[0]) / sizeof(map_all[0][0]); //横のサイズ
-	map_height = sizeof(map_all) / sizeof(map_all[0]); //縦のサイズ
+	map_width = map_all.at(0).size(); //横のサイズ
+	map_height = map_all.size(); //縦のサイズ
 	current_map_x = map_x / (block_size * map_width); //現在の全体マップのx座標
 	current_map_y = map_y / (block_size * map_height); //現在の全体マップのy座標
 	sx = current_map_x - 8;
@@ -51,7 +51,7 @@ string Map_all::map_confirmation(const int& cx, const int& cy, string& csv) {
 /// <summary>
 /// マップデータのファイル読み込み
 /// </summary>
-void Map_all::file_import(const int& nx, const int& ny, int map_xy[area_height][area_width]) {
+void Map_all::file_import(const int& nx, const int& ny, vector<vector<int>>& map) {
 
 	ifstream file(map_confirmation(nx, ny, initial_csv));
 	string line;
@@ -62,7 +62,7 @@ void Map_all::file_import(const int& nx, const int& ny, int map_xy[area_height][
 		for (string::size_type spos, epos = 0;
 		     (spos = line.find_first_not_of(comma, epos)) != string::npos;) {
 			string token = line.substr(spos, (epos = line.find_first_of(comma, spos)) - spos);
-			map_xy[j][i++] = stoi(token);
+			map[j][i++] = stoi(token);
 		}
 		++j;
 	}

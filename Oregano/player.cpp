@@ -5,10 +5,14 @@
 Player::Player() {
 	x = WIN_WIDTH / 2 - radius;
 	y = WIN_HEIGHT / 2 - radius;
+	player_graph = LoadGraph("resource/charactor/Player32.png");
+}
+
+Player::~Player() {
+	DeleteGraph(player_graph);
 }
 
 //ÉvÉåÉCÉÑÅ[ï`âÊ
 void Player::draw() {
-	int player_graph = LoadGraph("resource/charactor/Player32.png");
 	DrawGraph(x, y, player_graph, TRUE);
 }

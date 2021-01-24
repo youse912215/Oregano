@@ -23,3 +23,11 @@ enum direction {
 	DOWN
 	//‰º
 };
+
+enum dirction_sign {
+	Left = -1,
+	Right = 1,
+	Top = -1,
+	Central = 0,
+	Bottom = 1,
+};

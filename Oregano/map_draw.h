@@ -7,25 +7,17 @@ using namespace std;
 class Map_draw : public Map_import {
 private:
 	vector<int> info;
+	vector<vector<int>> map_top_left;
+	vector<vector<int>> map_top_central;
+	vector<vector<int>> map_top_right;
+	vector<vector<int>> map_left_central;
+	vector<vector<int>> map_central;
+	vector<vector<int>> map_right_central;
+	vector<vector<int>> map_bottom_left;
+	vector<vector<int>> map_bottom_central;
+	vector<vector<int>> map_bottom_right;
 
-	int map_top_left[area_height][area_width];
-	int map_top_central[area_height][area_width];
-	int map_top_right[area_height][area_width];
-	int map_left_central[area_height][area_width];
-	int map_central[area_height][area_width];
-	int map_right_central[area_height][area_width];
-	int map_bottom_left[area_height][area_width];
-	int map_bottom_central[area_height][area_width];
-	int map_bottom_right[area_height][area_width];
-	void drawing_top_left();
-	void drawing_top_central();
-	void drawing_top_right();
-	void drawing_left_central();
-	void drawing_central();
-	void drawing_right_central();
-	void drawing_bottom_left();
-	void drawing_bottom_central();
-	void drawing_bottom_right();
+	void drawing_current_maps(vector<vector<int>>& map, const int& dir_x, const int& dir_y);
 public:
 	Map_draw();
 	~Map_draw();

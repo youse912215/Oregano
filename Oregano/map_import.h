@@ -1,5 +1,8 @@
 #pragma once
 #include "map_all.h"
+#include <vector>
+
+using namespace std;
 
 class Map_import : public Map_all {
 private:
@@ -14,5 +17,5 @@ public:
 	Map_import();
 	~Map_import();
 	void current_map_drawing(const int& map_info, const int& dis_x, const int& dis_y,
-	                         int map_xy[area_height][area_width]);
+	                         vector<vector<int>>& map);
 };
