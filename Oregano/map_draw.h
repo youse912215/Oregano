@@ -1,8 +1,12 @@
 #pragma once
 #include "map_import.h"
+#include <vector>
+
+using namespace std;
 
 class Map_draw : public Map_import {
 private:
+	vector<int> info;
 
 	int map_top_left[area_height][area_width];
 	int map_top_central[area_height][area_width];
@@ -23,5 +27,7 @@ private:
 	void drawing_bottom_central();
 	void drawing_bottom_right();
 public:
+	Map_draw();
+	~Map_draw();
 	void drawing_map();
 };

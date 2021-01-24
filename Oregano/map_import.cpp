@@ -15,11 +15,15 @@ Map_import::~Map_import() {
 }
 
 //---  現在マップと上下左右斜めの合計9マップを描画　---//
+
 /// <summary>
-/// 現在マップの描画
+/// 読み込んだマップに描画する
 /// </summary>
-/// <param name="map_info">マップ情報</param>
-void Map_import::current_map_drawing(const int& map_info, const int& sign_x, const int& sign_y,
+/// <param name="map_info"></param>
+/// <param name="dis_x">x方向の中心からの距離</param>
+/// <param name="dis_y">y方向の中心からの距離</param>
+/// <param name="map_xy">マップの配列</param>
+void Map_import::current_map_drawing(const int& map_info, const int& dis_x, const int& dis_y,
                                      int map_xy[area_height][area_width]) {
 
 	map_name(&column, &row, map_info); //マップ情報から列と行を取り出す
@@ -29,8 +33,8 @@ void Map_import::current_map_drawing(const int& map_info, const int& sign_x, con
 			//map_infoのチップをdestの位置に描画
 			if (map_xy[y][x] == map_info) {
 				DrawRectGraph(
-					x * block_size + screen_x + map_between_distance * sign_x,
-					y * block_size + screen_y + map_between_distance * sign_y,
+					x * block_size + screen_x + map_between_distance * dis_x,
+					y * block_size + screen_y + map_between_distance * dis_y,
 					column * block_size, row * block_size,
 					block_size, block_size,
 					map_graph, true, false);

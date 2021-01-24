@@ -16,7 +16,7 @@ void window_out_loop() {
 	SetMainWindowText(TITLE);
 
 	// 画面サイズの最大サイズ、カラービット数を設定(モニターの解像度に合わせる)
-	SetGraphMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32);
+	SetGraphMode(WIN_WIDTH, WIN_HEIGHT, 32);
 
 	// 画面サイズを設定(解像度との比率で設定)
 	SetWindowSizeExtendRate(1.0);

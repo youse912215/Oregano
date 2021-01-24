@@ -9,9 +9,6 @@ using namespace std;
 int Map_all::map_x = 6400; //x方向
 int Map_all::map_y = 6400; //y方向
 
-//int whole_map_position_x = 0; //x方向における中心からの距離
-//int whole_map_position_y = 0; //y方向における中心からの距離
-
 //初期化
 Map_all::Map_all() {
 	initial_csv = "resource/csv/map_x08y08.csv"; //初期地点のマップ(中央)
@@ -19,6 +16,8 @@ Map_all::Map_all() {
 	map_height = sizeof(map_all) / sizeof(map_all[0]); //縦のサイズ
 	current_map_x = map_x / (block_size * map_width); //現在の全体マップのx座標
 	current_map_y = map_y / (block_size * map_height); //現在の全体マップのy座標
+	sx = current_map_x - 8;
+	sy = current_map_y - 8;
 }
 
 Map_all::~Map_all() {
@@ -38,30 +37,23 @@ string Map_all::map_confirmation(const int& cx, const int& cy, string& csv) {
 	return csv; //csvファイル名を返す
 }
 
-void Map_all::get_map_data(const int& cx, const int& cy) {
-	for (int i = -1; i <= 1; i++) {
-		for (int j = -1; j <= 1; j++) {
-			map_data[cy + j][cx + i] = true;
-		}
-	}
-}
-
-/// <summary>
-/// 受け取ったマップデータを上書きする
-/// </summary>
-/// <param name="map_xy">マップ座標[縦サイズ][横サイズ]</param>
-void Map_all::map_copy(int map_xy[area_height][area_width]) {
-
-	for (int i = 0; i < area_width; i++) {
-		memcpy(map_xy[i], map_all[i], sizeof(int) * area_height);
-	}
-}
+///// <summary>
+///// 受け取ったマップデータを上書きする
+///// </summary>
+///// <param name="map_xy">マップ座標[縦サイズ][横サイズ]</param>
+//void Map_all::map_copy(int map_xy[area_height][area_width]) {
+//
+//	for (int i = 0; i < area_width; i++) {
+//		memcpy(map_xy[i], map_all[i], sizeof(int) * area_height);
+//	}
+//}
 
 /// <summary>
 /// マップデータのファイル読み込み
 /// </summary>
-void Map_all::file_import(int map_xy[area_height][area_width]) {
-	ifstream file(map_confirmation(current_map_x, current_map_y, initial_csv));
+void Map_all::file_import(const int& nx, const int& ny, int map_xy[area_height][area_width]) {
+
+	ifstream file(map_confirmation(nx, ny, initial_csv));
 	string line;
 	int j = 0;
 	while (getline(file, line)) {

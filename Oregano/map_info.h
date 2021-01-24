@@ -8,10 +8,18 @@ enum map_info {
 	house,
 	//ó£
 	shallow,
+	//’ª
+	tide,
 	//…•Ó
 	water = 21,
+	//ŠâR
+	stone = 31,
 	//–ØX
-	woods = 41
+	woods = 41,
+	//c‹´
+	h_bridge = 101,
+	//‰¡‹´
+	w_bridge = 102
 };
 
 void map_name(int* column, int* row, const int& map_info);

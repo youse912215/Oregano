@@ -21,9 +21,17 @@ void map_name(int* column, int* row, const int& map_info) {
 		*column = 2;
 		*row = 0;
 		break;
+	case tide:
+		*column = 3;
+		*row = 0;
+		break;
 	case water:
 		*column = 1;
 		*row = 2;
+		break;
+	case stone:
+		*column = 1;
+		*row = 3;
 		break;
 	case woods:
 		*column = 1;
