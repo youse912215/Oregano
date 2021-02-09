@@ -1,5 +1,5 @@
 #include "DxLib.h"
-#include "constant_declaration.h"
+#include "constant.h"
 
 // ウィンドウのタイトルに表示する文字列
 const char TITLE[] = "Oregano";

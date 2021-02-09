@@ -1,12 +1,12 @@
 #pragma once
-#include "constant_declaration.h"
-#include "input.h"
+#include "constant.h"
+#include "inputProcess.h"
 #include <string>
 #include <vector>
 
 using namespace std;
 
-class Map_all : public Input {
+class MapBase : public Input {
 private:
 	string initial_csv; //初期地点のマップ(中央)
 	const string comma = ","; //カンマ
@@ -18,19 +18,11 @@ private:
 
 protected:
 	vector<vector<int>> map_all;
-	//vector<bool> map_data;
-	int current_map_x;
-	int current_map_y;
-	int map_width; //1マップあたりの配列の横サイズ
-	int map_height; //1マップあたりの配列の縦サイズ]
-	int sx;
-	int sy;
 	void file_import(const int& nx, const int& ny, vector<vector<int>>& map);
-	//void map_copy(int map_xy[area_height][area_width]);
-	Map_all();
-	~Map_all();
+	//void map_copy(int map_xy[AREA_HEIGHT][AREA_WIDTH]);
+	MapBase();
+	~MapBase();
 
 public:
-	static int map_x;
-	static int map_y;
+
 };

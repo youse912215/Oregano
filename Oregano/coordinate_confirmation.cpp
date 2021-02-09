@@ -5,5 +5,5 @@
 using namespace std;
 
 void Coodinate::debug() {
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "%d, %d", current_map_y, current_map_x, false);
+
 }

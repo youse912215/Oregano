@@ -1,10 +1,10 @@
 #pragma once
-#include "map_all.h"
+#include "mapBase.h"
 #include <string>
 
 using namespace std;
 
-class Coodinate : public Map_all {
+class Coodinate : public MapBase {
 private:
 public:
 

@@ -4,7 +4,7 @@ class Human {
 public:
 	int x;
 	int y;
-	int radius;
+
 public:
-	Human();
+	Human(int x, int y);
 };

@@ -1,7 +1,4 @@
 #include "Human.h"
 
-Human::Human() {
-	x = 0;
-	y = 0;
-	radius = 16;
+Human::Human(int x, int y) : x(x), y(y) {
 }

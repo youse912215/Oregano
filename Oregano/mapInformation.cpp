@@ -1,4 +1,5 @@
-#include "map_info.h"
+#include "mapInformation.h"
+#include "constant.h"
 
 /// <summary>
 /// マップの情報をもとにマップチップ画像の列と行を返す
@@ -6,34 +7,34 @@
 /// <param name="column">列</param>
 /// <param name="row">行</param>
 /// <param name="map_info">マップの情報</param>
-void map_name(int* column, int* row, const int& map_info) {
+void mapName(int* column, int* row, const int& map_info) {
 	if (column == nullptr || row == nullptr) { return; } //nullチェック
 	switch (map_info) {
-	case _floor:
+	case FLOOR:
 		*column = 0;
 		*row = 0;
 		break;
-	case house:
+	case HOUSE:
 		*column = 1;
 		*row = 0;
 		break;
-	case shallow:
+	case SHALLOW:
 		*column = 2;
 		*row = 0;
 		break;
-	case tide:
+	case TIDE:
 		*column = 3;
 		*row = 0;
 		break;
-	case water:
+	case WATER:
 		*column = 1;
 		*row = 2;
 		break;
-	case stone:
+	case STONE:
 		*column = 1;
 		*row = 3;
 		break;
-	case woods:
+	case WOODS:
 		*column = 1;
 		*row = 4;
 		break;

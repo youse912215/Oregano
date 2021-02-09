@@ -129,28 +129,30 @@
   <ItemGroup>
     <ClCompile Include="coordinate_confirmation.cpp" />
     <ClCompile Include="human.cpp" />
-    <ClCompile Include="input.cpp" />
-    <ClCompile Include="loop.cpp" />
+    <ClCompile Include="inputProcess.cpp" />
+    <ClCompile Include="loopProcess.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="map_all.cpp" />
-    <ClCompile Include="map_draw.cpp" />
-    <ClCompile Include="map_import.cpp" />
-    <ClCompile Include="map_info.cpp" />
+    <ClCompile Include="mapBase.cpp" />
+    <ClCompile Include="mapCollision.cpp" />
+    <ClCompile Include="mapDraw.cpp" />
+    <ClCompile Include="mapImport.cpp" />
+    <ClCompile Include="mapInformation.cpp" />
     <ClCompile Include="player.cpp" />
-    <ClCompile Include="window_preference.cpp" />
+    <ClCompile Include="windowPreference.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="constant_declaration.h" />
+    <ClInclude Include="constant.h" />
     <ClInclude Include="coordinate_confirmation.h" />
     <ClInclude Include="human.h" />
-    <ClInclude Include="input.h" />
-    <ClInclude Include="loop.h" />
-    <ClInclude Include="map_all.h" />
-    <ClInclude Include="map_draw.h" />
-    <ClInclude Include="map_import.h" />
-    <ClInclude Include="map_info.h" />
+    <ClInclude Include="inputProcess.h" />
+    <ClInclude Include="loopProcess.h" />
+    <ClInclude Include="mapBase.h" />
+    <ClInclude Include="mapCollision.h" />
+    <ClInclude Include="mapDraw.h" />
+    <ClInclude Include="mapImport.h" />
+    <ClInclude Include="mapInformation.h" />
     <ClInclude Include="player.h" />
-    <ClInclude Include="window_preference.h" />
+    <ClInclude Include="windowPreference.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

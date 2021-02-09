@@ -4,10 +4,11 @@
 //ƒvƒŒƒCƒ„[
 class Player : public Human {
 public:
-	Player();
+
+	Player(int x, int y, int graph);
 	~Player();
 	void draw();
 
 private:
-	int player_graph;
+	int graph;
 };
