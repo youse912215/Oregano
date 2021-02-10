@@ -11,7 +11,8 @@ MapDraw::MapDraw(int graph) : graph(graph),
                               currentCorner{
 	                              ((mapX - 32) / BLOCK_SIZE) % 25, ((mapX + 31) / BLOCK_SIZE) % 25,
 	                              ((mapY - 48) / BLOCK_SIZE) % 25, ((mapY + 15) / BLOCK_SIZE) % 25,
-	                              (mapX / BLOCK_SIZE) % 25, ((mapY - 16) / BLOCK_SIZE) % 25,
+	                              ((mapX - 16) / BLOCK_SIZE) % 25, ((mapY - 32) / BLOCK_SIZE) % 25,
+	                              ((mapX + 16) / BLOCK_SIZE) % 25, (mapY / BLOCK_SIZE) % 25,
                               },
                               mapTopLeft(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapTopCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
@@ -22,20 +23,28 @@ MapDraw::MapDraw(int graph) : graph(graph),
                               mapBottomLeft(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapBottomCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapBottomRight(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-                              collisionFlag(8) {
-	//column = 0; //列
-	//row = 0; //行
+                              collisionFlag(12) {
+	/* 行列番号 */
 	matrix.x = 0;
 	matrix.y = 0;
-	screen.x = INITIAL_X - mapX; //画面上のx座標
-	screen.y = INITIAL_Y - mapY; //画面上のy座標
-	mapAspectSize.x = mapBase.at(0).size(); //横のサイズ
-	mapAspectSize.y = mapBase.size(); //縦のサイズ
-	currentMap.x = mapX / (BLOCK_SIZE * mapAspectSize.x); //現在の全体マップのx座標
-	currentMap.y = mapY / (BLOCK_SIZE * mapAspectSize.y); //現在の全体マップのy座標
+	/* 画面上の座標 */
+	screen.x = INITIAL_X - mapX;
+	screen.y = INITIAL_Y - mapY;
+	/* 1マップあたりの配列サイズ */
+	mapAspectSize.x = mapBase.at(0).size();
+	mapAspectSize.y = mapBase.size();
+	/* 現在のマップ座標 */
+	currentMap.x = mapX / (BLOCK_SIZE * mapAspectSize.x);
+	currentMap.y = mapY / (BLOCK_SIZE * mapAspectSize.y);
+	/* 現在のマップの境界座標 */
+	currentBoundaryMap.x = (mapX + 31) / (BLOCK_SIZE * mapAspectSize.x);
+	currentBoundaryMap.y = (mapY + 15) / (BLOCK_SIZE * mapAspectSize.y);
+	/* マップの中央位置 */
 	centerPos.x = currentMap.x - 8;
 	centerPos.y = currentMap.y - 8;
-	mapBetweenDistance = BLOCK_SIZE * AREA_WIDTH; //マップ間距離（800px）
+	/* マップ間距離（800px） */
+	mapBetweenDistance = BLOCK_SIZE * AREA_WIDTH;
+	/* 1ブロック区画（マップ）内の座標 */
 	blockArea.x = (mapX / BLOCK_SIZE) % AREA_WIDTH;
 	blockArea.y = (mapY / BLOCK_SIZE) % AREA_HEIGHT;
 }
@@ -46,19 +55,19 @@ MapDraw::~MapDraw() {
 /// <summary>
 /// 読み込んだマップに描画する
 /// </summary>
-/// <param name="map_info"></param>
+/// <param name="mapInformation"></param>
 /// <param name="dirX">x方向の中心からの距離</param>
 /// <param name="dirY">y方向の中心からの距離</param>
 /// <param name="map">マップの配列</param>
-void MapDraw::current_map_drawing(const int& map_info, const int& dirX, const int& dirY,
+void MapDraw::current_map_drawing(const int& mapInformation, const int& dirX, const int& dirY,
                                   vector<vector<int>>& map) {
 
-	mapName(&matrix.y, &matrix.x, map_info); //マップ情報から列と行を取り出す
+	mapName(&matrix.y, &matrix.x, mapInformation); //マップ情報から列と行を取り出す
 	//マップの描画
 	for (int y = 0; y < mapAspectSize.y; y++) {
 		for (int x = 0; x < mapAspectSize.x; x++) {
-			//map_infoのチップをdestの位置に描画
-			if (map[y][x] == map_info) {
+			//mapInformationのチップをDestの位置に描画
+			if (map[y][x] == mapInformation) {
 				DrawRectGraph(
 					x * BLOCK_SIZE + screen.x + mapBetweenDistance * dirX,
 					y * BLOCK_SIZE + screen.y + mapBetweenDistance * dirY,
@@ -113,15 +122,21 @@ void MapDraw::update() {
 	else if (blockArea.x >= RIGHT_BOUNDARY && blockArea.y >= BOTTOM_BOUNDARY)
 		drawing_current_maps(mapBottomRight, Right, Bottom); //右下マップ
 
-	/* 8ヵ所の衝突判定 */
+	/* 12ヵ所で衝突判定を行う */
 	collisionDetection(LEFT, UP, LEFT_UP); //左上
 	collisionDetection(RIGHT, UP, RIGHT_UP); //右上
 	collisionDetection(LEFT, DOWN, LEFT_DOWN); //左下
 	collisionDetection(RIGHT, DOWN, RIGHT_DOWN); //右下
-	collisionDetection(LEFT, CENTER_Y, CENTER_LEFT); //中央左
-	collisionDetection(RIGHT, CENTER_Y, CENTER_RIGHT); //中央右
-	collisionDetection(CENTER_X, UP, CENTER_UP); //中央上
-	collisionDetection(CENTER_X, DOWN, CENTER_DOWN); //中央下
+
+	collisionDetection(LEFT, CENTER_Y1, CENTER_LEFT1); //中央左1
+	collisionDetection(RIGHT, CENTER_Y1, CENTER_RIGHT1); //中央右1
+	collisionDetection(CENTER_X1, UP, CENTER_UP1); //中央上1
+	collisionDetection(CENTER_X1, DOWN, CENTER_DOWN1); //中央下1
+
+	collisionDetection(LEFT, CENTER_Y2, CENTER_LEFT2); //中央左2
+	collisionDetection(RIGHT, CENTER_Y2, CENTER_RIGHT2); //中央右2
+	collisionDetection(CENTER_X2, UP, CENTER_UP2); //中央上2
+	collisionDetection(CENTER_X2, DOWN, CENTER_DOWN2); //中央下2
 
 	DrawFormatString(150, 0, GetColor(255, 255, 255), "LU:%d, RU:%d",
 	                 mapCentral[currentCorner[UP]][currentCorner[LEFT]],
@@ -129,27 +144,48 @@ void MapDraw::update() {
 	DrawFormatString(300, 0, GetColor(255, 255, 255), "LD:%d, RD:%d",
 	                 mapCentral[currentCorner[DOWN]][currentCorner[LEFT]],
 	                 mapCentral[currentCorner[DOWN]][currentCorner[RIGHT]], false);
-	DrawFormatString(150, 15, GetColor(255, 255, 255),
-	                 "(cy:%d, cx:%d)", (mapY / BLOCK_SIZE) % 25, (mapX / BLOCK_SIZE) % 25, false);
+	DrawFormatString(450, 0, GetColor(255, 255, 255), "CL:%d, CR:%d, CU:%d, CD:%d",
+	                 mapCentral[currentCorner[CENTER_Y1]][currentCorner[LEFT]],
+	                 mapCentral[currentCorner[CENTER_Y1]][currentCorner[RIGHT]],
+	                 mapCentral[currentCorner[UP]][currentCorner[CENTER_X1]],
+	                 mapCentral[currentCorner[DOWN]][currentCorner[CENTER_X1]], false);
+	DrawFormatString(150, 15, GetColor(255, 255, 255), "L:%d, R:%d",
+	                 currentCorner[LEFT], currentCorner[RIGHT], false);
+	DrawFormatString(300, 15, GetColor(255, 255, 255), "U:%d, D:%d",
+	                 currentCorner[UP], currentCorner[DOWN], false);
+	DrawFormatString(450, 15, GetColor(255, 255, 255), "CX:%d, CY:%d",
+	                 currentCorner[CENTER_X1], currentCorner[CENTER_Y1], false);
+	DrawFormatString(150, 30, GetColor(255, 255, 255),
+	                 "(cy:%d, cx:%d)", currentCorner[CENTER_Y1], currentCorner[CENTER_X1], false);
+
 	DrawFormatString(0, 15, GetColor(255, 255, 255), "(iniY:%d, iniX:%d)", centerPos.y, centerPos.x, false);
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "%d, %d", currentMap.y, currentMap.x, false);
+	DrawFormatString(0, 30, GetColor(255, 255, 255), "cby%d, cbx%d",
+	                 currentBoundaryMap.y, currentBoundaryMap.x, false);
 }
 
+//--- 4方向（上下左右）の衝突判定の結果を返す ---//
 bool MapDraw::leftCollisionFlag() {
-	return (collisionFlag[LEFT_UP] || collisionFlag[LEFT_DOWN]) && collisionFlag[CENTER_LEFT];
+	return ((collisionFlag[LEFT_UP] && collisionFlag[CENTER_LEFT1])
+		|| (collisionFlag[LEFT_DOWN] && collisionFlag[CENTER_LEFT2]));
 }
 
 bool MapDraw::rightCollisionFlag() {
-	return (collisionFlag[RIGHT_UP] || collisionFlag[RIGHT_DOWN]) && collisionFlag[CENTER_RIGHT];
+	return ((collisionFlag[RIGHT_UP] && collisionFlag[CENTER_RIGHT1])
+		|| (collisionFlag[RIGHT_DOWN] && collisionFlag[CENTER_RIGHT2]));
 }
 
 bool MapDraw::upCollisionFlag() {
-	return (collisionFlag[LEFT_UP] || collisionFlag[RIGHT_UP]) && collisionFlag[CENTER_UP];
+	return ((collisionFlag[LEFT_UP] && collisionFlag[CENTER_UP1])
+		|| (collisionFlag[RIGHT_UP] && collisionFlag[CENTER_UP2]));
 }
 
 bool MapDraw::downCollisionFlag() {
-	return (collisionFlag[LEFT_DOWN] || collisionFlag[RIGHT_DOWN]) && collisionFlag[CENTER_DOWN];
+	return ((collisionFlag[LEFT_DOWN] && collisionFlag[CENTER_DOWN1])
+		|| (collisionFlag[RIGHT_DOWN] && collisionFlag[CENTER_DOWN2]));
 }
+
+//----------------------------------------//
 
 /// <summary>
 /// 指定した位置の衝突判定を得る
@@ -158,5 +194,37 @@ bool MapDraw::downCollisionFlag() {
 /// <param name="y">y軸の方向</param>
 /// <param name="direction">判定方向</param>
 void MapDraw::collisionDetection(const int& x, const int& y, const int& direction) {
-	collisionFlag[direction] = (mapCentral[currentCorner[y]][currentCorner[x]] == WOODS) ? true : false;
+
+	/*マップ境界線付近のとき、上下左右のマップで座標を得る*/
+	if (x == LEFT) {
+		//左方向
+		if (currentCorner[x] == 24 && currentCorner[RIGHT] == 0 && currentMap.x == currentBoundaryMap.x)
+			collisionFlag[direction] = (mapLeftCentral[currentCorner[y]][currentCorner[x]] != FLOOR) ? true : false;
+		else
+			collisionFlag[direction] = (mapCentral[currentCorner[y]][currentCorner[x]] != FLOOR) ? true : false;
+	}
+
+	if (x == RIGHT) {
+		//右方向
+		if (currentCorner[LEFT] == 24 && currentCorner[x] == 0 && currentMap.x != currentBoundaryMap.x)
+			collisionFlag[direction] = (mapRightCentral[currentCorner[y]][currentCorner[x]] != FLOOR) ? true : false;
+		else
+			collisionFlag[direction] = (mapCentral[currentCorner[y]][currentCorner[x]] != FLOOR) ? true : false;
+	}
+
+	if (y == UP) {
+		//上方向
+		if (currentCorner[y] == 24 && currentCorner[DOWN] == 0 && currentMap.y == currentBoundaryMap.y)
+			collisionFlag[direction] = (mapTopCentral[currentCorner[y]][currentCorner[x]] != FLOOR) ? true : false;
+		else
+			collisionFlag[direction] = (mapCentral[currentCorner[y]][currentCorner[x]] != FLOOR) ? true : false;
+	}
+
+	if (y == DOWN) {
+		//下方向
+		if (currentCorner[UP] == 24 && currentCorner[y] == 0 && currentMap.y != currentBoundaryMap.y)
+			collisionFlag[direction] = (mapBottomCentral[currentCorner[y]][currentCorner[x]] != FLOOR) ? true : false;
+		else
+			collisionFlag[direction] = (mapCentral[currentCorner[y]][currentCorner[x]] != FLOOR) ? true : false;
+	}
 }

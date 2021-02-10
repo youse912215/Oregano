@@ -5,6 +5,9 @@
 char Input::keys[256] = {0};
 char Input::oldkeys[256] = {0};
 
+Input::Input() {
+}
+
 void Input::input_info() {
 	// 最新のキーボード情報だったものは1フレーム前のキーボード情報として保存
 	for (int i = 0; i < 256; ++i) {

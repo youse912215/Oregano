@@ -23,8 +23,10 @@ enum direction {
 	//è„
 	DOWN,
 	//â∫
-	CENTER_X,
-	CENTER_Y,
+	CENTER_X1,
+	CENTER_Y1,
+	CENTER_X2,
+	CENTER_Y2,
 	//íÜâõ
 };
 
@@ -33,10 +35,14 @@ enum corner {
 	RIGHT_UP,
 	LEFT_DOWN,
 	RIGHT_DOWN,
-	CENTER_LEFT,
-	CENTER_RIGHT,
-	CENTER_UP,
-	CENTER_DOWN
+	CENTER_LEFT1,
+	CENTER_RIGHT1,
+	CENTER_UP1,
+	CENTER_DOWN1,
+	CENTER_LEFT2,
+	CENTER_RIGHT2,
+	CENTER_UP2,
+	CENTER_DOWN2,
 };
 
 enum dirction_sign {

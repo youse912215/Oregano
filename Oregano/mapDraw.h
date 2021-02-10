@@ -13,6 +13,7 @@ private:
 	Vec2 screen; //画面上の座標
 	Vec2 blockArea; //1ブロック区画（マップ）内の座標
 	Vec2 currentMap; //現在のマップ座標
+	Vec2 currentBoundaryMap; //現在のマップの境界座標
 	Vec2 mapAspectSize; //1マップあたりの配列のサイズ
 	Vec2 centerPos; //マップの中央位置
 
@@ -37,7 +38,7 @@ private:
 	};
 
 	void drawing_current_maps(vector<vector<int>>& map, const int& dirX, const int& dirY);
-	void current_map_drawing(const int& map_info, const int& dirX, const int& dirY,
+	void current_map_drawing(const int& mapInformation, const int& dirX, const int& dirY,
 	                         vector<vector<int>>& map);
 	void collisionDetection(const int& x, const int& y, const int& direction);
 
