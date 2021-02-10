@@ -138,6 +138,7 @@
     <ClCompile Include="mapImport.cpp" />
     <ClCompile Include="mapInformation.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="vec2.cpp" />
     <ClCompile Include="windowPreference.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +153,7 @@
     <ClInclude Include="mapImport.h" />
     <ClInclude Include="mapInformation.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="vec2.h" />
     <ClInclude Include="windowPreference.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

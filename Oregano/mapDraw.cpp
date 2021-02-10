@@ -7,7 +7,12 @@ int MapDraw::mapX = INITIAL_X; //x方向
 int MapDraw::mapY = INITIAL_Y; //y方向
 
 MapDraw::MapDraw(int graph) : graph(graph),
-                              info{FLOOR, HOUSE, SHALLOW, TIDE, WATER, STONE, WOODS},
+                              information{FLOOR, HOUSE, SHALLOW, TIDE, WATER, STONE, WOODS},
+                              currentCorner{
+	                              ((mapX - 32) / BLOCK_SIZE) % 25, ((mapX + 31) / BLOCK_SIZE) % 25,
+	                              ((mapY - 48) / BLOCK_SIZE) % 25, ((mapY + 15) / BLOCK_SIZE) % 25,
+	                              (mapX / BLOCK_SIZE) % 25, ((mapY - 16) / BLOCK_SIZE) % 25,
+                              },
                               mapTopLeft(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapTopCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapTopRight(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
@@ -17,32 +22,26 @@ MapDraw::MapDraw(int graph) : graph(graph),
                               mapBottomLeft(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapBottomCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapBottomRight(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-                              currentCorner{
-	                              ((mapX - 32) / BLOCK_SIZE) % 25, ((mapX + 31) / BLOCK_SIZE) % 25,
-	                              ((mapY - 48) / BLOCK_SIZE) % 25, ((mapY + 15) / BLOCK_SIZE) % 25,
-	                              (mapX / BLOCK_SIZE) % 25, ((mapY - 16) / BLOCK_SIZE) % 25,
-                              },
                               collisionFlag(8) {
-	column = 0; //列
-	row = 0; //行
-	screenX = INITIAL_X - mapX; //画面上のx座標
-	screenY = INITIAL_Y - mapY; //画面上のy座標
-	mapWidth = mapBase.at(0).size(); //横のサイズ
-	mapHeight = mapBase.size(); //縦のサイズ
-	currentMapX = mapX / (BLOCK_SIZE * mapWidth); //現在の全体マップのx座標
-	currentMapY = mapY / (BLOCK_SIZE * mapHeight); //現在の全体マップのy座標
-	initialX = currentMapX - 8;
-	initialY = currentMapY - 8;
+	//column = 0; //列
+	//row = 0; //行
+	matrix.x = 0;
+	matrix.y = 0;
+	screen.x = INITIAL_X - mapX; //画面上のx座標
+	screen.y = INITIAL_Y - mapY; //画面上のy座標
+	mapAspectSize.x = mapBase.at(0).size(); //横のサイズ
+	mapAspectSize.y = mapBase.size(); //縦のサイズ
+	currentMap.x = mapX / (BLOCK_SIZE * mapAspectSize.x); //現在の全体マップのx座標
+	currentMap.y = mapY / (BLOCK_SIZE * mapAspectSize.y); //現在の全体マップのy座標
+	centerPos.x = currentMap.x - 8;
+	centerPos.y = currentMap.y - 8;
 	mapBetweenDistance = BLOCK_SIZE * AREA_WIDTH; //マップ間距離（800px）
-	blockAreaX = (mapX / BLOCK_SIZE) % AREA_WIDTH;
-	blockAreaY = (mapY / BLOCK_SIZE) % AREA_HEIGHT;
+	blockArea.x = (mapX / BLOCK_SIZE) % AREA_WIDTH;
+	blockArea.y = (mapY / BLOCK_SIZE) % AREA_HEIGHT;
 }
 
 MapDraw::~MapDraw() {
 }
-
-
-//---  現在マップと上下左右斜めの合計9マップを描画　---//
 
 /// <summary>
 /// 読み込んだマップに描画する
@@ -54,16 +53,16 @@ MapDraw::~MapDraw() {
 void MapDraw::current_map_drawing(const int& map_info, const int& dirX, const int& dirY,
                                   vector<vector<int>>& map) {
 
-	mapName(&column, &row, map_info); //マップ情報から列と行を取り出す
+	mapName(&matrix.y, &matrix.x, map_info); //マップ情報から列と行を取り出す
 	//マップの描画
-	for (int y = 0; y < mapHeight; y++) {
-		for (int x = 0; x < mapWidth; x++) {
+	for (int y = 0; y < mapAspectSize.y; y++) {
+		for (int x = 0; x < mapAspectSize.x; x++) {
 			//map_infoのチップをdestの位置に描画
 			if (map[y][x] == map_info) {
 				DrawRectGraph(
-					x * BLOCK_SIZE + screenX + mapBetweenDistance * dirX,
-					y * BLOCK_SIZE + screenY + mapBetweenDistance * dirY,
-					column * BLOCK_SIZE, row * BLOCK_SIZE,
+					x * BLOCK_SIZE + screen.x + mapBetweenDistance * dirX,
+					y * BLOCK_SIZE + screen.y + mapBetweenDistance * dirY,
+					matrix.y * BLOCK_SIZE, matrix.x * BLOCK_SIZE,
 					BLOCK_SIZE, BLOCK_SIZE,
 					graph, true, false);
 			}
@@ -72,17 +71,16 @@ void MapDraw::current_map_drawing(const int& map_info, const int& dirX, const in
 }
 
 /// <summary>
-/// x,yの
+/// マップ名情報による現在マップの描画
 /// </summary>
 void MapDraw::drawing_current_maps(vector<vector<int>>& map, const int& dirX, const int& dirY) {
-	fileImport(currentMapX + dirX, currentMapY + dirY, map); //csvファイル読み込み
-	//--- マップチップ描画 ---//
-	current_map_drawing(FLOOR, initialX + dirX, initialY + dirY, map);
-	current_map_drawing(HOUSE, initialX + dirX, initialY + dirY, map);
-	current_map_drawing(SHALLOW, initialX + dirX, initialY + dirY, map);
-	current_map_drawing(WATER, initialX + dirX, initialY + dirY, map);
-	current_map_drawing(WOODS, initialX + dirX, initialY + dirY, map);
-	//---------------------//
+	fileImport(currentMap.x + dirX, currentMap.y + dirY, map); //csvファイル読み込み
+	/*マップチップ描画*/
+	current_map_drawing(FLOOR, centerPos.x + dirX, centerPos.y + dirY, map);
+	current_map_drawing(HOUSE, centerPos.x + dirX, centerPos.y + dirY, map);
+	current_map_drawing(SHALLOW, centerPos.x + dirX, centerPos.y + dirY, map);
+	current_map_drawing(WATER, centerPos.x + dirX, centerPos.y + dirY, map);
+	current_map_drawing(WOODS, centerPos.x + dirX, centerPos.y + dirY, map);
 }
 
 /// <summary>
@@ -94,25 +92,25 @@ void MapDraw::update() {
 	drawing_current_maps(mapCentral, Central, Central); //中央マップ（常に表示）
 
 	//y方向のマップ描画判定
-	if (blockAreaY <= TOP_BOUNDARY)
+	if (blockArea.y <= TOP_BOUNDARY)
 		drawing_current_maps(mapTopCentral, Central, Top); //上マップ
-	else if (blockAreaY >= BOTTOM_BOUNDARY)
+	else if (blockArea.y >= BOTTOM_BOUNDARY)
 		drawing_current_maps(mapBottomCentral, Central, Bottom); //下マップ
 
 	//x方向のマップ描画判定
-	if (blockAreaX <= LEFT_BOUNDARY)
+	if (blockArea.x <= LEFT_BOUNDARY)
 		drawing_current_maps(mapLeftCentral, Left, Central); //左マップ
-	else if (blockAreaX >= RIGHT_BOUNDARY)
+	else if (blockArea.x >= RIGHT_BOUNDARY)
 		drawing_current_maps(mapRightCentral, Right, Central); //右マップ
 
 	//斜め方向のマップ描画判定
-	if (blockAreaX <= LEFT_BOUNDARY && blockAreaY <= TOP_BOUNDARY)
+	if (blockArea.x <= LEFT_BOUNDARY && blockArea.y <= TOP_BOUNDARY)
 		drawing_current_maps(mapTopLeft, Left, Top); //左上マップ
-	else if (blockAreaX >= RIGHT_BOUNDARY && blockAreaY <= TOP_BOUNDARY)
+	else if (blockArea.x >= RIGHT_BOUNDARY && blockArea.y <= TOP_BOUNDARY)
 		drawing_current_maps(mapTopRight, Right, Top); //右上マップ
-	else if (blockAreaX <= LEFT_BOUNDARY && blockAreaY >= BOTTOM_BOUNDARY)
+	else if (blockArea.x <= LEFT_BOUNDARY && blockArea.y >= BOTTOM_BOUNDARY)
 		drawing_current_maps(mapBottomLeft, Left, Bottom); //左下マップ
-	else if (blockAreaX >= RIGHT_BOUNDARY && blockAreaY >= BOTTOM_BOUNDARY)
+	else if (blockArea.x >= RIGHT_BOUNDARY && blockArea.y >= BOTTOM_BOUNDARY)
 		drawing_current_maps(mapBottomRight, Right, Bottom); //右下マップ
 
 	/* 8ヵ所の衝突判定 */
@@ -133,8 +131,24 @@ void MapDraw::update() {
 	                 mapCentral[currentCorner[DOWN]][currentCorner[RIGHT]], false);
 	DrawFormatString(150, 15, GetColor(255, 255, 255),
 	                 "(cy:%d, cx:%d)", (mapY / BLOCK_SIZE) % 25, (mapX / BLOCK_SIZE) % 25, false);
-	DrawFormatString(0, 15, GetColor(255, 255, 255), "(iniY:%d, iniX:%d)", initialY, initialX, false);
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "%d, %d", currentMapY, currentMapX, false);
+	DrawFormatString(0, 15, GetColor(255, 255, 255), "(iniY:%d, iniX:%d)", centerPos.y, centerPos.x, false);
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "%d, %d", currentMap.y, currentMap.x, false);
+}
+
+bool MapDraw::leftCollisionFlag() {
+	return (collisionFlag[LEFT_UP] || collisionFlag[LEFT_DOWN]) && collisionFlag[CENTER_LEFT];
+}
+
+bool MapDraw::rightCollisionFlag() {
+	return (collisionFlag[RIGHT_UP] || collisionFlag[RIGHT_DOWN]) && collisionFlag[CENTER_RIGHT];
+}
+
+bool MapDraw::upCollisionFlag() {
+	return (collisionFlag[LEFT_UP] || collisionFlag[RIGHT_UP]) && collisionFlag[CENTER_UP];
+}
+
+bool MapDraw::downCollisionFlag() {
+	return (collisionFlag[LEFT_DOWN] || collisionFlag[RIGHT_DOWN]) && collisionFlag[CENTER_DOWN];
 }
 
 /// <summary>

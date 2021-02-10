@@ -22,20 +22,16 @@ void loop_process() {
 
 		if (CheckHitKey(KEY_INPUT_ESCAPE)) break; //I—¹ˆ—
 
-
 		map.update();
-		//map.collisionDetection();
 
 		Input* input = new Input;
 		input->input_info();
-		input->moving_process(map.collisionFlag[LEFT_UP], map.collisionFlag[RIGHT],
-		                      map.collisionFlag[LEFT_DOWN], map.collisionFlag[RIGHT_DOWN],
-		                      map.collisionFlag[CENTER_LEFT], map.collisionFlag[CENTER_RIGHT],
-		                      map.collisionFlag[CENTER_UP], map.collisionFlag[CENTER_DOWN]);
+		input->moving_process(map.leftCollisionFlag(), map.rightCollisionFlag(),
+		                      map.upCollisionFlag(), map.downCollisionFlag());
 		delete input;
 
-
 		player.draw();
+
 		Coodinate* debug = new Coodinate;
 		debug->debug();
 		delete debug;

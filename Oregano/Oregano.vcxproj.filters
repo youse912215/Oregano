@@ -37,6 +37,12 @@
     <Filter Include="ヘッダー ファイル\Constant">
       <UniqueIdentifier>{427c061c-313f-4dba-8d42-0b6b9f272d78}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Vector">
+      <UniqueIdentifier>{d52f0615-50e4-4a62-824d-375dc3a0aa00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Vector">
+      <UniqueIdentifier>{7e57e0c3-2ca7-4753-acc9-1b3d7787be9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="human.cpp">
@@ -75,6 +81,9 @@
     <ClCompile Include="mapCollision.cpp">
       <Filter>ソース ファイル\Map</Filter>
     </ClCompile>
+    <ClCompile Include="vec2.cpp">
+      <Filter>ソース ファイル\Vector</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="human.h">
@@ -112,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="mapCollision.h">
       <Filter>ヘッダー ファイル\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="vec2.h">
+      <Filter>ヘッダー ファイル\Vector</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
