@@ -19,6 +19,8 @@ private:
 
 	vector<int> information; //マップ名情報
 	vector<int> currentCorner; //現在の各角のマップ座標（中央も含む）
+	vector<bool> boundaryCriteria; //各方向の境界条件
+
 	vector<vector<int>> mapTopLeft; //左上マップ
 	vector<vector<int>> mapTopCentral; //上マップ
 	vector<vector<int>> mapTopRight; //右上マップ

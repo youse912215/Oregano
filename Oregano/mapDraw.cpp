@@ -7,13 +7,27 @@ int MapDraw::mapX = INITIAL_X; //x方向
 int MapDraw::mapY = INITIAL_Y; //y方向
 
 MapDraw::MapDraw(int graph) : graph(graph),
+
                               information{FLOOR, HOUSE, SHALLOW, TIDE, WATER, STONE, WOODS},
+
                               currentCorner{
 	                              ((mapX - 32) / BLOCK_SIZE) % 25, ((mapX + 31) / BLOCK_SIZE) % 25,
 	                              ((mapY - 48) / BLOCK_SIZE) % 25, ((mapY + 15) / BLOCK_SIZE) % 25,
 	                              ((mapX - 16) / BLOCK_SIZE) % 25, ((mapY - 32) / BLOCK_SIZE) % 25,
 	                              ((mapX + 16) / BLOCK_SIZE) % 25, (mapY / BLOCK_SIZE) % 25,
                               },
+
+                              boundaryCriteria{
+	                              currentCorner[LEFT] == AREA_MAX && currentCorner[RIGHT] == AREA_MIN
+	                              && currentMap.x == currentBoundaryMap.x,
+	                              currentCorner[LEFT] == AREA_MAX && currentCorner[RIGHT] == AREA_MIN
+	                              && currentMap.x != currentBoundaryMap.x,
+	                              currentCorner[UP] == AREA_MAX && currentCorner[DOWN] == AREA_MIN
+	                              && currentMap.y == currentBoundaryMap.y,
+	                              currentCorner[UP] == AREA_MAX && currentCorner[DOWN] == AREA_MIN
+	                              && currentMap.y != currentBoundaryMap.y
+                              },
+
                               mapTopLeft(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapTopCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapTopRight(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
@@ -23,6 +37,7 @@ MapDraw::MapDraw(int graph) : graph(graph),
                               mapBottomLeft(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapBottomCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapBottomRight(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
+
                               collisionFlag(12) {
 	/* 行列番号 */
 	matrix.x = 0;
@@ -198,7 +213,7 @@ void MapDraw::collisionDetection(const int& x, const int& y, const int& directio
 	/*マップ境界線付近のとき、上下左右のマップで座標を得る*/
 	if (x == LEFT) {
 		//左方向
-		if (currentCorner[x] == 24 && currentCorner[RIGHT] == 0 && currentMap.x == currentBoundaryMap.x)
+		if (boundaryCriteria[x])
 			collisionFlag[direction] = (mapLeftCentral[currentCorner[y]][currentCorner[x]] != FLOOR) ? true : false;
 		else
 			collisionFlag[direction] = (mapCentral[currentCorner[y]][currentCorner[x]] != FLOOR) ? true : false;
@@ -206,7 +221,7 @@ void MapDraw::collisionDetection(const int& x, const int& y, const int& directio
 
 	if (x == RIGHT) {
 		//右方向
-		if (currentCorner[LEFT] == 24 && currentCorner[x] == 0 && currentMap.x != currentBoundaryMap.x)
+		if (boundaryCriteria[x])
 			collisionFlag[direction] = (mapRightCentral[currentCorner[y]][currentCorner[x]] != FLOOR) ? true : false;
 		else
 			collisionFlag[direction] = (mapCentral[currentCorner[y]][currentCorner[x]] != FLOOR) ? true : false;
@@ -214,7 +229,7 @@ void MapDraw::collisionDetection(const int& x, const int& y, const int& directio
 
 	if (y == UP) {
 		//上方向
-		if (currentCorner[y] == 24 && currentCorner[DOWN] == 0 && currentMap.y == currentBoundaryMap.y)
+		if (boundaryCriteria[y])
 			collisionFlag[direction] = (mapTopCentral[currentCorner[y]][currentCorner[x]] != FLOOR) ? true : false;
 		else
 			collisionFlag[direction] = (mapCentral[currentCorner[y]][currentCorner[x]] != FLOOR) ? true : false;
@@ -222,7 +237,7 @@ void MapDraw::collisionDetection(const int& x, const int& y, const int& directio
 
 	if (y == DOWN) {
 		//下方向
-		if (currentCorner[UP] == 24 && currentCorner[y] == 0 && currentMap.y != currentBoundaryMap.y)
+		if (boundaryCriteria[y])
 			collisionFlag[direction] = (mapBottomCentral[currentCorner[y]][currentCorner[x]] != FLOOR) ? true : false;
 		else
 			collisionFlag[direction] = (mapCentral[currentCorner[y]][currentCorner[x]] != FLOOR) ? true : false;

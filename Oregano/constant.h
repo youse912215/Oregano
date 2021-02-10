@@ -1,15 +1,19 @@
 #pragma once
 
-const int WINDOW_WIDTH = 1600; //ウィンドウ横幅
-const int WINDOW_HEIGHT = 900; //ウィンドウ縦幅
-const int WIN_MAGNIFICATION = 100;
+const int WIN_MAGNIFICATION = 100; //ウインドウ倍率
 const int WIN_WIDTH = 16 * WIN_MAGNIFICATION; //ウィンドウ横幅
 const int WIN_HEIGHT = 9 * WIN_MAGNIFICATION; //ウィンドウ縦幅
+
 const int BLOCK_SIZE = 64; //ブロックサイズ
 const int AREA_WIDTH = 25; //1マップ（区画）の横のサイズ
 const int AREA_HEIGHT = 25; //1マップ（区画）の縦のサイズ
+const int AREA_MIN = 0;
+const int AREA_MAX = AREA_WIDTH - 1;
+
 const int DIRECTION_SIZE = 4; //方向の種類（配列のサイズ）
+
 const int MOVING_DISTANCE = 8; //移動速度
+
 const int INITIAL_X = 13600; //初期マップのx座標
 const int INITIAL_Y = 13200 + BLOCK_SIZE; //初期マップのy座標
 
