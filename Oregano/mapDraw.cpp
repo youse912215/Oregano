@@ -3,39 +3,39 @@
 #include "mapInformation.h"
 #include "DxLib.h"
 
-int MapDraw::map_x = INITIAL_X; //x方向
-int MapDraw::map_y = INITIAL_Y; //y方向
+int MapDraw::mapX = INITIAL_X; //x方向
+int MapDraw::mapY = INITIAL_Y; //y方向
 
-MapDraw::MapDraw(int graph) : map_graph(graph),
+MapDraw::MapDraw(int graph) : graph(graph),
                               info{FLOOR, HOUSE, SHALLOW, TIDE, WATER, STONE, WOODS},
-                              map_top_left(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-                              map_top_central(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-                              map_top_right(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-                              map_left_central(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-                              map_central(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-                              map_right_central(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-                              map_bottom_left(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-                              map_bottom_central(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-                              map_bottom_right(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
+                              mapTopLeft(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
+                              mapTopCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
+                              mapTopRight(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
+                              mapLeftCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
+                              mapCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
+                              mapRightCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
+                              mapBottomLeft(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
+                              mapBottomCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
+                              mapBottomRight(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               currentCorner{
-	                              ((map_x - 32) / BLOCK_SIZE) % 25, ((map_x + 31) / BLOCK_SIZE) % 25,
-	                              ((map_y - 48) / BLOCK_SIZE) % 25, ((map_y + 15) / BLOCK_SIZE) % 25,
-	                              (map_x / BLOCK_SIZE) % 25, ((map_y - 16) / BLOCK_SIZE) % 25,
+	                              ((mapX - 32) / BLOCK_SIZE) % 25, ((mapX + 31) / BLOCK_SIZE) % 25,
+	                              ((mapY - 48) / BLOCK_SIZE) % 25, ((mapY + 15) / BLOCK_SIZE) % 25,
+	                              (mapX / BLOCK_SIZE) % 25, ((mapY - 16) / BLOCK_SIZE) % 25,
                               },
                               collisionFlag(8) {
 	column = 0; //列
 	row = 0; //行
-	screen_x = INITIAL_X - map_x; //画面上のx座標
-	screen_y = INITIAL_Y - map_y; //画面上のy座標
-	map_width = map_all.at(0).size(); //横のサイズ
-	map_height = map_all.size(); //縦のサイズ
-	current_map_x = map_x / (BLOCK_SIZE * map_width); //現在の全体マップのx座標
-	current_map_y = map_y / (BLOCK_SIZE * map_height); //現在の全体マップのy座標
-	sx = current_map_x - 8;
-	sy = current_map_y - 8;
-	map_between_distance = BLOCK_SIZE * AREA_WIDTH; //マップ間距離（800px）
-	widthBlockArea = (map_x / BLOCK_SIZE) % AREA_WIDTH;
-	heightBlockArea = (map_y / BLOCK_SIZE) % AREA_HEIGHT;
+	screenX = INITIAL_X - mapX; //画面上のx座標
+	screenY = INITIAL_Y - mapY; //画面上のy座標
+	mapWidth = mapBase.at(0).size(); //横のサイズ
+	mapHeight = mapBase.size(); //縦のサイズ
+	currentMapX = mapX / (BLOCK_SIZE * mapWidth); //現在の全体マップのx座標
+	currentMapY = mapY / (BLOCK_SIZE * mapHeight); //現在の全体マップのy座標
+	initialX = currentMapX - 8;
+	initialY = currentMapY - 8;
+	mapBetweenDistance = BLOCK_SIZE * AREA_WIDTH; //マップ間距離（800px）
+	blockAreaX = (mapX / BLOCK_SIZE) % AREA_WIDTH;
+	blockAreaY = (mapY / BLOCK_SIZE) % AREA_HEIGHT;
 }
 
 MapDraw::~MapDraw() {
@@ -48,138 +48,101 @@ MapDraw::~MapDraw() {
 /// 読み込んだマップに描画する
 /// </summary>
 /// <param name="map_info"></param>
-/// <param name="dis_x">x方向の中心からの距離</param>
-/// <param name="dis_y">y方向の中心からの距離</param>
-/// <param name="map_xy">マップの配列</param>
-void MapDraw::current_map_drawing(const int& map_info, const int& dis_x, const int& dis_y,
+/// <param name="dirX">x方向の中心からの距離</param>
+/// <param name="dirY">y方向の中心からの距離</param>
+/// <param name="map">マップの配列</param>
+void MapDraw::current_map_drawing(const int& map_info, const int& dirX, const int& dirY,
                                   vector<vector<int>>& map) {
 
 	mapName(&column, &row, map_info); //マップ情報から列と行を取り出す
 	//マップの描画
-	for (int y = 0; y < map_height; y++) {
-		for (int x = 0; x < map_width; x++) {
+	for (int y = 0; y < mapHeight; y++) {
+		for (int x = 0; x < mapWidth; x++) {
 			//map_infoのチップをdestの位置に描画
 			if (map[y][x] == map_info) {
 				DrawRectGraph(
-					x * BLOCK_SIZE + screen_x + map_between_distance * dis_x,
-					y * BLOCK_SIZE + screen_y + map_between_distance * dis_y,
+					x * BLOCK_SIZE + screenX + mapBetweenDistance * dirX,
+					y * BLOCK_SIZE + screenY + mapBetweenDistance * dirY,
 					column * BLOCK_SIZE, row * BLOCK_SIZE,
 					BLOCK_SIZE, BLOCK_SIZE,
-					map_graph, true, false);
+					graph, true, false);
 			}
 		}
 	}
 }
 
-void MapDraw::drawing_current_maps(vector<vector<int>>& map, const int& dir_x, const int& dir_y) {
-	file_import(current_map_x + dir_x, current_map_y + dir_y, map); //csvファイル読み込み
+/// <summary>
+/// x,yの
+/// </summary>
+void MapDraw::drawing_current_maps(vector<vector<int>>& map, const int& dirX, const int& dirY) {
+	fileImport(currentMapX + dirX, currentMapY + dirY, map); //csvファイル読み込み
 	//--- マップチップ描画 ---//
-	current_map_drawing(FLOOR, sx + dir_x, sy + dir_y, map);
-	current_map_drawing(HOUSE, sx + dir_x, sy + dir_y, map);
-	current_map_drawing(SHALLOW, sx + dir_x, sy + dir_y, map);
-	current_map_drawing(WATER, sx + dir_x, sy + dir_y, map);
-	current_map_drawing(WOODS, sx + dir_x, sy + dir_y, map);
+	current_map_drawing(FLOOR, initialX + dirX, initialY + dirY, map);
+	current_map_drawing(HOUSE, initialX + dirX, initialY + dirY, map);
+	current_map_drawing(SHALLOW, initialX + dirX, initialY + dirY, map);
+	current_map_drawing(WATER, initialX + dirX, initialY + dirY, map);
+	current_map_drawing(WOODS, initialX + dirX, initialY + dirY, map);
 	//---------------------//
 }
 
 /// <summary>
-/// 9マップの描画
+/// 更新処理
 /// </summary>
 void MapDraw::update() {
 
-	drawing_current_maps(map_central, Central, Central);
+	/* 9か所のマップを描画 */
+	drawing_current_maps(mapCentral, Central, Central); //中央マップ（常に表示）
 
-	if (heightBlockArea <= TOP_BOUNDARY)
-		drawing_current_maps(map_top_central, Central, Top);
-	else if (heightBlockArea >= BOTTOM_BOUNDARY)
-		drawing_current_maps(map_bottom_central, Central, Bottom);
+	//y方向のマップ描画判定
+	if (blockAreaY <= TOP_BOUNDARY)
+		drawing_current_maps(mapTopCentral, Central, Top); //上マップ
+	else if (blockAreaY >= BOTTOM_BOUNDARY)
+		drawing_current_maps(mapBottomCentral, Central, Bottom); //下マップ
 
+	//x方向のマップ描画判定
+	if (blockAreaX <= LEFT_BOUNDARY)
+		drawing_current_maps(mapLeftCentral, Left, Central); //左マップ
+	else if (blockAreaX >= RIGHT_BOUNDARY)
+		drawing_current_maps(mapRightCentral, Right, Central); //右マップ
 
-	if (widthBlockArea <= LEFT_BOUNDARY)
-		drawing_current_maps(map_left_central, Left, Central);
-	else if (widthBlockArea >= RIGHT_BOUNDARY)
-		drawing_current_maps(map_right_central, Right, Central);
+	//斜め方向のマップ描画判定
+	if (blockAreaX <= LEFT_BOUNDARY && blockAreaY <= TOP_BOUNDARY)
+		drawing_current_maps(mapTopLeft, Left, Top); //左上マップ
+	else if (blockAreaX >= RIGHT_BOUNDARY && blockAreaY <= TOP_BOUNDARY)
+		drawing_current_maps(mapTopRight, Right, Top); //右上マップ
+	else if (blockAreaX <= LEFT_BOUNDARY && blockAreaY >= BOTTOM_BOUNDARY)
+		drawing_current_maps(mapBottomLeft, Left, Bottom); //左下マップ
+	else if (blockAreaX >= RIGHT_BOUNDARY && blockAreaY >= BOTTOM_BOUNDARY)
+		drawing_current_maps(mapBottomRight, Right, Bottom); //右下マップ
 
-
-	if (widthBlockArea <= LEFT_BOUNDARY && heightBlockArea <= TOP_BOUNDARY)
-		drawing_current_maps(map_top_left, Left, Top);
-	else if (widthBlockArea >= RIGHT_BOUNDARY && heightBlockArea <= TOP_BOUNDARY)
-		drawing_current_maps(map_top_right, Right, Top);
-	else if (widthBlockArea <= LEFT_BOUNDARY && heightBlockArea >= BOTTOM_BOUNDARY)
-		drawing_current_maps(map_bottom_left, Left, Bottom);
-	else if (widthBlockArea >= RIGHT_BOUNDARY && heightBlockArea >= BOTTOM_BOUNDARY)
-		drawing_current_maps(map_bottom_right, Right, Bottom);
+	/* 8ヵ所の衝突判定 */
+	collisionDetection(LEFT, UP, LEFT_UP); //左上
+	collisionDetection(RIGHT, UP, RIGHT_UP); //右上
+	collisionDetection(LEFT, DOWN, LEFT_DOWN); //左下
+	collisionDetection(RIGHT, DOWN, RIGHT_DOWN); //右下
+	collisionDetection(LEFT, CENTER_Y, CENTER_LEFT); //中央左
+	collisionDetection(RIGHT, CENTER_Y, CENTER_RIGHT); //中央右
+	collisionDetection(CENTER_X, UP, CENTER_UP); //中央上
+	collisionDetection(CENTER_X, DOWN, CENTER_DOWN); //中央下
 
 	DrawFormatString(150, 0, GetColor(255, 255, 255), "LU:%d, RU:%d",
-	                 map_central[currentCorner[UP]][currentCorner[LEFT]],
-	                 map_central[currentCorner[UP]][currentCorner[RIGHT]], false);
+	                 mapCentral[currentCorner[UP]][currentCorner[LEFT]],
+	                 mapCentral[currentCorner[UP]][currentCorner[RIGHT]], false);
 	DrawFormatString(300, 0, GetColor(255, 255, 255), "LD:%d, RD:%d",
-	                 map_central[currentCorner[DOWN]][currentCorner[LEFT]],
-	                 map_central[currentCorner[DOWN]][currentCorner[RIGHT]], false);
-	DrawFormatString(450, 0, GetColor(255, 255, 255), "LU:%d, RU:%d, LD:%d, RD:%d",
-	                 collisionFlag[0], collisionFlag[1], collisionFlag[2], collisionFlag[3], false);
-
+	                 mapCentral[currentCorner[DOWN]][currentCorner[LEFT]],
+	                 mapCentral[currentCorner[DOWN]][currentCorner[RIGHT]], false);
 	DrawFormatString(150, 15, GetColor(255, 255, 255),
-	                 "(cy:%d, cx:%d)", (map_y / BLOCK_SIZE) % 25, (map_x / BLOCK_SIZE) % 25, false);
-	DrawFormatString(0, 15, GetColor(255, 255, 255), "(sy:%d, sx:%d)", sy, sx, false);
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "%d, %d", current_map_y, current_map_x, false);
+	                 "(cy:%d, cx:%d)", (mapY / BLOCK_SIZE) % 25, (mapX / BLOCK_SIZE) % 25, false);
+	DrawFormatString(0, 15, GetColor(255, 255, 255), "(iniY:%d, iniX:%d)", initialY, initialX, false);
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "%d, %d", currentMapY, currentMapX, false);
 }
 
-void MapDraw::collisionDetection() {
-	if (map_central[currentCorner[UP]][currentCorner[LEFT]] == WOODS) {
-		collisionFlag[LEFT_UP] = 1;
-	}
-	else {
-		collisionFlag[LEFT_UP] = 0;
-	}
-
-	if (map_central[currentCorner[UP]][currentCorner[RIGHT]] == WOODS) {
-		collisionFlag[RIGHT_UP] = 1;
-	}
-	else {
-		collisionFlag[RIGHT_UP] = 0;
-	}
-
-	if (map_central[currentCorner[DOWN]][currentCorner[LEFT]] == WOODS) {
-		collisionFlag[LEFT_DOWN] = 1;
-	}
-	else {
-		collisionFlag[LEFT_DOWN] = 0;
-	}
-
-	if (map_central[currentCorner[DOWN]][currentCorner[RIGHT]] == WOODS) {
-		collisionFlag[RIGHT_DOWN] = 1;
-	}
-	else {
-		collisionFlag[RIGHT_DOWN] = 0;
-	}
-
-
-	if (map_central[currentCorner[CENTER_Y]][currentCorner[LEFT]] == WOODS) {
-		collisionFlag[CENTER_LEFT] = 1;
-	}
-	else {
-		collisionFlag[CENTER_LEFT] = 0;
-	}
-
-	if (map_central[currentCorner[CENTER_Y]][currentCorner[RIGHT]] == WOODS) {
-		collisionFlag[CENTER_RIGHT] = 1;
-	}
-	else {
-		collisionFlag[CENTER_RIGHT] = 0;
-	}
-
-	if (map_central[currentCorner[UP]][currentCorner[CENTER_X]] == WOODS) {
-		collisionFlag[CENTER_UP] = 1;
-	}
-	else {
-		collisionFlag[CENTER_UP] = 0;
-	}
-
-	if (map_central[currentCorner[DOWN]][currentCorner[CENTER_X]] == WOODS) {
-		collisionFlag[CENTER_DOWN] = 1;
-	}
-	else {
-		collisionFlag[CENTER_DOWN] = 0;
-	}
+/// <summary>
+/// 指定した位置の衝突判定を得る
+/// </summary>
+/// <param name="x">x軸の方向</param>
+/// <param name="y">y軸の方向</param>
+/// <param name="direction">判定方向</param>
+void MapDraw::collisionDetection(const int& x, const int& y, const int& direction) {
+	collisionFlag[direction] = (mapCentral[currentCorner[y]][currentCorner[x]] == WOODS) ? true : false;
 }

@@ -17,35 +17,35 @@ void Input::input_info() {
 /// <summary>
 /// à⁄ìÆèàóù
 /// </summary>
-void Input::moving_process(const int& collisionLeftUp, const int& collisionRightUp,
-                           const int& collisionLeftDown, const int& collisionRightDown,
-                           const int& collisionCenterLeft, const int& collisionCenterRight,
-                           const int& collisionCenterUp, const int& collisionCenterDown) {
+void Input::moving_process(const bool& collisionLeftUp, const bool& collisionRightUp,
+                           const bool& collisionLeftDown, const bool& collisionRightDown,
+                           const bool& collisionCenterLeft, const bool& collisionCenterRight,
+                           const bool& collisionCenterUp, const bool& collisionCenterDown) {
 
 	//input_info();
 	if (keys[KEY_INPUT_LEFT]) {
-		MapDraw::map_x -= MOVING_DISTANCE;
-		if ((collisionLeftUp == 1 && collisionCenterLeft == 1)
-			|| (collisionLeftDown == 1 && collisionCenterLeft == 1))
-			MapDraw::map_x += MOVING_DISTANCE;
+		MapDraw::mapX -= MOVING_DISTANCE;
+		if ((collisionLeftUp && collisionCenterLeft)
+			|| (collisionLeftDown && collisionCenterLeft))
+			MapDraw::mapX += MOVING_DISTANCE;
 	}
 	if (keys[KEY_INPUT_RIGHT]) {
-		MapDraw::map_x += MOVING_DISTANCE;
-		if ((collisionRightUp == 1 && collisionCenterRight == 1)
-			|| (collisionRightDown == 1 && collisionCenterRight == 1))
-			MapDraw::map_x -= MOVING_DISTANCE;
+		MapDraw::mapX += MOVING_DISTANCE;
+		if ((collisionRightUp && collisionCenterRight)
+			|| (collisionRightDown && collisionCenterRight))
+			MapDraw::mapX -= MOVING_DISTANCE;
 	}
 	if (keys[KEY_INPUT_UP]) {
-		MapDraw::map_y -= MOVING_DISTANCE;
-		if ((collisionLeftUp == 1 && collisionCenterUp == 1)
-			|| (collisionRightUp == 1 && collisionCenterUp == 1))
-			MapDraw::map_y += MOVING_DISTANCE;
+		MapDraw::mapY -= MOVING_DISTANCE;
+		if ((collisionLeftUp && collisionCenterUp)
+			|| (collisionRightUp && collisionCenterUp))
+			MapDraw::mapY += MOVING_DISTANCE;
 	}
 	if (keys[KEY_INPUT_DOWN]) {
-		MapDraw::map_y += MOVING_DISTANCE;
-		if ((collisionLeftDown == 1 && collisionCenterDown == 1)
-			|| (collisionRightDown == 1 && collisionCenterDown == 1))
-			MapDraw::map_y -= MOVING_DISTANCE;
+		MapDraw::mapY += MOVING_DISTANCE;
+		if ((collisionLeftDown && collisionCenterDown)
+			|| (collisionRightDown && collisionCenterDown))
+			MapDraw::mapY -= MOVING_DISTANCE;
 	}
 
 	DrawFormatString(0, 150, GetColor(255, 255, 120), "%d, %d, %d, %d",

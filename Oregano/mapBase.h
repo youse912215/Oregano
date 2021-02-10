@@ -8,18 +8,18 @@ using namespace std;
 
 class MapBase : public Input {
 private:
-	string initial_csv; //初期地点のマップ(中央)
+	string initialCsv; //初期地点のマップ(中央)
 	const string comma = ","; //カンマ
-	const string csv_num[16] = {
+	const string csvNum[16] = {
 			"00", "01", "02", "03", "04", "05", "06", "07",
 			"08", "09", "10", "11", "12", "13", "14", "15"
 		}; //csvファイル名を変更するための数字
-	string map_confirmation(const int& cx, const int& cy, string& csv);
+	string mapConfirmation(const int& cx, const int& cy, string& csv);
 
 protected:
-	vector<vector<int>> map_all;
-	void file_import(const int& nx, const int& ny, vector<vector<int>>& map);
-	//void map_copy(int map_xy[AREA_HEIGHT][AREA_WIDTH]);
+	vector<vector<int>> mapBase; //ベースとなるマップ
+
+	void fileImport(const int& nx, const int& ny, vector<vector<int>>& map);
 	MapBase();
 	~MapBase();
 

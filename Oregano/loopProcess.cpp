@@ -24,7 +24,7 @@ void loop_process() {
 
 
 		map.update();
-		map.collisionDetection();
+		//map.collisionDetection();
 
 		Input* input = new Input;
 		input->input_info();

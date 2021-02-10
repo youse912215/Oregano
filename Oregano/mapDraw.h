@@ -6,55 +6,55 @@ using namespace std;
 
 class MapDraw : public MapBase {
 private:
-	int map_graph; //マップチップ画像
+	int graph; //マップチップ画像
 	int column; //行番号
 	int row; //列番号
-	int widthBlockArea;
-	int heightBlockArea;
+	int blockAreaX; //1ブロック区画（マップ）内のx座標
+	int blockAreaY; //1ブロック区画（マップ）内のy座標
 
-	int current_map_x;
-	int current_map_y;
-	int map_width; //1マップあたりの配列の横サイズ
-	int map_height; //1マップあたりの配列の縦サイズ]
-	int sx;
-	int sy;
+	int currentMapX;
+	int currentMapY;
+	int mapWidth; //1マップあたりの配列の横サイズ
+	int mapHeight; //1マップあたりの配列の縦サイズ]
+	int initialX; //
+	int initialY;
 
-	vector<int> info;
-	vector<vector<int>> map_top_left;
-	vector<vector<int>> map_top_central;
-	vector<vector<int>> map_top_right;
-	vector<vector<int>> map_left_central;
-	vector<vector<int>> map_central;
-	vector<vector<int>> map_right_central;
-	vector<vector<int>> map_bottom_left;
-	vector<vector<int>> map_bottom_central;
-	vector<vector<int>> map_bottom_right;
+	vector<int> info; //マップ名情報
 
-	vector<int> currentCorner;
+	vector<vector<int>> mapTopLeft; //左上マップ
+	vector<vector<int>> mapTopCentral; //上マップ
+	vector<vector<int>> mapTopRight; //右上マップ
+	vector<vector<int>> mapLeftCentral; //左マップ
+	vector<vector<int>> mapCentral; //中央マップ
+	vector<vector<int>> mapRightCentral; //右上マップ
+	vector<vector<int>> mapBottomLeft; //左下マップ
+	vector<vector<int>> mapBottomCentral; //下マップ
+	vector<vector<int>> mapBottomRight; //右下マップ
+
+	vector<int> currentCorner; //現在の各角のマップ座標（中央も含む）
 
 	enum BOUNDARY {
+		//各境界
 		LEFT_BOUNDARY = 12,
 		RIGHT_BOUNDARY = 13,
 		TOP_BOUNDARY = 7,
 		BOTTOM_BOUNDARY = 17
 	};
 
-	void drawing_current_maps(vector<vector<int>>& map, const int& dir_x, const int& dir_y);
+	void drawing_current_maps(vector<vector<int>>& map, const int& dirX, const int& dirY);
+	void current_map_drawing(const int& map_info, const int& dirX, const int& dirY,
+	                         vector<vector<int>>& map);
+	void collisionDetection(const int& x, const int& y, const int& direction);
 
 public:
-	static int map_x;
-	static int map_y;
-	int screen_x; //画面上のx座標
-	int screen_y; //画面上のy座標
-	int map_between_distance; //マップ間距離（800px）
-	vector<int> collisionFlag; //衝突フラグ
-
-	void current_map_drawing(const int& map_info, const int& dis_x, const int& dis_y,
-	                         vector<vector<int>>& map);
+	static int mapX; //マップ内の中央のx座標
+	static int mapY; //マップ内の中央のy座標
+	int screenX; //画面上のx座標
+	int screenY; //画面上のy座標
+	int mapBetweenDistance; //マップ間距離（800px）
+	vector<bool> collisionFlag; //衝突フラグ
 
 	MapDraw(int graph);
 	~MapDraw();
 	void update();
-	void get_player_coodinate(const int& x, const int& y);
-	void collisionDetection();
 };
