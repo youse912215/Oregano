@@ -39,6 +39,10 @@ void Input::moving_process(const bool& collisionLeft, const bool& collisionRight
 		if (collisionDown) MapDraw::mapY -= MOVING_DISTANCE;
 	}
 
-	DrawFormatString(0, 150, GetColor(255, 255, 120), "%d, %d, %d, %d",
-	                 collisionLeft, collisionRight, collisionUp, collisionDown, false);
+	DrawFormatString(0, 150, GetColor(255, 255, 120), "%d   %d",
+	                 collisionLeft, collisionRight, false);
+	DrawFormatString(0, 135, GetColor(255, 255, 120), "  %d",
+	                 collisionUp, false);
+	DrawFormatString(0, 165, GetColor(255, 255, 120), "  %d",
+	                 collisionDown, false);
 }

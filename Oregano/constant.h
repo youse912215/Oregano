@@ -28,10 +28,12 @@ enum direction {
 	DOWN,
 	//‰º
 	CENTER_X1,
-	CENTER_Y1,
 	CENTER_X2,
+	CENTER_Y1,
 	CENTER_Y2,
 	//’†‰›
+	CROSS,
+	//“ÁŽê
 };
 
 enum corner {

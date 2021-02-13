@@ -54,9 +54,6 @@
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル\Main</Filter>
     </ClCompile>
-    <ClCompile Include="coordinate_confirmation.cpp">
-      <Filter>ソース ファイル\Map</Filter>
-    </ClCompile>
     <ClCompile Include="mapInformation.cpp">
       <Filter>ソース ファイル\Map</Filter>
     </ClCompile>
@@ -91,9 +88,6 @@
     </ClInclude>
     <ClInclude Include="player.h">
       <Filter>ヘッダー ファイル\Human</Filter>
-    </ClInclude>
-    <ClInclude Include="coordinate_confirmation.h">
-      <Filter>ヘッダー ファイル\Map</Filter>
     </ClInclude>
     <ClInclude Include="mapInformation.h">
       <Filter>ヘッダー ファイル\Map</Filter>

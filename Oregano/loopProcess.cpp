@@ -3,6 +3,7 @@
 #include "inputProcess.h"
 #include "player.h"
 #include "mapDraw.h"
+#include "mapCollision.h"
 #include "coordinate_confirmation.h"
 
 void loop_process() {
@@ -18,7 +19,7 @@ void loop_process() {
 		ClearDrawScreen();
 
 		MapDraw map(mapGraph);
-
+		MapCollision collision(map);
 
 		if (CheckHitKey(KEY_INPUT_ESCAPE)) break; //I—¹ˆ—
 
@@ -26,15 +27,11 @@ void loop_process() {
 
 		Input* input = new Input;
 		input->input_info();
-		input->moving_process(map.leftCollisionFlag(), map.rightCollisionFlag(),
-		                      map.upCollisionFlag(), map.downCollisionFlag());
+		input->moving_process(collision.leftCollisionFlag(), collision.rightCollisionFlag(),
+		                      collision.upCollisionFlag(), collision.downCollisionFlag());
 		delete input;
 
 		player.draw();
-
-		Coodinate* debug = new Coodinate;
-		debug->debug();
-		delete debug;
 
 		DrawFormatString(0, 75, GetColor(255, 0, 0),
 		                 "LU y:%d, x:%d", player.y, player.x, false);

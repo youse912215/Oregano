@@ -127,7 +127,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="coordinate_confirmation.cpp" />
     <ClCompile Include="human.cpp" />
     <ClCompile Include="inputProcess.cpp" />
     <ClCompile Include="loopProcess.cpp" />
@@ -143,7 +142,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constant.h" />
-    <ClInclude Include="coordinate_confirmation.h" />
     <ClInclude Include="human.h" />
     <ClInclude Include="inputProcess.h" />
     <ClInclude Include="loopProcess.h" />

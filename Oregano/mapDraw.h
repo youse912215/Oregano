@@ -8,12 +8,14 @@ using namespace std;
 class MapDraw : public MapBase {
 private:
 	int graph; //マップ画像
+	int mapBetweenDistance; //マップ間距離（800px）
 
 	Vec2 matrix; //行列番号
 	Vec2 screen; //画面上の座標
 	Vec2 blockArea; //1ブロック区画（マップ）内の座標
 	Vec2 currentMap; //現在のマップ座標
-	Vec2 currentBoundaryMap; //現在のマップの境界座標
+	Vec2 currentBoundaryMap1; //現在のマップの境界座標
+	Vec2 currentBoundaryMap2; //現在のマップの境界座標
 	Vec2 mapAspectSize; //1マップあたりの配列のサイズ
 	Vec2 centerPos; //マップの中央位置
 
@@ -43,19 +45,25 @@ private:
 	void current_map_drawing(const int& mapInformation, const int& dirX, const int& dirY,
 	                         vector<vector<int>>& map);
 	void collisionDetection(const int& x, const int& y, const int& direction);
+	void collisionDetectionLeftUp();
+	void collisionDetectionRightUp();
+	void collisionDetectionLeftDown();
+	void collisionDetectionRightDown();
+	void collisionDetectionCenterLeft1();
+	void collisionDetectionCenterLeft2();
+	void collisionDetectionCenterRight1();
+	void collisionDetectionCenterRight2();
+	void collisionDetectionCenterUp1();
+	void collisionDetectionCenterUp2();
+	void collisionDetectionCenterDown1();
+	void collisionDetectionCenterDown2();
 
 public:
 	static int mapX; //マップ内の中央のx座標
 	static int mapY; //マップ内の中央のy座標
-
-	int mapBetweenDistance; //マップ間距離（800px）
 	vector<bool> collisionFlag; //衝突フラグ
 
 	MapDraw(int graph);
 	~MapDraw();
 	void update();
-	bool leftCollisionFlag();
-	bool rightCollisionFlag();
-	bool upCollisionFlag();
-	bool downCollisionFlag();
 };
