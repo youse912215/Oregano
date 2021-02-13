@@ -4,6 +4,7 @@ class Input {
 private:
 	static char keys[256];
 	static char oldkeys[256];
+	int pad;
 
 public:
 	Input();

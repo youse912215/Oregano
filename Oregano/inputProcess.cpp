@@ -6,6 +6,7 @@ char Input::keys[256] = {0};
 char Input::oldkeys[256] = {0};
 
 Input::Input() {
+	pad = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 }
 
 void Input::input_info() {
@@ -22,19 +23,19 @@ void Input::input_info() {
 /// </summary>
 void Input::moving_process(const bool& collisionLeft, const bool& collisionRight,
                            const bool& collisionUp, const bool& collisionDown) {
-	if (keys[KEY_INPUT_LEFT]) {
+	if (pad & PAD_INPUT_LEFT) {
 		MapDraw::mapX -= MOVING_DISTANCE;
 		if (collisionLeft) MapDraw::mapX += MOVING_DISTANCE;
 	}
-	if (keys[KEY_INPUT_RIGHT]) {
+	if (pad & PAD_INPUT_RIGHT) {
 		MapDraw::mapX += MOVING_DISTANCE;
 		if (collisionRight) MapDraw::mapX -= MOVING_DISTANCE;
 	}
-	if (keys[KEY_INPUT_UP]) {
+	if (pad & PAD_INPUT_UP) {
 		MapDraw::mapY -= MOVING_DISTANCE;
 		if (collisionUp) MapDraw::mapY += MOVING_DISTANCE;
 	}
-	if (keys[KEY_INPUT_DOWN]) {
+	if (pad & PAD_INPUT_DOWN) {
 		MapDraw::mapY += MOVING_DISTANCE;
 		if (collisionDown) MapDraw::mapY -= MOVING_DISTANCE;
 	}
