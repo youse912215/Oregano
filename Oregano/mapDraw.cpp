@@ -48,7 +48,6 @@ MapDraw::MapDraw(int graph) : graph(graph),
 	                              && currentMap.x == currentBoundaryMap1.x && currentMap.y > currentBoundaryMap1.y
 	                              && currentMap.x < currentBoundaryMap2.x && currentMap.y == currentBoundaryMap2.y
                               },
-
                               mapTopLeft(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapTopCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapTopRight(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
@@ -339,6 +338,19 @@ void MapDraw::update() {
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "%d, %d", currentMap.y, currentMap.x, false);
 	DrawFormatString(0, 45, GetColor(255, 255, 255), "cby1:%d, cbx1:%d, cby2:%d, cbx2:%d",
 	                 currentBoundaryMap1.y, currentBoundaryMap1.x, currentBoundaryMap2.y, currentBoundaryMap2.x, false);
+}
+
+int MapDraw::centralPlayerPosition(int center) {
+	if (center == MAP_X) {
+		return (mapX / BLOCK_SIZE) % 25;
+	}
+	return ((mapY - 16) / BLOCK_SIZE) % 25;
+}
+
+int MapDraw::currentMapPosition(int current) {
+	if (current == MAP_X)
+		return currentMap.x;
+	return currentMap.y;
 }
 
 /// <summary>

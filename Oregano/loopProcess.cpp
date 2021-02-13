@@ -4,6 +4,7 @@
 #include "player.h"
 #include "mapDraw.h"
 #include "mapCollision.h"
+#include "eventField.h"
 #include "coordinate_confirmation.h"
 
 void loop_process() {
@@ -25,11 +26,15 @@ void loop_process() {
 
 		map.update();
 
-		Input* input = new Input;
-		input->input_info();
-		input->moving_process(collision.leftCollisionFlag(), collision.rightCollisionFlag(),
-		                      collision.upCollisionFlag(), collision.downCollisionFlag());
-		delete input;
+
+		Input input;
+		input.inputInformation();
+		input.moveProcess(collision.leftCollisionFlag(), collision.rightCollisionFlag(),
+		                  collision.upCollisionFlag(), collision.downCollisionFlag());
+		input.eventProcess();
+
+		EventField field(input, map);
+		field.update();
 
 		player.draw();
 
@@ -41,6 +46,7 @@ void loop_process() {
 		                 "LD y:%d, x:%d", player.y + BLOCK_SIZE, player.x, false);
 		DrawFormatString(150, 90, GetColor(255, 0, 0),
 		                 "RD y:%d, x:%d", player.y + BLOCK_SIZE, player.x + BLOCK_SIZE, false);
+
 
 		window_in_roop(); //ループ内ウィンドウ設定
 		if (ProcessMessage() == -1) break; //Windowsシステムからくる情報を処理

@@ -17,6 +17,15 @@ const int MOVING_DISTANCE = 8; //移動速度
 const int INITIAL_X = 13600; //初期マップのx座標
 const int INITIAL_Y = 13200 + BLOCK_SIZE; //初期マップのy座標
 
+#define CALL_ONCE(src)\
+     do {\
+          static bool initialized = false;\
+          if (!initialized){\
+               src;\
+               initialized = true;\
+          }\
+     } while (0)
+
 //方向の情報
 enum direction {
 	LEFT,
@@ -59,7 +68,7 @@ enum dirction_sign {
 	Bottom = 1,
 };
 
-//--- マップチップ名称 ---//
+//マップチップ名称
 enum map_info {
 	//床
 	FLOOR,
@@ -79,4 +88,23 @@ enum map_info {
 	BRIDGE_HEIGHT = 101,
 	//横橋
 	BRIDGE_WIDTH = 102
+};
+
+//ボタン種類
+enum button {
+	A,
+	B,
+	X,
+	Y,
+	LB,
+	RB,
+	CL,
+	CR,
+	SL,
+	SR
+};
+
+enum pos {
+	MAP_X,
+	MAP_Y,
 };

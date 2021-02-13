@@ -61,9 +61,12 @@ private:
 public:
 	static int mapX; //マップ内の中央のx座標
 	static int mapY; //マップ内の中央のy座標
+
 	vector<bool> collisionFlag; //衝突フラグ
 
 	MapDraw(int graph);
 	~MapDraw();
 	void update();
+	int centralPlayerPosition(int center);
+	int currentMapPosition(int current);
 };

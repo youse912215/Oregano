@@ -1,12 +1,11 @@
 #pragma once
 #include "constant.h"
-#include "inputProcess.h"
 #include <string>
 #include <vector>
 
 using namespace std;
 
-class MapBase : public Input {
+class MapBase {
 private:
 	string initialCsv; //初期地点のマップ(中央)
 	const string comma = ","; //カンマ
