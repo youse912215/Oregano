@@ -1,10 +1,11 @@
 #include "DxLib.h"
+#include "eventBase.h"
 #include "mapDraw.h"
 #include "inputProcess.h"
 
 char Input::keys[256] = {0};
 char Input::oldkeys[256] = {0};
-int Input::moveDirection = UP;
+
 
 Input::Input() : buttonFlag(10) {
 	pad = GetJoypadInputState(DX_INPUT_PAD1); //入力状態取得
@@ -16,10 +17,17 @@ Input::Input() : buttonFlag(10) {
 	pad2 = pad & PAD_INPUT_2; //2(B)
 	pad3 = pad & PAD_INPUT_3; //3(X)
 	pad4 = pad & PAD_INPUT_4; //4(Y)
+	pad5 = pad & PAD_INPUT_5; //5(LB)
+	pad6 = pad & PAD_INPUT_6; //6(RB)
+	pad7 = pad & PAD_INPUT_7; //7(VIEW)
+	pad8 = pad & PAD_INPUT_8; //8(MENU)
+	pad9 = pad & PAD_INPUT_9; //9(STICK_L)
+	pad10 = pad & PAD_INPUT_10; //10(STICK_R)
 	A = false;
 	B = false;
 	X = false;
 	Y = false;
+	moveDirection = UP;
 }
 
 void Input::inputInformation() {
@@ -32,7 +40,7 @@ void Input::inputInformation() {
 }
 
 /// <summary>
-/// 移動処理
+/// スティック（十字キー）移動処理
 /// </summary>
 void Input::moveProcess(const bool& collisionLeft, const bool& collisionRight,
                         const bool& collisionUp, const bool& collisionDown) {
@@ -71,6 +79,9 @@ void Input::moveProcess(const bool& collisionLeft, const bool& collisionRight,
 
 }
 
+/// <summary>
+/// ボタン入力処理
+/// </summary>
 void Input::eventProcess() {
 	//キャンセル入力
 	if (pad1 || keys[KEY_INPUT_1]) {
@@ -98,4 +109,22 @@ void Input::eventProcess() {
 	                 Y, false);
 	DrawFormatString(150, 165, GetColor(0, 255, 120), "  %d",
 	                 A, false);
+}
+
+/// <summary>
+/// 終了処理
+/// </summary>
+void Input::endProcess() {
+	if (pad8 || keys[KEY_INPUT_ESCAPE]) {
+		EventBase::gameScene = END_SCENE;
+	}
+}
+
+/// <summary>
+/// 更新処理
+/// </summary>
+void Input::update() {
+	inputInformation();
+	eventProcess();
+	endProcess();
 }

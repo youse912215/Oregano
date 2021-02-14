@@ -340,18 +340,6 @@ void MapDraw::update() {
 	                 currentBoundaryMap1.y, currentBoundaryMap1.x, currentBoundaryMap2.y, currentBoundaryMap2.x, false);
 }
 
-int MapDraw::centralPlayerPosition(int center) {
-	if (center == MAP_X) {
-		return (mapX / BLOCK_SIZE) % 25;
-	}
-	return ((mapY - 16) / BLOCK_SIZE) % 25;
-}
-
-int MapDraw::currentMapPosition(int current) {
-	if (current == MAP_X)
-		return currentMap.x;
-	return currentMap.y;
-}
 
 /// <summary>
 /// w’è‚µ‚½ˆÊ’u‚ÌÕ“Ë”»’è‚ğ“¾‚é

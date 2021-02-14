@@ -2,8 +2,9 @@
 #include "Player.h"
 #include "constant.h"
 
-Player::Player(int x, int y, int graph) : Human(x, y), graph(graph) {
-
+Player::Player(int graph) : graph(graph) {
+	pos.x = WIN_WIDTH / 2 - BLOCK_SIZE / 2;
+	pos.y = WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2;
 }
 
 Player::~Player() {
@@ -11,5 +12,5 @@ Player::~Player() {
 
 //ÉvÉåÉCÉÑÅ[ï`âÊ
 void Player::draw() {
-	DrawGraph(x, y, graph, TRUE);
+	DrawGraph(pos.x, pos.y, graph, TRUE);
 }

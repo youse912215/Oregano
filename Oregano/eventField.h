@@ -1,21 +1,23 @@
 #pragma once
 #include "inputProcess.h"
-#include "mapDraw.h"
+#include "eventBase.h"
 
 class EventField {
 private:
-	Input& input;
-	MapDraw& map;
+	Input& input; //入力処理から
+	EventBase& event; //イベントから
 
-	void getFieldItem();
+	int coin; //コイン
+
+	void getFieldItem(); //フィールド上でのアイテム入手
 
 public:
-	static bool event;
-	static int coin;
+	bool eventFlag; //イベントフラグ
 
-	EventField(Input& input, MapDraw& map);
+
+	EventField(Input& input, EventBase& event);
 
 	void update();
 
-	bool getEventCoordinate(const int& mapX, const int& mapY, const int& cX, const int& cY);
+
 };

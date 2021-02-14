@@ -1,54 +1,40 @@
 #include "DxLib.h"
 #include "windowPreference.h"
 #include "inputProcess.h"
+#include "dataSource.h"
 #include "player.h"
 #include "mapDraw.h"
 #include "mapCollision.h"
 #include "eventField.h"
-#include "coordinate_confirmation.h"
+#include "eventBase.h"
 
-void loop_process() {
-	// ゲームループ
+void loopProcess() {
 
-	int playerGraph = LoadGraph("resource/charactor/player.png");
-	int mapGraph = LoadGraph("resource/map/mapchip.png"); //マップチップ画像ファイルの読み込み
-	Player player(WIN_WIDTH / 2 - BLOCK_SIZE / 2, WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2, playerGraph);
-
+	Input input; //入力クラス
+	DataSource source; //素材クラス
+	Player player(source.playerGraph()); //プレイヤークラス
+	EventBase event; //イベントクラス
+	EventField field(input, event); //フィールドクラス
 
 	while (true) {
-		// 画面クリア
-		ClearDrawScreen();
+		ClearDrawScreen(); //画面クリア
 
-		MapDraw map(mapGraph);
-		MapCollision collision(map);
+		MapDraw map(source.mapChipGraph()); //マップクラス
+		MapCollision collision(map); //コリジョンクラス
 
-		if (CheckHitKey(KEY_INPUT_ESCAPE)) break; //終了処理
+		map.update(); //マップ更新処理
 
-		map.update();
-
-
-		Input input;
-		input.inputInformation();
+		input.update(); //入力更新処理
 		input.moveProcess(collision.leftCollisionFlag(), collision.rightCollisionFlag(),
 		                  collision.upCollisionFlag(), collision.downCollisionFlag());
-		input.eventProcess();
 
-		EventField field(input, map);
-		field.update();
+		field.update(); //フィールド更新処理
 
-		player.draw();
+		player.draw(); //プレイヤー描画処理
 
-		DrawFormatString(0, 75, GetColor(255, 0, 0),
-		                 "LU y:%d, x:%d", player.y, player.x, false);
-		DrawFormatString(150, 75, GetColor(255, 0, 0),
-		                 "RU y:%d, x:%d", player.y, player.x + BLOCK_SIZE, false);
-		DrawFormatString(0, 90, GetColor(255, 0, 0),
-		                 "LD y:%d, x:%d", player.y + BLOCK_SIZE, player.x, false);
-		DrawFormatString(150, 90, GetColor(255, 0, 0),
-		                 "RD y:%d, x:%d", player.y + BLOCK_SIZE, player.x + BLOCK_SIZE, false);
+		if (EventBase::gameScene == END_SCENE) break; //修了処理
 
-
-		window_in_roop(); //ループ内ウィンドウ設定
+		windowSettingInLoop(); //ループ内ウィンドウ設定
 		if (ProcessMessage() == -1) break; //Windowsシステムからくる情報を処理
 	}
 }

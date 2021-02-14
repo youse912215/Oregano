@@ -99,6 +99,12 @@
     <ClCompile Include="dataSave.cpp">
       <Filter>ソース ファイル\Data</Filter>
     </ClCompile>
+    <ClCompile Include="eventBase.cpp">
+      <Filter>ソース ファイル\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="dataSource.cpp">
+      <Filter>ソース ファイル\Data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="human.h">
@@ -141,6 +147,12 @@
       <Filter>ヘッダー ファイル\Event</Filter>
     </ClInclude>
     <ClInclude Include="dataSave.h">
+      <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="eventBase.h">
+      <Filter>ヘッダー ファイル\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="dataSource.h">
       <Filter>ヘッダー ファイル\Data</Filter>
     </ClInclude>
   </ItemGroup>

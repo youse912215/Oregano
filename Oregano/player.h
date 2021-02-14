@@ -3,12 +3,13 @@
 
 //ƒvƒŒƒCƒ„[
 class Player : public Human {
+private:
+	Vec2 pos;
+	int graph;
+
 public:
 
-	Player(int x, int y, int graph);
+	Player(int graph);
 	~Player();
 	void draw();
-
-private:
-	int graph;
 };

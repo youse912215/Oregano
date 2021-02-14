@@ -1,2 +1,2 @@
 #pragma once
-void loop_process();
+void loopProcess();

@@ -26,8 +26,16 @@ const int INITIAL_Y = 13200 + BLOCK_SIZE; //初期マップのy座標
           }\
      } while (0)
 
+//ゲームシーン
+enum GAME_SCENE {
+	TITLE_SCENE,
+	GAME_SCENE,
+	MENU_SCENE,
+	END_SCENE,
+};
+
 //方向の情報
-enum direction {
+enum DIRECTION_INFORMATION {
 	LEFT,
 	//左　
 	RIGHT,
@@ -45,7 +53,7 @@ enum direction {
 	//特殊
 };
 
-enum corner {
+enum CORNER_INFORMATION {
 	LEFT_UP,
 	RIGHT_UP,
 	LEFT_DOWN,
@@ -60,7 +68,7 @@ enum corner {
 	CENTER_DOWN2,
 };
 
-enum dirction_sign {
+enum DIRECTION_SIGN {
 	Left = -1,
 	Right = 1,
 	Top = -1,
@@ -69,7 +77,7 @@ enum dirction_sign {
 };
 
 //マップチップ名称
-enum map_info {
+enum MAP_INFORMATION {
 	//床
 	FLOOR,
 	//家
@@ -91,20 +99,20 @@ enum map_info {
 };
 
 //ボタン種類
-enum button {
+enum BUTTON {
 	A,
 	B,
 	X,
 	Y,
 	LB,
 	RB,
-	CL,
-	CR,
-	SL,
-	SR
+	VIEW,
+	MENU,
+	STICK_L,
+	STICK_R
 };
 
-enum pos {
+enum POSITION_INFORMATION {
 	MAP_X,
 	MAP_Y,
 };

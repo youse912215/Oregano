@@ -4,7 +4,7 @@
 // ウィンドウのタイトルに表示する文字列
 const char TITLE[] = "Oregano";
 
-void window_out_loop() {
+void windowSettingOutLoop() {
 	// ウィンドウモードに設定
 	ChangeWindowMode(TRUE);
 
@@ -25,7 +25,7 @@ void window_out_loop() {
 	SetBackgroundColor(0x00, 0x00, 0xFF);
 }
 
-void window_in_roop() {
+void windowSettingInLoop() {
 	ScreenFlip(); //(ダブルバッファ)裏面
 	WaitTimer(20); //20ミリ秒待機(疑似60FPS)
 }

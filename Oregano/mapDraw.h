@@ -67,6 +67,4 @@ public:
 	MapDraw(int graph);
 	~MapDraw();
 	void update();
-	int centralPlayerPosition(int center);
-	int currentMapPosition(int current);
 };
