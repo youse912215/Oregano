@@ -1,5 +1,8 @@
 #pragma once
 #include "Human.h"
+#include <vector>
+
+using namespace std;
 
 //ƒvƒŒƒCƒ„[
 class Player : public Human {
@@ -8,6 +11,7 @@ private:
 	int graph;
 
 public:
+	vector<int> status;
 
 	Player(int graph);
 	~Player();

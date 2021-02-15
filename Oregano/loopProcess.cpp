@@ -7,6 +7,7 @@
 #include "mapCollision.h"
 #include "eventField.h"
 #include "eventBase.h"
+#include "dataSave.h"
 
 void loopProcess() {
 
@@ -15,6 +16,7 @@ void loopProcess() {
 	Player player(source.playerGraph()); //プレイヤークラス
 	EventBase event; //イベントクラス
 	EventField field(input, event); //フィールドクラス
+	DataSave data(event, player); //セーブデータクラス
 
 	while (true) {
 		ClearDrawScreen(); //画面クリア
@@ -30,9 +32,14 @@ void loopProcess() {
 
 		field.update(); //フィールド更新処理
 
-		player.draw(); //プレイヤー描画処理
+		data.update(); //データ更新処理
 
-		if (EventBase::gameScene == END_SCENE) break; //修了処理
+		if (EventBase::gameScene == END_SCENE) {
+			CALL_ONCE(data.writeBinaryFile()); //ファイル書き込みを一度だけ行う
+			break; //修了処理
+		}
+
+		player.draw(); //プレイヤー描画処理
 
 		windowSettingInLoop(); //ループ内ウィンドウ設定
 		if (ProcessMessage() == -1) break; //Windowsシステムからくる情報を処理
