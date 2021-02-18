@@ -94,32 +94,32 @@ enum DIRECTION_SIGN {
 enum MAP_INFORMATION {
 	//床
 	FLOOR,
-	//浜
-	BEACH,
-	//草花
-	FLOWER = 8,
-	//キノコ類
-	MUSHROOM,
-	//家
-	HOUSE = 29,
-	//浅瀬
-	SHALLOW = 110,
-	//潮
-	TIDE = 100,
-	//水辺
-	WATER = 120,
-	//クリスタル
-	CRYSTAL = 130,
-	//岩山
-	STONE = 44,
-	//木々
-	WOODS = 40,
-	//鉱石系
-	MINERAL = 49,
 	//縦橋
 	BRIDGE_HEIGHT = 4,
 	//横橋
 	BRIDGE_WIDTH = 6,
+	//草花
+	FLOWER = 8,
+	//キノコ類
+	MUSHROOM,
+	//浜
+	BEACH,
+	//浅瀬
+	SHALLOW = 20,
+	//潮
+	TIDE = 30,
+	//クリスタル
+	CRYSTAL = 40,
+	//木々
+	WOODS = 90,
+	//家
+	HOUSE = 119,
+	//海
+	WATER = 120,
+	//岩山
+	STONE = 160,
+	//鉱石系
+	MINERAL = 190,
 	//宝箱
 	TREASURE_BOX = 300,
 };

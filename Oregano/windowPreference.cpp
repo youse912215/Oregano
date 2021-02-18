@@ -22,7 +22,7 @@ void windowSettingOutLoop() {
 	SetWindowSizeExtendRate(1.0);
 
 	// ‰æ–Ê‚Ì”wŒiF‚ğİ’è‚·‚é
-	SetBackgroundColor(0x00, 0x00, 0xFF);
+	SetBackgroundColor(0x00, 0x00, 0x00);
 }
 
 void windowSettingInLoop() {

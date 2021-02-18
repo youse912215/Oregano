@@ -9,9 +9,9 @@ class MapBase {
 private:
 	string initialCsv; //初期地点のマップ(中央)
 	const string comma = ","; //カンマ
-	const string csvNum[16] = {
-			"00", "01", "02", "03", "04", "05", "06", "07",
-			"08", "09", "10", "11", "12", "13", "14", "15"
+	const string csvNum[17] = {
+			"00", "01", "02", "03", "04", "05", "06", "07", "08",
+			"09", "10", "11", "12", "13", "14", "15", "16"
 		}; //csvファイル名を変更するための数字
 	string mapConfirmation(const int& cx, const int& cy, string& csv);
 

@@ -75,8 +75,8 @@ void DataSave::getCurrentStatus() {
 	statusData[PARALYSIS_VALUE] = player.status[PARALYSIS_VALUE]; //麻痺属性値
 	statusData[HYPNOSIS_RESISTANCE] = player.status[HYPNOSIS_RESISTANCE]; //催眠耐性
 	statusData[HYPNOSIS_VALUE] = player.status[HYPNOSIS_VALUE]; //催眠属性値
-	statusData[BLOODING_RESISTANCE] = player.status[BLOODING_RESISTANCE]; //催眠耐性
-	statusData[BLOODING_VALUE] = player.status[BLOODING_VALUE]; //催眠属性値
+	statusData[BLOODING_RESISTANCE] = player.status[BLOODING_RESISTANCE]; //出血耐性
+	statusData[BLOODING_VALUE] = player.status[BLOODING_VALUE]; //出血属性値
 	statusData[PRIORITY] = player.status[PRIORITY]; //優先度
 	statusData[CURRENT_MAP_X] = position.currentMapPosition(MAP_X); //現在のマップx座標
 	statusData[CURRENT_MAP_Y] = position.currentMapPosition(MAP_Y); //現在のマップy座標

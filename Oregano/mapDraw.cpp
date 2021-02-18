@@ -492,23 +492,23 @@ void MapDraw::collisionDetectionCenterDown2() {
 bool MapDraw::collisionDetection(const int& dirXY, const int& dirX, const int& dirY) {
 	switch (dirXY) {
 	case MAP_TOP_LEFT:
-		return mapTopLeft[currentCorner[dirY]][currentCorner[dirX]] >= MOVE_RANGE;
+		return mapTopLeft[currentCorner[dirY]][currentCorner[dirX]] > MOVE_RANGE;
 	case MAP_TOP_CENTRAL:
-		return mapTopCentral[currentCorner[dirY]][currentCorner[dirX]] >= MOVE_RANGE;
+		return mapTopCentral[currentCorner[dirY]][currentCorner[dirX]] > MOVE_RANGE;
 	case MAP_TOP_RIGHT:
-		return mapTopRight[currentCorner[dirY]][currentCorner[dirX]] >= MOVE_RANGE;
+		return mapTopRight[currentCorner[dirY]][currentCorner[dirX]] > MOVE_RANGE;
 	case MAP_LEFT_CENTRAL:
-		return mapLeftCentral[currentCorner[dirY]][currentCorner[dirX]] >= MOVE_RANGE;
+		return mapLeftCentral[currentCorner[dirY]][currentCorner[dirX]] > MOVE_RANGE;
 	case MAP_CENTRAL:
-		return mapCentral[currentCorner[dirY]][currentCorner[dirX]] >= MOVE_RANGE;
+		return mapCentral[currentCorner[dirY]][currentCorner[dirX]] > MOVE_RANGE;
 	case MAP_RIGHT_CENTRAL:
-		return mapRightCentral[currentCorner[dirY]][currentCorner[dirX]] >= MOVE_RANGE;
+		return mapRightCentral[currentCorner[dirY]][currentCorner[dirX]] > MOVE_RANGE;
 	case MAP_BOTTOM_LEFT:
-		return mapBottomLeft[currentCorner[dirY]][currentCorner[dirX]] >= MOVE_RANGE;
+		return mapBottomLeft[currentCorner[dirY]][currentCorner[dirX]] > MOVE_RANGE;
 	case MAP_BOTTOM_CENTRAL:
-		return mapBottomCentral[currentCorner[dirY]][currentCorner[dirX]] >= MOVE_RANGE;
+		return mapBottomCentral[currentCorner[dirY]][currentCorner[dirX]] > MOVE_RANGE;
 	case MAP_BOTTOM_RIGHT:
-		return mapBottomRight[currentCorner[dirY]][currentCorner[dirX]] >= MOVE_RANGE;
+		return mapBottomRight[currentCorner[dirY]][currentCorner[dirX]] > MOVE_RANGE;
 	default:
 		return false;
 	}
