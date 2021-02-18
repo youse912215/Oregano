@@ -44,7 +44,6 @@ private:
 	void drawing_current_maps(vector<vector<int>>& map, const int& dirX, const int& dirY);
 	void current_map_drawing(const int& mapInformation, const int& dirX, const int& dirY,
 	                         vector<vector<int>>& map);
-	void collisionDetection(const int& x, const int& y, const int& direction);
 	void collisionDetectionLeftUp();
 	void collisionDetectionRightUp();
 	void collisionDetectionLeftDown();
@@ -57,6 +56,8 @@ private:
 	void collisionDetectionCenterUp2();
 	void collisionDetectionCenterDown1();
 	void collisionDetectionCenterDown2();
+	
+	bool collisionDetection(const int& dirXY, const int& dirX, const int& dirY);
 
 public:
 	static int mapX; //マップ内の中央のx座標

@@ -14,9 +14,29 @@ void mapName(int* column, int* row, const int& map_info) {
 		*column = 0;
 		*row = 0;
 		break;
-	case HOUSE:
+	case BEACH:
 		*column = 1;
 		*row = 0;
+		break;
+	case BRIDGE_WIDTH:
+		*column = 2;
+		*row = 2;
+		break;
+	case BRIDGE_HEIGHT:
+		*column = 3;
+		*row = 2;
+		break;
+	case FLOWER:
+		*column = 0;
+		*row = 1;
+		break;
+	case MUSHROOM:
+		*column = 0;
+		*row = 2;
+		break;
+	case HOUSE:
+		*column = 1;
+		*row = 1;
 		break;
 	case SHALLOW:
 		*column = 2;
@@ -24,6 +44,10 @@ void mapName(int* column, int* row, const int& map_info) {
 		break;
 	case TIDE:
 		*column = 3;
+		*row = 0;
+		break;
+	case CRYSTAL:
+		*column = 4;
 		*row = 0;
 		break;
 	case WATER:
@@ -34,9 +58,17 @@ void mapName(int* column, int* row, const int& map_info) {
 		*column = 1;
 		*row = 3;
 		break;
+	case MINERAL:
+		*column = 2;
+		*row = 3;
+		break;
 	case WOODS:
 		*column = 1;
 		*row = 4;
+		break;
+	case TREASURE_BOX:
+		*column = 0;
+		*row = 3;
 		break;
 	default:
 		break;

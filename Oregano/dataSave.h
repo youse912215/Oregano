@@ -13,7 +13,8 @@ private:
 
 	vector<int> statusData; //ステータス格納
 	vector<int> vecOut; //格納先の配列
-	string fileName; //バイナリファイル
+	string saveDataFile; //セーブデータのバイナリファイル
+	string eventFieldData;
 
 	int getFileSize(string fName);
 	void getCurrentStatus();

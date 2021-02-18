@@ -5,8 +5,8 @@
 #include <cmath>
 #include "DxLib.h"
 
-DataSave::DataSave(EventBase& event, Player& player) : position(event), player(player), statusData(14) {
-	fileName = "resource\\Data\\saveData1.bin";
+DataSave::DataSave(EventBase& event, Player& player) : position(event), player(player), statusData(16) {
+	saveDataFile = "resource\\Data\\saveData1.bin";
 }
 
 DataSave::~DataSave() {
@@ -26,7 +26,7 @@ void DataSave::writeBinaryFile() {
 	int sizeOut = vecOut.size(); //ベクター配列のサイズ数を格納
 
 	/* バイナリファイル書き込み */
-	ofstream fileWrite(fileName, ios::binary);
+	ofstream fileWrite(saveDataFile, ios::binary);
 	if (!fileWrite) return;
 
 	fileWrite.write(reinterpret_cast<char*>(&vecOut[0]),
@@ -39,11 +39,11 @@ void DataSave::writeBinaryFile() {
 /// </summary>
 void DataSave::roadBinaryFile() {
 	/* バイナリファイル読み込み */
-	ifstream fileRead(fileName, ios::binary);
+	ifstream fileRead(saveDataFile, ios::binary);
 	if (!fileRead) return;
 
-	vector<char> binChar(getFileSize(fileName));
-	if (!fileRead.read(&binChar[0], getFileSize(fileName))) return;
+	vector<char> binChar(getFileSize(saveDataFile));
+	if (!fileRead.read(&binChar[0], getFileSize(saveDataFile))) return;
 	fileRead.close(); //閉じる
 
 	/* 16進数を10進数に変換し、出力配列に格納 */
@@ -75,6 +75,8 @@ void DataSave::getCurrentStatus() {
 	statusData[PARALYSIS_VALUE] = player.status[PARALYSIS_VALUE]; //麻痺属性値
 	statusData[HYPNOSIS_RESISTANCE] = player.status[HYPNOSIS_RESISTANCE]; //催眠耐性
 	statusData[HYPNOSIS_VALUE] = player.status[HYPNOSIS_VALUE]; //催眠属性値
+	statusData[BLOODING_RESISTANCE] = player.status[BLOODING_RESISTANCE]; //催眠耐性
+	statusData[BLOODING_VALUE] = player.status[BLOODING_VALUE]; //催眠属性値
 	statusData[PRIORITY] = player.status[PRIORITY]; //優先度
 	statusData[CURRENT_MAP_X] = position.currentMapPosition(MAP_X); //現在のマップx座標
 	statusData[CURRENT_MAP_Y] = position.currentMapPosition(MAP_Y); //現在のマップy座標

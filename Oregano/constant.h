@@ -17,6 +17,8 @@ const int MOVING_DISTANCE = 8; //移動速度
 const int INITIAL_X = 13600; //初期マップのx座標
 const int INITIAL_Y = 13200 + BLOCK_SIZE; //初期マップのy座標
 
+const int MOVE_RANGE = 10;
+
 #define CALL_ONCE(src)\
      do {\
           static bool initialized = false;\
@@ -68,6 +70,18 @@ enum CORNER_INFORMATION {
 	CENTER_DOWN2,
 };
 
+enum DIRECTION_MAP {
+	MAP_TOP_LEFT,
+	MAP_TOP_CENTRAL,
+	MAP_TOP_RIGHT,
+	MAP_LEFT_CENTRAL,
+	MAP_CENTRAL,
+	MAP_RIGHT_CENTRAL,
+	MAP_BOTTOM_LEFT,
+	MAP_BOTTOM_CENTRAL,
+	MAP_BOTTOM_RIGHT
+};
+
 enum DIRECTION_SIGN {
 	Left = -1,
 	Right = 1,
@@ -80,22 +94,34 @@ enum DIRECTION_SIGN {
 enum MAP_INFORMATION {
 	//床
 	FLOOR,
+	//浜
+	BEACH,
+	//草花
+	FLOWER = 8,
+	//キノコ類
+	MUSHROOM,
 	//家
-	HOUSE,
+	HOUSE = 29,
 	//浅瀬
-	SHALLOW,
+	SHALLOW = 110,
 	//潮
-	TIDE,
+	TIDE = 100,
 	//水辺
-	WATER = 21,
+	WATER = 120,
+	//クリスタル
+	CRYSTAL = 130,
 	//岩山
-	STONE = 31,
+	STONE = 44,
 	//木々
-	WOODS = 41,
+	WOODS = 40,
+	//鉱石系
+	MINERAL = 49,
 	//縦橋
-	BRIDGE_HEIGHT = 101,
+	BRIDGE_HEIGHT = 4,
 	//横橋
-	BRIDGE_WIDTH = 102
+	BRIDGE_WIDTH = 6,
+	//宝箱
+	TREASURE_BOX = 300,
 };
 
 //ボタン種類
@@ -136,6 +162,8 @@ enum STATUS {
 	//催眠耐性
 	HYPNOSIS_VALUE,
 	//催眠耐性
+	BLOODING_RESISTANCE,
+	BLOODING_VALUE,
 	PRIORITY,
 	//優先度
 	CURRENT_MAP_X,
