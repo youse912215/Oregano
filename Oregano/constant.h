@@ -17,7 +17,11 @@ const int MOVING_DISTANCE = 8; //移動速度
 const int INITIAL_X = 13600; //初期マップのx座標
 const int INITIAL_Y = 13200 + BLOCK_SIZE; //初期マップのy座標
 
-const int MOVE_RANGE = 160;
+const int MOVE_RANGE = 160; //移動範囲（この数字のマップチップまで移動可能）
+
+const int COIN_INFORMATION_QUANTITY = 4312;
+
+const int INFORMATION_SIZE = 8;
 
 #define CALL_ONCE(src)\
      do {\
@@ -149,8 +153,14 @@ enum POSITION_INFORMATION {
 enum STATUS {
 	//トレジャーランク
 	TREASURE_RANK,
-	//コイン
-	COIN,
+	//花萌葱のコイン
+	GREEN_COIN,
+	//金糸雀のコイン
+	YELLOW_COIN,
+	//葡萄染のコイン
+	PURPLE_COIN,
+	//白百合のコイン
+	WHITE_COIN,
 	//生命力
 	LIFE,
 	//攻撃力
@@ -169,11 +179,23 @@ enum STATUS {
 	HYPNOSIS_RESISTANCE,
 	//催眠耐性
 	HYPNOSIS_VALUE,
-	//優先度
+	//出血耐性
 	BLOODING_RESISTANCE,
+	//出血属性値
 	BLOODING_VALUE,
+	//優先度
 	PRIORITY,
 	//現在のマップ座標
 	CURRENT_MAP_X,
 	CURRENT_MAP_Y,
+};
+
+enum ITEM_INFORMATION {
+	MAP_X_,
+	MAP_Y_,
+	CURRENT_X_,
+	CURRENT_Y_,
+	DIRECTION_,
+	EVENT_NO_,
+	ITEM_TYPE_,
 };

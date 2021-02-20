@@ -15,8 +15,8 @@ void loopProcess() {
 	DataSource source; //素材クラス
 	Player player(source.playerGraph()); //プレイヤークラス
 	EventBase event; //イベントクラス
-	DataSave data(player); //セーブデータクラス
 	EventField field(input, event, player); //フィールドクラス
+	DataSave save(player, field); //セーブデータクラス
 
 	while (true) {
 		ClearDrawScreen(); //画面クリア
@@ -24,7 +24,7 @@ void loopProcess() {
 		MapDraw map(source.mapChipGraph()); //マップクラス
 		MapCollision collision(map); //コリジョンクラス
 
-		CALL_ONCE(data.roadSaveData());
+		CALL_ONCE(save.roadSaveData());
 
 		map.update(); //マップ更新処理
 
@@ -34,10 +34,10 @@ void loopProcess() {
 
 		field.update(); //フィールド更新処理
 
-		data.update(); //データ更新処理
+		save.update(); //データ更新処理
 
 		if (EventBase::gameScene == END_SCENE) {
-			CALL_ONCE(data.writeSaveData()); //ファイル書き込み処理（一度のみ）
+			CALL_ONCE(save.writeSaveData()); //ファイル書き込み処理（一度のみ）
 			break; //終了処理
 		}
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "player.h"
+#include "eventField.h"
 #include <vector>
 #include <string>
 
@@ -8,6 +9,7 @@ using namespace std;
 class DataSave {
 private:
 	Player& player;
+	EventField& field;
 
 	vector<int> currentStatus; //現在までのステータス格納用
 	vector<int> lastTimeStatus; //前回までのステータス格納用
@@ -29,7 +31,7 @@ private:
 	void getLastTimeCoin();
 
 public:
-	DataSave(Player& player);
+	DataSave(Player& player, EventField& field);
 	~DataSave();
 
 

@@ -2,7 +2,7 @@
 #include "constant.h"
 
 // ウィンドウのタイトルに表示する文字列
-const char TITLE[] = "Oregano";
+const char TITLE[] = "Oregano -Planted Seeds-";
 
 void windowSettingOutLoop() {
 	// ウィンドウモードに設定
