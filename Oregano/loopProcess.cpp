@@ -36,12 +36,12 @@ void loopProcess() {
 
 		save.update(); //データ更新処理
 
+		player.update(); //プレイヤー更新処理
+
 		if (EventBase::gameScene == END_SCENE) {
 			CALL_ONCE(save.writeSaveData()); //ファイル書き込み処理（一度のみ）
 			break; //終了処理
 		}
-
-		player.draw(); //プレイヤー描画処理
 
 		windowSettingInLoop(); //ループ内ウィンドウ設定
 		if (ProcessMessage() == -1) break; //Windowsシステムからくる情報を処理

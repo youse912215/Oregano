@@ -8,9 +8,11 @@
 #include "DxLib.h"
 
 DataSave::DataSave(Player& player, EventField& field)
-	: player(player), field(field), currentStatus(STATUS_SIZE + 2), currentCoin(COIN_INFORMATION_QUANTITY) {
+	: player(player), field(field), currentStatus(STATUS_INFORMATION_SIZE), currentCoin(COIN_INFORMATION_SIZE),
+	  currentItem(ITEM_INFORMATION_SIZE) {
 	statusData = "resource\\Data\\statusData.bin";
 	coinData = "resource\\Data\\coinData.bin";
+	itemData = "resource\\Data\\itemData.bin";
 }
 
 DataSave::~DataSave() {
@@ -84,25 +86,39 @@ void DataSave::getLastTimeStatus() {
 	MapDraw::mapY = lastTimeStatus[CURRENT_MAP_Y]; //前回までのマップy座標を代入
 }
 
-void DataSave::getCurrentCoin() {
-	for (unsigned int i = 0; i < currentCoin.size(); ++i)
-		currentCoin[i] = field.coin[i]; //現在までのコイン状況を取得
+/// <summary>
+/// 現在までのフィールドイベント状況を取得
+/// </summary>
+/// <param name="currentEvent">現在までのイベント</param>
+/// <param name="fieldEvent">フィールドイベント</param>
+void DataSave::getCurrentEvent(vector<int>& currentEvent, vector<int>& fieldEvent) {
+	for (unsigned int i = 0; i < currentEvent.size(); ++i)
+		currentEvent[i] = fieldEvent[i];
 }
 
-void DataSave::getLastTimeCoin() {
-	for (unsigned int i = 0; i < currentCoin.size(); ++i)
-		field.coin[i] = lastTimeCoin[i]; //前回までのコイン状況を取得
+/// <summary>
+/// 前回までのフィールドイベント状況を取得
+/// </summary>
+/// <param name="lastTimeEvent">前回までのイベント</param>
+/// <param name="fieldEvent">フィールドイベント</param>
+void DataSave::getLastTimeEvent(vector<int>& lastTimeEvent, vector<int>& fieldEvent) {
+	for (unsigned int i = 0; i < lastTimeEvent.size(); ++i)
+		fieldEvent[i] = lastTimeEvent[i];
 }
 
 /// <summary>
 /// セーブデータの書き込み
 /// </summary>
 void DataSave::writeSaveData() {
+	/* ステータス */
 	getCurrentStatus();
 	writeBinaryFile(currentStatus, lastTimeStatus, statusData);
-
-	getCurrentCoin();
+	/* フィールドコイン */
+	getCurrentEvent(currentCoin, field.coin);
 	writeBinaryFile(currentCoin, lastTimeCoin, coinData);
+	/* フィールドアイテム */
+	getCurrentEvent(currentItem, field.item);
+	writeBinaryFile(currentItem, lastTimeItem, itemData);
 }
 
 /// <summary>
@@ -112,10 +128,12 @@ void DataSave::roadSaveData() {
 	/* ステータス */
 	roadBinaryFile(currentStatus, lastTimeStatus, statusData);
 	getLastTimeStatus();
-
 	/* フィールドコイン */
 	roadBinaryFile(currentCoin, lastTimeCoin, coinData);
-	getLastTimeCoin();
+	getLastTimeEvent(lastTimeCoin, field.coin);
+	/* フィールドアイテム */
+	roadBinaryFile(currentItem, lastTimeItem, itemData);
+	getLastTimeEvent(lastTimeItem, field.item);
 }
 
 /// <summary>
@@ -130,12 +148,28 @@ void DataSave::update() {
 	                 player.status[LIFE], player.status[ATTACK],
 	                 player.status[DEFENSE], player.status[PRIORITY], false);
 
-	DrawFormatString(0, 530, GetColor(0, 0, 0),
-	                 "mx:%d, my:%d, cx:%d, cy:%d, dir:%d, type:%d, rank:%d, TofF:%d",
-	                 field.coin[0], field.coin[1], field.coin[2], field.coin[3],
-	                 field.coin[4], field.coin[5], field.coin[6], field.coin[7], false);
+	DrawFormatString(0, 530, GetColor(0, 0, 0), "水:%d, パン:%d, 牛肉:%d, 魚:%d、豆:%d, 鶏肉:%d, ボトル小:%d, ボトル大:%d",
+	                 player.possessionItem[0], player.possessionItem[1], player.possessionItem[2],
+	                 player.possessionItem[3], player.possessionItem[4], player.possessionItem[5],
+	                 player.possessionItem[6], player.possessionItem[7], false);
 	DrawFormatString(0, 545, GetColor(0, 0, 0),
-	                 "mx:%d, my:%d, cx:%d, cy:%d, dir:%d, type:%d, rank:%d, TofF:%d",
-	                 field.coin[8], field.coin[9], field.coin[10], field.coin[11],
-	                 field.coin[12], field.coin[13], field.coin[14], field.coin[15], false);
+	                 "不思議なボトル:%d, 毒草:%d, 解毒草:%d, 健康草:%d、チューリップ:%d, アロエ:%d, マリーゴールド:%d, 麻酔花:%d",
+	                 player.possessionItem[8], player.possessionItem[9], player.possessionItem[10],
+	                 player.possessionItem[11], player.possessionItem[12], player.possessionItem[13],
+	                 player.possessionItem[14], player.possessionItem[15], false);
+	DrawFormatString(0, 560, GetColor(0, 0, 0),
+	                 "薔薇:%d, 寝袋:%d, スコップ:%d, ピッケル:%d、ナイフ:%d, 長靴:%d, アロマキノコ:%d, 止血剤:%d",
+	                 player.possessionItem[16], player.possessionItem[17], player.possessionItem[18],
+	                 player.possessionItem[19], player.possessionItem[20], player.possessionItem[21],
+	                 player.possessionItem[22], player.possessionItem[23], false);
+	DrawFormatString(0, 575, GetColor(0, 0, 0),
+	                 "健康食:%d, 猛毒薬:%d, 麻酔薬:%d, 暗視草:%d、ルピナス:%d, タンポポ:%d, マッスルダケ:%d, 豊樹草:%d",
+	                 player.possessionItem[24], player.possessionItem[25], player.possessionItem[26],
+	                 player.possessionItem[27], player.possessionItem[28], player.possessionItem[29],
+	                 player.possessionItem[30], player.possessionItem[31], false);
+	DrawFormatString(0, 590, GetColor(0, 0, 0),
+	                 "赤実:%d, バーナー:%d, 東国飯:%d, シーパワー:%d、ブラッドエキス:%d, ブラッドポーション:%d、快眠ダケ:%d, スリープジェル:%d",
+	                 player.possessionItem[32], player.possessionItem[33], player.possessionItem[34],
+	                 player.possessionItem[35], player.possessionItem[36], player.possessionItem[37],
+	                 player.possessionItem[38], player.possessionItem[39], false);
 }

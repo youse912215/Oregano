@@ -12,8 +12,14 @@ private:
 	EventBase& event; //イベントクラスから
 	Player& player; //プレイヤークラスから
 
+	vector<bool> coinFlag; //コインフラグ
+	vector<bool> itemFlag; //アイテムフラグ
+	bool actionFlagX; //アクションフラグ
 
-	void getFieldItem(); //フィールド上でのアイテム入手
+	const vector<int> coinQuantity; //コイン量
+
+	void getFieldItem(vector<int>& eventName, vector<bool>& eventFlag);
+	void fieldAction();
 
 	int directionSignX(const int& direction); //
 	int directionSignY(const int& direction);
@@ -21,13 +27,9 @@ private:
 	int coinTypeDecision(const int& coinType);
 	int directionReverse(const int& direction);
 
-	vector<bool> coinFlag; //コインフラグ
-	bool eventFlag; //イベントフラグ
-
-	const vector<int> coinQuantity;
-
 public:
 	vector<int> coin; //コイン情報格納用
+	vector<int> item; //アイテム情報格納用
 
 	EventField(Input& input, EventBase& event, Player& player);
 	~EventField();

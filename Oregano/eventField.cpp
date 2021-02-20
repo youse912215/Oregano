@@ -5,41 +5,51 @@
 
 EventField::EventField(Input& input, EventBase& event, Player& player)
 	: input(input), event(event), player(player), coinFlag(250),
-	  coinQuantity{5, 10, 50, 100}, coin(COIN_INFORMATION_QUANTITY) {
-	eventFlag = false;
+	  coinQuantity{5, 10, 50, 100}, coin(COIN_INFORMATION_SIZE), item(ITEM_INFORMATION_SIZE) {
+	actionFlagX = false;
 }
 
 EventField::~EventField() {
 }
 
 /// <summary>
-/// Xボタンを押したとき、フィールド上の指定の場所でアイテムを入手可能にする
+/// Xボタンを押したとき、フィールド上の指定の場所でアイテムやコインなどを入手可能にする
 /// </summary>
-void EventField::getFieldItem() {
-	if (input.X) {
-		for (unsigned int i = 0; i < coin.size() / INFORMATION_SIZE; ++i) {
-			if (!( //イベント発生場所の方向を向いているとき
-				input.moveDirection == directionReverse(coin[(i * INFORMATION_SIZE) + DIRECTION_])
-				//コインフラグがfalseのとき
-				&& !coinFlag[coin[(i * INFORMATION_SIZE) + EVENT_NO_]]
-				//イベント発生場所の周辺にいるとき
-				&& event.getEventCoordinate(
-					coin[(i * INFORMATION_SIZE) + MAP_X_],
-					coin[(i * INFORMATION_SIZE) + MAP_Y_],
-					coin[(i * INFORMATION_SIZE) + CURRENT_X_]
-					+ directionSignX(coin[(i * INFORMATION_SIZE) + DIRECTION_]),
-					coin[(i * INFORMATION_SIZE) + CURRENT_Y_]
-					+ directionSignY(coin[(i * INFORMATION_SIZE) + DIRECTION_]))))
-				continue; //条件以外のとき、処理をスキップする
-			{
-				player.status[coinTypeDecision(coin[(i * INFORMATION_SIZE) + ITEM_TYPE_])]
-					+= coinQuantityDecision(coin[(i * INFORMATION_SIZE) + ITEM_TYPE_]); //コインの入手（種類別に追加）
-				coinFlag[coin[(i * INFORMATION_SIZE) + EVENT_NO_]] = true; //入手した場所のコインイベントを済み状態(true)にする
-			}
+void EventField::getFieldItem(vector<int>& eventName, vector<bool>& eventFlag) {
+	for (unsigned int i = 0; i < eventName.size() / EVENT_INFORMATION_SIZE; ++i) {
+		if (!( //イベント発生場所の方向を向いているとき
+			input.moveDirection == directionReverse(eventName[(i * EVENT_INFORMATION_SIZE) + DIRECTION_])
+			//イベントフラグがfalseのとき
+			&& !eventFlag[eventName[(i * EVENT_INFORMATION_SIZE) + EVENT_NO_]]
+			//イベント発生場所の周辺にいるとき
+			&& event.getEventCoordinate(
+				eventName[(i * EVENT_INFORMATION_SIZE) + MAP_X_],
+				eventName[(i * EVENT_INFORMATION_SIZE) + MAP_Y_],
+				eventName[(i * EVENT_INFORMATION_SIZE) + CURRENT_X_]
+				+ directionSignX(eventName[(i * EVENT_INFORMATION_SIZE) + DIRECTION_]),
+				eventName[(i * EVENT_INFORMATION_SIZE) + CURRENT_Y_]
+				+ directionSignY(eventName[(i * EVENT_INFORMATION_SIZE) + DIRECTION_]))))
+			continue; //条件以外のとき、処理をスキップする
+		{
+			eventFlag[eventName[(i * EVENT_INFORMATION_SIZE) + EVENT_NO_]] = true; //入手した場所のイベントを済み状態(true)にする
+
+			if (eventName != coin) continue; //条件以外のとき、処理をスキップする
+			player.status[coinTypeDecision(eventName[(i * EVENT_INFORMATION_SIZE) + ITEM_TYPE_])]
+				+= coinQuantityDecision(eventName[(i * EVENT_INFORMATION_SIZE) + ITEM_TYPE_]); //コインの入手（種類別に追加）
 		}
-		eventFlag = true; //ボタンを押しているときはイベントフラグをtrue
 	}
-	else eventFlag = false; //ボタンを押していないときはイベントフラグをfalse
+}
+
+/// <summary>
+/// フィールドアクション
+/// </summary>
+void EventField::fieldAction() {
+	if (input.X) {
+		getFieldItem(coin, coinFlag); //コインを入手
+
+		actionFlagX = true; //ボタンを押しているときはアクションフラグをtrue
+	}
+	else actionFlagX = false; //ボタンを押していないときはアクションフラグをfalse
 }
 
 /// <summary>
@@ -75,10 +85,10 @@ int EventField::coinQuantityDecision(const int& coinType) {
 /// </summary>
 /// <param name="coinTypeDecision">コインの種類</param>
 int EventField::coinTypeDecision(const int& coinType) {
-	if (coinType >= 0 && coinType <= 3) return GREEN_COIN;
-	if (coinType >= 4 && coinType <= 7) return YELLOW_COIN;
-	if (coinType >= 8 && coinType <= 11) return PURPLE_COIN;
-	if (coinType >= 12 && coinType <= 15) return WHITE_COIN;
+	if (coinType >= 0 && coinType <= 3) return GREEN_COIN; //花萌葱のコイン
+	if (coinType >= 4 && coinType <= 7) return YELLOW_COIN; //金糸雀のコイン
+	if (coinType >= 8 && coinType <= 11) return PURPLE_COIN; //葡萄染のコイン
+	if (coinType >= 12 && coinType <= 15) return WHITE_COIN; //白百合のコイン
 	return 0;
 }
 
@@ -98,9 +108,9 @@ int EventField::directionReverse(const int& direction) {
 /// 更新処理
 /// </summary>
 void EventField::update() {
-	getFieldItem();
+	fieldAction();
 	DrawFormatString(300, 0, GetColor(130, 130, 255), "イベント:%d, 向き:%d, T%d",
-	                 this->eventFlag, input.moveDirection,
+	                 this->actionFlagX, input.moveDirection,
 	                 event.getEventCoordinate(8, 7, 12, 24), false);
 	DrawFormatString(100, 0, GetColor(255, 0, 0), "cx:%d, cy:%d",
 	                 event.centralPlayerPosition(MAP_X), event.centralPlayerPosition(MAP_Y), false);
