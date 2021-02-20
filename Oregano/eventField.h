@@ -17,12 +17,14 @@ private:
 
 	int directionSignX(const int& direction); //
 	int directionSignY(const int& direction);
-	int coinQuantity(const int& coinType);
-	int coinType(const int& coinType);
+	int coinQuantityDecision(const int& coinType);
+	int coinTypeDecision(const int& coinType);
 	int directionReverse(const int& direction);
 
 	vector<bool> coinFlag; //コインフラグ
 	bool eventFlag; //イベントフラグ
+
+	const vector<int> coinQuantity;
 
 public:
 	vector<int> coin; //コイン情報格納用

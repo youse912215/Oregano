@@ -4,12 +4,7 @@
 
 Player::Player(int graph) :
 	graph(graph),
-	status{
-		1, 0, 0, 0, 0,
-		200, 25, 20, 2, 0,
-		2, 0, 2, 0, 2,
-		0, 4
-	} {
+	status(STATUS_SIZE) {
 	pos.x = WIN_WIDTH / 2 - BLOCK_SIZE / 2;
 	pos.y = WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2;
 }

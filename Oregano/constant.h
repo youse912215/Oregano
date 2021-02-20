@@ -17,11 +17,15 @@ const int MOVING_DISTANCE = 8; //移動速度
 const int INITIAL_X = 13600; //初期マップのx座標
 const int INITIAL_Y = 13200 + BLOCK_SIZE; //初期マップのy座標
 
+const int STATUS_SIZE = 17; //プレイヤーステータス(距離以外)
+
 const int MOVE_RANGE = 160; //移動範囲（この数字のマップチップまで移動可能）
 
-const int COIN_INFORMATION_QUANTITY = 4312;
+const int COIN_INFORMATION_QUANTITY = 4312; //コイン情報の量
 
-const int INFORMATION_SIZE = 8;
+const int INFORMATION_SIZE = 8; //1イベントあたりの情報のサイズ
+
+const int ALL_COIN_TYPE = 4; //コインの種類
 
 #define CALL_ONCE(src)\
      do {\

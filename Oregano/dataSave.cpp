@@ -8,7 +8,7 @@
 #include "DxLib.h"
 
 DataSave::DataSave(Player& player, EventField& field)
-	: player(player), field(field), currentStatus(19), currentCoin(COIN_INFORMATION_QUANTITY) {
+	: player(player), field(field), currentStatus(STATUS_SIZE + 2), currentCoin(COIN_INFORMATION_QUANTITY) {
 	statusData = "resource\\Data\\statusData.bin";
 	coinData = "resource\\Data\\coinData.bin";
 }
