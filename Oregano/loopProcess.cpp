@@ -24,6 +24,8 @@ void loopProcess() {
 		MapDraw map(source.mapChipGraph()); //マップクラス
 		MapCollision collision(map); //コリジョンクラス
 
+		CALL_ONCE(data.roadSaveData());
+
 		map.update(); //マップ更新処理
 
 		input.update(); //入力更新処理
@@ -35,8 +37,8 @@ void loopProcess() {
 		data.update(); //データ更新処理
 
 		if (EventBase::gameScene == END_SCENE) {
-			CALL_ONCE(data.writeBinaryFile()); //ファイル書き込みを一度だけ行う
-			break; //修了処理
+			CALL_ONCE(data.writeSaveData()); //ファイル書き込み処理（一度のみ）
+			break; //終了処理
 		}
 
 		player.draw(); //プレイヤー描画処理

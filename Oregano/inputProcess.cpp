@@ -8,26 +8,12 @@ char Input::oldkeys[256] = {0};
 
 
 Input::Input() : buttonFlag(10) {
-	pad = GetJoypadInputState(DX_INPUT_PAD1); //入力状態取得
-	padLeft = pad & PAD_INPUT_LEFT; //左
-	padRight = pad & PAD_INPUT_RIGHT; //右
-	padUp = pad & PAD_INPUT_UP; //上
-	padDown = pad & PAD_INPUT_DOWN; //下
-	pad1 = pad & PAD_INPUT_1; //1(A)
-	pad2 = pad & PAD_INPUT_2; //2(B)
-	pad3 = pad & PAD_INPUT_3; //3(X)
-	pad4 = pad & PAD_INPUT_4; //4(Y)
-	pad5 = pad & PAD_INPUT_5; //5(LB)
-	pad6 = pad & PAD_INPUT_6; //6(RB)
-	pad7 = pad & PAD_INPUT_7; //7(VIEW)
-	pad8 = pad & PAD_INPUT_8; //8(MENU)
-	pad9 = pad & PAD_INPUT_9; //9(STICK_L)
-	pad10 = pad & PAD_INPUT_10; //10(STICK_R)
 	A = false;
 	B = false;
 	X = false;
 	Y = false;
 	moveDirection = UP;
+	mode = false;
 }
 
 void Input::inputInformation() {
@@ -39,31 +25,54 @@ void Input::inputInformation() {
 	GetHitKeyStateAll(keys);
 }
 
+void Input::padInformation() {
+	pad = GetJoypadInputState(DX_INPUT_PAD1); //入力状態取得
+	padLeft = mode && (pad & PAD_INPUT_LEFT); //左
+	padRight = mode && (pad & PAD_INPUT_RIGHT); //右
+	padUp = mode && (pad & PAD_INPUT_UP); //上
+	padDown = mode && (pad & PAD_INPUT_DOWN); //下
+	pad1 = mode && (pad & PAD_INPUT_1); //1(A)
+	pad2 = mode && (pad & PAD_INPUT_2); //2(B)
+	pad3 = mode && (pad & PAD_INPUT_3); //3(X)
+	pad4 = mode && (pad & PAD_INPUT_4); //4(Y)
+	pad5 = mode && (pad & PAD_INPUT_5); //5(LB)
+	pad6 = mode && (pad & PAD_INPUT_6); //6(RB)
+	pad7 = mode && (pad & PAD_INPUT_7); //7(VIEW)
+	pad8 = mode && (pad & PAD_INPUT_8); //8(MENU)
+	pad9 = mode && (pad & PAD_INPUT_9); //9(STICK_L)
+	pad10 = mode && (pad & PAD_INPUT_10); //9(STICK_L)
+}
+
+void Input::inputModeChange() {
+	if (keys[KEY_INPUT_M] && !oldkeys[KEY_INPUT_M]) mode = !mode ? true : false;
+}
+
 /// <summary>
 /// スティック（十字キー）移動処理
 /// </summary>
 void Input::moveProcess(const bool& collisionLeft, const bool& collisionRight,
                         const bool& collisionUp, const bool& collisionDown) {
+
 	//左移動
-	if (padLeft || keys[KEY_INPUT_LEFT]) {
+	if (padLeft || !mode && keys[KEY_INPUT_LEFT]) {
 		MapDraw::mapX -= MOVING_DISTANCE;
 		if (collisionLeft) MapDraw::mapX += MOVING_DISTANCE;
 		moveDirection = LEFT;
 	}
 	//右移動
-	if (padRight || keys[KEY_INPUT_RIGHT]) {
+	if (mode && padRight || !mode && keys[KEY_INPUT_RIGHT]) {
 		MapDraw::mapX += MOVING_DISTANCE;
 		if (collisionRight) MapDraw::mapX -= MOVING_DISTANCE;
 		moveDirection = RIGHT;
 	}
 	//上移動
-	if (padUp || keys[KEY_INPUT_UP]) {
+	if (mode && padUp || !mode && keys[KEY_INPUT_UP]) {
 		MapDraw::mapY -= MOVING_DISTANCE;
 		if (collisionUp) MapDraw::mapY += MOVING_DISTANCE;
 		moveDirection = UP;
 	}
 	//下移動
-	if (padDown || keys[KEY_INPUT_DOWN]) {
+	if (mode && padDown || !mode && keys[KEY_INPUT_DOWN]) {
 		MapDraw::mapY += MOVING_DISTANCE;
 		if (collisionDown) MapDraw::mapY -= MOVING_DISTANCE;
 		moveDirection = DOWN;
@@ -84,24 +93,20 @@ void Input::moveProcess(const bool& collisionLeft, const bool& collisionRight,
 /// </summary>
 void Input::eventProcess() {
 	//キャンセル入力
-	if (pad1 || keys[KEY_INPUT_1]) {
-		A = !A ? true : false;
-	}
+	if (pad1 || !mode && keys[KEY_INPUT_1]) A = true;
+	else A = false;
 
 	//入力
-	if (pad2 || keys[KEY_INPUT_2]) {
-		B = !B ? true : false;
-	}
+	if (pad2 || !mode && keys[KEY_INPUT_2]) B = true;
+	else B = false;
 
 	//決定入力
-	if (pad3 || keys[KEY_INPUT_3]) {
-		X = !X ? true : false;
-	}
+	if (pad3 || !mode && keys[KEY_INPUT_3]) X = true;
+	else X = false;
 
 	//入力
-	if (pad4 || keys[KEY_INPUT_4]) {
-		Y = !Y ? true : false;
-	}
+	if (pad4 || !mode && keys[KEY_INPUT_4]) Y = true;
+	else Y = false;
 
 	DrawFormatString(150, 150, GetColor(0, 255, 120), "%d   %d",
 	                 X, B, false);
@@ -125,6 +130,8 @@ void Input::endProcess() {
 /// </summary>
 void Input::update() {
 	inputInformation();
+	padInformation();
+	inputModeChange();
 	eventProcess();
 	endProcess();
 }

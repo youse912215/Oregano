@@ -15,6 +15,8 @@ private:
 
 public:
 	MapCollision(MapDraw& map);
+	~MapCollision();
+
 	void update();
 	bool leftCollisionFlag();
 	bool rightCollisionFlag();

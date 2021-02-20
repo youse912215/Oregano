@@ -1,4 +1,5 @@
 #pragma once
+#include "DxLib.h"
 #include <vector>
 
 using namespace std;
@@ -24,6 +25,8 @@ private:
 	bool pad9;
 	bool pad10;
 
+	bool mode;
+
 public:
 	static int add;
 
@@ -37,6 +40,8 @@ public:
 
 	Input();
 	void inputInformation();
+	void padInformation();
+	void inputModeChange();
 	void moveProcess(const bool& collisionLeft, const bool& collisionRight,
 	                 const bool& collisionUp, const bool& collisionDown);
 	void eventProcess();

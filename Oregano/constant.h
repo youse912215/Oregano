@@ -17,7 +17,7 @@ const int MOVING_DISTANCE = 8; //移動速度
 const int INITIAL_X = 13600; //初期マップのx座標
 const int INITIAL_Y = 13200 + BLOCK_SIZE; //初期マップのy座標
 
-const int MOVE_RANGE = 10;
+const int MOVE_RANGE = 160;
 
 #define CALL_ONCE(src)\
      do {\
@@ -38,21 +38,24 @@ enum GAME_SCENE {
 
 //方向の情報
 enum DIRECTION_INFORMATION {
+	//左
 	LEFT,
-	//左　
-	RIGHT,
 	//右
-	UP,
+	RIGHT,
 	//上
-	DOWN,
+	UP,
 	//下
+	DOWN,
+	//中央左
 	CENTER_X1,
+	//中央右
 	CENTER_X2,
+	//中央上
 	CENTER_Y1,
+	//中央下
 	CENTER_Y2,
-	//中央
+	//交差
 	CROSS,
-	//特殊
 };
 
 enum CORNER_INFORMATION {
@@ -144,30 +147,31 @@ enum POSITION_INFORMATION {
 };
 
 enum STATUS {
-	LIFE,
+	//トレジャーランク
+	TREASURE_RANK,
 	//生命力
-	ATTACK,
+	LIFE,
 	//攻撃力
-	DEFENSE,
+	ATTACK,
 	//守備力
-	DEADLY_POISON_RESISTANCE,
+	DEFENSE,
 	//猛毒耐性
-	DEADLY_POISON_VALUE,
+	DEADLY_POISON_RESISTANCE,
 	//猛毒属性値
-	PARALYSIS_RESISTANCE,
+	DEADLY_POISON_VALUE,
 	//麻痺耐性
-	PARALYSIS_VALUE,
+	PARALYSIS_RESISTANCE,
 	//麻痺属性値
+	PARALYSIS_VALUE,
+	//催眠耐性
 	HYPNOSIS_RESISTANCE,
 	//催眠耐性
 	HYPNOSIS_VALUE,
-	//催眠耐性
+	//優先度
 	BLOODING_RESISTANCE,
 	BLOODING_VALUE,
 	PRIORITY,
-	//優先度
+	//現在のマップ座標
 	CURRENT_MAP_X,
 	CURRENT_MAP_Y,
-	CENTRAL_POSITION_X,
-	CENTRAL_POSITION_Y
 };

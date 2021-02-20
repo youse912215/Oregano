@@ -6,6 +6,9 @@
 MapCollision::MapCollision(MapDraw& map) : map(map) {
 }
 
+MapCollision::~MapCollision() {
+}
+
 void MapCollision::update() {
 
 }
