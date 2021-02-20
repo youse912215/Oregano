@@ -15,8 +15,8 @@ void loopProcess() {
 	DataSource source; //素材クラス
 	Player player(source.playerGraph()); //プレイヤークラス
 	EventBase event; //イベントクラス
-	EventField field(input, event); //フィールドクラス
-	DataSave data(event, player); //セーブデータクラス
+	DataSave data(player); //セーブデータクラス
+	EventField field(input, event, player); //フィールドクラス
 
 	while (true) {
 		ClearDrawScreen(); //画面クリア

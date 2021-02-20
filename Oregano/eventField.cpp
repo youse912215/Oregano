@@ -3,9 +3,13 @@
 #include "mapDraw.h"
 #include "DxLib.h"
 
-EventField::EventField(Input& input, EventBase& event) : input(input), event(event) {
+EventField::EventField(Input& input, EventBase& event, Player& player)
+	: input(input), event(event), player(player) {
 	eventFlag = false;
 	coin = 0;
+}
+
+EventField::~EventField() {
 }
 
 void EventField::getFieldItem() {

@@ -1,5 +1,4 @@
 #pragma once
-#include "eventBase.h"
 #include "player.h"
 #include <vector>
 #include <string>
@@ -8,23 +7,29 @@ using namespace std;
 
 class DataSave {
 private:
-	EventBase& position;
 	Player& player;
 
-	vector<int> statusData; //ステータス格納
-	vector<int> lastTimeData; //格納先の配列
-	string saveDataFile; //セーブデータのバイナリファイル
-	string eventFieldData;
+	vector<int> currentStatus; //現在までのステータス格納用
+	vector<int> lastTimeStatus; //前回までのステータス格納用
+	vector<int> currentCoin; //現在までのコイン格納用
+	vector<int> lastTimeCoin; //前回までのコイン格納用
 
-	int getFileSize(string fName);
+	string statusData; //セーブデータのバイナリファイル
+	string coinData; //コインデータのバイナリファイル
 
-	void writeBinaryFile();
-	void roadBinaryFile();
+	int getFileSize(string fileName);
+
+	void writeBinaryFile(vector<int>& currentData, vector<int>& lastTimeData, string fileName);
+	void roadBinaryFile(vector<int>& currentData, vector<int>& lastTimeData, string fileName);
+
 	void getCurrentStatus();
 	void getLastTimeStatus();
 
+	void getCurrentCoin();
+	void getLastTimeCoin();
+
 public:
-	DataSave(EventBase& event, Player& player);
+	DataSave(Player& player);
 	~DataSave();
 
 

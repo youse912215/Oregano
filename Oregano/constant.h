@@ -149,6 +149,8 @@ enum POSITION_INFORMATION {
 enum STATUS {
 	//トレジャーランク
 	TREASURE_RANK,
+	//コイン
+	COIN,
 	//生命力
 	LIFE,
 	//攻撃力
