@@ -15,12 +15,16 @@ private:
 	vector<int> lastTimeStatus; //前回までのステータス格納用
 	string statusData; //セーブデータのバイナリファイル
 
+	vector<int> currentPossession; //現在までの所持品格納用
+	vector<int> lastTimePossession; //前回までの所持品格納用
+	string possessionData; //所持品データのバイナリファイル
+
 	vector<int> currentCoin; //現在までのコイン格納用
 	vector<int> lastTimeCoin; //前回までのコイン格納用
 	string coinData; //コインデータのバイナリファイル
 
 	vector<int> currentItem; //現在までのアイテム格納用
-	vector<int> lastTimeItem; //前回までのコイン格納用
+	vector<int> lastTimeItem; //前回までのアイテム格納用
 	string itemData; //アイテムデータのバイナリファイル
 
 	int getFileSize(string fileName);
@@ -31,8 +35,8 @@ private:
 	void getCurrentStatus();
 	void getLastTimeStatus();
 
-	void getCurrentEvent(vector<int>& currentEvent, vector<int>& fieldEvent);
-	void getLastTimeEvent(vector<int>& lastTimeEvent, vector<int>& fieldEvent);
+	void getCurrentEvent(vector<int>& currentEvent, vector<int>& saveLocation);
+	void getLastTimeEvent(vector<int>& lastTimeEvent, vector<int>& saveLocation);
 
 public:
 	DataSave(Player& player, EventField& field);

@@ -18,7 +18,8 @@ private:
 
 	const vector<int> coinQuantity; //ƒRƒCƒ“—Ê
 
-	void getFieldItem(vector<int>& eventName, vector<bool>& eventFlag);
+	void getFieldObject(vector<int>& objectName, vector<bool>& eventFlag);
+	void storingObject(int* saveLocation, const int& objectVolume);
 	void fieldAction();
 
 	int directionSignX(const int& direction); //

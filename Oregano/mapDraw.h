@@ -41,9 +41,9 @@ private:
 		BOTTOM_BOUNDARY = 17
 	};
 
-	void drawing_current_maps(vector<vector<int>>& map, const int& dirX, const int& dirY);
-	void current_map_drawing(const int& mapInformation, const int& dirX, const int& dirY,
-	                         vector<vector<int>>& map);
+	void drawCurrentMaps(vector<vector<int>>& map, const int& dirX, const int& dirY);
+	void drawMapChips(const int& mapInformation, const int& dirX, const int& dirY,
+	                  vector<vector<int>>& map);
 	void collisionDetectionLeftUp();
 	void collisionDetectionRightUp();
 	void collisionDetectionLeftDown();
@@ -56,7 +56,7 @@ private:
 	void collisionDetectionCenterUp2();
 	void collisionDetectionCenterDown1();
 	void collisionDetectionCenterDown2();
-	
+
 	bool collisionDetection(const int& dirXY, const int& dirX, const int& dirY);
 
 public:

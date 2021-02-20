@@ -20,12 +20,18 @@ const int INITIAL_Y = 13200 + BLOCK_SIZE; //初期マップのy座標
 const int MOVE_RANGE = 160; //移動範囲（この数字のマップチップまで移動可能）
 
 const int PLAYER_STATUS_SIZE = 17; //プレイヤーステータス(距離以外)のサイズ
-const int PLAYER_ITEM_SIZE = 40; //プレイヤーのアイテムサイズ
+const int PLAYER_ITEM_SIZE = 160; //プレイヤーのアイテムサイズ
 
 const int STATUS_INFORMATION_SIZE = PLAYER_STATUS_SIZE + 2; //ステータスのサイズ
 const int COIN_INFORMATION_SIZE = 4312; //コイン情報のサイズ
 const int ITEM_INFORMATION_SIZE = 2112; //アイテム情報のサイズ
 const int EVENT_INFORMATION_SIZE = 8; //1イベントあたりの情報のサイズ
+
+const int COIN_EVENT_SIZE = 250; //コインイベントのサイズ
+const int ITEM_EVENT_SIZE = 120; //アイテムイベントのサイズ
+const int ACCESSORY_EVENT_SIZE = 20; //アクセサリーイベントのサイズ
+const int JEWEL_EVENT_SIZE = 5; //ジュエルイベントのサイズ
+const int MINERAL_EVENT_SIZE = 20; //鉱物イベントのサイズ
 
 const int ALL_COIN_TYPE = 4; //コインの種類
 

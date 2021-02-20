@@ -24,7 +24,7 @@ void loopProcess() {
 		MapDraw map(source.mapChipGraph()); //マップクラス
 		MapCollision collision(map); //コリジョンクラス
 
-		CALL_ONCE(save.roadSaveData());
+		CALL_ONCE(save.roadSaveData()); //ファイル読み込み処理（一度のみ）
 
 		map.update(); //マップ更新処理
 

@@ -93,17 +93,17 @@ MapDraw::~MapDraw() {
 }
 
 /// <summary>
-/// 読み込んだマップに描画する
+/// 読み込んだマップチップ画像からマップ描画
 /// </summary>
 /// <param name="mapInformation"></param>
 /// <param name="dirX">x方向の中心からの距離</param>
 /// <param name="dirY">y方向の中心からの距離</param>
 /// <param name="map">マップの配列</param>
-void MapDraw::current_map_drawing(const int& mapInformation, const int& dirX, const int& dirY,
-                                  vector<vector<int>>& map) {
+void MapDraw::drawMapChips(const int& mapInformation, const int& dirX, const int& dirY,
+                           vector<vector<int>>& map) {
 
 	mapName(&matrix.y, &matrix.x, mapInformation); //マップ情報から列と行を取り出す
-	//マップの描画
+	//マップチップの描画
 	for (int y = 0; y < mapAspectSize.y; y++) {
 		for (int x = 0; x < mapAspectSize.x; x++) {
 			//mapInformationのチップをDestの位置に描画
@@ -122,11 +122,11 @@ void MapDraw::current_map_drawing(const int& mapInformation, const int& dirX, co
 /// <summary>
 /// マップ名情報による現在マップの描画
 /// </summary>
-void MapDraw::drawing_current_maps(vector<vector<int>>& map, const int& dirX, const int& dirY) {
+void MapDraw::drawCurrentMaps(vector<vector<int>>& map, const int& dirX, const int& dirY) {
 	fileImport(currentMap.x + dirX, currentMap.y + dirY, map); //csvファイル読み込み
 	/*マップチップ描画*/
 	for (auto i : information)
-		current_map_drawing(i, centerPos.x + dirX, centerPos.y + dirY, map);
+		drawMapChips(i, centerPos.x + dirX, centerPos.y + dirY, map);
 }
 
 /// <summary>
@@ -135,29 +135,29 @@ void MapDraw::drawing_current_maps(vector<vector<int>>& map, const int& dirX, co
 void MapDraw::update() {
 
 	/* 9か所のマップを描画 */
-	drawing_current_maps(mapCentral, Central, Central); //中央マップ（常に表示）
+	drawCurrentMaps(mapCentral, Central, Central); //中央マップ（常に表示）
 
 	//y方向のマップ描画判定
 	if (blockArea.y <= TOP_BOUNDARY)
-		drawing_current_maps(mapTopCentral, Central, Top); //上マップ
+		drawCurrentMaps(mapTopCentral, Central, Top); //上マップ
 	else if (blockArea.y >= BOTTOM_BOUNDARY)
-		drawing_current_maps(mapBottomCentral, Central, Bottom); //下マップ
+		drawCurrentMaps(mapBottomCentral, Central, Bottom); //下マップ
 
 	//x方向のマップ描画判定
 	if (blockArea.x <= LEFT_BOUNDARY)
-		drawing_current_maps(mapLeftCentral, Left, Central); //左マップ
+		drawCurrentMaps(mapLeftCentral, Left, Central); //左マップ
 	else if (blockArea.x >= RIGHT_BOUNDARY)
-		drawing_current_maps(mapRightCentral, Right, Central); //右マップ
+		drawCurrentMaps(mapRightCentral, Right, Central); //右マップ
 
 	//斜め方向のマップ描画判定
 	if (blockArea.x <= LEFT_BOUNDARY && blockArea.y <= TOP_BOUNDARY)
-		drawing_current_maps(mapTopLeft, Left, Top); //左上マップ
+		drawCurrentMaps(mapTopLeft, Left, Top); //左上マップ
 	else if (blockArea.x >= RIGHT_BOUNDARY && blockArea.y <= TOP_BOUNDARY)
-		drawing_current_maps(mapTopRight, Right, Top); //右上マップ
+		drawCurrentMaps(mapTopRight, Right, Top); //右上マップ
 	else if (blockArea.x <= LEFT_BOUNDARY && blockArea.y >= BOTTOM_BOUNDARY)
-		drawing_current_maps(mapBottomLeft, Left, Bottom); //左下マップ
+		drawCurrentMaps(mapBottomLeft, Left, Bottom); //左下マップ
 	else if (blockArea.x >= RIGHT_BOUNDARY && blockArea.y >= BOTTOM_BOUNDARY)
-		drawing_current_maps(mapBottomRight, Right, Bottom); //右下マップ
+		drawCurrentMaps(mapBottomRight, Right, Bottom); //右下マップ
 
 	/* 12ヵ所で衝突判定を行う */
 	collisionDetectionLeftUp(); //左上
