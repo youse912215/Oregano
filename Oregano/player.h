@@ -16,6 +16,9 @@ private:
 public:
 	vector<int> status;
 	vector<int> possessionItem;
+	vector<int> possessionAccessory;
+	vector<int> possessionJewel;
+	vector<int> possessionMineral;
 
 	Player(int graph);
 	~Player();

@@ -22,7 +22,7 @@ EventField::~EventField() {
 /// <summary>
 /// Xボタンを押したとき、フィールド上の指定の場所でアイテムやコインなどを入手可能にする
 /// </summary>
-void EventField::getFieldObject(vector<int>& objectName, vector<bool>& eventFlag) {
+void EventField::getFieldObject(vector<int>& objectName, vector<bool>& eventFlag, vector<int>& saveLocation) {
 	for (unsigned int i = 0; i < objectName.size() / EVENT_INFORMATION_SIZE; ++i) {
 		if (!( //イベント発生場所の方向を向いているとき
 			input.moveDirection == directionReverse(objectName[(i * EVENT_INFORMATION_SIZE) + DIRECTION_])
@@ -42,10 +42,10 @@ void EventField::getFieldObject(vector<int>& objectName, vector<bool>& eventFlag
 
 			/* コインのときのみ、保存する条件を変更する */
 			if (objectName == coin)
-				player.status[coinTypeDecision(objectName[(i * EVENT_INFORMATION_SIZE) + ITEM_TYPE_])]
+				saveLocation[coinTypeDecision(objectName[(i * EVENT_INFORMATION_SIZE) + ITEM_TYPE_])]
 					+= coinQuantityDecision(objectName[(i * EVENT_INFORMATION_SIZE) + ITEM_TYPE_]); //コインの入手（種類別に追加）
 			else
-				player.possessionItem[objectName[(i * EVENT_INFORMATION_SIZE) + ITEM_TYPE_]]++; //その他のアイテムの入手
+				saveLocation[objectName[(i * EVENT_INFORMATION_SIZE) + ITEM_TYPE_]]++; //その他のアイテムの入手
 		}
 	}
 }
@@ -65,8 +65,11 @@ void EventField::storingObject(int* saveLocation, const int& objectVolume) {
 /// </summary>
 void EventField::fieldAction() {
 	if (input.X) {
-		getFieldObject(coin, coinFlag); //フィールドコインを入手
-		getFieldObject(item, itemFlag); //フィールドアイテムを入手
+		getFieldObject(coin, coinFlag, player.status); //フィールドコインを入手
+		getFieldObject(item, itemFlag, player.possessionItem); //フィールドアイテムを入手
+		getFieldObject(accessory, accessoryFlag, player.possessionAccessory); //フィールドアクセサリーを入手
+		getFieldObject(jewel, jewelFlag, player.possessionJewel); //フィールドジュエルを入手
+		getFieldObject(mineral, mineralFlag, player.possessionMineral); //フィールド鉱物を入手
 
 		actionFlagX = true; //ボタンを押しているときはアクションフラグをtrue
 	}

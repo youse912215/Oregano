@@ -22,7 +22,7 @@ private:
 
 	const vector<int> coinQuantity; //ƒRƒCƒ“—Ê
 
-	void getFieldObject(vector<int>& objectName, vector<bool>& eventFlag);
+	void getFieldObject(vector<int>& objectName, vector<bool>& eventFlag, vector<int>& saveLocation);
 	void storingObject(int* saveLocation, const int& objectVolume);
 	void fieldAction();
 

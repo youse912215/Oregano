@@ -8,14 +8,24 @@
 #include "DxLib.h"
 
 DataSave::DataSave(Player& player, EventField& field)
-	: player(player), field(field), currentStatus(STATUS_INFORMATION_SIZE),
-	  currentPossession(PLAYER_ITEM_SIZE), currentCoin(COIN_INFORMATION_SIZE),
-	  currentItem(ITEM_INFORMATION_SIZE), currentAccessory(ACCESSORY_INFORMATION_SIZE),
-	  currentJewel(JEWEL_INFORMATION_SIZE), currentMineral(MINERAL_INFORMATION_SIZE) {
-	statusData = "resource\\Data\\statusData.bin";
+	: player(player), field(field),
+	  currentStatus(STATUS_INFORMATION_SIZE), //ステータス
+	  /* 所持品 */
+	  currentPossessionItem(PLAYER_ITEM_SIZE), currentPossessionAccessory(PLAYER_ACCESSORY_SIZE),
+	  currentPossessionJewel(PLAYER_JEWEL_SIZE), currentPossessionMineral(PLAYER_MINERAL_SIZE),
+	  /* フィールド */
+	  currentCoin(COIN_INFORMATION_SIZE), currentItem(ITEM_INFORMATION_SIZE),
+	  currentAccessory(ACCESSORY_INFORMATION_SIZE), currentJewel(JEWEL_INFORMATION_SIZE),
+	  currentMineral(MINERAL_INFORMATION_SIZE) {
+	statusData = "resource\\Data\\statusData.bin"; //ステータス
+	/* 所持品 */
+	possessionItemData = "resource\\Data\\possessionItemData.bin";
+	possessionAccessoryData = "resource\\Data\\possessionAccessoryData.bin";
+	possessionJewelData = "resource\\Data\\possessionJewelData.bin";
+	possessionMineralData = "resource\\Data\\possessionMineralData.bin";
+	/*　フィールド */
 	coinData = "resource\\Data\\coinData.bin";
 	itemData = "resource\\Data\\itemData.bin";
-	possessionData = "resource\\Data\\possessionItemData.bin";
 	accessoryData = "resource\\Data\\accessoryData.bin";
 	jewelData = "resource\\Data\\jewelData.bin";
 	mineralData = "resource\\Data\\mineralData.bin";
@@ -119,9 +129,20 @@ void DataSave::writeSaveData() {
 	/* ステータス */
 	getCurrentStatus();
 	writeBinaryFile(currentStatus, lastTimeStatus, statusData);
-	/* 所持品 */
-	getCurrentEvent(currentPossession, player.possessionItem);
-	writeBinaryFile(currentPossession, lastTimePossession, possessionData);
+
+	/* 所持アイテム */
+	getCurrentEvent(currentPossessionItem, player.possessionItem);
+	writeBinaryFile(currentPossessionItem, lastTimePossessionItem, possessionItemData);
+	/* 所持アクセサリー */
+	getCurrentEvent(currentPossessionAccessory, player.possessionAccessory);
+	writeBinaryFile(currentPossessionAccessory, lastTimePossessionAccessory, possessionAccessoryData);
+	/* 所持ジュエル */
+	getCurrentEvent(currentPossessionJewel, player.possessionJewel);
+	writeBinaryFile(currentPossessionJewel, lastTimePossessionJewel, possessionJewelData);
+	/* 所持ジュエル */
+	getCurrentEvent(currentPossessionMineral, player.possessionMineral);
+	writeBinaryFile(currentPossessionMineral, lastTimePossessionMineral, possessionMineralData);
+
 	/* フィールドコイン */
 	getCurrentEvent(currentCoin, field.coin);
 	writeBinaryFile(currentCoin, lastTimeCoin, coinData);
@@ -146,9 +167,20 @@ void DataSave::roadSaveData() {
 	/* ステータス */
 	roadBinaryFile(currentStatus, lastTimeStatus, statusData);
 	getLastTimeStatus();
-	/* 所持品 */
-	roadBinaryFile(currentPossession, lastTimePossession, possessionData);
-	getLastTimeEvent(lastTimePossession, player.possessionItem);
+
+	/* 所持アイテム */
+	roadBinaryFile(currentPossessionItem, lastTimePossessionItem, possessionItemData);
+	getLastTimeEvent(lastTimePossessionItem, player.possessionItem);
+	/* 所持アクセサリー */
+	roadBinaryFile(currentPossessionAccessory, lastTimePossessionAccessory, possessionAccessoryData);
+	getLastTimeEvent(lastTimePossessionAccessory, player.possessionAccessory);
+	/* 所持ジュエル */
+	roadBinaryFile(currentPossessionJewel, lastTimePossessionJewel, possessionJewelData);
+	getLastTimeEvent(lastTimePossessionJewel, player.possessionJewel);
+	/* 所持鉱物 */
+	roadBinaryFile(currentPossessionMineral, lastTimePossessionMineral, possessionMineralData);
+	getLastTimeEvent(lastTimePossessionMineral, player.possessionMineral);
+
 	/* フィールドコイン */
 	roadBinaryFile(currentCoin, lastTimeCoin, coinData);
 	getLastTimeEvent(lastTimeCoin, field.coin);
@@ -211,4 +243,21 @@ void DataSave::update() {
 	                 player.possessionItem[32], player.possessionItem[33], player.possessionItem[34],
 	                 player.possessionItem[35], player.possessionItem[36], player.possessionItem[37],
 	                 player.possessionItem[38], player.possessionItem[39], false);
+
+	DrawFormatString(0, 720, GetColor(0, 0, 0), "Bネック:%d, Bチョー:%d, Bペンダ:%d, Bリング:%d、Bピアス:%d, テレサ:%d, マチルダ:%d, ナガタラ:%d",
+	                 player.possessionAccessory[0], player.possessionAccessory[1], player.possessionAccessory[2],
+	                 player.possessionAccessory[3], player.possessionAccessory[4], player.possessionAccessory[5],
+	                 player.possessionAccessory[6], player.possessionAccessory[7], false);
+	DrawFormatString(0, 735, GetColor(0, 0, 0), "Sネック:%d, Sチョー:%d, Sペンダ:%d, Sリング:%d、Sピアス:%d, 東国紋章:%d, Gネック:%d, Gペンダ:%d",
+	                 player.possessionAccessory[8], player.possessionAccessory[9], player.possessionAccessory[10],
+	                 player.possessionAccessory[11], player.possessionAccessory[12], player.possessionAccessory[14],
+	                 player.possessionAccessory[15], player.possessionAccessory[16], false);
+
+	DrawFormatString(0, 770, GetColor(0, 0, 0), "エメラルド:%d, Tガーネット:%d, Cトルマリン:%d, ペリD:%d、花萌葱ロードN:%d",
+	                 player.possessionJewel[0], player.possessionJewel[1], player.possessionJewel[2],
+	                 player.possessionJewel[3], player.possessionJewel[20], false);
+
+	DrawFormatString(0, 800, GetColor(0, 0, 0), "軽石:%d, 東栄石:%d, 南栄石:%d, 西栄石:%d、北栄石:%d, 黄金超石:%d",
+	                 player.possessionMineral[0], player.possessionMineral[1], player.possessionMineral[2],
+	                 player.possessionMineral[3], player.possessionMineral[4], player.possessionMineral[4], false);
 }

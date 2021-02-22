@@ -21,10 +21,13 @@ const int MOVE_RANGE = 160; //移動範囲（この数字のマップチップまで移動可能）
 
 const int PLAYER_STATUS_SIZE = 21; //プレイヤーステータス(距離以外)のサイズ
 const int PLAYER_ITEM_SIZE = 160; //プレイヤーのアイテムサイズ
+const int PLAYER_ACCESSORY_SIZE = 80; //プレイヤーのアクセサリーサイズ
+const int PLAYER_JEWEL_SIZE = 32; //プレイヤーのジュエルサイズ
+const int PLAYER_MINERAL_SIZE = 8; //プレイヤーの鉱物サイズ
 
 const int STATUS_INFORMATION_SIZE = PLAYER_STATUS_SIZE + 2; //ステータスのサイズ
 const int COIN_INFORMATION_SIZE = 4312; //コイン情報のサイズ
-const int ITEM_INFORMATION_SIZE = 2112; //アイテム情報のサイズ
+const int ITEM_INFORMATION_SIZE = 2120; //アイテム情報のサイズ
 const int ACCESSORY_INFORMATION_SIZE = 128; //アクセサリー情報のサイズ
 const int JEWEL_INFORMATION_SIZE = 72; //ジュエル情報のサイズ
 const int MINERAL_INFORMATION_SIZE = 128; //鉱物情報のサイズ 
