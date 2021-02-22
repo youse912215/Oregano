@@ -55,6 +55,12 @@
     <Filter Include="ソース ファイル\Data">
       <UniqueIdentifier>{c0b776c4-1f07-4250-9b06-320d0b03ecc6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\UI">
+      <UniqueIdentifier>{8f05193c-a8f7-4e4f-a9ff-0154909a0a1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\UI">
+      <UniqueIdentifier>{9016ed5c-d3ed-4d57-8d6b-7002a66b402f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="human.cpp">
@@ -105,6 +111,9 @@
     <ClCompile Include="dataSource.cpp">
       <Filter>ソース ファイル\Data</Filter>
     </ClCompile>
+    <ClCompile Include="gameUI.cpp">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="human.h">
@@ -154,6 +163,9 @@
     </ClInclude>
     <ClInclude Include="dataSource.h">
       <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="gameUI.h">
+      <Filter>ヘッダー ファイル\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

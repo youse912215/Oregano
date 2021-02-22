@@ -6,26 +6,19 @@ using namespace std;
 
 class Input {
 private:
-	static char keys[256];
-	static char oldkeys[256];
+	static char oldkeys[256]; //前のキー入力の状態
+	static char keys[256]; //キー入力の状態
 
-	int pad;
-	bool padLeft;
-	bool padRight;
-	bool padUp;
-	bool padDown;
-	bool pad1;
-	bool pad2;
-	bool pad3;
-	bool pad4;
-	bool pad5;
-	bool pad6;
-	bool pad7;
-	bool pad8;
-	bool pad9;
-	bool pad10;
+	int oldPad; //前のキー入力の状態
+	int pad; //キー入力の状態
+
 
 	bool mode;
+
+	vector<bool> padNum;
+	vector<bool> inputButton;
+
+	bool getInputButton(const int& buttonName);
 
 public:
 	static int add;
@@ -35,12 +28,14 @@ public:
 	bool B;
 	bool X;
 	bool Y;
+	bool LB;
+	bool RB;
 
 	int moveDirection; //今見ている移動方向
 
 	Input();
-	void inputInformation();
-	void padInformation();
+	void keyboardInformation();
+	void padsInformation();
 	void inputModeChange();
 	void moveProcess(const bool& collisionLeft, const bool& collisionRight,
 	                 const bool& collisionUp, const bool& collisionDown);

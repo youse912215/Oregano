@@ -8,6 +8,7 @@
 #include "eventField.h"
 #include "eventBase.h"
 #include "dataSave.h"
+#include "gameUI.h"
 
 void loopProcess() {
 
@@ -17,6 +18,7 @@ void loopProcess() {
 	EventBase event; //イベントクラス
 	EventField field(input, event, player); //フィールドクラス
 	DataSave save(player, field); //セーブデータクラス
+	GameUI gameUI(input);
 
 	while (true) {
 		ClearDrawScreen(); //画面クリア
@@ -29,14 +31,18 @@ void loopProcess() {
 		map.update(); //マップ更新処理
 
 		input.update(); //入力更新処理
-		input.moveProcess(collision.leftCollisionFlag(), collision.rightCollisionFlag(),
-		                  collision.upCollisionFlag(), collision.downCollisionFlag());
+
+		if (!gameUI.changeFlag) //移動処理（アクション変更時は移動不可）
+			input.moveProcess(collision.leftCollisionFlag(), collision.rightCollisionFlag(),
+			                  collision.upCollisionFlag(), collision.downCollisionFlag());
 
 		field.update(); //フィールド更新処理
 
 		save.update(); //データ更新処理
 
 		player.update(); //プレイヤー更新処理
+
+		gameUI.update();
 
 		if (EventBase::gameScene == END_SCENE) {
 			CALL_ONCE(save.writeSaveData()); //ファイル書き込み処理（一度のみ）
