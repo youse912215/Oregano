@@ -4,9 +4,16 @@
 #include "DxLib.h"
 
 EventField::EventField(Input& input, EventBase& event, Player& player)
-	: input(input), event(event), player(player), coinFlag(COIN_EVENT_SIZE), itemFlag(ITEM_EVENT_SIZE),
-	  coinQuantity{5, 10, 50, 100}, coin(COIN_INFORMATION_SIZE), item(ITEM_INFORMATION_SIZE) {
-	actionFlagX = false;
+	: input(input), event(event), player(player),
+	  /*各フィールドオブジェクトのフラグ*/
+	  coinFlag(COIN_EVENT_SIZE), itemFlag(ITEM_EVENT_SIZE), accessoryFlag(ACCESSORY_EVENT_SIZE),
+	  jewelFlag(JEWEL_EVENT_SIZE), mineralFlag(MINERAL_EVENT_SIZE),
+	  /*コイン量配列*/
+	  coinQuantity{5, 10, 50, 100},
+	  /*各フィールドオブジェクトの情報格納用の配列*/
+	  coin(COIN_INFORMATION_SIZE), item(ITEM_INFORMATION_SIZE), accessory(ACCESSORY_INFORMATION_SIZE),
+	  jewel(JEWEL_INFORMATION_SIZE), mineral(MINERAL_INFORMATION_SIZE) {
+	actionFlagX = false; //Xボタンアクションフラグ
 }
 
 EventField::~EventField() {

@@ -19,12 +19,15 @@ const int INITIAL_Y = 13200 + BLOCK_SIZE; //初期マップのy座標
 
 const int MOVE_RANGE = 160; //移動範囲（この数字のマップチップまで移動可能）
 
-const int PLAYER_STATUS_SIZE = 17; //プレイヤーステータス(距離以外)のサイズ
+const int PLAYER_STATUS_SIZE = 21; //プレイヤーステータス(距離以外)のサイズ
 const int PLAYER_ITEM_SIZE = 160; //プレイヤーのアイテムサイズ
 
 const int STATUS_INFORMATION_SIZE = PLAYER_STATUS_SIZE + 2; //ステータスのサイズ
 const int COIN_INFORMATION_SIZE = 4312; //コイン情報のサイズ
 const int ITEM_INFORMATION_SIZE = 2112; //アイテム情報のサイズ
+const int ACCESSORY_INFORMATION_SIZE = 128; //アクセサリー情報のサイズ
+const int JEWEL_INFORMATION_SIZE = 72; //ジュエル情報のサイズ
+const int MINERAL_INFORMATION_SIZE = 128; //鉱物情報のサイズ 
 const int EVENT_INFORMATION_SIZE = 8; //1イベントあたりの情報のサイズ
 
 const int COIN_EVENT_SIZE = 250; //コインイベントのサイズ
@@ -174,29 +177,37 @@ enum STATUS {
 	//白百合のコイン
 	WHITE_COIN,
 	//生命力
-	LIFE,
+	CURRENT_LIFE,
+	//最大生命力
+	MAX_LIFE,
 	//攻撃力
 	ATTACK,
-	//守備力
-	DEFENSE,
 	//猛毒耐性
 	DEADLY_POISON_RESISTANCE,
 	//猛毒属性値
 	DEADLY_POISON_VALUE,
+	//猛毒蓄積
+	DEADLY_POISON_ACCUMULATION,
 	//麻痺耐性
 	PARALYSIS_RESISTANCE,
 	//麻痺属性値
 	PARALYSIS_VALUE,
+	//麻痺蓄積
+	PARALYSIS_ACCUMULATION,
 	//催眠耐性
 	HYPNOSIS_RESISTANCE,
 	//催眠耐性
 	HYPNOSIS_VALUE,
+	//催眠蓄積
+	HYPNOSIS_ACCUMULATION,
 	//出血耐性
 	BLOODING_RESISTANCE,
 	//出血属性値
 	BLOODING_VALUE,
-	//優先度
-	PRIORITY,
+	//出血蓄積
+	BLOODING_ACCUMULATION,
+	//交渉力
+	BARGAINING_POWER,
 	//現在のマップ座標
 	CURRENT_MAP_X,
 	CURRENT_MAP_Y,

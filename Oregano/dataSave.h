@@ -27,6 +27,18 @@ private:
 	vector<int> lastTimeItem; //前回までのアイテム格納用
 	string itemData; //アイテムデータのバイナリファイル
 
+	vector<int> currentAccessory; //現在までのアクセサリー格納用
+	vector<int> lastTimeAccessory; //前回までのアクセサリー格納用
+	string accessoryData; //アクセサリーデータのバイナリファイル
+
+	vector<int> currentJewel; //現在までのジュエル格納用
+	vector<int> lastTimeJewel; //前回までのジュエル格納用
+	string jewelData; //ジュエルデータのバイナリファイル
+
+	vector<int> currentMineral; //現在までの鉱物格納用
+	vector<int> lastTimeMineral; //前回までの鉱物格納用
+	string mineralData; //鉱物データのバイナリファイル
+
 	int getFileSize(string fileName);
 
 	void writeBinaryFile(vector<int>& currentData, vector<int>& lastTimeData, string fileName);

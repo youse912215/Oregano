@@ -14,6 +14,10 @@ private:
 
 	vector<bool> coinFlag; //コインフラグ
 	vector<bool> itemFlag; //アイテムフラグ
+	vector<bool> accessoryFlag; //アクセサリーフラグ
+	vector<bool> jewelFlag; //ジュエルフラグ
+	vector<bool> mineralFlag; //鉱物フラグ
+
 	bool actionFlagX; //アクションフラグ
 
 	const vector<int> coinQuantity; //コイン量
@@ -31,6 +35,9 @@ private:
 public:
 	vector<int> coin; //コイン情報格納用
 	vector<int> item; //アイテム情報格納用
+	vector<int> accessory; //アクセサリー情報格納用
+	vector<int> jewel; //ジュエル情報格納用
+	vector<int> mineral; //鉱物情報格納用
 
 	EventField(Input& input, EventBase& event, Player& player);
 	~EventField();

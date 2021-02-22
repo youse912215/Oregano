@@ -10,11 +10,15 @@
 DataSave::DataSave(Player& player, EventField& field)
 	: player(player), field(field), currentStatus(STATUS_INFORMATION_SIZE),
 	  currentPossession(PLAYER_ITEM_SIZE), currentCoin(COIN_INFORMATION_SIZE),
-	  currentItem(ITEM_INFORMATION_SIZE) {
+	  currentItem(ITEM_INFORMATION_SIZE), currentAccessory(ACCESSORY_INFORMATION_SIZE),
+	  currentJewel(JEWEL_INFORMATION_SIZE), currentMineral(MINERAL_INFORMATION_SIZE) {
 	statusData = "resource\\Data\\statusData.bin";
 	coinData = "resource\\Data\\coinData.bin";
 	itemData = "resource\\Data\\itemData.bin";
 	possessionData = "resource\\Data\\possessionItemData.bin";
+	accessoryData = "resource\\Data\\accessoryData.bin";
+	jewelData = "resource\\Data\\jewelData.bin";
+	mineralData = "resource\\Data\\mineralData.bin";
 }
 
 DataSave::~DataSave() {
@@ -72,7 +76,7 @@ void DataSave::roadBinaryFile(vector<int>& currentData, vector<int>& lastTimeDat
 /// 現在までのプレイヤーのステータスを取得
 /// </summary>
 void DataSave::getCurrentStatus() {
-	for (unsigned int i = 0; i <= PRIORITY; ++i)
+	for (unsigned int i = 0; i <= BARGAINING_POWER; ++i)
 		currentStatus[i] = player.status[i];
 	currentStatus[CURRENT_MAP_X] = MapDraw::mapX; //現在のマップx座標を代入
 	currentStatus[CURRENT_MAP_Y] = MapDraw::mapY; //現在のマップy座標を代入
@@ -82,7 +86,7 @@ void DataSave::getCurrentStatus() {
 /// 前回までのプレイヤーのステータスを取得
 /// </summary>
 void DataSave::getLastTimeStatus() {
-	for (unsigned int i = 0; i <= PRIORITY; ++i)
+	for (unsigned int i = 0; i <= BARGAINING_POWER; ++i)
 		player.status[i] = lastTimeStatus[i];
 	MapDraw::mapX = lastTimeStatus[CURRENT_MAP_X]; //前回までのマップx座標を代入
 	MapDraw::mapY = lastTimeStatus[CURRENT_MAP_Y]; //前回までのマップy座標を代入
@@ -92,7 +96,7 @@ void DataSave::getLastTimeStatus() {
 /// 現在までのフィールドイベント状況を取得
 /// </summary>
 /// <param name="currentEvent">現在までのイベント</param>
-/// <param name="fieldEvent">フィールドイベント</param>
+/// <param name="saveLocation">フィールドイベント</param>
 void DataSave::getCurrentEvent(vector<int>& currentEvent, vector<int>& saveLocation) {
 	for (unsigned int i = 0; i < currentEvent.size(); ++i)
 		currentEvent[i] = saveLocation[i];
@@ -102,7 +106,7 @@ void DataSave::getCurrentEvent(vector<int>& currentEvent, vector<int>& saveLocat
 /// 前回までのフィールドイベント状況を取得
 /// </summary>
 /// <param name="lastTimeEvent">前回までのイベント</param>
-/// <param name="fieldEvent">フィールドイベント</param>
+/// <param name="saveLocation">フィールドイベント</param>
 void DataSave::getLastTimeEvent(vector<int>& lastTimeEvent, vector<int>& saveLocation) {
 	for (unsigned int i = 0; i < lastTimeEvent.size(); ++i)
 		saveLocation[i] = lastTimeEvent[i];
@@ -124,6 +128,15 @@ void DataSave::writeSaveData() {
 	/* フィールドアイテム */
 	getCurrentEvent(currentItem, field.item);
 	writeBinaryFile(currentItem, lastTimeItem, itemData);
+	/* フィールドアクセサリー */
+	getCurrentEvent(currentAccessory, field.accessory);
+	writeBinaryFile(currentAccessory, lastTimeAccessory, accessoryData);
+	/* フィールドジュエル */
+	getCurrentEvent(currentJewel, field.jewel);
+	writeBinaryFile(currentJewel, lastTimeJewel, jewelData);
+	/* フィールド鉱物 */
+	getCurrentEvent(currentMineral, field.mineral);
+	writeBinaryFile(currentMineral, lastTimeMineral, mineralData);
 }
 
 /// <summary>
@@ -142,6 +155,15 @@ void DataSave::roadSaveData() {
 	/* フィールドアイテム */
 	roadBinaryFile(currentItem, lastTimeItem, itemData);
 	getLastTimeEvent(lastTimeItem, field.item);
+	/* フィールドアクセサリー */
+	roadBinaryFile(currentAccessory, lastTimeAccessory, accessoryData);
+	getLastTimeEvent(lastTimeAccessory, field.accessory);
+	/* フィールドジュエル */
+	roadBinaryFile(currentJewel, lastTimeJewel, jewelData);
+	getLastTimeEvent(lastTimeJewel, field.jewel);
+	/* フィールド鉱物 */
+	roadBinaryFile(currentMineral, lastTimeMineral, mineralData);
+	getLastTimeEvent(lastTimeMineral, field.mineral);
 }
 
 /// <summary>
@@ -151,17 +173,21 @@ void DataSave::update() {
 	DrawFormatString(0, 500, GetColor(120, 0, 100), "トレジャーランク:%d, 花萌葱:%d, 金糸雀:%d, 葡萄染:%d, 白百合:%d",
 	                 player.status[TREASURE_RANK], player.status[GREEN_COIN], player.status[YELLOW_COIN],
 	                 player.status[PURPLE_COIN], player.status[WHITE_COIN], false);
-	DrawFormatString(0, 515, GetColor(120, 0, 100), "生命力:%d, 攻撃力:%d, 守備力:%d, 優先度:%d",
-	                 player.status[LIFE], player.status[ATTACK],
-	                 player.status[DEFENSE], player.status[PRIORITY], false);
-	DrawFormatString(0, 530, GetColor(120, 0, 100), "猛毒耐性:%d, 猛毒属性値:%d, 麻痺耐性:%d, 麻痺属性値:%d",
+	DrawFormatString(0, 515, GetColor(120, 0, 100), "現在生命力:%d, 最大生命力:%d, 攻撃力:%d, 交渉力:%d",
+	                 player.status[CURRENT_LIFE], player.status[MAX_LIFE],
+	                 player.status[ATTACK], player.status[BARGAINING_POWER], false);
+	DrawFormatString(0, 530, GetColor(120, 0, 100), "猛毒耐性:%d, 猛毒属性値:%d, 猛毒蓄積:%d,  麻痺耐性:%d, 麻痺属性値:%d, 麻痺蓄積:%d",
 	                 player.status[DEADLY_POISON_RESISTANCE], player.status[DEADLY_POISON_VALUE],
-	                 player.status[PARALYSIS_RESISTANCE], player.status[PARALYSIS_VALUE], false);
-	DrawFormatString(0, 545, GetColor(120, 0, 100), "催眠耐性:%d, 催眠属性値:%d, 出血耐性:%d, 出血属性値:%d",
+	                 player.status[DEADLY_POISON_ACCUMULATION],
+	                 player.status[PARALYSIS_RESISTANCE], player.status[PARALYSIS_VALUE],
+	                 player.status[PARALYSIS_ACCUMULATION], false);
+	DrawFormatString(0, 545, GetColor(120, 0, 100), "催眠耐性:%d, 催眠属性値:%d, 催眠蓄積:%d, 出血耐性:%d, 出血属性値:%d, 出血蓄積:%d",
 	                 player.status[HYPNOSIS_RESISTANCE], player.status[HYPNOSIS_VALUE],
-	                 player.status[BLOODING_RESISTANCE], player.status[BLOODING_VALUE], false);
+	                 player.status[HYPNOSIS_ACCUMULATION],
+	                 player.status[BLOODING_RESISTANCE], player.status[BLOODING_VALUE],
+	                 player.status[BLOODING_ACCUMULATION], false);
 
-	DrawFormatString(0, 630, GetColor(0, 0, 0), "非常食:%d, パン:%d, 牛肉:%d, 魚:%d、豆:%d, 鶏肉:%d, ボトル小:%d, ボトル大:%d",
+	DrawFormatString(0, 630, GetColor(0, 0, 0), "非常食:%d, パン:%d, 肉:%d, 魚:%d、豆:%d, 地図:%d, ボトル小:%d, ボトル大:%d",
 	                 player.possessionItem[0], player.possessionItem[1], player.possessionItem[2],
 	                 player.possessionItem[3], player.possessionItem[4], player.possessionItem[5],
 	                 player.possessionItem[6], player.possessionItem[7], false);
