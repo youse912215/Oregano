@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="dataSave.cpp" />
     <ClCompile Include="dataSource.cpp" />
+    <ClCompile Include="dataText.cpp" />
     <ClCompile Include="eventBase.cpp" />
     <ClCompile Include="eventField.cpp" />
     <ClCompile Include="gameUI.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="constant.h" />
     <ClInclude Include="dataSave.h" />
     <ClInclude Include="dataSource.h" />
+    <ClInclude Include="dataText.h" />
     <ClInclude Include="eventBase.h" />
     <ClInclude Include="eventField.h" />
     <ClInclude Include="gameUI.h" />

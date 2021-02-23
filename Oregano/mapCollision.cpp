@@ -1,7 +1,7 @@
 #include "mapCollision.h"
 #include "constant.h"
 #include "mapDraw.h"
-#include "DxLib.h"
+#include "eventBase.h"
 
 MapCollision::MapCollision(MapDraw& map) : map(map), collisionFlag(12),
                                            boundaryCriteria{
@@ -228,26 +228,31 @@ void MapCollision::collisionDetectionCenterDown2() {
 bool MapCollision::collisionDetection(const int& dirXY, const int& dirX, const int& dirY) {
 	switch (dirXY) {
 	case MAP_TOP_LEFT:
-		return map.mapTopLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] > MOVE_RANGE;
+		return map.mapTopLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] > collisionRange();
 	case MAP_TOP_CENTRAL:
-		return map.mapTopCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] > MOVE_RANGE;
+		return map.mapTopCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] > collisionRange();
 	case MAP_TOP_RIGHT:
-		return map.mapTopRight[map.currentCorner[dirY]][map.currentCorner[dirX]] > MOVE_RANGE;
+		return map.mapTopRight[map.currentCorner[dirY]][map.currentCorner[dirX]] > collisionRange();
 	case MAP_LEFT_CENTRAL:
-		return map.mapLeftCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] > MOVE_RANGE;
+		return map.mapLeftCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] > collisionRange();
 	case MAP_CENTRAL:
-		return map.mapCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] > MOVE_RANGE;
+		return map.mapCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] > collisionRange();
 	case MAP_RIGHT_CENTRAL:
-		return map.mapRightCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] > MOVE_RANGE;
+		return map.mapRightCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] > collisionRange();
 	case MAP_BOTTOM_LEFT:
-		return map.mapBottomLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] > MOVE_RANGE;
+		return map.mapBottomLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] > collisionRange();
 	case MAP_BOTTOM_CENTRAL:
-		return map.mapBottomCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] > MOVE_RANGE;
+		return map.mapBottomCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] > collisionRange();
 	case MAP_BOTTOM_RIGHT:
-		return map.mapBottomRight[map.currentCorner[dirY]][map.currentCorner[dirX]] > MOVE_RANGE;
+		return map.mapBottomRight[map.currentCorner[dirY]][map.currentCorner[dirX]] > collisionRange();
 	default:
 		return false;
 	}
+}
+
+int MapCollision::collisionRange() {
+	if (!EventBase::night) return TIDE;
+	return SHALLOW;
 }
 
 

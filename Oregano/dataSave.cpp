@@ -72,7 +72,7 @@ void DataSave::roadBinaryFile(vector<int>& currentData, vector<int>& lastTimeDat
 	ifstream fileRead(fileName, ios::binary);
 	if (!fileRead) return;
 
-	vector<char> binChar(getFileSize(fileName));
+	vector<char> binChar(getFileSize(fileName)); //ƒTƒCƒY‚ðŽæ“¾
 	if (!fileRead.read(&binChar[0], getFileSize(fileName))) return;
 	fileRead.close(); //•Â‚¶‚é
 

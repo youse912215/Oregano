@@ -8,7 +8,7 @@ class MapCollision {
 private:
 	MapDraw& map; //マップ描画クラスから
 
-	/* 4方向の衝突フラグ */
+	/* 角部分の4方向の衝突フラグ */
 	bool leftUpCollisionFlag();
 	bool rightUpCollisionFlag();
 	bool leftDownCollisionFlag();
@@ -28,7 +28,10 @@ private:
 	void collisionDetectionCenterDown1();
 	void collisionDetectionCenterDown2();
 
+	//判定を行うマップとそのマップの座標の組み合わせで衝突判定をとる
 	bool collisionDetection(const int& dirXY, const int& dirX, const int& dirY);
+
+	int collisionRange();
 
 	vector<bool> collisionFlag; //衝突フラグ
 	vector<bool> boundaryCriteria; //各方向の境界条件
@@ -39,6 +42,7 @@ public:
 
 	void update(); //更新処理
 
+	/* 上下左右4方向の衝突フラグ */
 	bool leftCollisionFlag();
 	bool rightCollisionFlag();
 	bool upCollisionFlag();

@@ -1,6 +1,7 @@
 #include "mapDraw.h"
 #include "coordinate_confirmation.h"
 #include "DxLib.h"
+#include "eventBase.h"
 
 int MapDraw::mapX = INITIAL_X; //x方向
 int MapDraw::mapY = INITIAL_Y; //y方向
@@ -8,15 +9,16 @@ int MapDraw::mapY = INITIAL_Y; //y方向
 MapDraw::MapDraw(int graph) : graph(graph),
 
                               information{
-	                              FLOOR, BEACH, FLOWER, MUSHROOM, HOUSE, SHALLOW, TIDE, WATER, CRYSTAL, STONE,
+	                              FLOOR, BEACH, FLOWER, MUSHROOM, HOUSE, SHALLOW, TIDE, WATER,
+	                              CRYSTAL, STONE,
 	                              MINERAL, WOODS, BRIDGE_WIDTH, BRIDGE_HEIGHT, TREASURE_BOX
                               },
 
                               currentCorner{
-	                              ((mapX - 32) / BLOCK_SIZE) % 25, ((mapX + 31) / BLOCK_SIZE) % 25,
-	                              ((mapY - 48) / BLOCK_SIZE) % 25, ((mapY + 15) / BLOCK_SIZE) % 25,
-	                              ((mapX - 16) / BLOCK_SIZE) % 25, ((mapX + 16) / BLOCK_SIZE) % 25,
-	                              ((mapY - 32) / BLOCK_SIZE) % 25, (mapY / BLOCK_SIZE) % 25,
+	                              ((mapX - 32) / BLOCK_SIZE) % AREA_WIDTH, ((mapX + 31) / BLOCK_SIZE) % AREA_WIDTH,
+	                              ((mapY - 48) / BLOCK_SIZE) % AREA_HEIGHT, ((mapY + 15) / BLOCK_SIZE) % AREA_HEIGHT,
+	                              ((mapX - 16) / BLOCK_SIZE) % AREA_WIDTH, ((mapX + 16) / BLOCK_SIZE) % AREA_WIDTH,
+	                              ((mapY - 32) / BLOCK_SIZE) % AREA_HEIGHT, (mapY / BLOCK_SIZE) % AREA_HEIGHT,
                               },
 
 
@@ -94,8 +96,13 @@ void MapDraw::drawMapChips(const int& mapInformation, const int& dirX, const int
 /// <param name="mapInfo">マップの情報</param>
 void MapDraw::mapName(int* column, int* row, const int& mapInfo) {
 	if (column == nullptr || row == nullptr) { return; } //nullチェック
+
 	*column = mapInfo % 10; //一の位を代入
-	*row = mapInfo / 10; //十の位以降を代入
+
+	if (mapInfo != TIDE)
+		*row = mapInfo / 10; //潮マップ以外は十の位以降を代入
+	else
+		*row = EventBase::night ? mapInfo / 10 : mapInfo / 10 - 1; //日中の潮マップを浅瀬に変更する
 }
 
 /// <summary>

@@ -9,6 +9,7 @@
 #include "eventBase.h"
 #include "dataSave.h"
 #include "gameUI.h"
+#include "dataText.h"
 
 void loopProcess() {
 
@@ -19,6 +20,7 @@ void loopProcess() {
 	EventField field(input, event, player); //フィールドクラス
 	DataSave save(player, field); //セーブデータクラス
 	GameUI gameUI(input);
+	DataText text;
 
 	while (true) {
 		ClearDrawScreen(); //画面クリア
@@ -27,6 +29,7 @@ void loopProcess() {
 		MapCollision collision(map); //コリジョンクラス
 
 		CALL_ONCE(save.roadSaveData()); //ファイル読み込み処理（一度のみ）
+
 
 		map.update(); //マップ更新処理
 		collision.update(); //コリジョン更新処理
@@ -37,7 +40,7 @@ void loopProcess() {
 			input.moveProcess(collision.leftCollisionFlag(), collision.rightCollisionFlag(),
 			                  collision.upCollisionFlag(), collision.downCollisionFlag());
 
-		//EventBase::gameTime++;
+		event.update();
 
 		field.update(); //フィールド更新処理
 
@@ -46,6 +49,8 @@ void loopProcess() {
 		player.update(); //プレイヤー更新処理
 
 		gameUI.update();
+
+		text.update();
 
 		if (EventBase::gameScene == END_SCENE) {
 			CALL_ONCE(save.writeSaveData()); //ファイル書き込み処理（一度のみ）

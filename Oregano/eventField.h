@@ -32,6 +32,8 @@ private:
 	int coinTypeDecision(const int& coinType);
 	int directionReverse(const int& direction);
 
+	void showEventState(vector<int>& objectName, vector<bool>& eventFlag);
+
 public:
 	vector<int> coin; //コイン情報格納用
 	vector<int> item; //アイテム情報格納用
@@ -41,6 +43,8 @@ public:
 
 	EventField(Input& input, EventBase& event, Player& player);
 	~EventField();
+
+	int mapEventInformation(const int& pos);
 
 	void update();
 

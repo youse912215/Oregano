@@ -1,10 +1,26 @@
 #include "eventBase.h"
 #include "constant.h"
+#include "DxLib.h"
 
 int EventBase::gameScene = GAME_SCENE;
-int EventBase::gameTime = GAME_HOUR * 20; //初期時間は12時
+bool EventBase::night = false;
 
 EventBase::EventBase(int graph) : MapDraw(graph) {
+	gameTime = GAME_HOUR * 19; //初期時間は12時
+}
+
+/// <summary>
+/// 夜の状態を変更(4時から20時までは日中として、false状態にする)
+/// </summary>
+void EventBase::changeTime() {
+	night = (gameTime >= GAME_HOUR * 4 && gameTime <= GAME_HOUR * 20) ? false : true;
+}
+
+/// <summary>
+/// ゲーム時間起動
+/// </summary>
+void EventBase::moveGameTime() {
+	gameTime = gameTime <= GAME_HOUR * 24 ? ++gameTime : 0; //24時になったら、0時に変更
 }
 
 /// <summary>
@@ -41,4 +57,12 @@ bool EventBase::getEventCoordinate(const int& mapX, const int& mapY, const int& 
 		&& (currentMapPosition(MAP_Y) == mapY)
 		&& (centralPlayerPosition(MAP_X) == cX)
 		&& (centralPlayerPosition(MAP_Y) == cY);
+}
+
+void EventBase::update() {
+	moveGameTime(); //ゲーム時間起動
+	changeTime(); //夜の状態を変更
+
+	DrawFormatString(WIN_WIDTH - 300, WIN_HEIGHT - 15, GetColor(255, 0, 0), "TIME:%d, 夜:%d",
+	                 gameTime, night, false);
 }

@@ -129,16 +129,51 @@ int EventField::directionReverse(const int& direction) {
 }
 
 /// <summary>
+/// 
+/// </summary>
+/// <param name="objectName">フィールドオブジェクトの名前</param>
+/// <param name="eventFlag">イベントフラグ</param>
+void EventField::showEventState(vector<int>& objectName, vector<bool>& eventFlag) {
+	for (unsigned int i = 0; i < objectName.size() / EVENT_INFORMATION_SIZE; ++i) {
+		if (!( //イベント発生場所の方向を向いているとき
+			input.moveDirection == directionReverse(objectName[(i * EVENT_INFORMATION_SIZE) + DIRECTION_])
+			//イベント発生場所の周辺にいるとき
+			&& event.getEventCoordinate(
+				objectName[(i * EVENT_INFORMATION_SIZE) + MAP_X_],
+				objectName[(i * EVENT_INFORMATION_SIZE) + MAP_Y_],
+				objectName[(i * EVENT_INFORMATION_SIZE) + CURRENT_X_]
+				+ directionSignX(objectName[(i * EVENT_INFORMATION_SIZE) + DIRECTION_]),
+				objectName[(i * EVENT_INFORMATION_SIZE) + CURRENT_Y_]
+				+ directionSignY(objectName[(i * EVENT_INFORMATION_SIZE) + DIRECTION_]))))
+			continue; //条件以外のとき、処理をスキップする
+
+		//イベントフラグがfalseのとき
+		if (!eventFlag[objectName[(i * EVENT_INFORMATION_SIZE) + EVENT_NO_]])
+			DrawFormatString(WIN_WIDTH - 100, 450, GetColor(255, 0, 0), "OK", false);
+			//イベントフラグがtrueのとき
+		else
+			DrawFormatString(WIN_WIDTH - 100, 450, GetColor(255, 0, 0), "NO", false);
+	}
+}
+
+/// <summary>
 /// 更新処理
 /// </summary>
 void EventField::update() {
 	fieldAction(); //フィールドアクション
+
+	/* イベントの有無を表示 */
+	showEventState(coin, coinFlag); //フィールドコイン
+	showEventState(item, itemFlag); //フィールドアイテム
+	showEventState(accessory, accessoryFlag); //フィールドアクセサリー
+	showEventState(jewel, jewelFlag); //フィールドジュエル
+	showEventState(mineral, mineralFlag); //フィールド鉱物
 
 	DrawFormatString(300, 0, GetColor(130, 130, 255), "イベント:%d, 向き:%d, T%d",
 	                 this->actionFlagX, input.moveDirection,
 	                 event.getEventCoordinate(8, 7, 12, 24), false);
 	DrawFormatString(100, 0, GetColor(255, 0, 0), "cx:%d, cy:%d,",
 	                 event.centralPlayerPosition(MAP_X), event.centralPlayerPosition(MAP_Y), false);
-	DrawFormatString(WIN_WIDTH - 100, WIN_HEIGHT - 15, GetColor(255, 0, 0), "TIME:%d",
-	                 EventBase::gameTime, false);
+
+
 }
