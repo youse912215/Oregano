@@ -184,9 +184,9 @@ bool Input::getInputButton(const int& buttonName) {
 /// 更新処理
 /// </summary>
 void Input::update() {
-	keyboardInformation();
-	padsInformation();
-	inputModeChange();
-	eventProcess();
-	endProcess();
+	keyboardInformation(); //キーボード情報
+	padsInformation(); //ジョイパッド情報
+	inputModeChange(); //モードチェンジ
+	eventProcess(); //イベント入力処理
+	endProcess(); //終了入力処理
 }

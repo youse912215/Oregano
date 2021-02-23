@@ -1,6 +1,8 @@
 #include "eventBase.h"
+#include "constant.h"
 
 int EventBase::gameScene = GAME_SCENE;
+int EventBase::gameTime = GAME_HOUR * 20; //èâä˙éûä‘ÇÕ12éû
 
 EventBase::EventBase(int graph) : MapDraw(graph) {
 }
@@ -11,9 +13,9 @@ EventBase::EventBase(int graph) : MapDraw(graph) {
 /// <param name="center">xÇ‹ÇΩÇÕy</param>
 int EventBase::centralPlayerPosition(int center) {
 	if (center == MAP_X) {
-		return (mapX / BLOCK_SIZE) % 25;
+		return (mapX / BLOCK_SIZE) % AREA_WIDTH;
 	}
-	return ((mapY - 16) / BLOCK_SIZE) % 25;
+	return ((mapY - BLOCK_SIZE / 4) / BLOCK_SIZE) % AREA_HEIGHT;
 }
 
 /// <summary>

@@ -17,7 +17,9 @@ const int MOVING_DISTANCE = 8; //移動速度
 const int INITIAL_X = 13600; //初期マップのx座標
 const int INITIAL_Y = 13200 + BLOCK_SIZE; //初期マップのy座標
 
-const int MOVE_RANGE = 160; //移動範囲（この数字のマップチップまで移動可能）
+const int MOVE_RANGE = 30; //移動範囲（この数字のマップチップまで移動可能）
+
+const int GAME_HOUR = 1200; //1時間あたりのgameTime
 
 const int PLAYER_STATUS_SIZE = 21; //プレイヤーステータス(距離以外)のサイズ
 const int PLAYER_ITEM_SIZE = 160; //プレイヤーのアイテムサイズ
@@ -146,7 +148,7 @@ enum MAP_INFORMATION {
 	//鉱石系
 	MINERAL = 190,
 	//宝箱
-	TREASURE_BOX = 300,
+	TREASURE_BOX = 199,
 };
 
 //ボタン種類

@@ -1,6 +1,5 @@
 #include "mapDraw.h"
 #include "coordinate_confirmation.h"
-#include "mapInformation.h"
 #include "DxLib.h"
 
 int MapDraw::mapX = INITIAL_X; //x方向
@@ -20,37 +19,7 @@ MapDraw::MapDraw(int graph) : graph(graph),
 	                              ((mapY - 32) / BLOCK_SIZE) % 25, (mapY / BLOCK_SIZE) % 25,
                               },
 
-                              boundaryCriteria{
-	                              //左条件
-	                              currentCorner[LEFT] == AREA_MAX && currentCorner[RIGHT] == AREA_MIN
-	                              && currentMap.x >= currentBoundaryMap1.x && currentMap.x == currentBoundaryMap2.x,
-	                              //右条件
-	                              currentCorner[LEFT] == AREA_MAX && currentCorner[RIGHT] == AREA_MIN
-	                              && currentMap.x == currentBoundaryMap1.x && currentMap.x <= currentBoundaryMap2.x,
-	                              //上条件
-	                              currentCorner[UP] == AREA_MAX && currentCorner[DOWN] == AREA_MIN
-	                              && currentMap.y >= currentBoundaryMap1.y && currentMap.y == currentBoundaryMap2.y,
-	                              //下条件
-	                              currentCorner[UP] == AREA_MAX && currentCorner[DOWN] == AREA_MIN
-	                              && currentMap.y == currentBoundaryMap1.y && currentMap.y <= currentBoundaryMap2.y,
-	                              //中央横1条件
-	                              currentCorner[CENTER_X1] == AREA_MAX && currentCorner[CENTER_X2] == AREA_MIN
-	                              && currentMap.x >= currentBoundaryMap1.x && currentMap.x == currentBoundaryMap2.x,
-	                              //中央横2条件
-	                              currentCorner[CENTER_X1] == AREA_MAX && currentCorner[CENTER_X2] == AREA_MIN
-	                              && currentMap.x == currentBoundaryMap1.x && currentMap.x <= currentBoundaryMap2.x,
-	                              //中央縦1条件
-	                              currentCorner[CENTER_Y1] == AREA_MAX && currentCorner[CENTER_Y2] == AREA_MIN
-	                              && currentMap.y >= currentBoundaryMap1.y && currentMap.y == currentBoundaryMap2.y,
-	                              //中央縦2条件
-	                              currentCorner[CENTER_Y1] == AREA_MAX && currentCorner[CENTER_Y2] == AREA_MIN
-	                              && currentMap.y == currentBoundaryMap1.y && currentMap.y <= currentBoundaryMap2.y,
-	                              //境界線交差時の特殊条件
-	                              currentCorner[LEFT] == AREA_MAX && currentCorner[RIGHT] == AREA_MIN
-	                              && currentCorner[UP] == AREA_MAX && currentCorner[DOWN] == AREA_MIN
-	                              && currentMap.x == currentBoundaryMap1.x && currentMap.y > currentBoundaryMap1.y
-	                              && currentMap.x < currentBoundaryMap2.x && currentMap.y == currentBoundaryMap2.y
-                              },
+
                               mapTopLeft(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapTopCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapTopRight(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
@@ -59,9 +28,7 @@ MapDraw::MapDraw(int graph) : graph(graph),
                               mapRightCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapBottomLeft(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapBottomCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-                              mapBottomRight(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-
-                              collisionFlag(12) {
+                              mapBottomRight(AREA_HEIGHT, vector<int>(AREA_WIDTH)) {
 	/* 行列番号 */
 	matrix.x = 0;
 	matrix.y = 0;
@@ -120,6 +87,18 @@ void MapDraw::drawMapChips(const int& mapInformation, const int& dirX, const int
 }
 
 /// <summary>
+/// マップの情報をもとにマップチップ画像の列と行を返す
+/// </summary>
+/// <param name="column">列</param>
+/// <param name="row">行</param>
+/// <param name="mapInfo">マップの情報</param>
+void MapDraw::mapName(int* column, int* row, const int& mapInfo) {
+	if (column == nullptr || row == nullptr) { return; } //nullチェック
+	*column = mapInfo % 10; //一の位を代入
+	*row = mapInfo / 10; //十の位以降を代入
+}
+
+/// <summary>
 /// マップ名情報による現在マップの描画
 /// </summary>
 void MapDraw::drawCurrentMaps(vector<vector<int>>& map, const int& dirX, const int& dirY) {
@@ -159,21 +138,6 @@ void MapDraw::update() {
 	else if (blockArea.x >= RIGHT_BOUNDARY && blockArea.y >= BOTTOM_BOUNDARY)
 		drawCurrentMaps(mapBottomRight, Right, Bottom); //右下マップ
 
-	/* 12ヵ所で衝突判定を行う */
-	collisionDetectionLeftUp(); //左上
-	collisionDetectionLeftDown(); //右上
-	collisionDetectionRightUp(); //左下
-	collisionDetectionRightDown(); //右下
-
-	collisionDetectionCenterLeft1(); //中央左1
-	collisionDetectionCenterLeft2(); //中央左2
-	collisionDetectionCenterRight1(); //中央右1
-	collisionDetectionCenterRight2(); //中央右2
-
-	collisionDetectionCenterUp1(); //中央上1
-	collisionDetectionCenterUp2(); //中央上2
-	collisionDetectionCenterDown1(); //中央下1
-	collisionDetectionCenterDown2(); //中央下2
 
 	DrawFormatString(1000, 75, GetColor(255, 255, 255), "LU:%d, CU1:%d, CU2:%d, RU:%d",
 	                 mapCentral[currentCorner[UP]][currentCorner[LEFT]],
@@ -339,178 +303,4 @@ void MapDraw::update() {
 	DrawFormatString(0, 45, GetColor(255, 255, 255), "cby1:%d, cbx1:%d, cby2:%d, cbx2:%d",
 	                 currentBoundaryMap1.y, currentBoundaryMap1.x, currentBoundaryMap2.y, currentBoundaryMap2.x, false);
 	DrawFormatString(0, 880, GetColor(200, 120, 0), "X%d, Y%d", mapX, mapY, false);
-}
-
-/// <summary>
-/// 左上の衝突判定
-/// </summary>
-void MapDraw::collisionDetectionLeftUp() {
-	if (boundaryCriteria[CROSS])
-		collisionFlag[LEFT_UP] = (collisionDetection(MAP_TOP_LEFT, LEFT, UP)) ? true : false;
-	else if (boundaryCriteria[LEFT])
-		collisionFlag[LEFT_UP] = (collisionDetection(MAP_LEFT_CENTRAL, LEFT, UP)) ? true : false;
-	else if (boundaryCriteria[UP])
-		collisionFlag[LEFT_UP] = (collisionDetection(MAP_TOP_CENTRAL, LEFT, UP)) ? true : false;
-	else
-		collisionFlag[LEFT_UP] = (collisionDetection(MAP_CENTRAL, LEFT, UP)) ? true : false;
-}
-
-/// <summary>
-/// 右上の衝突判定
-/// </summary>
-void MapDraw::collisionDetectionRightUp() {
-	if (boundaryCriteria[CROSS] || boundaryCriteria[UP])
-		collisionFlag[RIGHT_UP] = (collisionDetection(MAP_TOP_CENTRAL, RIGHT, UP)) ? true : false;
-	else if (boundaryCriteria[RIGHT])
-		collisionFlag[RIGHT_UP] = (collisionDetection(MAP_RIGHT_CENTRAL, RIGHT, UP)) ? true : false;
-	else
-		collisionFlag[RIGHT_UP] = (collisionDetection(MAP_CENTRAL, RIGHT, UP)) ? true : false;
-}
-
-/// <summary>
-/// 左下の衝突判定
-/// </summary>
-void MapDraw::collisionDetectionLeftDown() {
-	if (boundaryCriteria[LEFT] || boundaryCriteria[CROSS])
-		collisionFlag[LEFT_DOWN] = (collisionDetection(MAP_LEFT_CENTRAL, LEFT, DOWN)) ? true : false;
-	else if (boundaryCriteria[DOWN])
-		collisionFlag[LEFT_DOWN] = (collisionDetection(MAP_BOTTOM_CENTRAL, LEFT, DOWN)) ? true : false;
-	else
-		collisionFlag[LEFT_DOWN] = (collisionDetection(MAP_CENTRAL, LEFT, DOWN)) ? true : false;
-}
-
-/// <summary>
-/// 右下の衝突判定
-/// </summary>
-void MapDraw::collisionDetectionRightDown() {
-	if (boundaryCriteria[RIGHT])
-		collisionFlag[RIGHT_DOWN] = (collisionDetection(MAP_RIGHT_CENTRAL, RIGHT, DOWN)) ? true : false;
-	else if (boundaryCriteria[DOWN])
-		collisionFlag[RIGHT_DOWN] = (collisionDetection(MAP_BOTTOM_CENTRAL, RIGHT, DOWN)) ? true : false;
-	else
-		collisionFlag[RIGHT_DOWN] = (collisionDetection(MAP_CENTRAL, RIGHT, DOWN)) ? true : false;
-}
-
-/// <summary>
-/// 左中央1の衝突判定
-/// </summary>
-void MapDraw::collisionDetectionCenterLeft1() {
-	if (boundaryCriteria[CENTER_Y1])
-		collisionFlag[CENTER_LEFT1] = (collisionDetection(MAP_TOP_CENTRAL, LEFT, CENTER_Y1)) ? true : false;
-	else if (boundaryCriteria[LEFT])
-		collisionFlag[CENTER_LEFT1] = (collisionDetection(MAP_LEFT_CENTRAL, LEFT, CENTER_Y1)) ? true : false;
-	else
-		collisionFlag[CENTER_LEFT1] = (collisionDetection(MAP_CENTRAL, LEFT, CENTER_Y1)) ? true : false;
-}
-
-/// <summary>
-/// 左中央2の衝突判定
-/// </summary>
-void MapDraw::collisionDetectionCenterLeft2() {
-	if (boundaryCriteria[LEFT])
-		collisionFlag[CENTER_LEFT2] = (collisionDetection(MAP_LEFT_CENTRAL, LEFT, CENTER_Y2)) ? true : false;
-	else
-		collisionFlag[CENTER_LEFT2] = (collisionDetection(MAP_CENTRAL, LEFT, CENTER_Y2)) ? true : false;
-}
-
-/// <summary>
-/// 右中央1の衝突判定
-/// </summary>
-void MapDraw::collisionDetectionCenterRight1() {
-	if (boundaryCriteria[CENTER_Y1])
-		collisionFlag[CENTER_RIGHT1] = (collisionDetection(MAP_TOP_CENTRAL, RIGHT, CENTER_Y1)) ? true : false;
-	else if (boundaryCriteria[RIGHT])
-		collisionFlag[CENTER_RIGHT1] = (collisionDetection(MAP_RIGHT_CENTRAL, RIGHT, CENTER_Y1)) ? true : false;
-	else
-		collisionFlag[CENTER_RIGHT1] = (collisionDetection(MAP_CENTRAL, RIGHT, CENTER_Y1)) ? true : false;
-}
-
-/// <summary>
-/// 右中央2の衝突判定
-/// </summary>
-void MapDraw::collisionDetectionCenterRight2() {
-	if (boundaryCriteria[RIGHT])
-		collisionFlag[CENTER_RIGHT2] = (collisionDetection(MAP_RIGHT_CENTRAL, RIGHT, CENTER_Y2)) ? true : false;
-	else
-		collisionFlag[CENTER_RIGHT2] = (collisionDetection(MAP_CENTRAL, RIGHT, CENTER_Y2)) ? true : false;
-}
-
-/// <summary>
-/// 上中央1の衝突判定
-/// </summary>
-void MapDraw::collisionDetectionCenterUp1() {
-	if (boundaryCriteria[CENTER_X1])
-		collisionFlag[CENTER_UP1] = (collisionDetection(MAP_LEFT_CENTRAL, CENTER_X1, UP)) ? true : false;
-	else if (boundaryCriteria[UP])
-		collisionFlag[CENTER_UP1] = (collisionDetection(MAP_TOP_CENTRAL, CENTER_X1, UP)) ? true : false;
-	else
-		collisionFlag[CENTER_UP1] = (collisionDetection(MAP_CENTRAL, CENTER_X1, UP)) ? true : false;
-}
-
-/// <summary>
-/// 上中央2の衝突判定
-/// </summary>
-void MapDraw::collisionDetectionCenterUp2() {
-	if (boundaryCriteria[CENTER_X2])
-		collisionFlag[CENTER_UP2] = (collisionDetection(MAP_RIGHT_CENTRAL, CENTER_X2, UP)) ? true : false;
-	else if (boundaryCriteria[UP])
-		collisionFlag[CENTER_UP2] = (collisionDetection(MAP_TOP_CENTRAL, CENTER_X2, UP)) ? true : false;
-	else
-		collisionFlag[CENTER_UP2] = (collisionDetection(MAP_CENTRAL, CENTER_X2, UP)) ? true : false;
-}
-
-/// <summary>
-/// 下中央1の衝突判定
-/// </summary>
-void MapDraw::collisionDetectionCenterDown1() {
-	if (boundaryCriteria[CENTER_X1])
-		collisionFlag[CENTER_DOWN1] = (collisionDetection(MAP_LEFT_CENTRAL, CENTER_X1, DOWN)) ? true : false;
-	else if (boundaryCriteria[DOWN])
-		collisionFlag[CENTER_DOWN1] = (collisionDetection(MAP_BOTTOM_CENTRAL, CENTER_X1, DOWN)) ? true : false;
-	else
-		collisionFlag[CENTER_DOWN1] = (collisionDetection(MAP_CENTRAL, CENTER_X1, DOWN)) ? true : false;
-}
-
-/// <summary>
-/// 下中央2の衝突判定
-/// </summary>
-void MapDraw::collisionDetectionCenterDown2() {
-	if (boundaryCriteria[CENTER_X2])
-		collisionFlag[CENTER_DOWN2] = (collisionDetection(MAP_RIGHT_CENTRAL, CENTER_X2, DOWN)) ? true : false;
-	else if (boundaryCriteria[DOWN])
-		collisionFlag[CENTER_DOWN2] = (collisionDetection(MAP_BOTTOM_CENTRAL, CENTER_X2, DOWN)) ? true : false;
-	else
-		collisionFlag[CENTER_DOWN2] = (collisionDetection(MAP_CENTRAL, CENTER_X2, DOWN)) ? true : false;
-}
-
-/// <summary>
-/// 判定を行うマップとそのマップの座標の組み合わせで衝突判定をとる
-/// 結果をbool値で返す
-/// </summary>
-/// <param name="dirXY">判定を行うマップ名</param>
-/// <param name="dirX">判定対象のx座標</param>
-/// <param name="dirY">判定対象のy座標</param>
-bool MapDraw::collisionDetection(const int& dirXY, const int& dirX, const int& dirY) {
-	switch (dirXY) {
-	case MAP_TOP_LEFT:
-		return mapTopLeft[currentCorner[dirY]][currentCorner[dirX]] > MOVE_RANGE;
-	case MAP_TOP_CENTRAL:
-		return mapTopCentral[currentCorner[dirY]][currentCorner[dirX]] > MOVE_RANGE;
-	case MAP_TOP_RIGHT:
-		return mapTopRight[currentCorner[dirY]][currentCorner[dirX]] > MOVE_RANGE;
-	case MAP_LEFT_CENTRAL:
-		return mapLeftCentral[currentCorner[dirY]][currentCorner[dirX]] > MOVE_RANGE;
-	case MAP_CENTRAL:
-		return mapCentral[currentCorner[dirY]][currentCorner[dirX]] > MOVE_RANGE;
-	case MAP_RIGHT_CENTRAL:
-		return mapRightCentral[currentCorner[dirY]][currentCorner[dirX]] > MOVE_RANGE;
-	case MAP_BOTTOM_LEFT:
-		return mapBottomLeft[currentCorner[dirY]][currentCorner[dirX]] > MOVE_RANGE;
-	case MAP_BOTTOM_CENTRAL:
-		return mapBottomCentral[currentCorner[dirY]][currentCorner[dirX]] > MOVE_RANGE;
-	case MAP_BOTTOM_RIGHT:
-		return mapBottomRight[currentCorner[dirY]][currentCorner[dirX]] > MOVE_RANGE;
-	default:
-		return false;
-	}
 }
