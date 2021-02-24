@@ -1,6 +1,7 @@
 #include "dataSave.h"
 #include "mapDraw.h"
 #include "constant.h"
+#include "eventBase.h"
 #include <iomanip>
 #include <iostream>
 #include <fstream>
@@ -200,6 +201,8 @@ void DataSave::roadSaveData() {
 	getLastTimeEvent(lastTimeMineral, field.mineral);
 
 	roadBinaryFile(roadItemText, ItemTextBox, itemTextData);
+
+	EventBase::gameScene = GAME_SCENE;
 }
 
 /// <summary>

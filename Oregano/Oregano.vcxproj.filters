@@ -61,6 +61,12 @@
     <Filter Include="ソース ファイル\UI">
       <UniqueIdentifier>{9016ed5c-d3ed-4d57-8d6b-7002a66b402f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Scene">
+      <UniqueIdentifier>{0df639b1-2c50-4b2c-84a6-0542bff5a878}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene">
+      <UniqueIdentifier>{203d757c-ff24-4895-8c46-dd4189e923e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="human.cpp">
@@ -72,9 +78,6 @@
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル\Main</Filter>
     </ClCompile>
-    <ClCompile Include="mapInformation.cpp">
-      <Filter>ソース ファイル\Map</Filter>
-    </ClCompile>
     <ClCompile Include="windowPreference.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
@@ -83,9 +86,6 @@
     </ClCompile>
     <ClCompile Include="inputProcess.cpp">
       <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
-    <ClCompile Include="mapImport.cpp">
-      <Filter>ソース ファイル\Map</Filter>
     </ClCompile>
     <ClCompile Include="mapDraw.cpp">
       <Filter>ソース ファイル\Map</Filter>
@@ -117,6 +117,12 @@
     <ClCompile Include="dataText.cpp">
       <Filter>ソース ファイル\Data</Filter>
     </ClCompile>
+    <ClCompile Include="sceneMenu.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneGame.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="human.h">
@@ -124,12 +130,6 @@
     </ClInclude>
     <ClInclude Include="player.h">
       <Filter>ヘッダー ファイル\Human</Filter>
-    </ClInclude>
-    <ClInclude Include="mapInformation.h">
-      <Filter>ヘッダー ファイル\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="mapImport.h">
-      <Filter>ヘッダー ファイル\Map</Filter>
     </ClInclude>
     <ClInclude Include="mapDraw.h">
       <Filter>ヘッダー ファイル\Map</Filter>
@@ -172,6 +172,12 @@
     </ClInclude>
     <ClInclude Include="dataText.h">
       <Filter>ヘッダー ファイル\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneGame.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneMenu.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

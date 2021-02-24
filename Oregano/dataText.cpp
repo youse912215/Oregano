@@ -128,5 +128,5 @@ int DataText::textLine(const int& line) {
 /// XVˆ—
 /// </summary>
 void DataText::update() {
-	showItemText();
+	//showItemText();
 }

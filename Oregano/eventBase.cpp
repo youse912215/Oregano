@@ -2,7 +2,7 @@
 #include "constant.h"
 #include "DxLib.h"
 
-int EventBase::gameScene = GAME_SCENE;
+int EventBase::gameScene = TITLE_SCENE;
 bool EventBase::night = false;
 
 EventBase::EventBase(int graph) : MapDraw(graph) {

@@ -28,29 +28,32 @@ void loopProcess() {
 		MapDraw map(source.mapChipGraph()); //マップクラス
 		MapCollision collision(map); //コリジョンクラス
 
-		CALL_ONCE(save.roadSaveData()); //ファイル読み込み処理（一度のみ）
-
-
-		map.update(); //マップ更新処理
-		collision.update(); //コリジョン更新処理
-
 		input.update(); //入力更新処理
 
-		if (!gameUI.changeFlag) //移動処理（アクション変更時は移動不可）
-			input.moveProcess(collision.leftCollisionFlag(), collision.rightCollisionFlag(),
-			                  collision.upCollisionFlag(), collision.downCollisionFlag());
+		if (EventBase::gameScene == TITLE_SCENE)
+			CALL_ONCE(save.roadSaveData()); //ファイル読み込み処理（一度のみ）
 
-		event.update();
+		if (EventBase::gameScene == GAME_SCENE) {
+			map.update(); //マップ更新処理
+			collision.update(); //コリジョン更新処理
 
-		field.update(); //フィールド更新処理
 
-		save.update(); //データ更新処理
+			if (!gameUI.changeFlag) //移動処理（アクション変更時は移動不可）
+				input.moveProcess(collision.leftCollisionFlag(), collision.rightCollisionFlag(),
+				                  collision.upCollisionFlag(), collision.downCollisionFlag());
 
-		player.update(); //プレイヤー更新処理
+			event.update();
 
-		gameUI.update();
+			field.update(); //フィールド更新処理
 
-		text.update();
+			save.update(); //データ更新処理
+
+			player.update(); //プレイヤー更新処理
+
+			gameUI.update();
+
+			text.update();
+		}
 
 		if (EventBase::gameScene == END_SCENE) {
 			CALL_ONCE(save.writeSaveData()); //ファイル書き込み処理（一度のみ）

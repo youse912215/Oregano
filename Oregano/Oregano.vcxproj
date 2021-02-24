@@ -143,9 +143,9 @@
     <ClCompile Include="mapBase.cpp" />
     <ClCompile Include="mapCollision.cpp" />
     <ClCompile Include="mapDraw.cpp" />
-    <ClCompile Include="mapImport.cpp" />
-    <ClCompile Include="mapInformation.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="sceneGame.cpp" />
+    <ClCompile Include="sceneMenu.cpp" />
     <ClCompile Include="vec2.cpp" />
     <ClCompile Include="windowPreference.cpp" />
   </ItemGroup>
@@ -163,9 +163,9 @@
     <ClInclude Include="mapBase.h" />
     <ClInclude Include="mapCollision.h" />
     <ClInclude Include="mapDraw.h" />
-    <ClInclude Include="mapImport.h" />
-    <ClInclude Include="mapInformation.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="sceneGame.h" />
+    <ClInclude Include="sceneMenu.h" />
     <ClInclude Include="vec2.h" />
     <ClInclude Include="windowPreference.h" />
   </ItemGroup>

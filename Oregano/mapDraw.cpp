@@ -1,5 +1,4 @@
 #include "mapDraw.h"
-#include "coordinate_confirmation.h"
 #include "DxLib.h"
 #include "eventBase.h"
 
