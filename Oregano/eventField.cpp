@@ -51,16 +51,6 @@ void EventField::getFieldObject(vector<int>& objectName, vector<bool>& eventFlag
 }
 
 /// <summary>
-/// オブジェクト量を保存先に格納する
-/// </summary>
-/// <param name="saveLocation">データ保存先</param>
-/// <param name="objectVolume">データ量</param>
-void EventField::storingObject(int* saveLocation, const int& objectVolume) {
-	if (saveLocation == nullptr) { return; } //nullチェック
-	*saveLocation += objectVolume;
-}
-
-/// <summary>
 /// フィールドアクション
 /// </summary>
 void EventField::fieldAction() {
@@ -74,6 +64,10 @@ void EventField::fieldAction() {
 		actionFlagX = true; //ボタンを押しているときはアクションフラグをtrue
 	}
 	else actionFlagX = false; //ボタンを押していないときはアクションフラグをfalse
+}
+
+void EventField::changeMenuScene() {
+	if (input.Y) EventBase::gameScene = MENU_ITEM_SCENE;
 }
 
 /// <summary>
@@ -129,7 +123,7 @@ int EventField::directionReverse(const int& direction) {
 }
 
 /// <summary>
-/// 
+/// イベントの有無を確認する
 /// </summary>
 /// <param name="objectName">フィールドオブジェクトの名前</param>
 /// <param name="eventFlag">イベントフラグ</param>
@@ -160,7 +154,9 @@ void EventField::showEventState(vector<int>& objectName, vector<bool>& eventFlag
 /// 更新処理
 /// </summary>
 void EventField::update() {
+	event.update(); //イベント更新処理
 	fieldAction(); //フィールドアクション
+	changeMenuScene(); //メニューシーンに切り替える
 
 	/* イベントの有無を表示 */
 	showEventState(coin, coinFlag); //フィールドコイン
@@ -175,5 +171,5 @@ void EventField::update() {
 	DrawFormatString(100, 0, GetColor(255, 0, 0), "cx:%d, cy:%d,",
 	                 event.centralPlayerPosition(MAP_X), event.centralPlayerPosition(MAP_Y), false);
 
-
+	player.update(); //プレイヤー更新処理
 }

@@ -72,17 +72,16 @@ void MapDraw::drawMapChips(const int& mapInformation, const int& dirX, const int
 
 	mapName(&matrix.y, &matrix.x, mapInformation); //マップ情報から列と行を取り出す
 	//マップチップの描画
-	for (int y = 0; y < mapAspectSize.y; y++) {
-		for (int x = 0; x < mapAspectSize.x; x++) {
+	for (int y = 0; y < mapAspectSize.y; ++y) {
+		for (int x = 0; x < mapAspectSize.x; ++x) {
 			//mapInformationのチップをDestの位置に描画
-			if (map[y][x] == mapInformation) {
-				DrawRectGraph(
-					x * BLOCK_SIZE + screen.x + mapBetweenDistance * dirX,
-					y * BLOCK_SIZE + screen.y + mapBetweenDistance * dirY,
-					matrix.y * BLOCK_SIZE, matrix.x * BLOCK_SIZE,
-					BLOCK_SIZE, BLOCK_SIZE,
-					graph, true, false);
-			}
+			if (map[y][x] != mapInformation) continue; //条件以外のとき、処理をスキップする
+			DrawRectGraph(
+				x * BLOCK_SIZE + screen.x + mapBetweenDistance * dirX,
+				y * BLOCK_SIZE + screen.y + mapBetweenDistance * dirY,
+				matrix.y * BLOCK_SIZE, matrix.x * BLOCK_SIZE,
+				BLOCK_SIZE, BLOCK_SIZE,
+				graph, true, false);
 		}
 	}
 }

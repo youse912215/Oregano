@@ -1,5 +1,6 @@
 #pragma once
 #include "DxLib.h"
+#include "mapCollision.h"
 #include <vector>
 
 using namespace std;
@@ -37,8 +38,7 @@ public:
 	void keyboardInformation();
 	void padsInformation();
 	void inputModeChange();
-	void moveProcess(const bool& collisionLeft, const bool& collisionRight,
-	                 const bool& collisionUp, const bool& collisionDown);
+	void moveProcess(MapCollision& collision);
 	void eventProcess();
 	void endProcess();
 	void update();

@@ -59,6 +59,8 @@ MapCollision::~MapCollision() {
 }
 
 void MapCollision::update() {
+	map.update(); //マップ更新処理
+
 	/* 12ヵ所で衝突判定を行う */
 	collisionDetectionLeftUp(); //左上
 	collisionDetectionLeftDown(); //右上

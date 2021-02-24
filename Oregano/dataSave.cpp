@@ -8,8 +8,8 @@
 #include <cmath>
 #include "DxLib.h"
 
-DataSave::DataSave(Player& player, EventField& field)
-	: player(player), field(field),
+DataSave::DataSave(Player& player, EventField& field, DataText& text)
+	: player(player), field(field), text(text),
 	  currentStatus(STATUS_INFORMATION_SIZE), //ステータス
 	  /* 所持品 */
 	  currentPossessionItem(PLAYER_ITEM_SIZE), currentPossessionAccessory(PLAYER_ACCESSORY_SIZE),
@@ -200,7 +200,8 @@ void DataSave::roadSaveData() {
 	roadBinaryFile(currentMineral, lastTimeMineral, mineralData);
 	getLastTimeEvent(lastTimeMineral, field.mineral);
 
-	roadBinaryFile(roadItemText, ItemTextBox, itemTextData);
+	roadBinaryFile(roadItemText, OutputItemText, itemTextData);
+	getLastTimeEvent(OutputItemText, text.textBox);
 
 	EventBase::gameScene = GAME_SCENE;
 }
@@ -209,62 +210,5 @@ void DataSave::roadSaveData() {
 /// 更新処理
 /// </summary>
 void DataSave::update() {
-	DrawFormatString(0, 500, GetColor(120, 0, 100), "トレジャーランク:%d, 花萌葱:%d, 金糸雀:%d, 葡萄染:%d, 白百合:%d",
-	                 player.status[TREASURE_RANK], player.status[GREEN_COIN], player.status[YELLOW_COIN],
-	                 player.status[PURPLE_COIN], player.status[WHITE_COIN], false);
-	DrawFormatString(0, 515, GetColor(120, 0, 100), "現在生命力:%d, 最大生命力:%d, 攻撃力:%d, 交渉力:%d",
-	                 player.status[CURRENT_LIFE], player.status[MAX_LIFE],
-	                 player.status[ATTACK], player.status[BARGAINING_POWER], false);
-	DrawFormatString(0, 530, GetColor(120, 0, 100), "猛毒耐性:%d, 猛毒属性値:%d, 猛毒蓄積:%d,  麻痺耐性:%d, 麻痺属性値:%d, 麻痺蓄積:%d",
-	                 player.status[DEADLY_POISON_RESISTANCE], player.status[DEADLY_POISON_VALUE],
-	                 player.status[DEADLY_POISON_ACCUMULATION],
-	                 player.status[PARALYSIS_RESISTANCE], player.status[PARALYSIS_VALUE],
-	                 player.status[PARALYSIS_ACCUMULATION], false);
-	DrawFormatString(0, 545, GetColor(120, 0, 100), "催眠耐性:%d, 催眠属性値:%d, 催眠蓄積:%d, 出血耐性:%d, 出血属性値:%d, 出血蓄積:%d",
-	                 player.status[HYPNOSIS_RESISTANCE], player.status[HYPNOSIS_VALUE],
-	                 player.status[HYPNOSIS_ACCUMULATION],
-	                 player.status[BLOODING_RESISTANCE], player.status[BLOODING_VALUE],
-	                 player.status[BLOODING_ACCUMULATION], false);
 
-	DrawFormatString(0, 630, GetColor(0, 0, 0), "非常食:%d, パン:%d, 肉:%d, 魚:%d、豆:%d, 地図:%d, ボトル小:%d, ボトル大:%d",
-	                 player.possessionItem[0], player.possessionItem[1], player.possessionItem[2],
-	                 player.possessionItem[3], player.possessionItem[4], player.possessionItem[5],
-	                 player.possessionItem[6], player.possessionItem[7], false);
-	DrawFormatString(0, 645, GetColor(0, 0, 0),
-	                 "不思議なボトル:%d, 毒草:%d, 解毒草:%d, 健康草:%d、チューリップ:%d, アロエ:%d, マリーゴールド:%d, 麻酔花:%d",
-	                 player.possessionItem[8], player.possessionItem[9], player.possessionItem[10],
-	                 player.possessionItem[11], player.possessionItem[12], player.possessionItem[13],
-	                 player.possessionItem[14], player.possessionItem[15], false);
-	DrawFormatString(0, 660, GetColor(0, 0, 0),
-	                 "薔薇:%d, 寝袋:%d, スコップ:%d, ピッケル:%d、ナイフ:%d, 長靴:%d, アロマキノコ:%d, 止血剤:%d",
-	                 player.possessionItem[16], player.possessionItem[17], player.possessionItem[18],
-	                 player.possessionItem[19], player.possessionItem[20], player.possessionItem[21],
-	                 player.possessionItem[22], player.possessionItem[23], false);
-	DrawFormatString(0, 675, GetColor(0, 0, 0),
-	                 "健康食:%d, 猛毒薬:%d, 麻酔薬:%d, 暗視草:%d、ルピナス:%d, タンポポ:%d, マッスルダケ:%d, 豊樹草:%d",
-	                 player.possessionItem[24], player.possessionItem[25], player.possessionItem[26],
-	                 player.possessionItem[27], player.possessionItem[28], player.possessionItem[29],
-	                 player.possessionItem[30], player.possessionItem[31], false);
-	DrawFormatString(0, 690, GetColor(0, 0, 0),
-	                 "赤実:%d, バーナー:%d, 東国飯:%d, シーパワー:%d、ブラッドエキス:%d, ブラッドポーション:%d、快眠ダケ:%d, スリープジェル:%d",
-	                 player.possessionItem[32], player.possessionItem[33], player.possessionItem[34],
-	                 player.possessionItem[35], player.possessionItem[36], player.possessionItem[37],
-	                 player.possessionItem[38], player.possessionItem[39], false);
-
-	DrawFormatString(0, 720, GetColor(0, 0, 0), "Bネック:%d, Bチョー:%d, Bペンダ:%d, Bリング:%d、Bピアス:%d, テレサ:%d, マチルダ:%d, ナガタラ:%d",
-	                 player.possessionAccessory[0], player.possessionAccessory[1], player.possessionAccessory[2],
-	                 player.possessionAccessory[3], player.possessionAccessory[4], player.possessionAccessory[5],
-	                 player.possessionAccessory[6], player.possessionAccessory[7], false);
-	DrawFormatString(0, 735, GetColor(0, 0, 0), "Sネック:%d, Sチョー:%d, Sペンダ:%d, Sリング:%d、Sピアス:%d, 東国紋章:%d, Gネック:%d, Gペンダ:%d",
-	                 player.possessionAccessory[8], player.possessionAccessory[9], player.possessionAccessory[10],
-	                 player.possessionAccessory[11], player.possessionAccessory[12], player.possessionAccessory[14],
-	                 player.possessionAccessory[15], player.possessionAccessory[16], false);
-
-	DrawFormatString(0, 770, GetColor(0, 0, 0), "エメラルド:%d, Tガーネット:%d, Cトルマリン:%d, ペリD:%d、花萌葱ロードN:%d",
-	                 player.possessionJewel[0], player.possessionJewel[1], player.possessionJewel[2],
-	                 player.possessionJewel[3], player.possessionJewel[20], false);
-
-	DrawFormatString(0, 800, GetColor(0, 0, 0), "軽石:%d, 東栄石:%d, 南栄石:%d, 西栄石:%d、北栄石:%d, 黄金超石:%d",
-	                 player.possessionMineral[0], player.possessionMineral[1], player.possessionMineral[2],
-	                 player.possessionMineral[3], player.possessionMineral[4], player.possessionMineral[4], false);
 }

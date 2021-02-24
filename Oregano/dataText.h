@@ -1,13 +1,13 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "dataSave.h"
+#include "inputProcess.h"
 
 using namespace std;
 
 class DataText {
 private:
-	DataSave& save;
+	Input& input;
 
 	string textFile; //テキストファイル
 
@@ -15,16 +15,22 @@ private:
 	wstring charFromUtf8(); //utf8->wstring変換
 
 	unsigned int defaultColor;
-	const int itemFontSize = 10;
+	const int itemFontSize = 40;
 
 	void showItemText();
-	int textLine(const int& line);
+	void drawString(const int& line);
 
-	vector<int> num;
+	int textLine(const int& line);
+	int textPosition(const int& line);
+	int lineFeed(const int& line);
+
+	void returnGameScene();
 
 public:
-	DataText(DataSave& save);
+	DataText(Input& input);
 	~DataText();
+
+	vector<int> textBox;
 
 	void update(); //更新処理
 };

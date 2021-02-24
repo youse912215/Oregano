@@ -11,6 +11,8 @@
 #include "gameUI.h"
 #include "dataText.h"
 
+#include "sceneTitle.h"
+
 void loopProcess() {
 
 	Input input; //入力クラス
@@ -18,44 +20,38 @@ void loopProcess() {
 	Player player(source.playerGraph()); //プレイヤークラス
 	EventBase event; //イベントクラス
 	EventField field(input, event, player); //フィールドクラス
-	DataSave save(player, field); //セーブデータクラス
+	DataText text(input);
+	DataSave save(player, field, text); //セーブデータクラス
 	GameUI gameUI(input);
-	DataText text(save);
 
 	while (true) {
 		ClearDrawScreen(); //画面クリア
 
-		MapDraw map(source.mapChipGraph()); //マップクラス
-		MapCollision collision(map); //コリジョンクラス
+		MapDraw mapDraw_(source.mapChipGraph()); //マップクラス
+		MapCollision collision(mapDraw_); //コリジョンクラス
 
 		input.update(); //入力更新処理
 
-		if (EventBase::gameScene == TITLE_SCENE)
-			CALL_ONCE(save.roadSaveData()); //ファイル読み込み処理（一度のみ）
+		if (EventBase::gameScene == TITLE_SCENE) {
+			titleProcess(save); //タイトルシーン処理
+			save.update();
+			DrawFormatString(0, 0, GetColor(255, 255, 255), "%d", text.textBox[7], false);
+		}
 
-		if (EventBase::gameScene == GAME_SCENE) {
-			map.update(); //マップ更新処理
+		else if (EventBase::gameScene == GAME_SCENE) {
 			collision.update(); //コリジョン更新処理
 
-
 			if (!gameUI.changeFlag) //移動処理（アクション変更時は移動不可）
-				input.moveProcess(collision.leftCollisionFlag(), collision.rightCollisionFlag(),
-				                  collision.upCollisionFlag(), collision.downCollisionFlag());
-
-			event.update();
+				input.moveProcess(collision);
 
 			field.update(); //フィールド更新処理
 
-			save.update(); //データ更新処理
-
-			player.update(); //プレイヤー更新処理
-
-			gameUI.update();
-
-			text.update();
+			gameUI.update(); //UI更新処理
 		}
-
-		if (EventBase::gameScene == END_SCENE) {
+		else if (EventBase::gameScene == MENU_ITEM_SCENE) {
+			text.update(); //テキスト更新処理
+		}
+		else if (EventBase::gameScene == END_SCENE) {
 			CALL_ONCE(save.writeSaveData()); //ファイル書き込み処理（一度のみ）
 			break; //終了処理
 		}

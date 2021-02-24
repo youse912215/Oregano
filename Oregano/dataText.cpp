@@ -1,28 +1,12 @@
 #include "dataText.h"
 #include "DxLib.h"
 #include "constant.h"
+#include "eventBase.h"
 #include <iostream>
 #include <fstream>
 #include <codecvt>
 
-DataText::DataText(DataSave& save) : save(save),
-
-                                     num{
-	                                     7, 15, 1, 5, 15, 1, 3, 30, 1,
-	                                     3, 17, 1, 3, 15, 1, 5, 15, 1,
-	                                     9, 24, 1, 9, 24, 1, 15, 25, 1,
-	                                     5, 27, 1, 7, 25, 1, 7, 15, 1,
-	                                     13, 9, 1, 7, 9, 1, 15, 9, 1,
-	                                     7, 9, 1, 5, 9, 1, 5, 35, 1,
-	                                     9, 35, 1, 9, 23, 1, 7, 13, 1,
-	                                     5, 27, 1, 13, 9, 1, 7, 15, 29,
-	                                     7, 16, 35, 7, 15, 22, 7, 15, 37,
-	                                     7, 23, 1, 9, 9, 1, 9, 9, 1,
-	                                     13, 9, 1, 7, 30, 1, 5, 29, 1,
-	                                     9, 21, 1, 7, 37, 37, 11, 46, 43,
-	                                     15, 9, 1, 19, 15, 55, 9, 9, 1,
-	                                     15, 15, 35
-                                     } {
+DataText::DataText(Input& input) : input(input), textBox(120) {
 	defaultColor = GetColor(185, 185, 210);
 	textFile = "resource\\Data\\itemData.txt";
 }
@@ -86,16 +70,10 @@ void DataText::showItemText() {
 
 	ChangeFont("装甲明朝", DX_CHARSET_DEFAULT); //読み込んだフォントに変更
 
-	int add = 0;
-
 	////アイテム一覧と説明を表示
-	for (unsigned int i = 0; i < save.ItemTextBox.size(); ++i) {
-		if (i >= 90) add = 800;
-
-		DrawFormatString(200 + add, i * itemFontSize - add, defaultColor,
-		                 convertStringFromWString(charFromUtf8()).substr(textLine(i), save.ItemTextBox[i]).c_str(),
-		                 false);
-	}
+	drawString(0);
+	drawString(1);
+	drawString(2);
 
 
 	SetFontSize(15); //フォントサイズをデフォルトに戻す
@@ -108,6 +86,12 @@ void DataText::showItemText() {
 	}
 }
 
+void DataText::drawString(const int& line) {
+	DrawFormatString(textPosition(line), 50 + (line / 3) * itemFontSize + lineFeed(line), defaultColor,
+	                 convertStringFromWString(charFromUtf8()).substr(textLine(line), textBox[line]).c_str(),
+	                 false);
+}
+
 /// <summary>
 /// テキストの開始位置を返す
 /// </summary>
@@ -117,16 +101,37 @@ int DataText::textLine(const int& line) {
 
 	if (line != 0) {
 		for (int n = line - 1; n >= 0; --n) {
-			textLen += save.ItemTextBox[n]; //行数分の配列中の文字数を加算
+			textLen += textBox[n]; //行数分の配列中の文字数を加算
 		}
 		return textLen; //加算後、文字数の和を返す
 	}
 	return 0; //最初なので、初期開始位置の0を返す
 }
 
+int DataText::textPosition(const int& line) {
+	if (line % 3 == 1) return 500;
+	if (line % 3 == 2) return 800;
+	return 200;
+}
+
+int DataText::lineFeed(const int& line) {
+	//if (line >= 3 && line % 3 != 2) return itemFontSize * 2;
+	//if (line >= 3 && line % 3 == 2) return itemFontSize * 4;
+	return 0;
+}
+
+void DataText::returnGameScene() {
+	if (input.Y) {
+		EventBase::gameScene = GAME_SCENE;
+	}
+}
+
 /// <summary>
 /// 更新処理
 /// </summary>
 void DataText::update() {
-	//showItemText();
+	showItemText();
+	returnGameScene();
+
+	DrawFormatString(0, 0, defaultColor, "%d", textBox[7], false);
 }

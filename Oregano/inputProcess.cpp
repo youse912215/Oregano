@@ -60,40 +60,39 @@ void Input::inputModeChange() {
 /// <summary>
 /// スティック（十字キー）移動処理
 /// </summary>
-void Input::moveProcess(const bool& collisionLeft, const bool& collisionRight,
-                        const bool& collisionUp, const bool& collisionDown) {
+void Input::moveProcess(MapCollision& collision) {
 
 	//左移動
 	if (getInputButton(STICK_LEFT)) {
 		MapDraw::mapX -= MOVING_DISTANCE;
-		if (collisionLeft) MapDraw::mapX += MOVING_DISTANCE;
+		if (collision.leftCollisionFlag()) MapDraw::mapX += MOVING_DISTANCE;
 		moveDirection = LEFT;
 	}
 	//右移動
 	if (getInputButton(STICK_RIGHT)) {
 		MapDraw::mapX += MOVING_DISTANCE;
-		if (collisionRight) MapDraw::mapX -= MOVING_DISTANCE;
+		if (collision.rightCollisionFlag()) MapDraw::mapX -= MOVING_DISTANCE;
 		moveDirection = RIGHT;
 	}
 	//上移動
 	if (getInputButton(STICK_UP)) {
 		MapDraw::mapY -= MOVING_DISTANCE;
-		if (collisionUp) MapDraw::mapY += MOVING_DISTANCE;
+		if (collision.upCollisionFlag()) MapDraw::mapY += MOVING_DISTANCE;
 		moveDirection = UP;
 	}
 	//下移動
 	if (getInputButton(STICK_DOWN)) {
 		MapDraw::mapY += MOVING_DISTANCE;
-		if (collisionDown) MapDraw::mapY -= MOVING_DISTANCE;
+		if (collision.downCollisionFlag()) MapDraw::mapY -= MOVING_DISTANCE;
 		moveDirection = DOWN;
 	}
 
 	DrawFormatString(0, 150, GetColor(255, 255, 120), "%d   %d",
-	                 collisionLeft, collisionRight, false);
+	                 collision.leftCollisionFlag(), collision.rightCollisionFlag(), false);
 	DrawFormatString(0, 135, GetColor(255, 255, 120), "  %d",
-	                 collisionUp, false);
+	                 collision.upCollisionFlag(), false);
 	DrawFormatString(0, 165, GetColor(255, 255, 120), "  %d",
-	                 collisionDown, false);
+	                 collision.downCollisionFlag(), false);
 
 
 }

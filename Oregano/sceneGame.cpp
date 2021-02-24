@@ -1,4 +1,4 @@
 #include "sceneGame.h"
 
-void sceneGameProcess() {
+void gameProcess() {
 }

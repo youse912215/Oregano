@@ -1,6 +1,7 @@
 #pragma once
 #include "player.h"
 #include "eventField.h"
+#include "dataText.h"
 #include <vector>
 #include <string>
 
@@ -10,6 +11,7 @@ class DataSave {
 private:
 	Player& player;
 	EventField& field;
+	DataText& text;
 
 	vector<int> currentStatus; //現在までのステータス格納用
 	vector<int> lastTimeStatus; //前回までのステータス格納用
@@ -65,11 +67,11 @@ private:
 	void getLastTimeEvent(vector<int>& lastTimeEvent, vector<int>& saveLocation);
 
 public:
-	DataSave(Player& player, EventField& field);
+	DataSave(Player& player, EventField& field, DataText& text);
 	~DataSave();
 
 	vector<int> roadItemText;
-	vector<int> ItemTextBox;
+	vector<int> OutputItemText;
 
 	void writeSaveData();
 	void roadSaveData();

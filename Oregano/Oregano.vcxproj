@@ -146,6 +146,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="sceneGame.cpp" />
     <ClCompile Include="sceneMenu.cpp" />
+    <ClCompile Include="sceneTitle.cpp" />
     <ClCompile Include="vec2.cpp" />
     <ClCompile Include="windowPreference.cpp" />
   </ItemGroup>
@@ -166,6 +167,7 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="sceneGame.h" />
     <ClInclude Include="sceneMenu.h" />
+    <ClInclude Include="sceneTitle.h" />
     <ClInclude Include="vec2.h" />
     <ClInclude Include="windowPreference.h" />
   </ItemGroup>
