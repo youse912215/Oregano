@@ -16,7 +16,7 @@ DataSave::DataSave(Player& player, EventField& field)
 	  /* フィールド */
 	  currentCoin(COIN_INFORMATION_SIZE), currentItem(ITEM_INFORMATION_SIZE),
 	  currentAccessory(ACCESSORY_INFORMATION_SIZE), currentJewel(JEWEL_INFORMATION_SIZE),
-	  currentMineral(MINERAL_INFORMATION_SIZE) {
+	  currentMineral(MINERAL_INFORMATION_SIZE), roadItemText(120) {
 	statusData = "resource\\Data\\statusData.bin"; //ステータス
 	/* 所持品 */
 	possessionItemData = "resource\\Data\\possessionItemData.bin";
@@ -29,6 +29,8 @@ DataSave::DataSave(Player& player, EventField& field)
 	accessoryData = "resource\\Data\\accessoryData.bin";
 	jewelData = "resource\\Data\\jewelData.bin";
 	mineralData = "resource\\Data\\mineralData.bin";
+
+	itemTextData = "resource\\Data\\itemTextLengthData.bin";
 }
 
 DataSave::~DataSave() {
@@ -196,6 +198,8 @@ void DataSave::roadSaveData() {
 	/* フィールド鉱物 */
 	roadBinaryFile(currentMineral, lastTimeMineral, mineralData);
 	getLastTimeEvent(lastTimeMineral, field.mineral);
+
+	roadBinaryFile(roadItemText, ItemTextBox, itemTextData);
 }
 
 /// <summary>

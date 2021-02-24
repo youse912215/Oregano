@@ -43,6 +43,8 @@ const int MINERAL_EVENT_SIZE = 20; //鉱物イベントのサイズ
 
 const int ALL_COIN_TYPE = 4; //コインの種類
 
+const int TERMINAL_CHAR = 1;
+
 #define CALL_ONCE(src)\
      do {\
           static bool initialized = false;\
@@ -55,8 +57,11 @@ const int ALL_COIN_TYPE = 4; //コインの種類
 //ゲームシーン
 enum GAME_SCENE {
 	TITLE_SCENE,
+	ROAD_SCENE,
 	GAME_SCENE,
-	MENU_SCENE,
+	MENU_ITEM_SCENE,
+	MENU_STATUS_SCENE,
+	MENU_EQUIPMENT_SCENE,
 	END_SCENE,
 };
 

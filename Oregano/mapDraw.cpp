@@ -146,7 +146,7 @@ void MapDraw::update() {
 		drawCurrentMaps(mapBottomRight, Right, Bottom); //右下マップ
 
 
-	DrawFormatString(1000, 75, GetColor(255, 255, 255), "LU:%d, CU1:%d, CU2:%d, RU:%d",
+	/*DrawFormatString(1000, 75, GetColor(255, 255, 255), "LU:%d, CU1:%d, CU2:%d, RU:%d",
 	                 mapCentral[currentCorner[UP]][currentCorner[LEFT]],
 	                 mapCentral[currentCorner[UP]][currentCorner[CENTER_X1]],
 	                 mapCentral[currentCorner[UP]][currentCorner[CENTER_X2]],
@@ -297,7 +297,7 @@ void MapDraw::update() {
 	                 mapBottomCentral[currentCorner[DOWN]][currentCorner[LEFT]],
 	                 mapBottomCentral[currentCorner[DOWN]][currentCorner[CENTER_X1]],
 	                 mapBottomCentral[currentCorner[DOWN]][currentCorner[CENTER_X2]],
-	                 mapBottomCentral[currentCorner[DOWN]][currentCorner[RIGHT]], false);
+	                 mapBottomCentral[currentCorner[DOWN]][currentCorner[RIGHT]], false);*/
 
 	DrawFormatString(150, 15, GetColor(255, 255, 255), "L:%d, R:%d, U:%d, D:%d",
 	                 currentCorner[LEFT], currentCorner[RIGHT], currentCorner[UP], currentCorner[DOWN], false);

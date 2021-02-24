@@ -51,6 +51,8 @@ private:
 	vector<int> lastTimeMineral; //前回までのフィールド鉱物格納用
 	string mineralData; //フィールド鉱物データのバイナリファイル
 
+	string itemTextData;
+
 	int getFileSize(string fileName);
 
 	void writeBinaryFile(vector<int>& currentData, vector<int>& lastTimeData, string fileName);
@@ -66,6 +68,8 @@ public:
 	DataSave(Player& player, EventField& field);
 	~DataSave();
 
+	vector<int> roadItemText;
+	vector<int> ItemTextBox;
 
 	void writeSaveData();
 	void roadSaveData();

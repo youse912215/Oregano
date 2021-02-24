@@ -20,7 +20,7 @@ void loopProcess() {
 	EventField field(input, event, player); //フィールドクラス
 	DataSave save(player, field); //セーブデータクラス
 	GameUI gameUI(input);
-	DataText text;
+	DataText text(save);
 
 	while (true) {
 		ClearDrawScreen(); //画面クリア
