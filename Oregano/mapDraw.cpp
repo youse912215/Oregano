@@ -1,6 +1,5 @@
 #include "mapDraw.h"
 #include "DxLib.h"
-#include "eventBase.h"
 
 int MapDraw::mapX = INITIAL_X; //x方向
 int MapDraw::mapY = INITIAL_Y; //y方向
@@ -56,7 +55,6 @@ MapDraw::MapDraw(int graph) : graph(graph),
 	                              ((mapY - 32) / BLOCK_SIZE) % AREA_HEIGHT, (mapY / BLOCK_SIZE) % AREA_HEIGHT,
                               },
 
-
                               mapTopLeft(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapTopCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapTopRight(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
@@ -66,15 +64,12 @@ MapDraw::MapDraw(int graph) : graph(graph),
                               mapBottomLeft(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapBottomCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapBottomRight(AREA_HEIGHT, vector<int>(AREA_WIDTH)) {
-	/* 行列番号 */
-	matrix.x = 0;
-	matrix.y = 0;
 	/* 画面上の座標 */
 	screen.x = INITIAL_X - mapX;
 	screen.y = INITIAL_Y - mapY;
 	/* 1マップあたりの配列サイズ */
-	mapAspectSize.x = mapBase.at(0).size();
-	mapAspectSize.y = mapBase.size();
+	mapAspectSize.x = mapCentral.at(0).size();
+	mapAspectSize.y = mapCentral.size();
 	/* 現在のマップ座標 */
 	currentMap.x = mapX / (BLOCK_SIZE * mapAspectSize.x);
 	currentMap.y = mapY / (BLOCK_SIZE * mapAspectSize.y);
@@ -97,7 +92,7 @@ MapDraw::~MapDraw() {
 }
 
 /// <summary>
-/// 読み込んだマップチップ画像からマップ描画
+/// 読み込んだマップチップ画像からマップ描画する
 /// </summary>
 /// <param name="mapInformation"></param>
 /// <param name="dirX">x方向の中心からの距離</param>
@@ -105,8 +100,6 @@ MapDraw::~MapDraw() {
 /// <param name="map">マップの配列</param>
 void MapDraw::drawMapChips(const int& mapInformation, const int& dirX, const int& dirY,
                            vector<vector<int>>& map) {
-
-	mapName(&matrix.y, &matrix.x, mapInformation); //マップ情報から列と行を取り出す
 	//マップチップの描画
 	for (int y = 0; y < mapAspectSize.y; ++y) {
 		for (int x = 0; x < mapAspectSize.x; ++x) {
@@ -115,7 +108,8 @@ void MapDraw::drawMapChips(const int& mapInformation, const int& dirX, const int
 			DrawRectGraph(
 				x * BLOCK_SIZE + screen.x + mapBetweenDistance * dirX,
 				y * BLOCK_SIZE + screen.y + mapBetweenDistance * dirY,
-				matrix.y * BLOCK_SIZE, matrix.x * BLOCK_SIZE,
+				matrixX(mapInformation) * BLOCK_SIZE,
+				matrixY(mapInformation) * BLOCK_SIZE,
 				BLOCK_SIZE, BLOCK_SIZE,
 				graph, true, false);
 		}
@@ -123,56 +117,67 @@ void MapDraw::drawMapChips(const int& mapInformation, const int& dirX, const int
 }
 
 /// <summary>
-/// マップの情報をもとにマップチップ画像の列と行を返す
+/// マップ情報から行を取り出す
 /// </summary>
-/// <param name="column">列</param>
-/// <param name="row">行</param>
 /// <param name="mapInfo">マップの情報</param>
-void MapDraw::mapName(int* column, int* row, const int& mapInfo) {
-	if (column == nullptr || row == nullptr) { return; } //nullチェック
-	*column = mapInfo % 10; //一の位を代入
-	*row = mapInfo / 10; //十の位以降を代入
+int MapDraw::matrixX(const int& mapInfo) {
+	return mapInfo % 10;
 }
 
 /// <summary>
-/// マップ名情報による現在マップの描画
+/// マップ情報から列を取り出す
 /// </summary>
-void MapDraw::drawCurrentMaps(vector<vector<int>>& map, const int& dirX, const int& dirY) {
-	fileImport(currentMap.x + dirX, currentMap.y + dirY, map); //csvファイル読み込み
-	/*マップチップ描画*/
-	for (auto i : information)
-		drawMapChips(i, centerPos.x + dirX, centerPos.y + dirY, map);
+/// <param name="mapInfo">マップの情報</param>
+int MapDraw::matrixY(const int& mapInfo) {
+	return mapInfo / 10;
+}
+
+/// <summary>
+/// 中心からの1マップあたりの距離によって、現在のマップを描画し、マップ配列を返す
+/// </summary>
+/// <param name="dirX">中心からの1マップあたりの距離（x方向）</param>
+/// <param name="dirY">中心からの1マップあたりの距離（y方向）</param>
+/// <param name="mapAll">全てのマップを格納した配列</param>
+/// <returns></returns>
+vector<vector<int>> MapDraw::drawCurrentMaps(const int& dirX, const int& dirY,
+                                             vector<vector<vector<int>>>& mapAll) {
+	/*マップチップの描画*/
+	for (auto i : information) //マップ情報（名称）の数だけ繰り返す
+		drawMapChips(i, centerPos.x + dirX, centerPos.y + dirY,
+		             mapAll[(currentMap.x + dirX) + (currentMap.y + dirY) * 9]);
+
+	return mapAll[(currentMap.x + dirX) + (currentMap.y + dirY) * 9]; //距離に応じたマップを返す
 }
 
 /// <summary>
 /// 更新処理
 /// </summary>
-void MapDraw::update() {
+void MapDraw::update(vector<vector<vector<int>>>& mapAll) {
 
 	/* 9か所のマップを描画 */
-	drawCurrentMaps(mapCentral, Central, Central); //中央マップ（常に表示）
+	mapCentral = drawCurrentMaps(Central, Central, mapAll); //中央マップ（常に表示）
 
 	//y方向のマップ描画判定
 	if (blockArea.y <= TOP_BOUNDARY)
-		drawCurrentMaps(mapTopCentral, Central, Top); //上マップ
+		mapTopCentral = drawCurrentMaps(Central, Top, mapAll); //上マップ
 	else if (blockArea.y >= BOTTOM_BOUNDARY)
-		drawCurrentMaps(mapBottomCentral, Central, Bottom); //下マップ
+		mapBottomCentral = drawCurrentMaps(Central, Bottom, mapAll); //下マップ
 
 	//x方向のマップ描画判定
 	if (blockArea.x <= LEFT_BOUNDARY)
-		drawCurrentMaps(mapLeftCentral, Left, Central); //左マップ
+		mapLeftCentral = drawCurrentMaps(Left, Central, mapAll); //左マップ
 	else if (blockArea.x >= RIGHT_BOUNDARY)
-		drawCurrentMaps(mapRightCentral, Right, Central); //右マップ
+		mapRightCentral = drawCurrentMaps(Right, Central, mapAll); //右マップ
 
 	//斜め方向のマップ描画判定
 	if (blockArea.x <= LEFT_BOUNDARY && blockArea.y <= TOP_BOUNDARY)
-		drawCurrentMaps(mapTopLeft, Left, Top); //左上マップ
+		mapTopLeft = drawCurrentMaps(Left, Top, mapAll); //左上マップ
 	else if (blockArea.x >= RIGHT_BOUNDARY && blockArea.y <= TOP_BOUNDARY)
-		drawCurrentMaps(mapTopRight, Right, Top); //右上マップ
+		mapTopRight = drawCurrentMaps(Right, Top, mapAll); //右上マップ
 	else if (blockArea.x <= LEFT_BOUNDARY && blockArea.y >= BOTTOM_BOUNDARY)
-		drawCurrentMaps(mapBottomLeft, Left, Bottom); //左下マップ
+		mapBottomLeft = drawCurrentMaps(Left, Bottom, mapAll); //左下マップ
 	else if (blockArea.x >= RIGHT_BOUNDARY && blockArea.y >= BOTTOM_BOUNDARY)
-		drawCurrentMaps(mapBottomRight, Right, Bottom); //右下マップ
+		mapBottomRight = drawCurrentMaps(Right, Bottom, mapAll); //右下マップ
 
 
 	/*DrawFormatString(1000, 75, GetColor(255, 255, 255), "LU:%d, CU1:%d, CU2:%d, RU:%d",

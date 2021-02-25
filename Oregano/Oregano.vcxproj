@@ -144,6 +144,7 @@
     <ClCompile Include="mapBase.cpp" />
     <ClCompile Include="mapCollision.cpp" />
     <ClCompile Include="mapDraw.cpp" />
+    <ClCompile Include="mapLoad.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="random.cpp" />
     <ClCompile Include="sceneGame.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="mapBase.h" />
     <ClInclude Include="mapCollision.h" />
     <ClInclude Include="mapDraw.h" />
+    <ClInclude Include="mapLoad.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="sceneGame.h" />

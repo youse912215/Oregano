@@ -5,19 +5,19 @@
 
 class GameUI : public DataSource {
 private:
-	Input& input;
+	Input& input; //入力クラスから
 
-	Vec2 pos;
-	int graphPos;
+	Vec2 pos; //UI位置
+	int graphPos; //画像位置
 
-	void draw();
-	void actionModeChange();
+	void draw(); //描画処理
+	void actionModeChange(); //アクションモードの変更
 
 public:
 	bool changeFlag;
 
-	GameUI(Input& input);
-	~GameUI();
+	GameUI(Input& input); //コンストラクタ
+	~GameUI(); //デスクトラクタ
 
-	void update();
+	void update(); //更新処理
 };

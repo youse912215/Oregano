@@ -1,5 +1,6 @@
 #include "mapAutogeneration.h"
 #include "random.h"
+#include "DxLib.h"
 #include <algorithm>
 #include <fstream>
 #include <sstream>

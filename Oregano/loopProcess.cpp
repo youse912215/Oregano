@@ -11,6 +11,7 @@
 #include "dataSave.h"
 #include "gameUI.h"
 #include "dataText.h"
+#include "mapLoad.h"
 
 #include "sceneTitle.h"
 
@@ -24,6 +25,8 @@ void loopProcess() {
 	DataText text(input); //テキストクラス
 	DataSave save(player, field, text); //セーブデータクラス
 	GameUI gameUI(input); //ゲームUIクラス
+	MapLoad load;
+	SceneTitle title(save, load);
 
 	while (true) {
 		ClearDrawScreen(); //画面クリア
@@ -34,14 +37,16 @@ void loopProcess() {
 		input.update(); //入力処理
 
 		/* タイトルシーン処理 */
-		if (EventBase::gameScene == TITLE_SCENE) titleProcess(save);
+		if (EventBase::gameScene == TITLE_SCENE) title.titleProcess();
 
 			/* ゲームシーン処理 */
 		else if (EventBase::gameScene == GAME_SCENE) {
+			mapDraw_.update(title.returnMapAll()); //マップ更新処理
 			collision.update(); //コリジョン更新処理
 
-			//if (!gameUI.changeFlag) //移動処理（アクション変更時は移動不可）
-			input.moveProcess(collision);
+
+			if (!gameUI.changeFlag) //移動処理（アクション変更時は移動不可）
+				input.moveProcess(collision);
 
 			field.update(); //フィールド更新処理
 

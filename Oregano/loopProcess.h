@@ -1,2 +1,2 @@
 #pragma once
-void loopProcess();
+void loopProcess(); //ƒ‹[ƒvˆ—

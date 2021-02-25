@@ -5,20 +5,26 @@ const int WIN_WIDTH = 16 * WIN_MAGNIFICATION; //ウィンドウ横幅
 const int WIN_HEIGHT = 9 * WIN_MAGNIFICATION; //ウィンドウ縦幅
 
 const int BLOCK_SIZE = 64; //ブロックサイズ
-const int AREA_WIDTH = 25; //1マップ（区画）の横のサイズ
-const int AREA_HEIGHT = 25; //1マップ（区画）の縦のサイズ
-const int AREA_MIN = 0;
-const int AREA_MAX = AREA_WIDTH - 1;
+const int AREA_WIDTH = 25; //1マップ区画の横のサイズ
+const int AREA_HEIGHT = 25; //1マップ区画の縦のサイズ
+const int AREA_MIN = 0; //区画の最小値
+const int AREA_MAX = AREA_WIDTH - 1; //区画の最大値
 
-const int HALF_MAP_X = BLOCK_SIZE * AREA_WIDTH / 2;
-const int HALF_MAP_Y = BLOCK_SIZE * AREA_HEIGHT / 2;
+const int TOTAL_MAPS_X = 9; //横方向のマップ総数
+const int TOTAL_MAPS_Y = 9; //縦方向のマップ総数
+
+const int ONE_MAP_X = BLOCK_SIZE * AREA_WIDTH;
+const int ONE_MAP_Y = BLOCK_SIZE * AREA_HEIGHT;
+
+const int HALF_MAP_X = ONE_MAP_X / 2; //1マップの半分サイズ
+const int HALF_MAP_Y = ONE_MAP_Y / 2; //1マップの半分サイズ
 
 const int DIRECTION_SIZE = 4; //方向の種類（配列のサイズ）
 
 const int MOVING_DISTANCE = 8; //移動速度
 
-const int INITIAL_X = /*13600*/BLOCK_SIZE * AREA_WIDTH * 8 + HALF_MAP_X; //初期マップのx座標
-const int INITIAL_Y = /*13200 + BLOCK_SIZE*/BLOCK_SIZE * AREA_HEIGHT * 8 + HALF_MAP_Y / 2 + BLOCK_SIZE; //初期マップのy座標
+const int INITIAL_X = ONE_MAP_X * (TOTAL_MAPS_X - 1) + HALF_MAP_X; //初期マップのx座標
+const int INITIAL_Y = ONE_MAP_Y * (TOTAL_MAPS_Y - 1) + HALF_MAP_Y / 2 + BLOCK_SIZE; //初期マップのy座標
 
 const int MOVE_RANGE = 1000; //移動範囲（この数字のマップチップまで移動可能）
 

@@ -59,7 +59,6 @@ MapCollision::~MapCollision() {
 }
 
 void MapCollision::update() {
-	map.update(); //マップ更新処理
 
 	/* 12ヵ所で衝突判定を行う */
 	collisionDetectionLeftUp(); //左上
@@ -253,7 +252,7 @@ bool MapCollision::collisionDetection(const int& dirXY, const int& dirX, const i
 }
 
 int MapCollision::collisionRange() {
-	return SEA + 20;
+	return SEA;
 }
 
 

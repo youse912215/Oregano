@@ -31,7 +31,7 @@ private:
 	//判定を行うマップとそのマップの座標の組み合わせで衝突判定をとる
 	bool collisionDetection(const int& dirXY, const int& dirX, const int& dirY);
 
-	int collisionRange();
+	int collisionRange(); //衝突範囲
 
 	vector<bool> collisionFlag; //衝突フラグ
 	vector<bool> boundaryCriteria; //各方向の境界条件

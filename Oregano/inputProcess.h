@@ -13,18 +13,14 @@ private:
 	int oldPad; //前のキー入力の状態
 	int pad; //キー入力の状態
 
+	bool mode; //入力モード
 
-	bool mode;
+	vector<bool> padNum; //ジョイパッド番号
+	vector<bool> inputButton; //入力ボタン
 
-	vector<bool> padNum;
-	vector<bool> inputButton;
-
-	bool getInputButton(const int& buttonName);
+	bool getInputButton(const int& buttonName); //ボタン入力を返す
 
 public:
-	static int add;
-
-	vector<bool> buttonFlag;
 	bool A;
 	bool B;
 	bool X;
@@ -34,12 +30,15 @@ public:
 
 	int moveDirection; //今見ている移動方向
 
-	Input();
-	void keyboardInformation();
-	void padsInformation();
-	void inputModeChange();
-	void moveProcess(MapCollision& collision);
-	void eventProcess();
-	void endProcess();
-	void update();
+	vector<bool> buttonFlag; //ボタンフラグ
+
+	Input(); //コンストラクタ
+
+	void keyboardInformation(); //キーボード情報
+	void padsInformation(); //ジョイパッド情報
+	void inputModeChange(); //キーボードとジョイパッドを切り替える
+	void moveProcess(MapCollision& collision); //入力処理
+	void eventProcess(); //ボタン入力処理
+	void endProcess(); //終了処理
+	void update(); //更新処理
 };

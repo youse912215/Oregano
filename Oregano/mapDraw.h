@@ -10,7 +10,6 @@ private:
 	int graph; //マップ画像
 	int mapBetweenDistance; //マップ間距離（1600px）
 
-	Vec2 matrix; //行列番号
 	Vec2 screen; //画面上の座標
 	Vec2 blockArea; //1ブロック区画（マップ）内の座標
 	Vec2 mapAspectSize; //1マップあたりの配列のサイズ
@@ -18,18 +17,28 @@ private:
 
 	vector<int> information; //マップ名情報
 
+	/* 各方向の境界 */
 	enum BOUNDARY {
-		//各境界
+		//左
 		LEFT_BOUNDARY = 12,
+		//右
 		RIGHT_BOUNDARY = 13,
+		//上
 		TOP_BOUNDARY = 7,
+		//下
 		BOTTOM_BOUNDARY = 17
 	};
 
-	void drawCurrentMaps(vector<vector<int>>& map, const int& dirX, const int& dirY);
+	//中心からの1マップあたりの距離によって、現在のマップを描画し、マップ配列を返す
+	vector<vector<int>> drawCurrentMaps(const int& dirX, const int& dirY,
+	                                    vector<vector<vector<int>>>& mapAll);
+	//読み込んだマップチップ情報からマップを描画する
 	void drawMapChips(const int& mapInformation, const int& dirX, const int& dirY,
 	                  vector<vector<int>>& map);
-	void mapName(int* column, int* row, const int& mapInfo);
+
+	int matrixX(const int& mapInfo); //マップ情報から行を取り出す
+	int matrixY(const int& mapInfo); //マップ情報から列を取り出す
+
 public:
 	static int mapX; //マップ内の中央のx座標
 	static int mapY; //マップ内の中央のy座標
@@ -51,5 +60,6 @@ public:
 
 	MapDraw(int graph);
 	~MapDraw();
-	void update();
+
+	void update(vector<vector<vector<int>>>& mapAll); //更新処理
 };

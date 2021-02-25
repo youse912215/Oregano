@@ -132,6 +132,9 @@
     <ClCompile Include="mapAutogeneration.cpp">
       <Filter>ソース ファイル\Map</Filter>
     </ClCompile>
+    <ClCompile Include="mapLoad.cpp">
+      <Filter>ソース ファイル\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="human.h">
@@ -195,6 +198,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="mapAutogeneration.h">
+      <Filter>ヘッダー ファイル\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="mapLoad.h">
       <Filter>ヘッダー ファイル\Map</Filter>
     </ClInclude>
   </ItemGroup>
