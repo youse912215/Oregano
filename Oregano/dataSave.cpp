@@ -203,7 +203,7 @@ void DataSave::roadSaveData() {
 	roadBinaryFile(roadItemText, OutputItemText, itemTextData);
 	getLastTimeEvent(OutputItemText, text.textBox);
 
-	EventBase::gameScene = GAME_SCENE;
+
 }
 
 /// <summary>

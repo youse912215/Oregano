@@ -140,10 +140,12 @@
     <ClCompile Include="inputProcess.cpp" />
     <ClCompile Include="loopProcess.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mapAutogeneration.cpp" />
     <ClCompile Include="mapBase.cpp" />
     <ClCompile Include="mapCollision.cpp" />
     <ClCompile Include="mapDraw.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="random.cpp" />
     <ClCompile Include="sceneGame.cpp" />
     <ClCompile Include="sceneMenu.cpp" />
     <ClCompile Include="sceneTitle.cpp" />
@@ -161,10 +163,12 @@
     <ClInclude Include="human.h" />
     <ClInclude Include="inputProcess.h" />
     <ClInclude Include="loopProcess.h" />
+    <ClInclude Include="mapAutogeneration.h" />
     <ClInclude Include="mapBase.h" />
     <ClInclude Include="mapCollision.h" />
     <ClInclude Include="mapDraw.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="random.h" />
     <ClInclude Include="sceneGame.h" />
     <ClInclude Include="sceneMenu.h" />
     <ClInclude Include="sceneTitle.h" />

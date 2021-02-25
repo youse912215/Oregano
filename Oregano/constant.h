@@ -10,14 +10,17 @@ const int AREA_HEIGHT = 25; //1マップ（区画）の縦のサイズ
 const int AREA_MIN = 0;
 const int AREA_MAX = AREA_WIDTH - 1;
 
+const int HALF_MAP_X = BLOCK_SIZE * AREA_WIDTH / 2;
+const int HALF_MAP_Y = BLOCK_SIZE * AREA_HEIGHT / 2;
+
 const int DIRECTION_SIZE = 4; //方向の種類（配列のサイズ）
 
 const int MOVING_DISTANCE = 8; //移動速度
 
-const int INITIAL_X = 13600; //初期マップのx座標
-const int INITIAL_Y = 13200 + BLOCK_SIZE; //初期マップのy座標
+const int INITIAL_X = /*13600*/BLOCK_SIZE * AREA_WIDTH * 8 + HALF_MAP_X; //初期マップのx座標
+const int INITIAL_Y = /*13200 + BLOCK_SIZE*/BLOCK_SIZE * AREA_HEIGHT * 8 + HALF_MAP_Y / 2 + BLOCK_SIZE; //初期マップのy座標
 
-const int MOVE_RANGE = 30; //移動範囲（この数字のマップチップまで移動可能）
+const int MOVE_RANGE = 1000; //移動範囲（この数字のマップチップまで移動可能）
 
 const int GAME_HOUR = 1200; //1時間あたりのgameTime
 
@@ -124,36 +127,82 @@ enum DIRECTION_SIGN {
 
 //マップチップ名称
 enum MAP_INFORMATION {
-	//床
-	FLOOR,
-	//縦橋
-	BRIDGE_HEIGHT = 4,
+	////床
+	//FLOOR,
+	////縦橋
+	//BRIDGE_HEIGHT = 4,
+	////横橋
+	//BRIDGE_WIDTH = 6,
+	////草花
+	//FLOWER = 8,
+	////キノコ類
+	//MUSHROOM,
+	////浜
+	//BEACH,
+	////浅瀬
+	//SHALLOW = 20,
+	////潮
+	//TIDE = 30,
+	////クリスタル
+	//CRYSTAL = 40,
+	////木々
+	//WOODS = 90,
+	////家
+	//HOUSE = 119,
+	////海
+	//WATER = 120,
+	////岩山
+	//STONE = 160,
+	////鉱石系
+	//MINERAL = 190,
+	////宝箱
+	//TREASURE_BOX = 199,
 	//横橋
-	BRIDGE_WIDTH = 6,
-	//草花
-	FLOWER = 8,
+	BRIDGE_WIDTH,
+	//縦橋
+	BRIDGE_HEIGHT,
+	//床（通常道）
+	FLOOR,
+	//花類
+	FLOWER,
 	//キノコ類
 	MUSHROOM,
 	//浜
 	BEACH,
 	//浅瀬
-	SHALLOW = 20,
+	SHALLOW,
 	//潮
-	TIDE = 30,
-	//クリスタル
-	CRYSTAL = 40,
-	//木々
-	WOODS = 90,
-	//家
-	HOUSE = 119,
+	TIDE,
+	//毒沼
+	POISON,
+	//氷床
+	ICE,
+	//ランダムマップ(森)
+	RANDOM_MAP1,
 	//海
-	WATER = 120,
+	SEA,
+	//木々
+	WOODS,
+	//溶岩
+	LAVA,
+	//枯れた木々
+	WITHERED_WOODS,
+	//凍った木々
+	FROZEN_WOODS,
+	//氷山
+	ICE_MOUNTAIN,
 	//岩山
-	STONE = 160,
-	//鉱石系
-	MINERAL = 190,
+	STONE_MOUNTAIN,
+	//鉱物
+	MINERAL,
 	//宝箱
-	TREASURE_BOX = 199,
+	TREASURE_BOX,
+	//ランダムマップ2(沼地)
+	RANDOM_MAP2,
+	//ランダムマップ3(火山)
+	RANDOM_MAP3,
+	//ランダムマップ4(氷山)
+	RANDOM_MAP4,
 };
 
 //ボタン種類

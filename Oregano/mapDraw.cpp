@@ -8,9 +8,45 @@ int MapDraw::mapY = INITIAL_Y; //y方向
 MapDraw::MapDraw(int graph) : graph(graph),
 
                               information{
-	                              FLOOR, BEACH, FLOWER, MUSHROOM, HOUSE, SHALLOW, TIDE, WATER,
-	                              CRYSTAL, STONE,
-	                              MINERAL, WOODS, BRIDGE_WIDTH, BRIDGE_HEIGHT, TREASURE_BOX
+	                              FLOOR,
+	                              //縦橋
+	                              BRIDGE_HEIGHT,
+	                              //横橋
+	                              BRIDGE_WIDTH,
+	                              //花類
+	                              FLOWER,
+	                              //キノコ類
+	                              MUSHROOM,
+	                              //浜
+	                              BEACH,
+	                              //浅瀬
+	                              SHALLOW,
+	                              //潮
+	                              TIDE,
+	                              //毒沼
+	                              POISON,
+	                              //氷床
+	                              ICE,
+	                              //ランダムマップ
+	                              RANDOM_MAP1,
+	                              //海
+	                              SEA,
+	                              //溶岩
+	                              LAVA,
+	                              //木々
+	                              WOODS,
+	                              //枯れた木々
+	                              WITHERED_WOODS,
+	                              //凍った木々
+	                              FROZEN_WOODS,
+	                              //氷山
+	                              ICE_MOUNTAIN,
+	                              //岩山
+	                              STONE_MOUNTAIN,
+	                              //鉱物
+	                              MINERAL,
+	                              //宝箱
+	                              TREASURE_BOX
                               },
 
                               currentCorner{
@@ -50,7 +86,7 @@ MapDraw::MapDraw(int graph) : graph(graph),
 	/* マップの中央位置 */
 	centerPos.x = currentMap.x - 8;
 	centerPos.y = currentMap.y - 8;
-	/* マップ間距離（800px） */
+	/* マップ間距離（1600px） */
 	mapBetweenDistance = BLOCK_SIZE * AREA_WIDTH;
 	/* 1ブロック区画（マップ）内の座標 */
 	blockArea.x = (mapX / BLOCK_SIZE) % AREA_WIDTH;
@@ -94,13 +130,8 @@ void MapDraw::drawMapChips(const int& mapInformation, const int& dirX, const int
 /// <param name="mapInfo">マップの情報</param>
 void MapDraw::mapName(int* column, int* row, const int& mapInfo) {
 	if (column == nullptr || row == nullptr) { return; } //nullチェック
-
 	*column = mapInfo % 10; //一の位を代入
-
-	if (mapInfo != TIDE)
-		*row = mapInfo / 10; //潮マップ以外は十の位以降を代入
-	else
-		*row = EventBase::night ? mapInfo / 10 : mapInfo / 10 - 1; //日中の潮マップを浅瀬に変更する
+	*row = mapInfo / 10; //十の位以降を代入
 }
 
 /// <summary>
@@ -308,4 +339,8 @@ void MapDraw::update() {
 	DrawFormatString(0, 45, GetColor(255, 255, 255), "cby1:%d, cbx1:%d, cby2:%d, cbx2:%d",
 	                 currentBoundaryMap1.y, currentBoundaryMap1.x, currentBoundaryMap2.y, currentBoundaryMap2.x, false);
 	DrawFormatString(0, 880, GetColor(200, 120, 0), "X%d, Y%d", mapX, mapY, false);
+
+	DrawFormatString(0, 60, GetColor(255, 255, 255), "x:%d",
+	                 mapCentral[((mapY - BLOCK_SIZE / 4) / BLOCK_SIZE) % AREA_HEIGHT][(mapX / BLOCK_SIZE) % AREA_WIDTH],
+	                 false);
 }

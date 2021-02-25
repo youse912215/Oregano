@@ -8,7 +8,7 @@ using namespace std;
 class MapDraw : public MapBase {
 private:
 	int graph; //マップ画像
-	int mapBetweenDistance; //マップ間距離（800px）
+	int mapBetweenDistance; //マップ間距離（1600px）
 
 	Vec2 matrix; //行列番号
 	Vec2 screen; //画面上の座標

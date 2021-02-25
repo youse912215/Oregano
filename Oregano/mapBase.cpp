@@ -7,7 +7,8 @@
 using namespace std;
 
 //初期化
-MapBase::MapBase() : mapBase(AREA_HEIGHT, vector<int>(AREA_WIDTH)) {
+MapBase::MapBase() :
+	mapBase(AREA_HEIGHT, vector<int>(AREA_WIDTH)) {
 	initialCsv = "resource/csv/map_x08y08.csv"; //初期地点のマップ(中央)
 }
 
@@ -44,6 +45,6 @@ void MapBase::fileImport(const int& nx, const int& ny, vector<vector<int>>& map)
 			string token = line.substr(spos, (epos = line.find_first_of(comma, spos)) - spos);
 			map[j][i++] = stoi(token);
 		}
-		++j;
+		++j; //加算
 	}
 }
