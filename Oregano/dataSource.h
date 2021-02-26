@@ -7,9 +7,11 @@ private:
 	//int actionUI; //アクションUI画像ファイルの読み込み
 
 protected:
-	int actionUI; //アクションUI画像ファイルの読み込み
+	int actionUI; //アクションUI画像ファイルの読み込
 
 public:
+	int enemy1;
+
 	DataSource();
 	~DataSource();
 

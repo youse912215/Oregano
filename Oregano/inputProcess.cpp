@@ -94,6 +94,13 @@ void Input::moveProcess(MapCollision& collision) {
 	DrawFormatString(0, 165, GetColor(255, 255, 120), "  %d",
 	                 collision.downCollisionFlag(), false);
 
+	DrawFormatString(0, 200, GetColor(255, 255, 120), "  %d",
+	                 getInputButton(STICK_UP), false);
+	DrawFormatString(0, 215, GetColor(255, 255, 120), "%d   %d",
+	                 getInputButton(STICK_LEFT), getInputButton(STICK_RIGHT), false);
+	DrawFormatString(0, 230, GetColor(255, 255, 120), "  %d",
+	                 getInputButton(STICK_DOWN), false);
+
 
 }
 

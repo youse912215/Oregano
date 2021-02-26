@@ -2,9 +2,10 @@
 #include "DxLib.h"
 
 DataSource::DataSource() {
-	player = LoadGraph("resource/charactor/player.png");
+	player = LoadGraph("resource/organism/player.png");
 	mapChip = LoadGraph("resource/map/mapchip.png");
 	actionUI = LoadGraph("resource\\UI\\actionUI.png");
+	enemy1 = LoadGraph("resource/organism/enemy_1.png");
 }
 
 DataSource::~DataSource() {

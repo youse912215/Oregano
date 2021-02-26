@@ -3,6 +3,7 @@
 #include "inputProcess.h"
 #include "dataSource.h"
 #include "player.h"
+#include "enemy.h"
 #include "mapDraw.h"
 #include "mapCollision.h"
 #include "mapAutogeneration.h"
@@ -20,6 +21,7 @@ void loopProcess() {
 	Input input; //入力クラス
 	DataSource source; //素材クラス
 	Player player(source.playerGraph()); //プレイヤークラス
+	Enemy enemy(source.enemy1, player);
 	EventBase event; //イベントクラス
 	EventField field(input, event, player); //フィールドクラス
 	DataText text(input); //テキストクラス
@@ -51,6 +53,8 @@ void loopProcess() {
 			field.update(); //フィールド更新処理
 
 			gameUI.update(); //UI更新処理
+
+			enemy.update();
 		}
 			/* メニューシーン処理 */
 		else if (EventBase::gameScene == MENU_ITEM_SCENE) {

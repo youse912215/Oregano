@@ -1,13 +1,15 @@
 #include "DxLib.h"
 #include "Player.h"
 #include "constant.h"
+#include "mapDraw.h"
 
 Player::Player(int graph) :
 	graph(graph), status(PLAYER_STATUS_SIZE),
 	possessionItem(PLAYER_ITEM_SIZE), possessionAccessory(PLAYER_ACCESSORY_SIZE),
 	possessionJewel(PLAYER_JEWEL_SIZE), possessionMineral(PLAYER_MINERAL_SIZE) {
-	pos.x = WIN_WIDTH / 2 - BLOCK_SIZE / 2;
-	pos.y = WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2;
+	this->pos.dx = static_cast<int>(WIN_WIDTH / 2 - BLOCK_SIZE / 2);
+	this->pos.dy = static_cast<int>(WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2);
+	center = HALF_PLAYER_SIZE + pos;
 }
 
 Player::~Player() {
@@ -15,7 +17,12 @@ Player::~Player() {
 
 //ÉvÉåÉCÉÑÅ[ï`âÊ
 void Player::draw() {
-	DrawGraph(pos.x, pos.y, graph, TRUE);
+	DrawGraph(static_cast<int>(this->pos.dx),
+	          static_cast<int>(this->pos.dy), graph, TRUE);
+
+	DrawFormatString(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy),
+	                 GetColor(255, 0, 0), "%lf, %lf, %lf, %lf",
+	                 this->pos.dx, this->pos.dy, center.dx, center.dy, false);
 }
 
 void Player::initProcess() {

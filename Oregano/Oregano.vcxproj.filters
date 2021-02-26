@@ -69,9 +69,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="human.cpp">
-      <Filter>ソース ファイル\Human</Filter>
-    </ClCompile>
     <ClCompile Include="player.cpp">
       <Filter>ソース ファイル\Human</Filter>
     </ClCompile>
@@ -135,11 +132,14 @@
     <ClCompile Include="mapLoad.cpp">
       <Filter>ソース ファイル\Map</Filter>
     </ClCompile>
+    <ClCompile Include="organism.cpp">
+      <Filter>ソース ファイル\Human</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>ソース ファイル\Human</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="human.h">
-      <Filter>ヘッダー ファイル\Human</Filter>
-    </ClInclude>
     <ClInclude Include="player.h">
       <Filter>ヘッダー ファイル\Human</Filter>
     </ClInclude>
@@ -202,6 +202,12 @@
     </ClInclude>
     <ClInclude Include="mapLoad.h">
       <Filter>ヘッダー ファイル\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="organism.h">
+      <Filter>ヘッダー ファイル\Human</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>ヘッダー ファイル\Human</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

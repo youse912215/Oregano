@@ -1,9 +1,9 @@
 #pragma once
 #include "vec2.h"
 
-class Human {
+class Organism {
 public:
 
 public:
-	Human();
+	Organism();
 };

@@ -1,19 +1,22 @@
 #pragma once
-#include "Human.h"
+#include "organism.h"
 #include <vector>
 
 using namespace std;
 
 //ÉvÉåÉCÉÑÅ[
-class Player : public Human {
+class Player : public Organism {
 private:
-	Vec2 pos;
+
 	int graph;
 
 	void draw();
 	void initProcess();
 
 public:
+	Vec2 pos;
+	Vec2 center;
+
 	vector<int> status;
 	vector<int> possessionItem;
 	vector<int> possessionAccessory;

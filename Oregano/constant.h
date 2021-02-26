@@ -10,6 +10,10 @@ const int AREA_HEIGHT = 25; //1マップ区画の縦のサイズ
 const int AREA_MIN = 0; //区画の最小値
 const int AREA_MAX = AREA_WIDTH - 1; //区画の最大値
 
+const double HALF_PLAYER_SIZE = 32.0; //プレイヤーサイズの半分
+
+const double ENEMY_COLLISION_RANGE = 48.0; //敵との衝突範囲
+
 const int TOTAL_MAPS_X = 9; //横方向のマップ総数
 const int TOTAL_MAPS_Y = 9; //縦方向のマップ総数
 

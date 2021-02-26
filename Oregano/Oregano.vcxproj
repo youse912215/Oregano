@@ -133,10 +133,11 @@
     <ClCompile Include="dataSave.cpp" />
     <ClCompile Include="dataSource.cpp" />
     <ClCompile Include="dataText.cpp" />
+    <ClCompile Include="enemy.cpp" />
     <ClCompile Include="eventBase.cpp" />
     <ClCompile Include="eventField.cpp" />
     <ClCompile Include="gameUI.cpp" />
-    <ClCompile Include="human.cpp" />
+    <ClCompile Include="organism.cpp" />
     <ClCompile Include="inputProcess.cpp" />
     <ClCompile Include="loopProcess.cpp" />
     <ClCompile Include="main.cpp" />
@@ -158,10 +159,11 @@
     <ClInclude Include="dataSave.h" />
     <ClInclude Include="dataSource.h" />
     <ClInclude Include="dataText.h" />
+    <ClInclude Include="enemy.h" />
     <ClInclude Include="eventBase.h" />
     <ClInclude Include="eventField.h" />
     <ClInclude Include="gameUI.h" />
-    <ClInclude Include="human.h" />
+    <ClInclude Include="organism.h" />
     <ClInclude Include="inputProcess.h" />
     <ClInclude Include="loopProcess.h" />
     <ClInclude Include="mapAutogeneration.h" />
