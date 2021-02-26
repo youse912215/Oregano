@@ -16,9 +16,6 @@
     <Filter Include="ソース ファイル\Map">
       <UniqueIdentifier>{cd4f4e65-f492-41b9-9cad-9129d107e027}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Human">
-      <UniqueIdentifier>{7cb1227b-ad72-44a9-8384-5af2c4f64c97}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\System">
       <UniqueIdentifier>{8dbbc975-a751-403c-add8-de871b6c30df}</UniqueIdentifier>
     </Filter>
@@ -27,9 +24,6 @@
     </Filter>
     <Filter Include="ヘッダー ファイル\Map">
       <UniqueIdentifier>{e2c47cac-7bb2-4008-a5ff-d50a640d94a6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Human">
-      <UniqueIdentifier>{975d8941-e5a6-4bdb-ae65-ff8ef17c7ef4}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\System">
       <UniqueIdentifier>{42895dc4-26b0-4d9c-88cf-19b217d0c8fc}</UniqueIdentifier>
@@ -67,10 +61,22 @@
     <Filter Include="ソース ファイル\Scene">
       <UniqueIdentifier>{203d757c-ff24-4895-8c46-dd4189e923e8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Organism">
+      <UniqueIdentifier>{975d8941-e5a6-4bdb-ae65-ff8ef17c7ef4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Organism">
+      <UniqueIdentifier>{7cb1227b-ad72-44a9-8384-5af2c4f64c97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Organism\Enemy">
+      <UniqueIdentifier>{026a2c2d-6056-4255-a631-84e428d7366a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Organism\Enemy">
+      <UniqueIdentifier>{e5b88290-7a85-458d-9da0-0164ed564dea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="player.cpp">
-      <Filter>ソース ファイル\Human</Filter>
+      <Filter>ソース ファイル\Organism</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル\Main</Filter>
@@ -133,15 +139,15 @@
       <Filter>ソース ファイル\Map</Filter>
     </ClCompile>
     <ClCompile Include="organism.cpp">
-      <Filter>ソース ファイル\Human</Filter>
+      <Filter>ソース ファイル\Organism</Filter>
     </ClCompile>
     <ClCompile Include="enemy.cpp">
-      <Filter>ソース ファイル\Human</Filter>
+      <Filter>ソース ファイル\Organism\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="player.h">
-      <Filter>ヘッダー ファイル\Human</Filter>
+      <Filter>ヘッダー ファイル\Organism</Filter>
     </ClInclude>
     <ClInclude Include="mapDraw.h">
       <Filter>ヘッダー ファイル\Map</Filter>
@@ -204,10 +210,10 @@
       <Filter>ヘッダー ファイル\Map</Filter>
     </ClInclude>
     <ClInclude Include="organism.h">
-      <Filter>ヘッダー ファイル\Human</Filter>
+      <Filter>ヘッダー ファイル\Organism</Filter>
     </ClInclude>
     <ClInclude Include="enemy.h">
-      <Filter>ヘッダー ファイル\Human</Filter>
+      <Filter>ヘッダー ファイル\Organism\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

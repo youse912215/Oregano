@@ -1,6 +1,9 @@
 #pragma once
 #include "organism.h"
 #include "player.h"
+#include <vector>
+
+using namespace std;
 
 class Enemy : public Organism {
 private:
@@ -13,7 +16,6 @@ private:
 	Vec2 distanceNormalized;
 	Vec2 moveSpeed;
 
-	bool activity;
 
 	int graph;
 
@@ -27,7 +29,16 @@ private:
 	int relativeDistanceX();
 	int relativeDistanceY();
 
+	bool onScreenX();
+	bool onScreenY();
+	void initPosition();
+
+	int getPopLocation(const int& dir, const int& x1, const int& x2);
+
 public:
+	bool activity;
+	bool alive;
+
 	Enemy(int graph, Player& player);
 	~Enemy();
 

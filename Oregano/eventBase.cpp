@@ -28,7 +28,7 @@ void EventBase::moveGameTime() {
 /// </summary>
 /// <param name="center">xまたはy</param>
 int EventBase::centralPlayerPosition(int center) {
-	if (center == MAP_X) {
+	if (center == POSITION_X) {
 		return (mapX / BLOCK_SIZE) % AREA_WIDTH;
 	}
 	return ((mapY - BLOCK_SIZE / 4) / BLOCK_SIZE) % AREA_HEIGHT;
@@ -39,7 +39,7 @@ int EventBase::centralPlayerPosition(int center) {
 /// </summary>
 /// <param name="current">xまたはy</param>
 int EventBase::currentMapPosition(int current) {
-	if (current == MAP_X)
+	if (current == POSITION_X)
 		return mapX / (BLOCK_SIZE * AREA_WIDTH);
 	return mapY / (BLOCK_SIZE * AREA_HEIGHT);
 }
@@ -53,10 +53,10 @@ int EventBase::currentMapPosition(int current) {
 /// <param name="cY">現在のプレイヤーの中心y座標</param>
 /// <returns></returns>
 bool EventBase::getEventCoordinate(const int& mapX, const int& mapY, const int& cX, const int& cY) {
-	return (currentMapPosition(MAP_X) == mapX)
-		&& (currentMapPosition(MAP_Y) == mapY)
-		&& (centralPlayerPosition(MAP_X) == cX)
-		&& (centralPlayerPosition(MAP_Y) == cY);
+	return (currentMapPosition(POSITION_X) == mapX)
+		&& (currentMapPosition(POSITION_Y) == mapY)
+		&& (centralPlayerPosition(POSITION_X) == cX)
+		&& (centralPlayerPosition(POSITION_Y) == cY);
 }
 
 void EventBase::update() {

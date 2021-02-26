@@ -252,7 +252,7 @@ bool MapCollision::collisionDetection(const int& dirXY, const int& dirX, const i
 }
 
 int MapCollision::collisionRange() {
-	return SEA;
+	return SEA + 20;
 }
 
 

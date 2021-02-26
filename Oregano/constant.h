@@ -234,8 +234,8 @@ enum BUTTON {
 };
 
 enum POSITION_INFORMATION {
-	MAP_X,
-	MAP_Y,
+	POSITION_X,
+	POSITION_Y,
 };
 
 enum STATUS {
