@@ -55,13 +55,27 @@ void Enemy::move() {
 }
 
 /// <summary>
+/// 死亡処理
+/// </summary>
+void Enemy::dead() {
+	activity = false;
+	alive = false;
+}
+
+void Enemy::destroying() {
+	if (abs(screenPosX() + (HALF_PLAYER_SIZE / 2) - weapon1DistanceX()) <= WEAPON_COLLISION_DISTANCE
+		&& abs(screenPosY() + (HALF_PLAYER_SIZE / 2) - weapon1DistanceY()) <= WEAPON_COLLISION_DISTANCE) {
+		dead();
+	}
+}
+
+/// <summary>
 /// プレイヤーとの衝突処理
 /// </summary>
 void Enemy::collision() {
-	if (relativeDistanceX() <= ENEMY_COLLISION_RANGE
-		&& relativeDistanceY() <= ENEMY_COLLISION_RANGE) {
-		activity = false;
-		alive = false;
+	if (relativeDistanceX() <= ENEMY_COLLISION_DISTANCE
+		&& relativeDistanceY() <= ENEMY_COLLISION_DISTANCE) {
+		dead();
 	}
 }
 
@@ -104,6 +118,14 @@ int Enemy::relativeDistanceY() {
 	return abs(screenPosY() - static_cast<int>(player.center.dy));
 }
 
+int Enemy::weapon1DistanceX() {
+	return player.weapon1X() + static_cast<int>(HALF_PLAYER_SIZE);
+}
+
+int Enemy::weapon1DistanceY() {
+	return player.weapon1Y() + static_cast<int>(HALF_PLAYER_SIZE);
+}
+
 /// <summary>
 /// 画面上のx座標にいる条件
 /// </summary>
@@ -119,8 +141,8 @@ bool Enemy::onScreenY() {
 }
 
 void Enemy::initPosition() {
-	pos.dx = getPopLocation(ONE_MAP_X, 7, get_random(AREA_MIN, AREA_MAX));
-	pos.dy = getPopLocation(ONE_MAP_Y, 7, get_random(AREA_MIN, AREA_MAX));
+	pos.dx = getPopLocation(ONE_MAP_X, get_random(7, TOTAL_MAPS_X - 1), get_random(AREA_MIN, AREA_MAX));
+	pos.dy = getPopLocation(ONE_MAP_Y, get_random(8, TOTAL_MAPS_Y - 1), get_random(AREA_MIN, AREA_MAX));
 }
 
 int Enemy::getPopLocation(const int& dir, const int& x1, const int& x2) {
@@ -131,11 +153,11 @@ int Enemy::getPopLocation(const int& dir, const int& x1, const int& x2) {
 /// 更新処理
 /// </summary>
 void Enemy::update() {
-
+	if (player.knife) destroying();
 
 	//敵が生きているとき
 	if (activity) {
-		collision(); //プレイヤーとの衝突処理
+		//collision(); //プレイヤーとの衝突処理
 		getMoveSpeed(); //移動速度取得
 		move(); //移動処理
 		draw(); //描画処理
@@ -153,6 +175,6 @@ void Enemy::update() {
 	                 screenPosX(), screenPosY(), false);
 	DrawFormatString(215, 215, GetColor(0, 0, 255),
 	                 "相対距離：%d, %d",
-	                 relativeDistanceX(),
-	                 relativeDistanceY(), false);
+	                 abs(screenPosX() + 16 - weapon1DistanceX()),
+	                 abs(screenPosY() + 16 - weapon1DistanceY()), false);
 }

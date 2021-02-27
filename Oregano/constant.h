@@ -12,7 +12,8 @@ const int AREA_MAX = AREA_WIDTH - 1; //区画の最大値
 
 const double HALF_PLAYER_SIZE = 32.0; //プレイヤーサイズの半分
 
-const double ENEMY_COLLISION_RANGE = 48.0; //敵との衝突範囲
+const double ENEMY_COLLISION_DISTANCE = 48.0; //敵との衝突距離
+const double WEAPON_COLLISION_DISTANCE = HALF_PLAYER_SIZE; //敵と武器との衝突距離
 
 const int TOTAL_MAPS_X = 9; //横方向のマップ総数
 const int TOTAL_MAPS_Y = 9; //縦方向のマップ総数
@@ -25,7 +26,8 @@ const int HALF_MAP_Y = ONE_MAP_Y / 2; //1マップの半分サイズ
 
 const int DIRECTION_SIZE = 4; //方向の種類（配列のサイズ）
 
-const int MOVING_DISTANCE = 8; //移動速度
+const int MOVING_DISTANCE = 8; //移動距離
+const int KNIFE_SPEED = MOVING_DISTANCE * 2;
 
 const int INITIAL_X = ONE_MAP_X * (TOTAL_MAPS_X - 1) + HALF_MAP_X; //初期マップのx座標
 const int INITIAL_Y = ONE_MAP_Y * (TOTAL_MAPS_Y - 1) + HALF_MAP_Y / 2 + BLOCK_SIZE; //初期マップのy座標
@@ -58,11 +60,12 @@ const int ALL_COIN_TYPE = 4; //コインの種類
 
 const int TERMINAL_CHAR = 1;
 
-#define CALL_ONCE(src)\
+//一度のみ呼び出し
+#define CALL_ONCE(/*src*/function)\
      do {\
           static bool initialized = false;\
           if (!initialized){\
-               src;\
+               /*src*/function;\
                initialized = true;\
           }\
      } while (0)

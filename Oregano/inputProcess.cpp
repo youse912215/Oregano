@@ -6,7 +6,7 @@
 char Input::oldkeys[256] = {0};
 char Input::keys[256] = {0};
 
-Input::Input() : padNum(14), buttonFlag(10) {
+Input::Input() : padNum(14), STICK(4), buttonFlag(10) {
 	A = false;
 	B = false;
 	X = false;
@@ -65,27 +65,35 @@ void Input::moveProcess(MapCollision& collision) {
 	//左移動
 	if (getInputButton(STICK_LEFT)) {
 		MapDraw::mapX -= MOVING_DISTANCE;
-		if (collision.leftCollisionFlag()) MapDraw::mapX += MOVING_DISTANCE;
+		if (collision.leftCollisionFlag() || A) MapDraw::mapX += MOVING_DISTANCE;
 		moveDirection = LEFT;
+		STICK[LEFT] = true;
 	}
+	else STICK[LEFT] = false;
 	//右移動
 	if (getInputButton(STICK_RIGHT)) {
 		MapDraw::mapX += MOVING_DISTANCE;
-		if (collision.rightCollisionFlag()) MapDraw::mapX -= MOVING_DISTANCE;
+		if (collision.rightCollisionFlag() || A) MapDraw::mapX -= MOVING_DISTANCE;
 		moveDirection = RIGHT;
+		STICK[RIGHT] = true;
 	}
+	else STICK[RIGHT] = false;
 	//上移動
 	if (getInputButton(STICK_UP)) {
 		MapDraw::mapY -= MOVING_DISTANCE;
-		if (collision.upCollisionFlag()) MapDraw::mapY += MOVING_DISTANCE;
+		if (collision.upCollisionFlag() || A) MapDraw::mapY += MOVING_DISTANCE;
 		moveDirection = UP;
+		STICK[UP] = true;
 	}
+	else STICK[UP] = false;
 	//下移動
 	if (getInputButton(STICK_DOWN)) {
 		MapDraw::mapY += MOVING_DISTANCE;
-		if (collision.downCollisionFlag()) MapDraw::mapY -= MOVING_DISTANCE;
+		if (collision.downCollisionFlag() || A) MapDraw::mapY -= MOVING_DISTANCE;
 		moveDirection = DOWN;
+		STICK[DOWN] = true;
 	}
+	else STICK[DOWN] = false;
 
 	DrawFormatString(0, 150, GetColor(255, 255, 120), "%d   %d",
 	                 collision.leftCollisionFlag(), collision.rightCollisionFlag(), false);
@@ -102,6 +110,13 @@ void Input::moveProcess(MapCollision& collision) {
 	                 getInputButton(STICK_DOWN), false);
 
 
+}
+
+/// <summary>
+/// いずれかのスティックが押されているかを返す
+/// </summary>
+bool Input::anySTICK() {
+	return STICK[LEFT] || STICK[RIGHT] || STICK[UP] || STICK[DOWN];
 }
 
 /// <summary>
@@ -158,11 +173,11 @@ void Input::endProcess() {
 bool Input::getInputButton(const int& buttonName) {
 	switch (buttonName) {
 	case A_BUTTON: //Aボタン
-		return mode && padNum[A_BUTTON] && !oldPad || !mode && keys[KEY_INPUT_1] && !oldkeys[KEY_INPUT_1];
+		return mode && padNum[A_BUTTON] /*&& !oldPad*/ || !mode && keys[KEY_INPUT_1] && !oldkeys[KEY_INPUT_1];
 	case B_BUTTON: //Bボタン
-		return mode && padNum[B_BUTTON] && !oldPad || !mode && keys[KEY_INPUT_2] && !oldkeys[KEY_INPUT_2];
+		return mode && padNum[B_BUTTON] /*&& !oldPad*/ || !mode && keys[KEY_INPUT_2] && !oldkeys[KEY_INPUT_2];
 	case X_BUTTON: //Xボタン
-		return mode && padNum[X_BUTTON] && !oldPad || !mode && keys[KEY_INPUT_3] && !oldkeys[KEY_INPUT_3];
+		return mode && padNum[X_BUTTON] /*&& !oldPad*/ || !mode && keys[KEY_INPUT_3] && !oldkeys[KEY_INPUT_3];
 	case Y_BUTTON: //Yボタン
 		return mode && padNum[Y_BUTTON] && !oldPad || !mode && keys[KEY_INPUT_4] && !oldkeys[KEY_INPUT_4];
 	case L_BUTTON: //Lボタン

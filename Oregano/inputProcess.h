@@ -27,6 +27,9 @@ public:
 	bool Y;
 	bool LB;
 	bool RB;
+	vector<bool> STICK;
+	bool anySTICK();
+
 
 	int moveDirection; //¡Œ©‚Ä‚¢‚éˆÚ“®•ûŒü
 

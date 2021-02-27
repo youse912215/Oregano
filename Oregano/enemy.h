@@ -1,11 +1,10 @@
 #pragma once
-#include "organism.h"
 #include "player.h"
 #include <vector>
 
 using namespace std;
 
-class Enemy : public Organism {
+class Enemy {
 private:
 	Player& player;
 
@@ -21,6 +20,11 @@ private:
 
 	void draw();
 	void move();
+
+	void dead();
+
+	void destroying();
+
 	void collision();
 	void getMoveSpeed();
 
@@ -28,6 +32,9 @@ private:
 	int screenPosY();
 	int relativeDistanceX();
 	int relativeDistanceY();
+
+	int weapon1DistanceX();
+	int weapon1DistanceY();
 
 	bool onScreenX();
 	bool onScreenY();

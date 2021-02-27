@@ -3,35 +3,145 @@
 #include "constant.h"
 #include "mapDraw.h"
 
-Player::Player(int graph) :
-	graph(graph), status(PLAYER_STATUS_SIZE),
-	possessionItem(PLAYER_ITEM_SIZE), possessionAccessory(PLAYER_ACCESSORY_SIZE),
-	possessionJewel(PLAYER_JEWEL_SIZE), possessionMineral(PLAYER_MINERAL_SIZE) {
+Player::Player(Input& input, DataSource& source) :
+	input(input), source(source), cooldown(3), cooldownFlag(3),
+	status(PLAYER_STATUS_SIZE), possessionItem(PLAYER_ITEM_SIZE),
+	possessionAccessory(PLAYER_ACCESSORY_SIZE), possessionJewel(PLAYER_JEWEL_SIZE),
+	possessionMineral(PLAYER_MINERAL_SIZE) {
 	this->pos.dx = static_cast<int>(WIN_WIDTH / 2 - BLOCK_SIZE / 2);
 	this->pos.dy = static_cast<int>(WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2);
 	center = HALF_PLAYER_SIZE + pos;
+	knife = false;
+	knifePositionX = 0;
+	knifePositionY = 0;
 }
 
 Player::~Player() {
 }
 
-//プレイヤー描画
+/// <summary>
+/// 描画処理
+/// </summary>
 void Player::draw() {
 	DrawGraph(static_cast<int>(this->pos.dx),
-	          static_cast<int>(this->pos.dy), graph, TRUE);
+	          static_cast<int>(this->pos.dy), source.player, TRUE); //プレイヤー
+
+	if (knife) //ナイフの入力があったとき
+		DrawGraph(weapon1X(), weapon1Y(), source.weapon1, TRUE); //ナイフ
 
 	DrawFormatString(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy),
 	                 GetColor(255, 0, 0), "%lf, %lf, %lf, %lf",
 	                 this->pos.dx, this->pos.dy, center.dx, center.dy, false);
+	DrawFormatString(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy) - 15,
+	                 GetColor(255, 0, 0), "X%d, Y%d",
+	                 weapon1X(), weapon1Y(), false);
 }
 
-void Player::initProcess() {
+/// <summary>
+/// アクションコマンド処理
+/// </summary>
+void Player::actionCommand() {
+	/* ナイフ入力 */
+	if (input.A && cooldown[0] == 0 && input.anySTICK()) {
+		knife = true;
+		cooldownFlag[0] = true;
+	}
+	/* デスサイズ入力 */
+	/*if (input.B && cooldown[1] == 0) {
+		
+	}*/
 }
 
+/// <summary>
+/// ナイフのポジジョンをセットする
+/// </summary>
+void Player::knifePositionSet() {
+	/* x方向 */
+	if (weapon1X() < static_cast<int>(this->pos.dx)) knifePositionX -= KNIFE_SPEED;
+	else if (weapon1X() > static_cast<int>(this->pos.dx)) knifePositionX += KNIFE_SPEED;
+	else knifePositionX = 0;
+	/* y方向 */
+	if (weapon1Y() < static_cast<int>(this->pos.dy)) knifePositionY -= KNIFE_SPEED;
+	else if (weapon1Y() > static_cast<int>(this->pos.dy))knifePositionY += KNIFE_SPEED;
+	else knifePositionY = 0;
+}
+
+/// <summary>
+/// ナイフのポジジョンをリセットする
+/// </summary>
+void Player::knifePositionReset() {
+	if (deleteKnife()) {
+		knife = false;
+		knifePositionX = 0;
+		knifePositionY = 0;
+	}
+}
+
+/// <summary>
+/// ナイフの加速（ジョイパッドだと曲げることも可能）
+/// </summary>
+void Player::accelKnife() {
+	/* x方向 */
+	if (input.STICK[LEFT]) knifePositionX -= 8;
+	else if (input.STICK[RIGHT]) knifePositionX += 8;
+	/* y方向 */
+	if (input.STICK[UP]) knifePositionY -= 8;
+	else if (input.STICK[DOWN]) knifePositionY += 8;
+}
+
+/// <summary>
+/// ナイフの更新処理
+/// </summary>
+void Player::knifeUpdate() {
+	//ナイフ入力があったとき
+	if (knife) {
+		knifePositionSet(); //ナイフのポジジョンセット
+		accelKnife(); //ナイフの加速
+		knifePositionReset(); //ナイフのポジジョンリセット
+	}
+}
+
+/// <summary>
+/// ナイフの削除条件
+/// </summary>
+/// <returns></returns>
+bool Player::deleteKnife() {
+	//プレイヤーからの距離が3マス分離れているか
+	return abs(weapon1X() + HALF_PLAYER_SIZE - static_cast<int>(this->center.dx)) >= BLOCK_SIZE * 3
+		|| abs(weapon1Y() + HALF_PLAYER_SIZE - static_cast<int>(this->center.dy)) >= BLOCK_SIZE * 3;
+}
+
+/// <summary>
+/// ナイフのx座標を返す
+/// </summary>
+int Player::weapon1X() {
+	return static_cast<int>(this->pos.dx) + knifePositionX;
+}
+
+/// <summary>
+/// ナイフのy座標を返す
+/// </summary>
+int Player::weapon1Y() {
+	return static_cast<int>(this->pos.dy) + knifePositionY;
+}
+
+/// <summary>
+/// 更新処理
+/// </summary>
 void Player::update() {
-	draw();
+	if (cooldown[0] >= 30) {
+		cooldown[0] = 0;
+		cooldownFlag[0] = false;
+	}
+	if (cooldownFlag[0]) cooldown[0]++;
 
-	DrawFormatString(0, 500, GetColor(120, 0, 100), "トレジャーランク:%d, 花萌葱:%d, 金糸雀:%d, 葡萄染:%d, 白百合:%d",
+	actionCommand(); //アクションコマンド処理
+	knifeUpdate(); //ナイフ更新処理
+	draw(); //描画処理
+
+	DrawFormatString(0, 450, GetColor(0, 255, 0), "TF:%d, CDR:%d", knife, cooldown[0], false);
+
+	/*DrawFormatString(0, 500, GetColor(120, 0, 100), "トレジャーランク:%d, 花萌葱:%d, 金糸雀:%d, 葡萄染:%d, 白百合:%d",
 	                 status[TREASURE_RANK], status[GREEN_COIN], status[YELLOW_COIN],
 	                 status[PURPLE_COIN], status[WHITE_COIN], false);
 	DrawFormatString(0, 515, GetColor(120, 0, 100), "現在生命力:%d, 最大生命力:%d, 攻撃力:%d, 交渉力:%d",
@@ -88,5 +198,5 @@ void Player::update() {
 
 	DrawFormatString(0, 800, GetColor(0, 0, 0), "軽石:%d, 東栄石:%d, 南栄石:%d, 西栄石:%d、北栄石:%d, 黄金超石:%d",
 	                 possessionMineral[0], possessionMineral[1], possessionMineral[2],
-	                 possessionMineral[3], possessionMineral[4], possessionMineral[4], false);
+	                 possessionMineral[3], possessionMineral[4], possessionMineral[4], false);*/
 }

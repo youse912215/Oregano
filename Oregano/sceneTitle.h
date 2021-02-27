@@ -8,9 +8,9 @@ using namespace std;
 class SceneTitle {
 private:
 	DataSave& save; //データセーブクラスから
-	MapLoad& load; //マップロードクラスから
+	//MapLoad& load; //マップロードクラスから
 public:
-	SceneTitle(DataSave& save, MapLoad& load);
+	SceneTitle(DataSave& save);
 	~SceneTitle();
 
 	void titleProcess(); //タイトル処理

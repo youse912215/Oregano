@@ -4,8 +4,9 @@
 #include "DxLib.h"
 
 MapAutogeneration autogeneration;
+MapLoad load;
 
-SceneTitle::SceneTitle(DataSave& save, MapLoad& load) : save(save), load(load) {
+SceneTitle::SceneTitle(DataSave& save) : save(save) {
 }
 
 SceneTitle::~SceneTitle() {

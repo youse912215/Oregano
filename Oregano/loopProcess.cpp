@@ -4,7 +4,6 @@
 #include "dataSource.h"
 #include "player.h"
 #include "enemy.h"
-#include "organism.h"
 #include "mapDraw.h"
 #include "mapCollision.h"
 #include "mapAutogeneration.h"
@@ -13,7 +12,6 @@
 #include "dataSave.h"
 #include "gameUI.h"
 #include "dataText.h"
-#include "mapLoad.h"
 
 #include "sceneTitle.h"
 
@@ -21,12 +19,12 @@ void loopProcess() {
 
 	Input input; //入力クラス
 	DataSource source; //素材クラス
-	Player player(source.playerGraph()); //プレイヤークラス
+	Player player(input, source); //プレイヤークラス
 
 	//Enemy enemy(source.enemy1, player);
 	vector<Enemy*> enemies;
 
-	for (unsigned int i = 0; i < 3; ++i)
+	for (unsigned int i = 0; i < 10; ++i)
 		enemies.push_back(new Enemy(source.enemy1, player));
 
 	EventBase event; //イベントクラス
@@ -34,8 +32,7 @@ void loopProcess() {
 	DataText text(input); //テキストクラス
 	DataSave save(player, field, text); //セーブデータクラス
 	GameUI gameUI(input); //ゲームUIクラス
-	MapLoad load;
-	SceneTitle title(save, load);
+	SceneTitle title(save);
 
 	while (true) {
 		ClearDrawScreen(); //画面クリア
@@ -54,8 +51,8 @@ void loopProcess() {
 			collision.update(); //コリジョン更新処理
 
 
-			if (!gameUI.changeFlag) //移動処理（アクション変更時は移動不可）
-				input.moveProcess(collision);
+			//if (!gameUI.changeFlag) //移動処理（アクション変更時は移動不可）
+			input.moveProcess(collision);
 
 			field.update(); //フィールド更新処理
 
@@ -67,10 +64,10 @@ void loopProcess() {
 			}
 
 			for (unsigned int i = enemies.size() - 1; i != 0; --i) {
-				if (!enemies[i]->alive) {
-					delete enemies[i];
-					enemies.erase(enemies.begin() + i);
-				}
+				if (enemies[i]->alive) continue;
+				delete enemies[i];
+				enemies.erase(enemies.begin() + i);
+				enemies.push_back(new Enemy(source.enemy1, player));
 			}
 		}
 			/* メニューシーン処理 */

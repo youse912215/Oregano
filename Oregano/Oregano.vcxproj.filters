@@ -138,17 +138,14 @@
     <ClCompile Include="mapLoad.cpp">
       <Filter>ソース ファイル\Map</Filter>
     </ClCompile>
-    <ClCompile Include="organism.cpp">
-      <Filter>ソース ファイル\Organism</Filter>
-    </ClCompile>
     <ClCompile Include="enemy.cpp">
+      <Filter>ソース ファイル\Organism\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyConclusion.cpp">
       <Filter>ソース ファイル\Organism\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="player.h">
-      <Filter>ヘッダー ファイル\Organism</Filter>
-    </ClInclude>
     <ClInclude Include="mapDraw.h">
       <Filter>ヘッダー ファイル\Map</Filter>
     </ClInclude>
@@ -209,11 +206,14 @@
     <ClInclude Include="mapLoad.h">
       <Filter>ヘッダー ファイル\Map</Filter>
     </ClInclude>
-    <ClInclude Include="organism.h">
-      <Filter>ヘッダー ファイル\Organism</Filter>
-    </ClInclude>
     <ClInclude Include="enemy.h">
       <Filter>ヘッダー ファイル\Organism\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyConclusion.h">
+      <Filter>ヘッダー ファイル\Organism\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>ヘッダー ファイル\Organism</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
