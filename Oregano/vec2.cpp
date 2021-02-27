@@ -54,7 +54,7 @@ Vec2 operator+(const double& a, Vec2& other) {
 	return v;
 }
 
-Vec2 operator-(const double& a, Vec2& other) {
+Vec2 operator-(Vec2& other, const double& a) {
 	Vec2 v;
 	v.dx = other.dx - a;
 	v.dy = other.dy - a;

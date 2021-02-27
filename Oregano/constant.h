@@ -303,8 +303,8 @@ enum ITEM_INFORMATION {
 enum ACTION_COMMAND {
 	//投げナイフ
 	KNIFE,
-	//回転斬り
-	ROTATING_SLASH,
+	//刃
+	SLASH,
 	//シールド
 	SHIELD
 };

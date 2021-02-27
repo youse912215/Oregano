@@ -5,16 +5,24 @@
 
 Player::Player(Input& input, DataSource& source) :
 	input(input), source(source), cooldown(3), cooldownFlag(3),
+
+	/* データ類 */
 	status(PLAYER_STATUS_SIZE), possessionItem(PLAYER_ITEM_SIZE),
 	possessionAccessory(PLAYER_ACCESSORY_SIZE), possessionJewel(PLAYER_JEWEL_SIZE),
 	possessionMineral(PLAYER_MINERAL_SIZE) {
-	this->pos.dx = static_cast<int>(WIN_WIDTH / 2 - BLOCK_SIZE / 2);
-	this->pos.dy = static_cast<int>(WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2);
-	center = HALF_BLOCK_SIZE + pos;
-	knife = false;
-	knifePosition = 0;
-	knifePos = 0;
-	knifeCenter = 0;
+
+	this->pos.dx = static_cast<int>(WIN_WIDTH / 2 - BLOCK_SIZE / 2); //プレイヤーx座標
+	this->pos.dy = static_cast<int>(WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2); //プレイヤーy座標
+	center = HALF_BLOCK_SIZE + pos; //プレイヤーの中心座標
+
+	knifePos = 0; //ナイフ座標
+	knifeAddPos = 0; //ナイフの加算分の座標
+	knifeCenter = 0; //ナイフの中心座標
+	knife = false; //ナイフフラグ
+
+	slashPos = 0; //刃座標
+	slashCenter = 0; //刃の中心座標
+	slash = false; //刃フラグ
 }
 
 Player::~Player() {
@@ -24,14 +32,17 @@ Player::~Player() {
 /// 描画処理
 /// </summary>
 void Player::draw() {
-	DrawGraph(static_cast<int>(this->pos.dx),
-	          static_cast<int>(this->pos.dy), source.player, true); //プレイヤー
+	//ナイフ
+	if (knife)
+		DrawGraph(static_cast<int>(knifePos.dx), static_cast<int>(knifePos.dy), source.knifeGraph, true);
 
-	if (knife) //ナイフの入力があったとき
-		DrawGraph(static_cast<int>(knifePos.dx), static_cast<int>(knifePos.dy), source.weapon1, true); //ナイフ
+	//刃
+	if (slash)
+		DrawGraph(static_cast<int>(slashPos.dx), static_cast<int>(slashPos.dy), source.slashGraph, true);
 
-	//if (rotatingSlash)
-	//	DrawGraph(weapon1X(), weapon1Y(), source.weapon1, TRUE); //回転斬り
+	//プレイヤー
+	DrawGraph(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy), source.player, true);
+
 
 	DrawFormatString(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy),
 	                 GetColor(255, 0, 0), "%lf, %lf, %lf, %lf",
@@ -39,6 +50,9 @@ void Player::draw() {
 	DrawFormatString(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy) - 15,
 	                 GetColor(255, 0, 0), "X%lf, Y%lf",
 	                 knifePos.dx, knifePos.dy, false);
+	DrawFormatString(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy) - 30,
+	                 GetColor(255, 0, 0), "X%lf, Y%lf",
+	                 slashPos.dx, slashPos.dy, false);
 }
 
 /// <summary>
@@ -47,13 +61,26 @@ void Player::draw() {
 void Player::actionCommand() {
 	/* ナイフ入力 */
 	if (input.A && cooldown[KNIFE] == 0 && input.anySTICK()) {
-		knife = true;
-		cooldownFlag[KNIFE] = true;
+		knife = true; //ナイフ投射
+		cooldownFlag[KNIFE] = true; //クールダウンフラグをtrue
 	}
-	/* 回転斬り入力 */
-	if (input.B && cooldown[ROTATING_SLASH] == 0) {
-		rotatingSlash = true;
-		cooldownFlag[ROTATING_SLASH] = true;
+	/* 刃入力 */
+	if (input.B && cooldown[SLASH] == 0) {
+		slash = true; //刃を回転
+		cooldownFlag[SLASH] = true; //クールダウンフラグをtrue
+	}
+}
+
+/// <summary>
+/// ナイフのクールダウン処理
+/// </summary>
+void Player::knifeCooldown() {
+	if (cooldownFlag[KNIFE]) cooldown[KNIFE]++; //クールダウン開始
+
+	//クールダウンは30秒
+	if (cooldown[KNIFE] >= 30) {
+		cooldown[KNIFE] = 0; //クールダウンをリセット
+		cooldownFlag[KNIFE] = false; //クールダウンフラグをfalse
 	}
 }
 
@@ -62,13 +89,13 @@ void Player::actionCommand() {
 /// </summary>
 void Player::knifePositionSet() {
 	/* x方向 */
-	if (knifePos.dx < pos.dx) knifePosition.dx -= KNIFE_SPEED;
-	else if (knifePos.dx > pos.dx) knifePosition.dx += KNIFE_SPEED;
-	else knifePosition.dx = 0;
+	if (knifePos.dx < pos.dx) knifeAddPos.dx -= KNIFE_SPEED;
+	else if (knifePos.dx > pos.dx) knifeAddPos.dx += KNIFE_SPEED;
+	else knifeAddPos.dx = 0;
 	/* y方向 */
-	if (knifePos.dy < pos.dy) knifePosition.dy -= KNIFE_SPEED;
-	else if (knifePos.dy > pos.dy)knifePosition.dy += KNIFE_SPEED;
-	else knifePosition.dy = 0;
+	if (knifePos.dy < pos.dy) knifeAddPos.dy -= KNIFE_SPEED;
+	else if (knifePos.dy > pos.dy)knifeAddPos.dy += KNIFE_SPEED;
+	else knifeAddPos.dy = 0;
 }
 
 /// <summary>
@@ -77,8 +104,8 @@ void Player::knifePositionSet() {
 void Player::knifePositionReset() {
 	if (deleteKnife()) {
 		knife = false;
-		knifePosition.dx = 0;
-		knifePosition.dy = 0;
+		knifeAddPos.dx = 0.0;
+		knifeAddPos.dy = 0.0;
 	}
 }
 
@@ -87,17 +114,20 @@ void Player::knifePositionReset() {
 /// </summary>
 void Player::accelKnife() {
 	/* x方向 */
-	if (input.STICK[LEFT]) knifePosition.dx -= KNIFE_SPEED / 2.0;
-	else if (input.STICK[RIGHT]) knifePosition.dx += KNIFE_SPEED / 2.0;
+	if (input.STICK[LEFT]) knifeAddPos.dx -= KNIFE_SPEED / 2.0;
+	else if (input.STICK[RIGHT]) knifeAddPos.dx += KNIFE_SPEED / 2.0;
 	/* y方向 */
-	if (input.STICK[UP]) knifePosition.dy -= KNIFE_SPEED / 2.0;
-	else if (input.STICK[DOWN]) knifePosition.dy += KNIFE_SPEED / 2.0;
+	if (input.STICK[UP]) knifeAddPos.dy -= KNIFE_SPEED / 2.0;
+	else if (input.STICK[DOWN]) knifeAddPos.dy += KNIFE_SPEED / 2.0;
 }
 
 /// <summary>
 /// ナイフの更新処理
 /// </summary>
 void Player::knifeUpdate() {
+	knifePos = pos + knifeAddPos; //ナイフの座標の更新
+	knifeCenter = HALF_BLOCK_SIZE + knifePos; //ナイフの中心位置の更新
+
 	//ナイフ入力があったとき
 	if (knife) {
 		knifePositionSet(); //ナイフのポジジョンセット
@@ -117,23 +147,41 @@ bool Player::deleteKnife() {
 }
 
 /// <summary>
+/// 刃のクールダウン処理
+/// </summary>
+void Player::slashCooldown() {
+	if (cooldownFlag[SLASH]) cooldown[SLASH]++; //クールダウン開始
+
+	if (cooldown[SLASH] >= 20 && cooldown[SLASH] < 60) {
+		slash = false; //刃を収める
+	}
+		//クールダウンは60秒
+	else if (cooldown[SLASH] >= 60) {
+		cooldown[SLASH] = 0; //クールダウンをリセット
+		cooldownFlag[SLASH] = false; //クールダウンフラグをfalse
+	}
+}
+
+void Player::slashUpdate() {
+	slashPos = this->pos - HALF_BLOCK_SIZE;
+}
+
+/// <summary>
 /// 更新処理
 /// </summary>
 void Player::update() {
-	if (cooldown[0] >= 30) {
-		cooldown[0] = 0;
-		cooldownFlag[0] = false;
-	}
-	if (cooldownFlag[0]) cooldown[0]++;
-
-	knifePos = pos + knifePosition;
-	knifeCenter = HALF_BLOCK_SIZE + knifePos;
+	knifeCooldown(); //ナイフのクールダウン処理
+	slashCooldown(); //刃のクールダウン処理
 
 	actionCommand(); //アクションコマンド処理
+
 	knifeUpdate(); //ナイフ更新処理
+	slashUpdate(); //刃の更新処理
+
 	draw(); //描画処理
 
 	DrawFormatString(0, 450, GetColor(0, 255, 0), "TF:%d, CDR:%d", knife, cooldown[0], false);
+	DrawFormatString(0, 465, GetColor(0, 255, 0), "TF:%d, CDR:%d", slash, cooldown[1], false);
 
 	/*DrawFormatString(0, 500, GetColor(120, 0, 100), "トレジャーランク:%d, 花萌葱:%d, 金糸雀:%d, 葡萄染:%d, 白百合:%d",
 	                 status[TREASURE_RANK], status[GREEN_COIN], status[YELLOW_COIN],

@@ -23,7 +23,8 @@ private:
 
 	void dead();
 
-	void destroying();
+	void hitKnife();
+	void hitSlash();
 
 	void collision();
 	void getMoveSpeed();
@@ -37,7 +38,7 @@ private:
 	bool onScreenY();
 	void initPosition();
 
-	double getPopLocation(const int& dir, const int& x1, const int& x2);
+	double getPopLocation(const int& mapDir, const int& coordinate1, const int& coordinate2);
 
 public:
 	bool activity;

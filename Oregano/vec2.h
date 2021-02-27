@@ -15,7 +15,7 @@ public:
 
 	friend Vec2 operator +(const int& a, Vec2& other);
 	friend Vec2 operator +(const double& a, Vec2& other);
-	friend Vec2 operator -(const double& a, Vec2& other);
+	friend Vec2 operator -(Vec2& other, const double& a);
 	friend Vec2 operator *(const double& a, Vec2& other);
 	friend Vec2 operator /(const double& a, Vec2& other);
 };
