@@ -9,7 +9,7 @@
 Enemy::Enemy(int graph, Player& player) : player(player), graph(graph) {
 	this->pos.dx = getPopLocation(ONE_MAP_X, 7/*get_random(4, TOTAL_MAPS_X - 1)*/, get_random(AREA_MIN, AREA_MAX));
 	this->pos.dy = getPopLocation(ONE_MAP_Y, 7/*get_random(5, TOTAL_MAPS_Y - 1)*/, get_random(AREA_MIN, AREA_MAX));
-	this->center = (HALF_PLAYER_SIZE / 2) + pos;
+	this->center = QUARTER_BLOCK_SIZE + pos;
 	activity = false;
 	alive = true;
 }
@@ -21,7 +21,7 @@ Enemy::~Enemy() {
 /// 描画処理
 /// </summary>
 void Enemy::draw() {
-	DrawGraph(screenPosX(), screenPosY(), graph, true);
+	DrawGraph(static_cast<int>(screenPosX()), static_cast<int>(screenPosY()), graph, true);
 }
 
 /// <summary>
@@ -63,8 +63,8 @@ void Enemy::dead() {
 }
 
 void Enemy::destroying() {
-	if (abs(screenPosX() + (HALF_PLAYER_SIZE / 2) - weapon1DistanceX()) <= WEAPON_COLLISION_DISTANCE
-		&& abs(screenPosY() + (HALF_PLAYER_SIZE / 2) - weapon1DistanceY()) <= WEAPON_COLLISION_DISTANCE) {
+	if (abs(screenPosX() + (HALF_BLOCK_SIZE / 2.0) - player.knifeCenter.dx) <= WEAPON_COLLISION_DISTANCE
+		&& abs(screenPosY() + (HALF_BLOCK_SIZE / 2.0) - player.knifeCenter.dy) <= WEAPON_COLLISION_DISTANCE) {
 		dead();
 	}
 }
@@ -93,37 +93,28 @@ void Enemy::getMoveSpeed() {
 /// <summary>
 /// 画面上のx座標
 /// </summary>
-int Enemy::screenPosX() {
-	return static_cast<int>(this->pos.dx) - MapDraw::mapX;
+double Enemy::screenPosX() {
+	return pos.dx - static_cast<double>(MapDraw::mapX);
 }
 
 /// <summary>
 /// 画面上のy座標
-/// </summary>
-int Enemy::screenPosY() {
-	return static_cast<int>(this->pos.dy) - MapDraw::mapY;
+double Enemy::screenPosY() {
+	return pos.dy - static_cast<double>(MapDraw::mapY);
 }
 
 /// <summary>
 /// プレイヤーとの相対距離（x方向）
 /// </summary>
-int Enemy::relativeDistanceX() {
-	return abs(screenPosX() - static_cast<int>(player.center.dx));
+double Enemy::relativeDistanceX() {
+	return abs(screenPosX() + QUARTER_BLOCK_SIZE - player.center.dx);
 }
 
 /// <summary>
 /// プレイヤーとの相対距離（y方向）
 /// </summary>
-int Enemy::relativeDistanceY() {
-	return abs(screenPosY() - static_cast<int>(player.center.dy));
-}
-
-int Enemy::weapon1DistanceX() {
-	return player.weapon1X() + static_cast<int>(HALF_PLAYER_SIZE);
-}
-
-int Enemy::weapon1DistanceY() {
-	return player.weapon1Y() + static_cast<int>(HALF_PLAYER_SIZE);
+double Enemy::relativeDistanceY() {
+	return abs(screenPosY() + QUARTER_BLOCK_SIZE - player.center.dy);
 }
 
 /// <summary>
@@ -145,7 +136,7 @@ void Enemy::initPosition() {
 	pos.dy = getPopLocation(ONE_MAP_Y, get_random(8, TOTAL_MAPS_Y - 1), get_random(AREA_MIN, AREA_MAX));
 }
 
-int Enemy::getPopLocation(const int& dir, const int& x1, const int& x2) {
+double Enemy::getPopLocation(const int& dir, const int& x1, const int& x2) {
 	return dir * x1 + BLOCK_SIZE * x2;
 }
 
@@ -157,7 +148,7 @@ void Enemy::update() {
 
 	//敵が生きているとき
 	if (activity) {
-		//collision(); //プレイヤーとの衝突処理
+		collision(); //プレイヤーとの衝突処理
 		getMoveSpeed(); //移動速度取得
 		move(); //移動処理
 		draw(); //描画処理
@@ -171,10 +162,11 @@ void Enemy::update() {
 	                 "En座標：%lf, %lf",
 	                 pos.dx, pos.dy, false);
 	DrawFormatString(200, 200, GetColor(0, 0, 255),
-	                 "スクリーン座標：%d, %d",
+	                 "スクリーン座標：%lf, %lf",
 	                 screenPosX(), screenPosY(), false);
-	DrawFormatString(215, 215, GetColor(0, 0, 255),
-	                 "相対距離：%d, %d",
-	                 abs(screenPosX() + 16 - weapon1DistanceX()),
-	                 abs(screenPosY() + 16 - weapon1DistanceY()), false);
+	DrawFormatString(200, 215, GetColor(0, 0, 255),
+	                 "相対座標：%lf, %lf",
+	                 abs(screenPosX() + (HALF_BLOCK_SIZE / 2.0) - player.knifeCenter.dx),
+	                 abs(screenPosY() + (HALF_BLOCK_SIZE / 2.0) - player.knifeCenter.dy), false);
+
 }

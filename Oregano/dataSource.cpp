@@ -7,6 +7,7 @@ DataSource::DataSource() {
 	actionUI = LoadGraph("resource\\UI\\actionUI.png");
 	enemy1 = LoadGraph("resource/organism/enemy_1.png");
 	weapon1 = LoadGraph("resource/organism/knife.png");
+	rotatingSlash = LoadGraph("resource/organism/rotatingSlash.png");
 }
 
 DataSource::~DataSource() {
@@ -15,6 +16,7 @@ DataSource::~DataSource() {
 	DeleteGraph(actionUI);
 	DeleteGraph(enemy1);
 	DeleteGraph(weapon1);
+	DeleteGraph(rotatingSlash);
 }
 
 int DataSource::playerGraph() {

@@ -11,9 +11,10 @@ class Player {
 private:
 	Input& input;
 	DataSource& source;
+	Vec2 knifePosition;
 
-	int knifePositionX; //x方向のナイフポジション
-	int knifePositionY; //y方向のナイフポジション
+	vector<int> cooldown; //アクションのクールダウン
+	vector<bool> cooldownFlag; //クールダウンのフラグ
 
 	void draw(); //描画処理
 
@@ -25,18 +26,16 @@ private:
 	void knifeUpdate(); //ナイフの更新処理
 	bool deleteKnife(); //ナイフの削除条件
 
-	vector<int> cooldown; //アクションのクールダウン
-
-	vector<bool> cooldownFlag; //クールダウンのフラグ
-
 
 public:
 	Vec2 pos;
 	Vec2 center;
-	int weapon1X();
-	int weapon1Y();
+
+	Vec2 knifePos;
+	Vec2 knifeCenter;
 
 	bool knife;
+	bool rotatingSlash;
 
 	vector<int> status;
 	vector<int> possessionItem;

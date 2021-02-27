@@ -28,19 +28,16 @@ private:
 	void collision();
 	void getMoveSpeed();
 
-	int screenPosX();
-	int screenPosY();
-	int relativeDistanceX();
-	int relativeDistanceY();
-
-	int weapon1DistanceX();
-	int weapon1DistanceY();
+	double screenPosX();
+	double screenPosY();
+	double relativeDistanceX();
+	double relativeDistanceY();
 
 	bool onScreenX();
 	bool onScreenY();
 	void initPosition();
 
-	int getPopLocation(const int& dir, const int& x1, const int& x2);
+	double getPopLocation(const int& dir, const int& x1, const int& x2);
 
 public:
 	bool activity;

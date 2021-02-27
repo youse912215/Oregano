@@ -13,6 +13,7 @@ public:
 	int player; //プレイヤー画像の読み込み
 	int mapChip; //マップチップ画像ファイルの読み込み
 	int weapon1;
+	int rotatingSlash;
 
 	DataSource();
 	~DataSource();

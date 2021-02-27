@@ -10,10 +10,11 @@ const int AREA_HEIGHT = 25; //1マップ区画の縦のサイズ
 const int AREA_MIN = 0; //区画の最小値
 const int AREA_MAX = AREA_WIDTH - 1; //区画の最大値
 
-const double HALF_PLAYER_SIZE = 32.0; //プレイヤーサイズの半分
+const double HALF_BLOCK_SIZE = 32.0; //プレイヤーサイズの半分(敵サイズ)
+const double QUARTER_BLOCK_SIZE = HALF_BLOCK_SIZE / 2.0;
 
 const double ENEMY_COLLISION_DISTANCE = 48.0; //敵との衝突距離
-const double WEAPON_COLLISION_DISTANCE = HALF_PLAYER_SIZE; //敵と武器との衝突距離
+const double WEAPON_COLLISION_DISTANCE = HALF_BLOCK_SIZE; //敵と武器との衝突距離
 
 const int TOTAL_MAPS_X = 9; //横方向のマップ総数
 const int TOTAL_MAPS_Y = 9; //縦方向のマップ総数
@@ -27,7 +28,7 @@ const int HALF_MAP_Y = ONE_MAP_Y / 2; //1マップの半分サイズ
 const int DIRECTION_SIZE = 4; //方向の種類（配列のサイズ）
 
 const int MOVING_DISTANCE = 8; //移動距離
-const int KNIFE_SPEED = MOVING_DISTANCE * 2;
+const double KNIFE_SPEED = 16.0; //ナイフ速度
 
 const int INITIAL_X = ONE_MAP_X * (TOTAL_MAPS_X - 1) + HALF_MAP_X; //初期マップのx座標
 const int INITIAL_Y = ONE_MAP_Y * (TOTAL_MAPS_Y - 1) + HALF_MAP_Y / 2 + BLOCK_SIZE; //初期マップのy座標
@@ -297,4 +298,13 @@ enum ITEM_INFORMATION {
 	DIRECTION_,
 	EVENT_NO_,
 	ITEM_TYPE_,
+};
+
+enum ACTION_COMMAND {
+	//投げナイフ
+	KNIFE,
+	//回転斬り
+	ROTATING_SLASH,
+	//シールド
+	SHIELD
 };

@@ -24,7 +24,7 @@ void loopProcess() {
 	//Enemy enemy(source.enemy1, player);
 	vector<Enemy*> enemies;
 
-	for (unsigned int i = 0; i < 10; ++i)
+	for (unsigned int i = 0; i < 15; ++i)
 		enemies.push_back(new Enemy(source.enemy1, player));
 
 	EventBase event; //イベントクラス

@@ -10,10 +10,11 @@ Player::Player(Input& input, DataSource& source) :
 	possessionMineral(PLAYER_MINERAL_SIZE) {
 	this->pos.dx = static_cast<int>(WIN_WIDTH / 2 - BLOCK_SIZE / 2);
 	this->pos.dy = static_cast<int>(WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2);
-	center = HALF_PLAYER_SIZE + pos;
+	center = HALF_BLOCK_SIZE + pos;
 	knife = false;
-	knifePositionX = 0;
-	knifePositionY = 0;
+	knifePosition = 0;
+	knifePos = 0;
+	knifeCenter = 0;
 }
 
 Player::~Player() {
@@ -24,17 +25,20 @@ Player::~Player() {
 /// </summary>
 void Player::draw() {
 	DrawGraph(static_cast<int>(this->pos.dx),
-	          static_cast<int>(this->pos.dy), source.player, TRUE); //プレイヤー
+	          static_cast<int>(this->pos.dy), source.player, true); //プレイヤー
 
 	if (knife) //ナイフの入力があったとき
-		DrawGraph(weapon1X(), weapon1Y(), source.weapon1, TRUE); //ナイフ
+		DrawGraph(static_cast<int>(knifePos.dx), static_cast<int>(knifePos.dy), source.weapon1, true); //ナイフ
+
+	//if (rotatingSlash)
+	//	DrawGraph(weapon1X(), weapon1Y(), source.weapon1, TRUE); //回転斬り
 
 	DrawFormatString(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy),
 	                 GetColor(255, 0, 0), "%lf, %lf, %lf, %lf",
 	                 this->pos.dx, this->pos.dy, center.dx, center.dy, false);
 	DrawFormatString(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy) - 15,
-	                 GetColor(255, 0, 0), "X%d, Y%d",
-	                 weapon1X(), weapon1Y(), false);
+	                 GetColor(255, 0, 0), "X%lf, Y%lf",
+	                 knifePos.dx, knifePos.dy, false);
 }
 
 /// <summary>
@@ -42,14 +46,15 @@ void Player::draw() {
 /// </summary>
 void Player::actionCommand() {
 	/* ナイフ入力 */
-	if (input.A && cooldown[0] == 0 && input.anySTICK()) {
+	if (input.A && cooldown[KNIFE] == 0 && input.anySTICK()) {
 		knife = true;
-		cooldownFlag[0] = true;
+		cooldownFlag[KNIFE] = true;
 	}
-	/* デスサイズ入力 */
-	/*if (input.B && cooldown[1] == 0) {
-		
-	}*/
+	/* 回転斬り入力 */
+	if (input.B && cooldown[ROTATING_SLASH] == 0) {
+		rotatingSlash = true;
+		cooldownFlag[ROTATING_SLASH] = true;
+	}
 }
 
 /// <summary>
@@ -57,13 +62,13 @@ void Player::actionCommand() {
 /// </summary>
 void Player::knifePositionSet() {
 	/* x方向 */
-	if (weapon1X() < static_cast<int>(this->pos.dx)) knifePositionX -= KNIFE_SPEED;
-	else if (weapon1X() > static_cast<int>(this->pos.dx)) knifePositionX += KNIFE_SPEED;
-	else knifePositionX = 0;
+	if (knifePos.dx < pos.dx) knifePosition.dx -= KNIFE_SPEED;
+	else if (knifePos.dx > pos.dx) knifePosition.dx += KNIFE_SPEED;
+	else knifePosition.dx = 0;
 	/* y方向 */
-	if (weapon1Y() < static_cast<int>(this->pos.dy)) knifePositionY -= KNIFE_SPEED;
-	else if (weapon1Y() > static_cast<int>(this->pos.dy))knifePositionY += KNIFE_SPEED;
-	else knifePositionY = 0;
+	if (knifePos.dy < pos.dy) knifePosition.dy -= KNIFE_SPEED;
+	else if (knifePos.dy > pos.dy)knifePosition.dy += KNIFE_SPEED;
+	else knifePosition.dy = 0;
 }
 
 /// <summary>
@@ -72,8 +77,8 @@ void Player::knifePositionSet() {
 void Player::knifePositionReset() {
 	if (deleteKnife()) {
 		knife = false;
-		knifePositionX = 0;
-		knifePositionY = 0;
+		knifePosition.dx = 0;
+		knifePosition.dy = 0;
 	}
 }
 
@@ -82,11 +87,11 @@ void Player::knifePositionReset() {
 /// </summary>
 void Player::accelKnife() {
 	/* x方向 */
-	if (input.STICK[LEFT]) knifePositionX -= 8;
-	else if (input.STICK[RIGHT]) knifePositionX += 8;
+	if (input.STICK[LEFT]) knifePosition.dx -= KNIFE_SPEED / 2.0;
+	else if (input.STICK[RIGHT]) knifePosition.dx += KNIFE_SPEED / 2.0;
 	/* y方向 */
-	if (input.STICK[UP]) knifePositionY -= 8;
-	else if (input.STICK[DOWN]) knifePositionY += 8;
+	if (input.STICK[UP]) knifePosition.dy -= KNIFE_SPEED / 2.0;
+	else if (input.STICK[DOWN]) knifePosition.dy += KNIFE_SPEED / 2.0;
 }
 
 /// <summary>
@@ -107,22 +112,8 @@ void Player::knifeUpdate() {
 /// <returns></returns>
 bool Player::deleteKnife() {
 	//プレイヤーからの距離が3マス分離れているか
-	return abs(weapon1X() + HALF_PLAYER_SIZE - static_cast<int>(this->center.dx)) >= BLOCK_SIZE * 3
-		|| abs(weapon1Y() + HALF_PLAYER_SIZE - static_cast<int>(this->center.dy)) >= BLOCK_SIZE * 3;
-}
-
-/// <summary>
-/// ナイフのx座標を返す
-/// </summary>
-int Player::weapon1X() {
-	return static_cast<int>(this->pos.dx) + knifePositionX;
-}
-
-/// <summary>
-/// ナイフのy座標を返す
-/// </summary>
-int Player::weapon1Y() {
-	return static_cast<int>(this->pos.dy) + knifePositionY;
+	return abs(knifePos.dx + HALF_BLOCK_SIZE - center.dx) >= BLOCK_SIZE * 3.0
+		|| abs(knifePos.dy + HALF_BLOCK_SIZE - center.dy) >= BLOCK_SIZE * 3.0;
 }
 
 /// <summary>
@@ -134,6 +125,9 @@ void Player::update() {
 		cooldownFlag[0] = false;
 	}
 	if (cooldownFlag[0]) cooldown[0]++;
+
+	knifePos = pos + knifePosition;
+	knifeCenter = HALF_BLOCK_SIZE + knifePos;
 
 	actionCommand(); //アクションコマンド処理
 	knifeUpdate(); //ナイフ更新処理
