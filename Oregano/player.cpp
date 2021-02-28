@@ -20,9 +20,15 @@ Player::Player(Input& input, DataSource& source) :
 	knifeCenter = 0; //ナイフの中心座標
 	knife = false; //ナイフフラグ
 
-	slashPos = 0; //刃座標
+	slashPos = this->pos - HALF_BLOCK_SIZE; //刃座標
 	slashCenter = 0; //刃の中心座標
 	slash = false; //刃フラグ
+
+	shieldPos = this->pos; //シールドの座標
+	shieldValue = 15;
+	shield = false; //シールドフラグ
+
+	coin0 = 100;
 }
 
 Player::~Player() {
@@ -39,6 +45,10 @@ void Player::draw() {
 	//刃
 	if (slash)
 		DrawGraph(static_cast<int>(slashPos.dx), static_cast<int>(slashPos.dy), source.slashGraph, true);
+
+	//シールド
+	if (shield)
+		DrawGraph(static_cast<int>(shieldPos.dx), static_cast<int>(shieldPos.dy), source.shieldGraph, true);
 
 	//プレイヤー
 	DrawGraph(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy), source.player, true);
@@ -68,6 +78,12 @@ void Player::actionCommand() {
 	if (input.B && cooldown[SLASH] == 0) {
 		slash = true; //刃を回転
 		cooldownFlag[SLASH] = true; //クールダウンフラグをtrue
+	}
+	/* シールド */
+	if (input.X && !cooldownFlag[SHIELD]) {
+		shield = true; //シールドを付与
+		shieldValue = 15;
+		cooldownFlag[SHIELD] = true; //クールダウンフラグをtrue
 	}
 }
 
@@ -162,8 +178,40 @@ void Player::slashCooldown() {
 	}
 }
 
-void Player::slashUpdate() {
-	slashPos = this->pos - HALF_BLOCK_SIZE;
+/// <summary>
+/// シールドのクールダウン処理
+/// </summary>
+void Player::shieldCooldown() {
+	if (cooldownFlag[SHIELD] && !shield) cooldown[SHIELD]++; //クールダウン開始
+
+	if (cooldown[SHIELD] >= 120) {
+		cooldown[SHIELD] = 0; //クールダウンをリセット
+		cooldownFlag[SHIELD] = false; //クールダウンフラグをfalse
+	}
+}
+
+/// <summary>
+/// シールド更新処理
+/// </summary>
+void Player::shieldUpdate() {
+	if (shieldValue == 0) shield = false; //シールド量が0になったら、シールド消失
+}
+
+/// <summary>
+/// コイン更新処理
+/// </summary>
+void Player::coinUpdate() {
+}
+
+/// <summary>
+/// コインの損失処理
+/// </summary>
+/// <param name="attackPower">敵の攻撃力</param>
+void Player::lostPlayerCoin(const int& attackPower) {
+	if (!shield)
+		coin0 -= attackPower;
+	else
+		shieldValue -= attackPower;
 }
 
 /// <summary>
@@ -172,16 +220,22 @@ void Player::slashUpdate() {
 void Player::update() {
 	knifeCooldown(); //ナイフのクールダウン処理
 	slashCooldown(); //刃のクールダウン処理
+	shieldCooldown(); //シールドのクールダウン処理
 
 	actionCommand(); //アクションコマンド処理
 
 	knifeUpdate(); //ナイフ更新処理
-	slashUpdate(); //刃の更新処理
+	shieldUpdate(); //シールド更新処理
+
+	coinUpdate();
 
 	draw(); //描画処理
 
-	DrawFormatString(0, 450, GetColor(0, 255, 0), "TF:%d, CDR:%d", knife, cooldown[0], false);
-	DrawFormatString(0, 465, GetColor(0, 255, 0), "TF:%d, CDR:%d", slash, cooldown[1], false);
+	DrawFormatString(0, 450, GetColor(0, 255, 0), "ナイフ　　TF:%d, CDR:%d", knife, cooldown[0], false);
+	DrawFormatString(0, 465, GetColor(0, 255, 0), "　刃　　　TF:%d, CDR:%d", slash, cooldown[1], false);
+	DrawFormatString(0, 480, GetColor(0, 255, 0), "シールド　TF:%d, CDR:%d, Value:%d", shield, cooldown[2], shieldValue,
+	                 false);
+	DrawFormatString(0, 550, GetColor(255, 100, 100), "コイン0:%d", coin0, false);
 
 	/*DrawFormatString(0, 500, GetColor(120, 0, 100), "トレジャーランク:%d, 花萌葱:%d, 金糸雀:%d, 葡萄染:%d, 白百合:%d",
 	                 status[TREASURE_RANK], status[GREEN_COIN], status[YELLOW_COIN],

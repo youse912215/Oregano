@@ -10,6 +10,12 @@ Enemy::Enemy(int graph, Player& player) : player(player), graph(graph) {
 	this->pos.dx = getPopLocation(ONE_MAP_X, 7/*get_random(4, TOTAL_MAPS_X - 1)*/, get_random(AREA_MIN, AREA_MAX));
 	this->pos.dy = getPopLocation(ONE_MAP_Y, 7/*get_random(5, TOTAL_MAPS_Y - 1)*/, get_random(AREA_MIN, AREA_MAX));
 	this->center = QUARTER_BLOCK_SIZE + pos;
+	screenPos = 0;
+	screenCenter = 0;
+	relativeDistance = 0;
+
+	attackPower = 5;
+
 	activity = false;
 	alive = true;
 }
@@ -21,7 +27,7 @@ Enemy::~Enemy() {
 /// 描画処理
 /// </summary>
 void Enemy::draw() {
-	DrawGraph(static_cast<int>(screenPosX()), static_cast<int>(screenPosY()), graph, true);
+	DrawGraph(static_cast<int>(screenPos.dx), static_cast<int>(screenPos.dy), graph, true); //敵
 }
 
 /// <summary>
@@ -30,25 +36,25 @@ void Enemy::draw() {
 /// </summary>
 void Enemy::move() {
 	/* x方向の移動 */
-	if (screenPosX() >= 0
-		&& screenPosX() < player.center.dx
+	if (screenPos.dx >= 0
+		&& screenPos.dx < player.center.dx
 		&& onScreenY()) {
 		this->pos.dx += moveSpeed.dx; //右へ
 	}
-	else if (screenPosX() >= player.center.dx
-		&& screenPosX() < WIN_WIDTH
+	else if (screenPos.dx >= player.center.dx
+		&& screenPos.dx < WIN_WIDTH
 		&& onScreenY()) {
 		this->pos.dx -= moveSpeed.dx; //左へ
 	}
 
 	/* y方向の移動 */
-	if (screenPosY() >= 0
-		&& screenPosY() < player.center.dy
+	if (screenPos.dy >= 0
+		&& screenPos.dy < player.center.dy
 		&& onScreenX()) {
 		this->pos.dy += moveSpeed.dy; //上へ
 	}
-	else if (screenPosY() >= player.center.dy
-		&& screenPosY() < WIN_HEIGHT
+	else if (screenPos.dy >= player.center.dy
+		&& screenPos.dy < WIN_HEIGHT
 		&& onScreenX()) {
 		this->pos.dy -= moveSpeed.dy; //下へ
 	}
@@ -63,20 +69,35 @@ void Enemy::dead() {
 }
 
 /// <summary>
-/// ナイフが当たったとき
+/// プレイヤーとの相対距離の更新
+/// </summary>
+void Enemy::relativeDistanceUpdate() {
+	screenPos.dx = pos.dx - static_cast<double>(MapDraw::mapX); //画面上のx座標
+	screenPos.dy = pos.dy - static_cast<double>(MapDraw::mapY); //画面上のy座標
+	screenCenter = QUARTER_BLOCK_SIZE + screenPos; //画面上の中心座標
+	relativeDistance = screenCenter - player.center; //プレイヤーとの相対距離
+
+}
+
+/// <summary>
+/// ナイフヒット時の処理
 /// </summary>
 void Enemy::hitKnife() {
-	if (abs(screenPosX() + (HALF_BLOCK_SIZE / 2.0) - player.knifeCenter.dx) <= WEAPON_COLLISION_DISTANCE
-		&& abs(screenPosY() + (HALF_BLOCK_SIZE / 2.0) - player.knifeCenter.dy) <= WEAPON_COLLISION_DISTANCE) {
+	//ナイフとの相対距離がWEAPON_COLLISION_DISTANCE以下のとき
+	if (abs(screenCenter.dx - player.knifeCenter.dx) <= WEAPON_COLLISION_DISTANCE
+		&& abs(screenCenter.dy - player.knifeCenter.dy) <= WEAPON_COLLISION_DISTANCE) {
 		dead(); //死亡処理
 	}
 }
 
 /// <summary>
-/// 刃が当たったとき
+/// 刃ヒット時の処理
 /// </summary>
 void Enemy::hitSlash() {
-	if (relativeDistanceX() <= 80.0 && relativeDistanceY() <= 80.0) dead(); //死亡処理
+	//
+	if (abs(relativeDistance.dx) <= 80.0 && abs(relativeDistance.dy) <= 80.0) {
+		dead(); //死亡処理
+	}
 }
 
 /// <summary>
@@ -84,9 +105,10 @@ void Enemy::hitSlash() {
 /// </summary>
 void Enemy::collision() {
 	//プレイヤーとの距離がENEMY_COLLISION_DISTANCE以下のとき
-	if (relativeDistanceX() <= ENEMY_COLLISION_DISTANCE
-		&& relativeDistanceY() <= ENEMY_COLLISION_DISTANCE) {
+	if (abs(relativeDistance.dx) <= ENEMY_COLLISION_DISTANCE
+		&& abs(relativeDistance.dy) <= ENEMY_COLLISION_DISTANCE) {
 		dead(); //死亡処理
+		player.lostPlayerCoin(attackPower);
 	}
 }
 
@@ -102,61 +124,33 @@ void Enemy::getMoveSpeed() {
 }
 
 /// <summary>
-/// 画面上のx座標
-/// </summary>
-double Enemy::screenPosX() {
-	return pos.dx - static_cast<double>(MapDraw::mapX);
-}
-
-/// <summary>
-/// 画面上のy座標
-double Enemy::screenPosY() {
-	return pos.dy - static_cast<double>(MapDraw::mapY);
-}
-
-/// <summary>
-/// プレイヤーとの相対距離（x方向）
-/// </summary>
-double Enemy::relativeDistanceX() {
-	return abs(screenPosX() + QUARTER_BLOCK_SIZE - player.center.dx);
-}
-
-/// <summary>
-/// プレイヤーとの相対距離（y方向）
-/// </summary>
-double Enemy::relativeDistanceY() {
-	return abs(screenPosY() + QUARTER_BLOCK_SIZE - player.center.dy);
-}
-
-/// <summary>
 /// 画面上のx座標にいる条件
 /// </summary>
 bool Enemy::onScreenX() {
-	return screenPosX() >= 0 && screenPosX() <= WIN_WIDTH;
+	return screenPos.dx >= 0 && screenPos.dx <= WIN_WIDTH;
 }
 
 /// <summary>
 /// 画面上のy座標にいる条件
 /// </summary>
 bool Enemy::onScreenY() {
-	return screenPosY() >= 0 && screenPosY() <= WIN_HEIGHT;
+	return screenPos.dy >= 0 && screenPos.dy <= WIN_HEIGHT;
 }
 
 /// <summary>
 /// 初期位置の取得
 /// </summary>
 void Enemy::initPosition() {
-	pos.dx = getPopLocation(ONE_MAP_X, get_random(7, TOTAL_MAPS_X - 1), get_random(AREA_MIN, AREA_MAX));
-	pos.dy = getPopLocation(ONE_MAP_Y, get_random(8, TOTAL_MAPS_Y - 1), get_random(AREA_MIN, AREA_MAX));
+	pos.dx = getPopLocation(ONE_MAP_X, get_random(7, TOTAL_MAPS_X - 1), get_random(AREA_MIN, AREA_MAX)); //x座標
+	pos.dy = getPopLocation(ONE_MAP_Y, get_random(8, TOTAL_MAPS_Y - 1), get_random(AREA_MIN, AREA_MAX)); //y座標
 }
 
 /// <summary>
-/// 
+/// 出現位置を取得
 /// </summary>
 /// <param name="mapDir">xまたはyのマップサイズ</param>
 /// <param name="coordinate1">全体マップの座標</param>
 /// <param name="coordinate2">1区画の座標</param>
-/// <returns></returns>
 double Enemy::getPopLocation(const int& mapDir, const int& coordinate1, const int& coordinate2) {
 	return mapDir * coordinate1 + BLOCK_SIZE * coordinate2;
 }
@@ -165,6 +159,8 @@ double Enemy::getPopLocation(const int& mapDir, const int& coordinate1, const in
 /// 更新処理
 /// </summary>
 void Enemy::update() {
+	relativeDistanceUpdate(); //プレイヤーとの相対距離を取得
+
 	if (player.knife) hitKnife(); //ナイフが当たったとき
 	if (player.slash) hitSlash(); //刃が当たったとき
 
@@ -177,7 +173,7 @@ void Enemy::update() {
 	}
 	else {
 		initPosition(); //初期位置の取得
-		if (relativeDistanceX() <= 500 || relativeDistanceY() <= 500 && alive) activity = true;
+		if (abs(relativeDistance.dx) <= 500 || abs(relativeDistance.dy) <= 500 && alive) activity = true;
 	}
 
 	DrawFormatString(200, 185, GetColor(0, 0, 255),
@@ -185,10 +181,10 @@ void Enemy::update() {
 	                 pos.dx, pos.dy, false);
 	DrawFormatString(200, 200, GetColor(0, 0, 255),
 	                 "スクリーン座標：%lf, %lf",
-	                 relativeDistanceX(), relativeDistanceY(), false);
+	                 screenPos.dx, screenPos.dy, false);
 	DrawFormatString(200, 215, GetColor(0, 0, 255),
 	                 "相対座標：%lf, %lf",
-	                 abs(screenPosX() + (HALF_BLOCK_SIZE / 2.0) - player.knifeCenter.dx),
-	                 abs(screenPosY() + (HALF_BLOCK_SIZE / 2.0) - player.knifeCenter.dy), false);
+	                 abs(relativeDistance.dx),
+	                 abs(relativeDistance.dy), false);
 
 }

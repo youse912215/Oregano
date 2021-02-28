@@ -14,6 +14,7 @@ public:
 	int mapChip; //マップチップ画像ファイルの読み込み
 	int knifeGraph;
 	int slashGraph;
+	int shieldGraph;
 
 	DataSource();
 	~DataSource();
