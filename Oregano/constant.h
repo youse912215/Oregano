@@ -10,8 +10,8 @@ const int AREA_HEIGHT = 25; //1マップ区画の縦のサイズ
 const int AREA_MIN = 0; //区画の最小値
 const int AREA_MAX = AREA_WIDTH - 1; //区画の最大値
 
-const double HALF_BLOCK_SIZE = 32.0; //プレイヤーサイズの半分(敵サイズ)
-const double QUARTER_BLOCK_SIZE = HALF_BLOCK_SIZE / 2.0;
+const double HALF_BLOCK_SIZE = 32.0; //ブロックサイズの1/2
+const double QUARTER_BLOCK_SIZE = HALF_BLOCK_SIZE / 2.0; //ブロックサイズの1/4
 
 const double ENEMY_COLLISION_DISTANCE = 48.0; //敵との衝突距離
 const double WEAPON_COLLISION_DISTANCE = HALF_BLOCK_SIZE; //敵と武器との衝突距離

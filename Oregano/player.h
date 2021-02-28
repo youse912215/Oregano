@@ -26,8 +26,8 @@ private:
 	void actionCommand(); //アクションコマンドの処理
 
 	void knifeCooldown(); //ナイフのクールダウン処理
-	void knifePositionSet(); //ナイフのポジジョンセット
-	void knifePositionReset(); //ナイフのポジジョンリセット
+	void setKnifePosition(); //ナイフのポジジョンセット
+	void resetKnifePosition(); //ナイフのポジジョンリセット
 	void accelKnife(); //ナイフの加速
 	void knifeUpdate(); //ナイフの更新処理
 	bool deleteKnife(); //ナイフの削除条件
@@ -42,6 +42,8 @@ private:
 	void coinUpdate();
 	int coin0;
 
+	vector<int> attributeAccumulation;
+
 public:
 	Vec2 center; //プレイヤーの中心座標
 	Vec2 knifeCenter; //ナイフの中心座標
@@ -52,6 +54,8 @@ public:
 	bool shield;
 
 	void lostPlayerCoin(const int& attackPower); //コインの損失処理
+
+	void addAttributeAccumulation(const int& attribute, const int& attributeValue);
 
 	vector<int> status;
 	vector<int> possessionItem;

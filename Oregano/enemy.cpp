@@ -6,9 +6,10 @@
 
 #include "mapDraw.h"
 
-Enemy::Enemy(int graph, Player& player) : player(player), graph(graph) {
-	this->pos.dx = getPopLocation(ONE_MAP_X, 7/*get_random(4, TOTAL_MAPS_X - 1)*/, get_random(AREA_MIN, AREA_MAX));
-	this->pos.dy = getPopLocation(ONE_MAP_Y, 7/*get_random(5, TOTAL_MAPS_Y - 1)*/, get_random(AREA_MIN, AREA_MAX));
+Enemy::Enemy(int graph, Player& player) : player(player), graph(graph),
+                                          attributeValue{15, 30, 50} {
+	this->pos.dx = getPopLocation(ONE_MAP_X, 7/*getRandom(4, TOTAL_MAPS_X - 1)*/, getRandom(AREA_MIN, AREA_MAX));
+	this->pos.dy = getPopLocation(ONE_MAP_Y, 7/*getRandom(5, TOTAL_MAPS_Y - 1)*/, getRandom(AREA_MIN, AREA_MAX));
 	this->center = QUARTER_BLOCK_SIZE + pos;
 	screenPos = 0;
 	screenCenter = 0;
@@ -18,6 +19,8 @@ Enemy::Enemy(int graph, Player& player) : player(player), graph(graph) {
 
 	activity = false;
 	alive = true;
+
+	attribute = 0;
 }
 
 Enemy::~Enemy() {
@@ -27,7 +30,14 @@ Enemy::~Enemy() {
 /// 描画処理
 /// </summary>
 void Enemy::draw() {
-	DrawGraph(static_cast<int>(screenPos.dx), static_cast<int>(screenPos.dy), graph, true); //敵
+	//DrawGraph(static_cast<int>(screenPos.dx), static_cast<int>(screenPos.dy), graph, true); //敵
+
+	//属性（attribute）によって、画像を変更する
+	DrawRectGraph(static_cast<int>(screenPos.dx),
+	              static_cast<int>(screenPos.dy),
+	              attribute * static_cast<int>(HALF_BLOCK_SIZE), 0,
+	              static_cast<int>(HALF_BLOCK_SIZE), static_cast<int>(HALF_BLOCK_SIZE),
+	              graph, true, false);
 }
 
 /// <summary>
@@ -108,7 +118,8 @@ void Enemy::collision() {
 	if (abs(relativeDistance.dx) <= ENEMY_COLLISION_DISTANCE
 		&& abs(relativeDistance.dy) <= ENEMY_COLLISION_DISTANCE) {
 		dead(); //死亡処理
-		player.lostPlayerCoin(attackPower);
+		player.lostPlayerCoin(attackPower); //(プレイヤーの)コインの損失処理
+		player.addAttributeAccumulation(attribute, attributeValue[0]);
 	}
 }
 
@@ -137,12 +148,16 @@ bool Enemy::onScreenY() {
 	return screenPos.dy >= 0 && screenPos.dy <= WIN_HEIGHT;
 }
 
+void Enemy::getAttribute() {
+	attribute = getRandom(0, 3);
+}
+
 /// <summary>
 /// 初期位置の取得
 /// </summary>
 void Enemy::initPosition() {
-	pos.dx = getPopLocation(ONE_MAP_X, get_random(7, TOTAL_MAPS_X - 1), get_random(AREA_MIN, AREA_MAX)); //x座標
-	pos.dy = getPopLocation(ONE_MAP_Y, get_random(8, TOTAL_MAPS_Y - 1), get_random(AREA_MIN, AREA_MAX)); //y座標
+	pos.dx = getPopLocation(ONE_MAP_X, getRandom(7, TOTAL_MAPS_X - 1), getRandom(AREA_MIN, AREA_MAX)); //x座標
+	pos.dy = getPopLocation(ONE_MAP_Y, getRandom(8, TOTAL_MAPS_Y - 1), getRandom(AREA_MIN, AREA_MAX)); //y座標
 }
 
 /// <summary>
@@ -173,6 +188,7 @@ void Enemy::update() {
 	}
 	else {
 		initPosition(); //初期位置の取得
+		getAttribute();
 		if (abs(relativeDistance.dx) <= 500 || abs(relativeDistance.dy) <= 500 && alive) activity = true;
 	}
 
@@ -186,5 +202,7 @@ void Enemy::update() {
 	                 "相対座標：%lf, %lf",
 	                 abs(relativeDistance.dx),
 	                 abs(relativeDistance.dy), false);
-
+	DrawFormatString(200, 230, GetColor(0, 0, 255),
+	                 "属性：%d",
+	                 attribute, false);
 }

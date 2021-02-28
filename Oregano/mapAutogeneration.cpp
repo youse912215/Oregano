@@ -52,7 +52,7 @@ void MapAutogeneration::AssigningRandomNum(const int& randomMapNum) {
 
 			if (itr != roadMap[i].end()) {
 				index = distance(roadMap[i].begin(), itr); //ランダムマップのインデックスを入手
-				roadMap[i][index] = autogenerationMap(get_random(0, 30), randomMapNum); //マップの自動生成
+				roadMap[i][index] = autogenerationMap(getRandom(0, 30), randomMapNum); //マップの自動生成
 			}
 			else {
 				++i; //加算

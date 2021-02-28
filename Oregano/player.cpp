@@ -6,6 +6,8 @@
 Player::Player(Input& input, DataSource& source) :
 	input(input), source(source), cooldown(3), cooldownFlag(3),
 
+	attributeAccumulation{0, 0, 0, 0},
+
 	/* データ類 */
 	status(PLAYER_STATUS_SIZE), possessionItem(PLAYER_ITEM_SIZE),
 	possessionAccessory(PLAYER_ACCESSORY_SIZE), possessionJewel(PLAYER_JEWEL_SIZE),
@@ -51,7 +53,10 @@ void Player::draw() {
 		DrawGraph(static_cast<int>(shieldPos.dx), static_cast<int>(shieldPos.dy), source.shieldGraph, true);
 
 	//プレイヤー
-	DrawGraph(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy), source.player, true);
+	DrawRectGraph(static_cast<int>(this->pos.dx),
+	              static_cast<int>(this->pos.dy),
+	              0, 0, BLOCK_SIZE, BLOCK_SIZE,
+	              source.player, true, false);
 
 
 	DrawFormatString(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy),
@@ -103,7 +108,7 @@ void Player::knifeCooldown() {
 /// <summary>
 /// ナイフのポジジョンをセットする
 /// </summary>
-void Player::knifePositionSet() {
+void Player::setKnifePosition() {
 	/* x方向 */
 	if (knifePos.dx < pos.dx) knifeAddPos.dx -= KNIFE_SPEED;
 	else if (knifePos.dx > pos.dx) knifeAddPos.dx += KNIFE_SPEED;
@@ -117,7 +122,7 @@ void Player::knifePositionSet() {
 /// <summary>
 /// ナイフのポジジョンをリセットする
 /// </summary>
-void Player::knifePositionReset() {
+void Player::resetKnifePosition() {
 	if (deleteKnife()) {
 		knife = false;
 		knifeAddPos.dx = 0.0;
@@ -146,9 +151,9 @@ void Player::knifeUpdate() {
 
 	//ナイフ入力があったとき
 	if (knife) {
-		knifePositionSet(); //ナイフのポジジョンセット
+		setKnifePosition(); //ナイフのポジジョンセット
 		accelKnife(); //ナイフの加速
-		knifePositionReset(); //ナイフのポジジョンリセット
+		resetKnifePosition(); //ナイフのポジジョンリセット
 	}
 }
 
@@ -215,6 +220,20 @@ void Player::lostPlayerCoin(const int& attackPower) {
 }
 
 /// <summary>
+/// 属性蓄積値が最大値でないとき、加算する
+/// </summary>
+/// <param name="attribute">敵の属性</param>
+/// <param name="attributeValue">敵の属性値</param>
+void Player::addAttributeAccumulation(const int& attribute, const int& attributeValue) {
+	if (!shield) {
+		if (attributeAccumulation[attribute] < 100)
+			attributeAccumulation[attribute] += attributeValue; //属性蓄積値を加算
+		else if (attributeAccumulation[attribute] >= 100)
+			attributeAccumulation[attribute] = 100; //100以上は属性蓄積値を最大値にする
+	}
+}
+
+/// <summary>
 /// 更新処理
 /// </summary>
 void Player::update() {
@@ -233,9 +252,13 @@ void Player::update() {
 
 	DrawFormatString(0, 450, GetColor(0, 255, 0), "ナイフ　　TF:%d, CDR:%d", knife, cooldown[0], false);
 	DrawFormatString(0, 465, GetColor(0, 255, 0), "　刃　　　TF:%d, CDR:%d", slash, cooldown[1], false);
-	DrawFormatString(0, 480, GetColor(0, 255, 0), "シールド　TF:%d, CDR:%d, Value:%d", shield, cooldown[2], shieldValue,
-	                 false);
+	DrawFormatString(0, 480, GetColor(0, 255, 0), "シールド　TF:%d, CDR:%d, Value:%d",
+	                 shield, cooldown[2], shieldValue, false);
 	DrawFormatString(0, 550, GetColor(255, 100, 100), "コイン0:%d", coin0, false);
+	DrawFormatString(0, 565, GetColor(0x00, 0x8d, 0x56), "花萌葱:%d", attributeAccumulation[0], false);
+	DrawFormatString(0, 580, GetColor(0xef, 0xbb, 0x2c), "深支子:%d", attributeAccumulation[1], false);
+	DrawFormatString(0, 595, GetColor(0x00, 0x70, 0x83), "御納戸:%d", attributeAccumulation[2], false);
+	DrawFormatString(0, 610, GetColor(0xee, 0x86, 0x9a), "中紅花:%d", attributeAccumulation[3], false);
 
 	/*DrawFormatString(0, 500, GetColor(120, 0, 100), "トレジャーランク:%d, 花萌葱:%d, 金糸雀:%d, 葡萄染:%d, 白百合:%d",
 	                 status[TREASURE_RANK], status[GREEN_COIN], status[YELLOW_COIN],
