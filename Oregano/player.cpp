@@ -1,10 +1,10 @@
 #include "DxLib.h"
-#include "Player.h"
+#include "player.h"
 #include "constant.h"
 #include "mapDraw.h"
 
-Player::Player(Input& input, DataSource& source) :
-	input(input), source(source), cooldown(3), cooldownFlag(3),
+Player::Player(Input& input) :
+	input(input), cooldown(3), cooldownFlag(3),
 
 	attributeAccumulation{0, 0, 0, 0},
 
@@ -276,7 +276,6 @@ void Player::update() {
 	                 status[HYPNOSIS_ACCUMULATION],
 	                 status[BLOODING_RESISTANCE], status[BLOODING_VALUE],
 	                 status[BLOODING_ACCUMULATION], false);
-
 	DrawFormatString(0, 630, GetColor(0, 0, 0), "非常食:%d, パン:%d, 肉:%d, 魚:%d、豆:%d, 地図:%d, ボトル小:%d, ボトル大:%d",
 	                 possessionItem[0], possessionItem[1], possessionItem[2],
 	                 possessionItem[3], possessionItem[4], possessionItem[5],
@@ -301,7 +300,6 @@ void Player::update() {
 	                 possessionItem[32], possessionItem[33], possessionItem[34],
 	                 possessionItem[35], possessionItem[36], possessionItem[37],
 	                 possessionItem[38], possessionItem[39], false);
-
 	DrawFormatString(0, 720, GetColor(0, 0, 0), "Bネック:%d, Bチョー:%d, Bペンダ:%d, Bリング:%d、Bピアス:%d, テレサ:%d, マチルダ:%d, ナガタラ:%d",
 	                 possessionAccessory[0], possessionAccessory[1], possessionAccessory[2],
 	                 possessionAccessory[3], possessionAccessory[4], possessionAccessory[5],
@@ -310,11 +308,9 @@ void Player::update() {
 	                 possessionAccessory[8], possessionAccessory[9], possessionAccessory[10],
 	                 possessionAccessory[11], possessionAccessory[12], possessionAccessory[14],
 	                 possessionAccessory[15], possessionAccessory[16], false);
-
 	DrawFormatString(0, 770, GetColor(0, 0, 0), "エメラルド:%d, Tガーネット:%d, Cトルマリン:%d, ペリD:%d、花萌葱ロードN:%d",
 	                 possessionJewel[0], possessionJewel[1], possessionJewel[2],
 	                 possessionJewel[3], possessionJewel[20], false);
-
 	DrawFormatString(0, 800, GetColor(0, 0, 0), "軽石:%d, 東栄石:%d, 南栄石:%d, 西栄石:%d、北栄石:%d, 黄金超石:%d",
 	                 possessionMineral[0], possessionMineral[1], possessionMineral[2],
 	                 possessionMineral[3], possessionMineral[4], possessionMineral[4], false);*/

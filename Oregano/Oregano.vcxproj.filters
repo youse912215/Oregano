@@ -73,11 +73,14 @@
     <Filter Include="ソース ファイル\Organism\Enemy">
       <UniqueIdentifier>{e5b88290-7a85-458d-9da0-0164ed564dea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Organism\Player">
+      <UniqueIdentifier>{03985eab-f5ed-4849-8184-5ceb19e08140}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Organism\Player">
+      <UniqueIdentifier>{fbe35cfc-4abb-4960-bb55-9f992092c9e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="player.cpp">
-      <Filter>ソース ファイル\Organism</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル\Main</Filter>
     </ClCompile>
@@ -143,6 +146,21 @@
     </ClCompile>
     <ClCompile Include="enemyConclusion.cpp">
       <Filter>ソース ファイル\Organism\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>ソース ファイル\Organism\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="playerKnife.cpp">
+      <Filter>ソース ファイル\Organism\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="playerShield.cpp">
+      <Filter>ソース ファイル\Organism\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="playerSlash.cpp">
+      <Filter>ソース ファイル\Organism\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="playerAction.cpp">
+      <Filter>ソース ファイル\Organism\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -213,7 +231,19 @@
       <Filter>ヘッダー ファイル\Organism\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="player.h">
-      <Filter>ヘッダー ファイル\Organism</Filter>
+      <Filter>ヘッダー ファイル\Organism\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="playerKnife.h">
+      <Filter>ヘッダー ファイル\Organism\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="playerSlash.h">
+      <Filter>ヘッダー ファイル\Organism\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="playerShield.h">
+      <Filter>ヘッダー ファイル\Organism\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="playerAction.h">
+      <Filter>ヘッダー ファイル\Organism\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

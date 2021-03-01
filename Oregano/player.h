@@ -10,7 +10,7 @@ using namespace std;
 class Player {
 private:
 	Input& input; //入力クラスから
-	DataSource& source; //データソースクラスから
+	DataSource source; //データソースクラスから
 
 	Vec2 pos; //プレイヤー座標
 	Vec2 knifePos; //ナイフ座標
@@ -63,7 +63,7 @@ public:
 	vector<int> possessionJewel;
 	vector<int> possessionMineral;
 
-	Player(Input& input, DataSource& source);
+	Player(Input& input);
 	~Player();
 
 	void update(); //更新処理

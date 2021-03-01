@@ -146,7 +146,11 @@
     <ClCompile Include="mapCollision.cpp" />
     <ClCompile Include="mapDraw.cpp" />
     <ClCompile Include="mapLoad.cpp" />
+    <ClCompile Include="playerAction.cpp" />
+    <ClCompile Include="playerKnife.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="playerShield.cpp" />
+    <ClCompile Include="playerSlash.cpp" />
     <ClCompile Include="random.cpp" />
     <ClCompile Include="sceneGame.cpp" />
     <ClCompile Include="sceneMenu.cpp" />
@@ -172,6 +176,10 @@
     <ClInclude Include="mapDraw.h" />
     <ClInclude Include="mapLoad.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="playerKnife.h" />
+    <ClInclude Include="playerShield.h" />
+    <ClInclude Include="playerAction.h" />
+    <ClInclude Include="playerSlash.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="sceneGame.h" />
     <ClInclude Include="sceneMenu.h" />

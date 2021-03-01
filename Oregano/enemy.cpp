@@ -6,8 +6,8 @@
 
 #include "mapDraw.h"
 
-Enemy::Enemy(int graph, Player& player) : player(player), graph(graph),
-                                          attributeValue{15, 30, 50} {
+Enemy::Enemy(Player& player) : player(player),
+                               attributeValue{15, 30, 50} {
 	this->pos.dx = getPopLocation(ONE_MAP_X, 7/*getRandom(4, TOTAL_MAPS_X - 1)*/, getRandom(AREA_MIN, AREA_MAX));
 	this->pos.dy = getPopLocation(ONE_MAP_Y, 7/*getRandom(5, TOTAL_MAPS_Y - 1)*/, getRandom(AREA_MIN, AREA_MAX));
 	this->center = QUARTER_BLOCK_SIZE + pos;
@@ -37,7 +37,7 @@ void Enemy::draw() {
 	              static_cast<int>(screenPos.dy),
 	              attribute * static_cast<int>(HALF_BLOCK_SIZE), 0,
 	              static_cast<int>(HALF_BLOCK_SIZE), static_cast<int>(HALF_BLOCK_SIZE),
-	              graph, true, false);
+	              source.enemyGraph, true, false);
 }
 
 /// <summary>

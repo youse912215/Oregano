@@ -19,13 +19,13 @@ void loopProcess() {
 
 	Input input; //入力クラス
 	DataSource source; //素材クラス
-	Player player(input, source); //プレイヤークラス
+	Player player(input); //プレイヤークラス
 
 	//Enemy enemy(source.enemy1, player);
 	vector<Enemy*> enemies;
 
 	for (unsigned int i = 0; i < 15; ++i)
-		enemies.push_back(new Enemy(source.enemy1, player));
+		enemies.push_back(new Enemy(player));
 
 	EventBase event; //イベントクラス
 	EventField field(input, event, player); //フィールドクラス
@@ -67,7 +67,7 @@ void loopProcess() {
 				if (enemies[i]->alive) continue;
 				delete enemies[i];
 				enemies.erase(enemies.begin() + i);
-				enemies.push_back(new Enemy(source.enemy1, player));
+				enemies.push_back(new Enemy(player));
 			}
 		}
 			/* メニューシーン処理 */
@@ -86,5 +86,4 @@ void loopProcess() {
 	for (unsigned int i = 0; i != enemies.size(); ++i) {
 		delete enemies[i];
 	}
-
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "player.h"
+#include "dataSource.h"
 #include <vector>
 
 using namespace std;
@@ -7,6 +8,7 @@ using namespace std;
 class Enemy {
 private:
 	Player& player; //プレイヤークラスから
+	DataSource source;
 
 	Vec2 pos; //全体マップの座標
 	Vec2 center; //全体マップの中心座標
@@ -18,8 +20,6 @@ private:
 	Vec2 screenPos; //画面上の座標
 	Vec2 screenCenter; //画面上の中心座標
 	Vec2 relativeDistance; //プレイヤーとの相対距離
-
-	int graph; //画像
 
 	int attackPower;
 
@@ -52,7 +52,7 @@ public:
 	bool activity;
 	bool alive;
 
-	Enemy(int graph, Player& player);
+	Enemy(Player& player);
 	~Enemy();
 
 	void update(); //更新処理
