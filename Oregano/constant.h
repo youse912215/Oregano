@@ -25,6 +25,8 @@ const int ONE_MAP_Y = BLOCK_SIZE * AREA_HEIGHT;
 const int HALF_MAP_X = ONE_MAP_X / 2; //1マップの半分サイズ
 const int HALF_MAP_Y = ONE_MAP_Y / 2; //1マップの半分サイズ
 
+const int KEY_BUFFER_MAX = 256; //キーのバッファの最大
+
 const int DIRECTION_SIZE = 4; //方向の種類（配列のサイズ）
 
 const int MOVING_DISTANCE = 8; //移動距離

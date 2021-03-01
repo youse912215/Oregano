@@ -156,7 +156,7 @@ void EventField::showEventState(vector<int>& objectName, vector<bool>& eventFlag
 void EventField::update() {
 	event.update(); //イベント更新処理
 	fieldAction(); //フィールドアクション
-	changeMenuScene(); //メニューシーンに切り替える
+	//changeMenuScene(); //メニューシーンに切り替える
 
 	/* イベントの有無を表示 */
 	showEventState(coin, coinFlag); //フィールドコイン

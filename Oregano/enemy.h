@@ -44,6 +44,8 @@ private:
 	bool onScreenX(); //‰æ–Êã‚ÌxÀ•W‚É‚¢‚éğŒ
 	bool onScreenY(); //‰æ–Êã‚ÌyÀ•W‚É‚¢‚éğŒ
 
+	vector<int> coin;
+	
 	int attribute;
 	vector<int> attributeValue;
 	void getAttribute();

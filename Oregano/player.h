@@ -41,8 +41,13 @@ private:
 
 	void coinUpdate();
 	int coin0;
+	vector<int> coin;
 
-	vector<int> attributeAccumulation;
+	vector<int> attributeAccumulation; //属性耐久値
+
+	int battleStyle; //戦闘スタイル（0:花萌葱, 1:深支子, 2:燕子花, 3:中紅花）
+	void changeBattleStyle(const int& dir); //戦闘スタイルを切り替える
+	void battleStyleUpdate();
 
 public:
 	Vec2 center; //プレイヤーの中心座標
@@ -54,6 +59,7 @@ public:
 	bool shield;
 
 	void lostPlayerCoin(const int& attackPower); //コインの損失処理
+	void addPlayerCoin(const int& attribute, const int& enemyCoin); //コインの追加処理
 
 	void addAttributeAccumulation(const int& attribute, const int& attributeValue);
 

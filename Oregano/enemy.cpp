@@ -7,7 +7,7 @@
 #include "mapDraw.h"
 
 Enemy::Enemy(Player& player) : player(player),
-                               attributeValue{15, 30, 50} {
+                               coin{5, 15, 25}, attributeValue{15, 30, 50} {
 	this->pos.dx = getPopLocation(ONE_MAP_X, 7/*getRandom(4, TOTAL_MAPS_X - 1)*/, getRandom(AREA_MIN, AREA_MAX));
 	this->pos.dy = getPopLocation(ONE_MAP_Y, 7/*getRandom(5, TOTAL_MAPS_Y - 1)*/, getRandom(AREA_MIN, AREA_MAX));
 	this->center = QUARTER_BLOCK_SIZE + pos;
@@ -97,6 +97,7 @@ void Enemy::hitKnife() {
 	if (abs(screenCenter.dx - player.knifeCenter.dx) <= WEAPON_COLLISION_DISTANCE
 		&& abs(screenCenter.dy - player.knifeCenter.dy) <= WEAPON_COLLISION_DISTANCE) {
 		dead(); //Ž€–Sˆ—
+		player.addPlayerCoin(attribute, coin[0]); //ƒRƒCƒ“’Ç‰Áˆ—
 	}
 }
 
@@ -107,6 +108,7 @@ void Enemy::hitSlash() {
 	//
 	if (abs(relativeDistance.dx) <= 80.0 && abs(relativeDistance.dy) <= 80.0) {
 		dead(); //Ž€–Sˆ—
+		player.addPlayerCoin(attribute, coin[0]); //ƒRƒCƒ“’Ç‰Áˆ—
 	}
 }
 
