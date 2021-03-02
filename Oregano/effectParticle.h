@@ -1,5 +1,7 @@
 #pragma once
 #include "vec2.h"
+#include "dataSource.h"
+#include <vector>
 
 class EffectParticle {
 private:
@@ -9,20 +11,25 @@ private:
 	Vec2 initPos;
 	Vec2 moveDistance;
 
+	DataSource source;
+
 	double radius;
 
 	double moveSize;
 
 
-	void setPosition();
+	void setPosition(Vec2& deadPos);
 
 public:
 	EffectParticle();
 	~EffectParticle();
 
 	bool lifeTime;
-	static double generationTime;
+	double generationTime;
 
-	void update();
-	void initProcess();
+	void occurrenceParticle(Vec2& deadPos);
+	void initProcess(Vec2& deadPos);
+
+	void update(std::vector<EffectParticle>& particles, Vec2& deadPos);
+
 };

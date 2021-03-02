@@ -20,21 +20,16 @@ MapAutogeneration::~MapAutogeneration() {
 int MapAutogeneration::autogenerationMap(const int& random, const int& randomMapNum) {
 	/* ランダムマップ1 */
 	if (randomMapNum == RANDOM_MAP1) {
-		if (random < 25) return FLOOR;
-		if (random % 2 == 0) return WOODS;
-		if (random == 25) return MUSHROOM;
-		if (random == 27) return SHALLOW;
-		return FLOWER;
+		if (random < 25) return FLOOR_NORMAL;
+		return WALL;
 	}
 	/* ランダムマップ2 */
 	if (randomMapNum == RANDOM_MAP2) {
-		if (random < 25) return FLOOR;
-		if (random % 2 == 0) return WITHERED_WOODS;
-		if (random == 25) return POISON;
-		if (random == 27) return MUSHROOM;
-		return FLOWER;
+		if (random < 25) return FLOOR_NORMAL;
+		if (random % 2 == 0) return POISON;
+		return WALL;
 	}
-	return FLOOR; //以外のとき通常床を返す
+	return FLOOR_NORMAL; //以外のとき通常床を返す
 }
 
 /// <summary>
@@ -86,8 +81,8 @@ void MapAutogeneration::fileWrite(const int& x, const int& y) {
 /// </summary>
 void MapAutogeneration::writeRandomMap() {
 
-	for (unsigned int y = 5; y < 9; ++y) {
-		for (unsigned int x = 4; x < 9; ++x) {
+	for (unsigned int y = 0; y < 5; ++y) {
+		for (unsigned int x = 0; x < 5; ++x) {
 			fileImport(x, y, roadMap); //マップデータのファイル読み込み
 
 			AssigningRandomNum(RANDOM_MAP1); //ランダムマップ1の数字をランダムに割り当て

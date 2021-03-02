@@ -7,45 +7,36 @@ int MapDraw::mapY = INITIAL_Y; //y方向
 MapDraw::MapDraw(int graph) : graph(graph),
 
                               information{
-	                              FLOOR,
-	                              //縦橋
-	                              BRIDGE_HEIGHT,
-	                              //横橋
-	                              BRIDGE_WIDTH,
-	                              //花類
-	                              FLOWER,
-	                              //キノコ類
-	                              MUSHROOM,
-	                              //浜
-	                              BEACH,
+	                              //花床
+	                              FLOOR_FLOWER,
+	                              //宝箱の床
+	                              FLOOR_TREASURE,
+	                              //床（通常道）
+	                              FLOOR_NORMAL,
+	                              //花1
+	                              FLOWER1,
+	                              //花2
+	                              FLOWER2,
+	                              //でこぼこ
+	                              ROUGH,
 	                              //浅瀬
 	                              SHALLOW,
-	                              //潮
-	                              TIDE,
+	                              //水沼
+	                              SWAMP,
 	                              //毒沼
 	                              POISON,
 	                              //氷床
 	                              ICE,
-	                              //ランダムマップ
+	                              //ランダムマップ(森)
 	                              RANDOM_MAP1,
-	                              //海
+	                              //ランダムマップ2(沼地)
+	                              RANDOM_MAP2,
+	                              //壁
+	                              WALL,
+	                              //外海
 	                              SEA,
-	                              //溶岩
-	                              LAVA,
-	                              //木々
-	                              WOODS,
-	                              //枯れた木々
-	                              WITHERED_WOODS,
-	                              //凍った木々
-	                              FROZEN_WOODS,
-	                              //氷山
-	                              ICE_MOUNTAIN,
-	                              //岩山
-	                              STONE_MOUNTAIN,
-	                              //鉱物
-	                              MINERAL,
 	                              //宝箱
-	                              TREASURE_BOX
+	                              TREASURE_BOX,
                               },
 
                               currentCorner{
@@ -74,13 +65,13 @@ MapDraw::MapDraw(int graph) : graph(graph),
 	currentMap.x = mapX / (BLOCK_SIZE * mapAspectSize.x);
 	currentMap.y = mapY / (BLOCK_SIZE * mapAspectSize.y);
 	/* 現在のマップの境界座標 */
-	currentBoundaryMap1.x = (mapX - 32) / (BLOCK_SIZE * mapAspectSize.x); //左端
-	currentBoundaryMap1.y = (mapY - 48) / (BLOCK_SIZE * mapAspectSize.y); //上端
-	currentBoundaryMap2.x = (mapX + 31) / (BLOCK_SIZE * mapAspectSize.x); //右端
-	currentBoundaryMap2.y = (mapY + 15) / (BLOCK_SIZE * mapAspectSize.y); //下端
+	currentBoundaryMap1.x = (mapX - HALF_BLOCK_SIZE) / (BLOCK_SIZE * mapAspectSize.x); //左端
+	currentBoundaryMap1.y = (mapY - BLOCK_SIZE - QUARTER_BLOCK_SIZE) / (BLOCK_SIZE * mapAspectSize.y); //上端
+	currentBoundaryMap2.x = (mapX + HALF_BLOCK_SIZE - 1) / (BLOCK_SIZE * mapAspectSize.x); //右端
+	currentBoundaryMap2.y = (mapY + QUARTER_BLOCK_SIZE - 1) / (BLOCK_SIZE * mapAspectSize.y); //下端
 	/* マップの中央位置 */
-	centerPos.x = currentMap.x - 8;
-	centerPos.y = currentMap.y - 8;
+	centerPos.x = currentMap.x - (TOTAL_MAPS_X - 1);
+	centerPos.y = currentMap.y - (TOTAL_MAPS_Y - 1);
 	/* マップ間距離（1600px） */
 	mapBetweenDistance = BLOCK_SIZE * AREA_WIDTH;
 	/* 1ブロック区画（マップ）内の座標 */
@@ -144,9 +135,9 @@ vector<vector<int>> MapDraw::drawCurrentMaps(const int& dirX, const int& dirY,
 	/*マップチップの描画*/
 	for (auto i : information) //マップ情報（名称）の数だけ繰り返す
 		drawMapChips(i, centerPos.x + dirX, centerPos.y + dirY,
-		             mapAll[(currentMap.x + dirX) + (currentMap.y + dirY) * 9]);
+		             mapAll[(currentMap.x + dirX) + (currentMap.y + dirY) * TOTAL_MAPS_Y]);
 
-	return mapAll[(currentMap.x + dirX) + (currentMap.y + dirY) * 9]; //距離に応じたマップを返す
+	return mapAll[(currentMap.x + dirX) + (currentMap.y + dirY) * TOTAL_MAPS_Y]; //距離に応じたマップを返す
 }
 
 /// <summary>
@@ -345,7 +336,7 @@ void MapDraw::update(vector<vector<vector<int>>>& mapAll) {
 	                 currentBoundaryMap1.y, currentBoundaryMap1.x, currentBoundaryMap2.y, currentBoundaryMap2.x, false);
 	DrawFormatString(0, 880, GetColor(200, 120, 0), "X%d, Y%d", mapX, mapY, false);
 
-	DrawFormatString(0, 60, GetColor(255, 255, 255), "x:%d",
-	                 mapCentral[((mapY - BLOCK_SIZE / 4) / BLOCK_SIZE) % AREA_HEIGHT][(mapX / BLOCK_SIZE) % AREA_WIDTH],
-	                 false);
+	DrawFormatString(0, 60, GetColor(255, 255, 255), "screenX:%d, screenY:%d",
+	                 1 * BLOCK_SIZE + screen.x + mapBetweenDistance * centerPos.x,
+	                 1 * BLOCK_SIZE + screen.y + mapBetweenDistance * centerPos.y, false);
 }

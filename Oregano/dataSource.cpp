@@ -10,6 +10,7 @@ DataSource::DataSource() {
 	knifeGraph = LoadGraph("resource/organism/knife.png");
 	slashGraph = LoadGraph("resource/organism/slash.png");
 	shieldGraph = LoadGraph("resource/organism/shield.png");
+	bloodGraph = LoadGraph("resource/organism/blood.png");
 }
 
 DataSource::~DataSource() {
@@ -20,6 +21,7 @@ DataSource::~DataSource() {
 	DeleteGraph(knifeGraph);
 	DeleteGraph(slashGraph);
 	DeleteGraph(shieldGraph);
+	DeleteGraph(bloodGraph);
 }
 
 int DataSource::playerGraph() {

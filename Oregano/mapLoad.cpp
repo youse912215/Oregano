@@ -6,7 +6,7 @@ MapBase map;
 
 MapLoad::MapLoad() :
 	vecMap(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-	mapAll(81, vector<vector<int>>(AREA_HEIGHT, vector<int>(AREA_WIDTH))) {
+	mapAll(TOTAL_MAPS_X * TOTAL_MAPS_Y, vector<vector<int>>(AREA_HEIGHT, vector<int>(AREA_WIDTH))) {
 }
 
 MapLoad::~MapLoad() {

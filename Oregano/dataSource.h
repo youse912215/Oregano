@@ -15,6 +15,7 @@ public:
 	int knifeGraph;
 	int slashGraph;
 	int shieldGraph;
+	int bloodGraph;
 
 	DataSource();
 	~DataSource();

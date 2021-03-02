@@ -4,20 +4,23 @@ const int WIN_MAGNIFICATION = 100; //ウインドウ倍率
 const int WIN_WIDTH = 16 * WIN_MAGNIFICATION; //ウィンドウ横幅
 const int WIN_HEIGHT = 9 * WIN_MAGNIFICATION; //ウィンドウ縦幅
 
-const int BLOCK_SIZE = 64; //ブロックサイズ
+const int BLOCK_SIZE = 64; //ブロックサイズ（int型）
+const int HALF_BLOCK_SIZE = 32; //ブロックサイズの1/2（int型）
+const int QUARTER_BLOCK_SIZE = 16; //ブロックサイズの1/2（int型）
+
 const int AREA_WIDTH = 25; //1マップ区画の横のサイズ
 const int AREA_HEIGHT = 25; //1マップ区画の縦のサイズ
 const int AREA_MIN = 0; //区画の最小値
 const int AREA_MAX = AREA_WIDTH - 1; //区画の最大値
 
-const double HALF_BLOCK_SIZE = 32.0; //ブロックサイズの1/2
-const double QUARTER_BLOCK_SIZE = HALF_BLOCK_SIZE / 2.0; //ブロックサイズの1/4
+const double HALF_BLOCK_SIZE_D = 32.0; //ブロックサイズの1/2（double型）
+const double QUARTER_BLOCK_SIZE_D = HALF_BLOCK_SIZE_D / 2.0; //ブロックサイズの1/4（double型）
 
 const double ENEMY_COLLISION_DISTANCE = 48.0; //敵との衝突距離
-const double WEAPON_COLLISION_DISTANCE = HALF_BLOCK_SIZE; //敵と武器との衝突距離
+const double WEAPON_COLLISION_DISTANCE = HALF_BLOCK_SIZE_D; //敵と武器との衝突距離
 
-const int TOTAL_MAPS_X = 9; //横方向のマップ総数
-const int TOTAL_MAPS_Y = 9; //縦方向のマップ総数
+const int TOTAL_MAPS_X = 5; //横方向のマップ総数
+const int TOTAL_MAPS_Y = 5; //縦方向のマップ総数
 
 const int ONE_MAP_X = BLOCK_SIZE * AREA_WIDTH;
 const int ONE_MAP_Y = BLOCK_SIZE * AREA_HEIGHT;
@@ -143,82 +146,36 @@ enum DIRECTION_SIGN {
 
 //マップチップ名称
 enum MAP_INFORMATION {
-	////床
-	//FLOOR,
-	////縦橋
-	//BRIDGE_HEIGHT = 4,
-	////横橋
-	//BRIDGE_WIDTH = 6,
-	////草花
-	//FLOWER = 8,
-	////キノコ類
-	//MUSHROOM,
-	////浜
-	//BEACH,
-	////浅瀬
-	//SHALLOW = 20,
-	////潮
-	//TIDE = 30,
-	////クリスタル
-	//CRYSTAL = 40,
-	////木々
-	//WOODS = 90,
-	////家
-	//HOUSE = 119,
-	////海
-	//WATER = 120,
-	////岩山
-	//STONE = 160,
-	////鉱石系
-	//MINERAL = 190,
-	////宝箱
-	//TREASURE_BOX = 199,
-	//横橋
-	BRIDGE_WIDTH,
-	//縦橋
-	BRIDGE_HEIGHT,
+	//花床
+	FLOOR_FLOWER,
+	//宝箱の床
+	FLOOR_TREASURE,
 	//床（通常道）
-	FLOOR,
-	//花類
-	FLOWER,
-	//キノコ類
-	MUSHROOM,
-	//浜
-	BEACH,
+	FLOOR_NORMAL,
+	//花1
+	FLOWER1,
+	//花2
+	FLOWER2,
+	//でこぼこ
+	ROUGH,
 	//浅瀬
 	SHALLOW,
-	//潮
-	TIDE,
+	//水沼
+	SWAMP,
 	//毒沼
 	POISON,
 	//氷床
 	ICE,
 	//ランダムマップ(森)
 	RANDOM_MAP1,
-	//海
-	SEA,
-	//木々
-	WOODS,
-	//溶岩
-	LAVA,
-	//枯れた木々
-	WITHERED_WOODS,
-	//凍った木々
-	FROZEN_WOODS,
-	//氷山
-	ICE_MOUNTAIN,
-	//岩山
-	STONE_MOUNTAIN,
-	//鉱物
-	MINERAL,
-	//宝箱
-	TREASURE_BOX,
 	//ランダムマップ2(沼地)
 	RANDOM_MAP2,
-	//ランダムマップ3(火山)
-	RANDOM_MAP3,
-	//ランダムマップ4(氷山)
-	RANDOM_MAP4,
+	//壁
+	WALL,
+	//外海
+	SEA,
+	//宝箱
+	TREASURE_BOX,
 };
 
 //ボタン種類

@@ -24,10 +24,13 @@ void loopProcess() {
 	Player player(input); //プレイヤークラス
 
 	//Enemy enemy(source.enemy1, player);
-	vector<Enemy*> enemies;
+	/*vector<Enemy*> enemies;
 
-	for (unsigned int i = 0; i < 15; ++i)
-		enemies.push_back(new Enemy(player));
+	for (unsigned int i = 0; i < 2; ++i)
+		enemies.push_back(new Enemy(player));*/
+
+	Enemy enemy;
+	vector<Enemy> enemies(1);
 
 	EventBase event; //イベントクラス
 	EventField field(input, event, player); //フィールドクラス
@@ -38,7 +41,10 @@ void loopProcess() {
 
 	//EffectParticle particle;
 
-	vector<EffectParticle> particles(30);
+	EffectParticle particle;
+	vector<EffectParticle> particles(100);
+
+	MapAutogeneration mapp;
 
 	while (true) {
 		ClearDrawScreen(); //画面クリア
@@ -53,6 +59,8 @@ void loopProcess() {
 
 			/* ゲームシーン処理 */
 		else if (EventBase::gameScene == GAME_SCENE) {
+
+
 			mapDraw_.update(title.returnMapAll()); //マップ更新処理
 			collision.update(); //コリジョン更新処理
 
@@ -65,26 +73,26 @@ void loopProcess() {
 			gameUI.update(); //UI更新処理
 
 			//enemy.update();
-			for (unsigned int i = 0; i != enemies.size(); ++i) {
+			/*for (unsigned int i = 0; i != enemies.size(); ++i) {
 				enemies[i]->update();
 			}
 
 			for (unsigned int i = enemies.size() - 1; i != 0; --i) {
-				if (enemies[i]->alive) continue;
+				if (!enemies[i]->deadFlag) continue;
 				delete enemies[i];
 				enemies.erase(enemies.begin() + i);
 				enemies.push_back(new Enemy(player));
-			}
+			}*/
 
-			//particle.update();
-
-			for (auto& i : particles) {
-				if (!i.lifeTime) {
-					i.initProcess();
-					break;
+			for (auto& i : enemies) {
+				if (!i.activity && !i.deadFlag) {
+					i.initProcess(player);
 				}
-				i.update();
+				i.update(player);
+				if (i.deadFlag) particle.update(particles, i.screenPos);
 			}
+
+			//SetDrawBright(0xff, 0xff, 0xff);
 		}
 			/* メニューシーン処理 */
 		else if (EventBase::gameScene == MENU_ITEM_SCENE) {
@@ -99,7 +107,7 @@ void loopProcess() {
 		windowSettingInLoop(); //ループ内ウィンドウ設定
 		if (ProcessMessage() == -1) break; //Windowsシステムからくる情報を処理
 	}
-	for (unsigned int i = 0; i != enemies.size(); ++i) {
+	/*for (unsigned int i = 0; i != enemies.size(); ++i) {
 		delete enemies[i];
-	}
+	}*/
 }

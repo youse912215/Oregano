@@ -11,7 +11,7 @@ using namespace std;
 
 //初期化
 MapBase::MapBase() {
-	initialCsv = "resource/csv/map_x08y08.csv"; //初期地点のマップ(中央)
+	initialCsv = "resource/csv/map_x00y00.csv"; //初期地点のマップ(中央)
 }
 
 MapBase::~MapBase() {

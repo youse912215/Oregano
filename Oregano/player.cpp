@@ -17,14 +17,14 @@ Player::Player(Input& input) :
 
 	this->pos.dx = static_cast<int>(WIN_WIDTH / 2 - BLOCK_SIZE / 2); //プレイヤーx座標
 	this->pos.dy = static_cast<int>(WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2); //プレイヤーy座標
-	center = HALF_BLOCK_SIZE + pos; //プレイヤーの中心座標
+	center = HALF_BLOCK_SIZE_D + pos; //プレイヤーの中心座標
 
 	knifePos = 0; //ナイフ座標
 	knifeAddPos = 0; //ナイフの加算分の座標
 	knifeCenter = 0; //ナイフの中心座標
 	knife = false; //ナイフフラグ
 
-	slashPos = this->pos - HALF_BLOCK_SIZE; //刃座標
+	slashPos = this->pos - HALF_BLOCK_SIZE_D; //刃座標
 	slashCenter = 0; //刃の中心座標
 	slash = false; //刃フラグ
 
@@ -158,7 +158,7 @@ void Player::accelKnife() {
 /// </summary>
 void Player::knifeUpdate() {
 	knifePos = pos + knifeAddPos; //ナイフの座標の更新
-	knifeCenter = HALF_BLOCK_SIZE + knifePos; //ナイフの中心位置の更新
+	knifeCenter = HALF_BLOCK_SIZE_D + knifePos; //ナイフの中心位置の更新
 
 	//ナイフ入力があったとき
 	if (knife) {
@@ -174,8 +174,8 @@ void Player::knifeUpdate() {
 /// <returns></returns>
 bool Player::deleteKnife() {
 	//プレイヤーからの距離が3マス分離れているか
-	return abs(knifePos.dx + HALF_BLOCK_SIZE - center.dx) >= BLOCK_SIZE * 3.0
-		|| abs(knifePos.dy + HALF_BLOCK_SIZE - center.dy) >= BLOCK_SIZE * 3.0;
+	return abs(knifePos.dx + HALF_BLOCK_SIZE_D - center.dx) >= BLOCK_SIZE * 3.0
+		|| abs(knifePos.dy + HALF_BLOCK_SIZE_D - center.dy) >= BLOCK_SIZE * 3.0;
 }
 
 /// <summary>
@@ -210,7 +210,7 @@ void Player::shieldCooldown() {
 /// シールド更新処理
 /// </summary>
 void Player::shieldUpdate() {
-	if (shieldValue == 0) shield = false; //シールド量が0になったら、シールド消失
+	if (shieldValue <= 0) shield = false; //シールド量が0になったら、シールド消失
 }
 
 /// <summary>

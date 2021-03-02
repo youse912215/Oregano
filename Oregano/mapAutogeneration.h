@@ -3,7 +3,6 @@
 
 class MapAutogeneration : public MapBase {
 private:
-	vector<vector<int>> roadMap; //読み込んだマップを格納
 
 
 	int autogenerationMap(const int& random, const int& randomMapNum); //マップの自動生成
@@ -14,6 +13,8 @@ private:
 public:
 	MapAutogeneration();
 	~MapAutogeneration();
+
+	vector<vector<int>> roadMap; //読み込んだマップを格納
 
 	void writeRandomMap(); //ランダムマップのファイル書き込み	
 };
