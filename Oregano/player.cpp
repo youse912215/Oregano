@@ -1,9 +1,16 @@
 #include "DxLib.h"
 #include "player.h"
 #include "constant.h"
-#include "mapDraw.h"
 #include "eventBase.h"
 #include <algorithm>
+
+#include "playerKnife.h"
+#include "playerShield.h"
+#include "playerSlash.h"
+
+PlayerKnife knifeAct;
+PlayerSlash slashAct;
+PlayerShield shieldAct;
 
 Player::Player(Input& input) :
 	input(input), cooldown(3), cooldownFlag(3),
@@ -19,17 +26,14 @@ Player::Player(Input& input) :
 	this->pos.dy = static_cast<int>(WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2); //プレイヤーy座標
 	center = HALF_BLOCK_SIZE_D + pos; //プレイヤーの中心座標
 
-	knifePos = 0; //ナイフ座標
-	knifeAddPos = 0; //ナイフの加算分の座標
 	knifeCenter = 0; //ナイフの中心座標
 	knife = false; //ナイフフラグ
 
-	slashPos = this->pos - HALF_BLOCK_SIZE_D; //刃座標
+
 	slashCenter = 0; //刃の中心座標
 	slash = false; //刃フラグ
 
-	shieldPos = this->pos; //シールドの座標
-	shieldValue = 15;
+
 	shield = false; //シールドフラグ
 
 	coin0 = 100;
@@ -44,17 +48,13 @@ Player::~Player() {
 /// 描画処理
 /// </summary>
 void Player::draw() {
-	//ナイフ
-	if (knife)
-		DrawGraph(static_cast<int>(knifePos.dx), static_cast<int>(knifePos.dy), source.knifeGraph, true);
+	////刃
+	//if (slash)
+	//	DrawGraph(static_cast<int>(slashPos.dx), static_cast<int>(slashPos.dy), source.slashGraph, true);
 
-	//刃
-	if (slash)
-		DrawGraph(static_cast<int>(slashPos.dx), static_cast<int>(slashPos.dy), source.slashGraph, true);
-
-	//シールド
-	if (shield)
-		DrawGraph(static_cast<int>(shieldPos.dx), static_cast<int>(shieldPos.dy), source.shieldGraph, true);
+	////シールド
+	//if (shield)
+	//	DrawGraph(static_cast<int>(shieldPos.dx), static_cast<int>(shieldPos.dy), source.shieldGraph, true);
 
 	//プレイヤー
 	DrawRectGraph(static_cast<int>(this->pos.dx),
@@ -66,12 +66,12 @@ void Player::draw() {
 	DrawFormatString(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy),
 	                 GetColor(255, 0, 0), "%lf, %lf, %lf, %lf",
 	                 this->pos.dx, this->pos.dy, center.dx, center.dy, false);
-	DrawFormatString(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy) - 15,
+	/*DrawFormatString(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy) - 15,
 	                 GetColor(255, 0, 0), "X%lf, Y%lf",
-	                 knifePos.dx, knifePos.dy, false);
-	DrawFormatString(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy) - 30,
+	                 knifePos.dx, knifePos.dy, false);*/
+	/*DrawFormatString(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy) - 30,
 	                 GetColor(255, 0, 0), "X%lf, Y%lf",
-	                 slashPos.dx, slashPos.dy, false);
+	                 slashPos.dx, slashPos.dy, false);*/
 }
 
 /// <summary>
@@ -91,7 +91,7 @@ void Player::actionCommand() {
 	/* シールド */
 	if (input.X && !cooldownFlag[SHIELD]) {
 		shield = true; //シールドを付与
-		shieldValue = 15;
+		shieldAct.shieldValue = 15;
 		cooldownFlag[SHIELD] = true; //クールダウンフラグをtrue
 	}
 
@@ -101,116 +101,6 @@ void Player::actionCommand() {
 	//Rボタン
 	if (input.RB && battleStyle != 3)
 		changeBattleStyle(RIGHT);
-}
-
-/// <summary>
-/// ナイフのクールダウン処理
-/// </summary>
-void Player::knifeCooldown() {
-	if (cooldownFlag[KNIFE]) cooldown[KNIFE]++; //クールダウン開始
-
-	//クールダウンは30秒
-	if (cooldown[KNIFE] >= 30) {
-		cooldown[KNIFE] = 0; //クールダウンをリセット
-		cooldownFlag[KNIFE] = false; //クールダウンフラグをfalse
-	}
-}
-
-/// <summary>
-/// ナイフのポジジョンをセットする
-/// </summary>
-void Player::setKnifePosition() {
-	/* x方向 */
-	if (knifePos.dx < pos.dx) knifeAddPos.dx -= KNIFE_SPEED;
-	else if (knifePos.dx > pos.dx) knifeAddPos.dx += KNIFE_SPEED;
-	else knifeAddPos.dx = 0;
-	/* y方向 */
-	if (knifePos.dy < pos.dy) knifeAddPos.dy -= KNIFE_SPEED;
-	else if (knifePos.dy > pos.dy)knifeAddPos.dy += KNIFE_SPEED;
-	else knifeAddPos.dy = 0;
-}
-
-/// <summary>
-/// ナイフのポジジョンをリセットする
-/// </summary>
-void Player::resetKnifePosition() {
-	if (deleteKnife()) {
-		knife = false;
-		knifeAddPos.dx = 0.0;
-		knifeAddPos.dy = 0.0;
-	}
-}
-
-/// <summary>
-/// ナイフの加速（ジョイパッドだと曲げることも可能）
-/// </summary>
-void Player::accelKnife() {
-	/* x方向 */
-	if (input.STICK[LEFT]) knifeAddPos.dx -= KNIFE_SPEED / 2.0;
-	else if (input.STICK[RIGHT]) knifeAddPos.dx += KNIFE_SPEED / 2.0;
-	/* y方向 */
-	if (input.STICK[UP]) knifeAddPos.dy -= KNIFE_SPEED / 2.0;
-	else if (input.STICK[DOWN]) knifeAddPos.dy += KNIFE_SPEED / 2.0;
-}
-
-/// <summary>
-/// ナイフの更新処理
-/// </summary>
-void Player::knifeUpdate() {
-	knifePos = pos + knifeAddPos; //ナイフの座標の更新
-	knifeCenter = HALF_BLOCK_SIZE_D + knifePos; //ナイフの中心位置の更新
-
-	//ナイフ入力があったとき
-	if (knife) {
-		setKnifePosition(); //ナイフのポジジョンセット
-		accelKnife(); //ナイフの加速
-		resetKnifePosition(); //ナイフのポジジョンリセット
-	}
-}
-
-/// <summary>
-/// ナイフの削除条件
-/// </summary>
-/// <returns></returns>
-bool Player::deleteKnife() {
-	//プレイヤーからの距離が3マス分離れているか
-	return abs(knifePos.dx + HALF_BLOCK_SIZE_D - center.dx) >= BLOCK_SIZE * 3.0
-		|| abs(knifePos.dy + HALF_BLOCK_SIZE_D - center.dy) >= BLOCK_SIZE * 3.0;
-}
-
-/// <summary>
-/// 刃のクールダウン処理
-/// </summary>
-void Player::slashCooldown() {
-	if (cooldownFlag[SLASH]) cooldown[SLASH]++; //クールダウン開始
-
-	if (cooldown[SLASH] >= 20 && cooldown[SLASH] < 60) {
-		slash = false; //刃を収める
-	}
-		//クールダウンは60秒
-	else if (cooldown[SLASH] >= 60) {
-		cooldown[SLASH] = 0; //クールダウンをリセット
-		cooldownFlag[SLASH] = false; //クールダウンフラグをfalse
-	}
-}
-
-/// <summary>
-/// シールドのクールダウン処理
-/// </summary>
-void Player::shieldCooldown() {
-	if (cooldownFlag[SHIELD] && !shield) cooldown[SHIELD]++; //クールダウン開始
-
-	if (cooldown[SHIELD] >= 120) {
-		cooldown[SHIELD] = 0; //クールダウンをリセット
-		cooldownFlag[SHIELD] = false; //クールダウンフラグをfalse
-	}
-}
-
-/// <summary>
-/// シールド更新処理
-/// </summary>
-void Player::shieldUpdate() {
-	if (shieldValue <= 0) shield = false; //シールド量が0になったら、シールド消失
 }
 
 /// <summary>
@@ -243,7 +133,7 @@ void Player::lostPlayerCoin(const int& attackPower) {
 	if (!shield)
 		coin[battleStyle] -= attackPower;
 	else
-		shieldValue -= attackPower;
+		shieldAct.shieldValue -= attackPower;
 }
 
 /// <summary>
@@ -287,16 +177,53 @@ void Player::battleStyleUpdate() {
 }
 
 /// <summary>
+/// ナイフ更新処理
+/// </summary>
+void Player::knifeUpdate() {
+	knifeAct.initialize(this->pos, knifeCenter); //ナイフの初期化
+	knifeAct.knifeCooldown(cooldown, cooldownFlag); //ナイフのクールダウン処理
+
+	//ナイフ入力があったとき
+	if (knife) {
+		knifeAct.setKnifePosition(this->pos); //ナイフのポジジョンセット
+		knifeAct.accelKnife(input); //ナイフの加速
+		knifeAct.resetKnifePosition(center, knife); //ナイフのポジジョンリセット
+		knifeAct.draw(source); //描画処理
+	}
+}
+
+/// <summary>
+/// 刃更新処理
+/// </summary>
+void Player::slashUpdate() {
+	slashAct.initialize(this->pos); //刃の初期化
+	slashAct.slashCooldown(cooldown, cooldownFlag, slash);
+
+	if (slash) slashAct.draw(source);
+}
+
+/// <summary>
+/// シールド更新処理
+/// </summary>
+void Player::shieldUpdate() {
+	shieldAct.initialize(this->pos); //シールドの初期化
+	shieldAct.shieldCooldown(cooldown, cooldownFlag, shield); //シールドのクールダウン処理
+
+	if (shieldAct.shieldValue <= 0) shield = false; //シールド量が0になったら、シールド消失
+
+	if (shield) shieldAct.draw(source);
+}
+
+/// <summary>
 /// 更新処理
 /// </summary>
 void Player::update() {
-	knifeCooldown(); //ナイフのクールダウン処理
-	slashCooldown(); //刃のクールダウン処理
-	shieldCooldown(); //シールドのクールダウン処理
+
 
 	actionCommand(); //アクションコマンド処理
 
 	knifeUpdate(); //ナイフ更新処理
+	slashUpdate(); //刃更新処理
 	shieldUpdate(); //シールド更新処理
 
 	coinUpdate();
@@ -307,7 +234,7 @@ void Player::update() {
 	DrawFormatString(0, 450, GetColor(0, 255, 0), "ナイフ　　TF:%d, CDR:%d", knife, cooldown[0], false);
 	DrawFormatString(0, 465, GetColor(0, 255, 0), "　刃　　　TF:%d, CDR:%d", slash, cooldown[1], false);
 	DrawFormatString(0, 480, GetColor(0, 255, 0), "シールド　TF:%d, CDR:%d, Value:%d",
-	                 shield, cooldown[2], shieldValue, false);
+	                 shield, cooldown[2], shieldAct.shieldValue, false);
 	DrawFormatString(0, 550, GetColor(255, 100, 100), "コイン0:%d, スタイル:%d", coin0, battleStyle, false);
 	DrawFormatString(0, 565, GetColor(0x00, 0x8d, 0x56), "花萌葱:%d, コイン:%d", attributeAccumulation[0], coin[0], false);
 	DrawFormatString(0, 580, GetColor(0xef, 0xbb, 0x2c), "深支子:%d, コイン:%d", attributeAccumulation[1], coin[1], false);

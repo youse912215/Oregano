@@ -208,9 +208,9 @@ void Enemy::update(Player& player) {
 
 	if (activity) {
 		collision(player); //プレイヤーとの衝突処理
-		//getMoveSpeed(player); //移動速度取得
-		//move(player); //移動処理
-		lissajous();
+		getMoveSpeed(player); //移動速度取得
+		move(player); //移動処理
+		//lissajous();
 		draw(); //描画処理
 	}
 

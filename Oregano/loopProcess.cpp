@@ -30,7 +30,7 @@ void loopProcess() {
 		enemies.push_back(new Enemy(player));*/
 
 	Enemy enemy;
-	vector<Enemy> enemies(1);
+	vector<Enemy> enemies(5);
 
 	EventBase event; //イベントクラス
 	EventField field(input, event, player); //フィールドクラス

@@ -68,13 +68,15 @@ void EffectParticle::occurrenceParticle(Vec2& deadPos) {
 	           static_cast<int>(radius),
 	           GetColor(255, 0, 0), true);*/
 
-	SetDrawBlendMode(DX_BLENDMODE_ADD, 158);
+	SetDrawBlendMode(DX_BLENDMODE_ADD, 150);
 
 
 	DrawRotaGraph2(static_cast<int>(pos.dx) - static_cast<int>(radius),
 	               static_cast<int>(pos.dy) - static_cast<int>(radius),
 	               8, 8, radius / 5.0, getAngle(0, 360),
 	               source.bloodGraph, true, false);
+
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	DrawFormatString(400, 400, GetColor(255, 255, 255),
 	                 "dx:%.1lf, dy:%.1lf, Time:%.1lf, L:%d", pos.dx, pos.dy,
