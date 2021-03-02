@@ -79,6 +79,12 @@
     <Filter Include="ソース ファイル\Organism\Player">
       <UniqueIdentifier>{fbe35cfc-4abb-4960-bb55-9f992092c9e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Effect">
+      <UniqueIdentifier>{aadda0e8-8028-469f-9dd2-932565a8b9ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Effect">
+      <UniqueIdentifier>{9eaf51a3-d9b4-4833-a16c-f3a32c9cc605}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -162,6 +168,15 @@
     <ClCompile Include="playerAction.cpp">
       <Filter>ソース ファイル\Organism\Player</Filter>
     </ClCompile>
+    <ClCompile Include="effectParticle.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="effectEmitter.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="effectOccurred.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mapDraw.h">
@@ -244,6 +259,15 @@
     </ClInclude>
     <ClInclude Include="playerAction.h">
       <Filter>ヘッダー ファイル\Organism\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="effectEmitter.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="effectParticle.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="effectOccurred.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

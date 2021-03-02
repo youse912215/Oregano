@@ -40,6 +40,44 @@ Vec2 Vec2::operator/(const Vec2& other) const {
 	return v;
 }
 
+Vec2& Vec2::operator=(const Vec2& other) {
+	x = other.x;
+	y = other.y;
+	dx = other.dx;
+	dy = other.dy;
+	return *this;
+}
+
+Vec2& Vec2::operator+=(const Vec2& other) {
+	x += other.x;
+	y += other.y;
+	dx += other.dx;
+	dy += other.dy;
+	return *this;
+}
+
+Vec2& Vec2::operator-=(const Vec2& other) {
+	x -= other.x;
+	y -= other.y;
+	dx -= other.dx;
+	dy -= other.dy;
+	return *this;
+}
+
+Vec2 Vec2::operator*=(const double& a) {
+	Vec2 v;
+	v.dx *= a;
+	v.dy *= a;
+	return v;
+}
+
+Vec2 Vec2::operator()(const double& dx, const double& dy) {
+	Vec2 v;
+	v.dx = dx;
+	v.dy = dy;
+	return v;
+}
+
 Vec2 operator+(const int& a, Vec2& other) {
 	Vec2 v;
 	v.x = a + other.x;

@@ -15,6 +15,8 @@
 
 #include "sceneTitle.h"
 
+#include "effectParticle.h"
+
 void loopProcess() {
 
 	Input input; //入力クラス
@@ -33,6 +35,10 @@ void loopProcess() {
 	DataSave save(player, field, text); //セーブデータクラス
 	GameUI gameUI(input); //ゲームUIクラス
 	SceneTitle title(save);
+
+	//EffectParticle particle;
+
+	vector<EffectParticle> particles(30);
 
 	while (true) {
 		ClearDrawScreen(); //画面クリア
@@ -68,6 +74,16 @@ void loopProcess() {
 				delete enemies[i];
 				enemies.erase(enemies.begin() + i);
 				enemies.push_back(new Enemy(player));
+			}
+
+			//particle.update();
+
+			for (auto& i : particles) {
+				if (!i.lifeTime) {
+					i.initProcess();
+					break;
+				}
+				i.update();
 			}
 		}
 			/* メニューシーン処理 */

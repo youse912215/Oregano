@@ -18,6 +18,13 @@ int getRandom(int min, int max) {
 	return rand(mt);
 }
 
+double getRandomD(int min, const int max) {
+	random_device rd; //ランダム生成
+	mt19937 mt(rd()); //ランダムのシード
+	uniform_int_distribution<int> rand(min, max); //min~maxの範囲
+	return rand(mt);
+}
+
 /// <summary>
 /// 符号変更
 /// </summary>
