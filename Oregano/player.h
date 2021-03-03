@@ -14,7 +14,6 @@ private:
 
 	Vec2d pos; //プレイヤー座標
 
-
 	vector<int> cooldown; //アクションのクールダウン
 	vector<bool> cooldownFlag; //クールダウンのフラグ
 
@@ -27,17 +26,18 @@ private:
 	void slashUpdate(); //刃更新処理
 	void shieldUpdate(); //シールド更新処理
 
-	void coinUpdate();
+	//void coinUpdate();
 	vector<int> coin;
 
-	vector<int> attributeAccumulation; //属性耐久値
+	//vector<int> attributeAccumulation; //属性耐久値
 
-	int battleStyle; //戦闘スタイル（0:花萌葱, 1:深支子, 2:燕子花, 3:中紅花）
-	void changeBattleStyle(const int& dir); //戦闘スタイルを切り替える
-	void battleStyleUpdate();
+	//int battleStyle; //戦闘スタイル（0:花萌葱, 1:深支子, 2:燕子花, 3:中紅花）
+	//void changeBattleStyle(const int& dir); //戦闘スタイルを切り替える
 
-	vector<bool> stateAbnormal; //状態異常（0:猛毒、1:痙攣、2:混乱、3:出血）
+	//vector<bool> stateAbnormal; //状態異常（0:猛毒、1:痙攣、2:混乱、3:出血）
+	void stateAbnormalUpdate();
 
+	bool state(const int& num);
 
 public:
 	Vec2d center; //プレイヤーの中心座標

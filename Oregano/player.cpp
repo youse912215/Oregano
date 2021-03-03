@@ -7,18 +7,20 @@
 #include "playerKnife.h"
 #include "playerShield.h"
 #include "playerSlash.h"
+#include "playerState.h"
 
 PlayerKnife knifeAct;
 PlayerSlash slashAct;
 PlayerShield shieldAct;
+PlayerState stateAct;
 
 Player::Player(Input& input) :
 	input(input), cooldown(3), cooldownFlag(3),
 
-	coin{50, 0, 0, 0}, attributeAccumulation{0, 0, 0, 0},
+	coin{50, 0, 0, 0},
 
-	stateAbnormal(4), knifeCenter(0.0, 0.0),
-	slashCenter(0.0, 0.0), knife(false), slash(false), shield(false),
+	knifeCenter(0.0, 0.0), slashCenter(0.0, 0.0),
+	knife(false), slash(false), shield(false),
 
 	/* データ類 */
 	status(PLAYER_STATUS_SIZE), possessionItem(PLAYER_ITEM_SIZE),
@@ -28,8 +30,6 @@ Player::Player(Input& input) :
 	this->pos.dx = static_cast<int>(WIN_WIDTH / 2 - BLOCK_SIZE / 2); //プレイヤーx座標
 	this->pos.dy = static_cast<int>(WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2); //プレイヤーy座標
 	center = HALF_BLOCK_SIZE_D + pos; //プレイヤーの中心座標
-
-	battleStyle = 0;
 }
 
 Player::~Player() {
@@ -71,34 +71,13 @@ void Player::actionCommand() {
 		cooldownFlag[SHIELD] = true; //クールダウンフラグをtrue
 	}
 
+	/* 戦闘スタイル切替 */
 	//Lボタン
-	if (input.LB && battleStyle != 0)
-		changeBattleStyle(LEFT);
+	if (input.LB)
+		stateAct.changeBattleStyle(coin, LEFT);
 	//Rボタン
-	if (input.RB && battleStyle != 3)
-		changeBattleStyle(RIGHT);
-}
-
-/// <summary>
-/// コイン更新処理
-/// </summary>
-void Player::coinUpdate() {
-}
-
-/// <summary>
-/// 戦闘スタイルを切り替える
-/// </summary>
-void Player::changeBattleStyle(const int& dir) {
-	//Lボタン入力かつ、戦闘スタイルが花萌葱ではないとき
-	if (dir == LEFT && battleStyle != 0)
-		//前のスタイルのコインが0ではないとき
-		battleStyle = coin[battleStyle - 1] != 0 ? --battleStyle : battleStyle; //前のスタイルに切り替え
-
-		//Rボタン入力かつ、戦闘スタイルが中紅花ではないとき
-	else if (dir == RIGHT && battleStyle != 3)
-		//前のスタイルのコインが0ではないとき
-		battleStyle = coin[battleStyle + 1] != 0 ? ++battleStyle : battleStyle; //次のスタイルに切り替え
-
+	if (input.RB)
+		stateAct.changeBattleStyle(coin, RIGHT);
 }
 
 /// <summary>
@@ -107,7 +86,7 @@ void Player::changeBattleStyle(const int& dir) {
 /// <param name="attackPower">敵の攻撃力</param>
 void Player::lostPlayerCoin(const int& attackPower) {
 	if (!shield)
-		coin[battleStyle] -= attackPower;
+		coin[stateAct.battleStyle] -= attackPower;
 	else
 		shieldAct.shieldValue -= attackPower;
 }
@@ -122,34 +101,25 @@ void Player::addPlayerCoin(const int& attribute, const int& enemyCoin) {
 }
 
 /// <summary>
-/// 属性蓄積値が最大値でないとき、加算する
+/// 属性蓄積値が最大値ではないとき、加算する
 /// </summary>
 /// <param name="attribute">敵の属性</param>
 /// <param name="attributeValue">敵の属性値</param>
 void Player::addAttributeAccumulation(const int& attribute, const int& attributeValue) {
-	//シールドがないときかつ、現在の戦闘スタイルと敵の属性が異なるとき
-	if (!shield && battleStyle != attribute) {
-		if (attributeAccumulation[attribute] < 100)
-			attributeAccumulation[attribute] += attributeValue; //属性蓄積値を加算
-		else if (attributeAccumulation[attribute] >= 100)
-			attributeAccumulation[attribute] = 100; //100以上は属性蓄積値を最大値にする
-	}
+	//シールドがないとき
+	if (!shield) stateAct.calculateValue(attribute, attributeValue); //属性蓄積値の計算
+
 }
 
 /// <summary>
-/// 戦闘スタイルの生存状態を更新
+/// 状態異常更新処理
 /// </summary>
-void Player::battleStyleUpdate() {
-	if (coin[battleStyle] <= 0) {
-		//全てのコインの中で0でない要素を探し、見つかった最初の要素のイテレーターを返す
-		auto itr = find_if(coin.begin(), coin.end(),
-		                   [](int x) { return x != 0; });
-		//0以外の要素が見つかれば、その要素をbattleStyleに代入
-		if (itr != coin.end())
-			battleStyle = distance(coin.begin(), itr); //戦闘スタイルを切り替える
-		else
-			EventBase::gameScene = END_SCENE; //全てのコインが0になり、ゲームオーバーシーンへ
-	}
+void Player::stateAbnormalUpdate() {
+	stateAct.getStateAbnormal();
+}
+
+bool Player::state(const int& num) {
+	return stateAct.stateAbnormal[num];
 }
 
 /// <summary>
@@ -198,12 +168,14 @@ void Player::update() {
 
 	actionCommand(); //アクションコマンド処理
 
+
 	knifeUpdate(); //ナイフ更新処理
 	slashUpdate(); //刃更新処理
 	shieldUpdate(); //シールド更新処理
 
-	coinUpdate();
-	battleStyleUpdate();
+	stateAct.switchStyleAutomatically(coin);
+
+	stateAbnormalUpdate();
 
 	draw(); //描画処理
 
@@ -211,11 +183,15 @@ void Player::update() {
 	DrawFormatString(0, 465, GetColor(0, 255, 0), "　刃　　　TF:%d, CDR:%d", slash, cooldown[1], false);
 	DrawFormatString(0, 480, GetColor(0, 255, 0), "シールド　TF:%d, CDR:%d, Value:%d",
 	                 shield, cooldown[2], shieldAct.shieldValue, false);
-	DrawFormatString(0, 550, GetColor(255, 100, 100), "スタイル:%d", battleStyle, false);
-	DrawFormatString(0, 565, GetColor(0x00, 0x8d, 0x56), "花萌葱:%d, コイン:%d", attributeAccumulation[0], coin[0], false);
-	DrawFormatString(0, 580, GetColor(0xef, 0xbb, 0x2c), "深支子:%d, コイン:%d", attributeAccumulation[1], coin[1], false);
-	DrawFormatString(0, 595, GetColor(0x4b, 0x5e, 0xaa), "燕子花:%d, コイン:%d", attributeAccumulation[2], coin[2], false);
-	DrawFormatString(0, 610, GetColor(0xee, 0x86, 0x9a), "中紅花:%d, コイン:%d", attributeAccumulation[3], coin[3], false);
+	DrawFormatString(0, 550, GetColor(255, 100, 100), "スタイル:%d", stateAct.battleStyle, false);
+	DrawFormatString(0, 565, GetColor(0x00, 0x8d, 0x56), "花萌葱:%d, コイン:%d, 状態:%d",
+	                 stateAct.attributeAccumulation[0], coin[0], state(0), false);
+	DrawFormatString(0, 580, GetColor(0xef, 0xbb, 0x2c), "深支子:%d, コイン:%d, 状態:%d",
+	                 stateAct.attributeAccumulation[1], coin[1], state(1), false);
+	DrawFormatString(0, 595, GetColor(0x4b, 0x5e, 0xaa), "燕子花:%d, コイン:%d, 状態:%d",
+	                 stateAct.attributeAccumulation[2], coin[2], state(2), false);
+	DrawFormatString(0, 610, GetColor(0xee, 0x86, 0x9a), "中紅花:%d, コイン:%d, 状態:%d",
+	                 stateAct.attributeAccumulation[3], coin[3], state(3), false);
 
 	/*DrawFormatString(0, 500, GetColor(120, 0, 100), "トレジャーランク:%d, 花萌葱:%d, 金糸雀:%d, 葡萄染:%d, 白百合:%d",
 	                 status[TREASURE_RANK], status[GREEN_COIN], status[YELLOW_COIN],

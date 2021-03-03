@@ -177,6 +177,9 @@
     <ClCompile Include="effectOccurred.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="playerState.cpp">
+      <Filter>ソース ファイル\Organism\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mapDraw.h">
@@ -268,6 +271,9 @@
     </ClInclude>
     <ClInclude Include="effectOccurred.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="playerState.h">
+      <Filter>ヘッダー ファイル\Organism\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -154,6 +154,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playerShield.cpp" />
     <ClCompile Include="playerSlash.cpp" />
+    <ClCompile Include="playerState.cpp" />
     <ClCompile Include="random.cpp" />
     <ClCompile Include="sceneGame.cpp" />
     <ClCompile Include="sceneMenu.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="playerShield.h" />
     <ClInclude Include="playerAction.h" />
     <ClInclude Include="playerSlash.h" />
+    <ClInclude Include="playerState.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="sceneGame.h" />
     <ClInclude Include="sceneMenu.h" />
