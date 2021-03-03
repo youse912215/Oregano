@@ -15,9 +15,9 @@ PlayerShield shieldAct;
 PlayerState stateAct;
 
 Player::Player(Input& input) :
-	input(input), cooldown(3), cooldownFlag(3),
+	input(input), coin{50, 0, 0, 0}, cooldown(3),
 
-	coin{50, 0, 0, 0},
+	cooldownFlag(3),
 
 	knifeCenter(0.0, 0.0), slashCenter(0.0, 0.0),
 	knife(false), slash(false), shield(false),
@@ -101,6 +101,7 @@ void Player::addPlayerCoin(const int& attribute, const int& enemyCoin) {
 }
 
 /// <summary>
+/// 属性値の蓄積処理
 /// 属性蓄積値が最大値ではないとき、加算する
 /// </summary>
 /// <param name="attribute">敵の属性</param>
@@ -109,13 +110,6 @@ void Player::addAttributeAccumulation(const int& attribute, const int& attribute
 	//シールドがないとき
 	if (!shield) stateAct.calculateValue(attribute, attributeValue); //属性蓄積値の計算
 
-}
-
-/// <summary>
-/// 状態異常更新処理
-/// </summary>
-void Player::stateAbnormalUpdate() {
-	stateAct.getStateAbnormal();
 }
 
 bool Player::state(const int& num) {
@@ -161,6 +155,13 @@ void Player::shieldUpdate() {
 }
 
 /// <summary>
+/// 状態異常更新処理
+/// </summary>
+void Player::stateAbnormalUpdate() {
+	stateAct.getStateAbnormal();
+}
+
+/// <summary>
 /// 更新処理
 /// </summary>
 void Player::update() {
@@ -173,7 +174,7 @@ void Player::update() {
 	slashUpdate(); //刃更新処理
 	shieldUpdate(); //シールド更新処理
 
-	stateAct.switchStyleAutomatically(coin);
+	stateAct.switchStyleAutomatically(coin); //
 
 	stateAbnormalUpdate();
 

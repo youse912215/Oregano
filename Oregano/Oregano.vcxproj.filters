@@ -150,9 +150,6 @@
     <ClCompile Include="enemy.cpp">
       <Filter>ソース ファイル\Organism\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="enemyConclusion.cpp">
-      <Filter>ソース ファイル\Organism\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="player.cpp">
       <Filter>ソース ファイル\Organism\Player</Filter>
     </ClCompile>
@@ -179,6 +176,9 @@
     </ClCompile>
     <ClCompile Include="playerState.cpp">
       <Filter>ソース ファイル\Organism\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyTracking.cpp">
+      <Filter>ソース ファイル\Organism\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -245,9 +245,6 @@
     <ClInclude Include="enemy.h">
       <Filter>ヘッダー ファイル\Organism\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="enemyConclusion.h">
-      <Filter>ヘッダー ファイル\Organism\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="player.h">
       <Filter>ヘッダー ファイル\Organism\Player</Filter>
     </ClInclude>
@@ -274,6 +271,9 @@
     </ClInclude>
     <ClInclude Include="playerState.h">
       <Filter>ヘッダー ファイル\Organism\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyTracking.h">
+      <Filter>ヘッダー ファイル\Organism\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

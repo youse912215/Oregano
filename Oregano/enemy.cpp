@@ -2,21 +2,23 @@
 #include "DxLib.h"
 #include "constant.h"
 #include "random.h"
-
+#include "mapDraw.h"
 #include <cmath>
 
-#include "mapDraw.h"
+#include "enemyTracking.h"
+
+EnemyTracking tracking;
 
 
 Enemy::Enemy() :
 	pos(0.0, 0.0), center(0.0, 0.0),
 	screenCenter(0.0, 0.0), relativeDistance(0.0, 0.0),
 
-	attackPower(5), coin{5, 15, 25}, attribute(0), attributeValue{15, 30, 50},
+	coin{5, 15, 25}, attackPower{5, 25, 50}, level(0), attributeValue{15, 30, 50}, lissajousTime(0),
 
-	lissajousTime(0), lissajousRandom(0),
+	lissajousRandom(0), pattern(0),
 
-	screenPos(0.0, 0.0),
+	screenPos(0.0, 0.0), attribute(0),
 
 	activity(false), deadFlag(false), deadTime(0) {
 
@@ -37,36 +39,6 @@ void Enemy::draw() {
 	              attribute * static_cast<int>(HALF_BLOCK_SIZE_D), 0,
 	              static_cast<int>(HALF_BLOCK_SIZE_D), static_cast<int>(HALF_BLOCK_SIZE_D),
 	              source.enemyGraph, true, false);
-}
-
-/// <summary>
-/// 移動処理
-/// プレイヤーの左か右かで移動方向が変化する
-/// </summary>
-void Enemy::move(Player& player) {
-	/* x方向の移動 */
-	if (screenPos.dx >= 0
-		&& screenPos.dx < player.center.dx
-		&& onScreenY()) {
-		this->pos.dx += moveSpeed.dx; //右へ
-	}
-	else if (screenPos.dx >= player.center.dx
-		&& screenPos.dx < WIN_WIDTH
-		&& onScreenY()) {
-		this->pos.dx -= moveSpeed.dx; //左へ
-	}
-
-	/* y方向の移動 */
-	if (screenPos.dy >= 0
-		&& screenPos.dy < player.center.dy
-		&& onScreenX()) {
-		this->pos.dy += moveSpeed.dy; //上へ
-	}
-	else if (screenPos.dy >= player.center.dy
-		&& screenPos.dy < WIN_HEIGHT
-		&& onScreenX()) {
-		this->pos.dy -= moveSpeed.dy; //下へ
-	}
 }
 
 /// <summary>
@@ -96,7 +68,7 @@ void Enemy::hitKnife(Player& player) {
 	if (abs(screenCenter.dx - player.knifeCenter.dx) <= WEAPON_COLLISION_DISTANCE
 		&& abs(screenCenter.dy - player.knifeCenter.dy) <= WEAPON_COLLISION_DISTANCE) {
 		dead(); //死亡処理
-		player.addPlayerCoin(attribute, coin[0]); //コイン追加処理
+		player.addPlayerCoin(attribute, this->coin[level]); //コイン追加処理
 	}
 }
 
@@ -107,7 +79,7 @@ void Enemy::hitSlash(Player& player) {
 	//
 	if (abs(relativeDistance.dx) <= 80.0 && abs(relativeDistance.dy) <= 80.0) {
 		dead(); //死亡処理
-		player.addPlayerCoin(attribute, coin[0]); //コイン追加処理
+		player.addPlayerCoin(attribute, this->coin[level]); //コイン追加処理
 	}
 }
 
@@ -119,40 +91,26 @@ void Enemy::collision(Player& player) {
 	if (abs(relativeDistance.dx) <= ENEMY_COLLISION_DISTANCE
 		&& abs(relativeDistance.dy) <= ENEMY_COLLISION_DISTANCE) {
 		dead(); //死亡処理
-		player.lostPlayerCoin(attackPower); //(プレイヤーの)コインの損失処理
-		player.addAttributeAccumulation(attribute, attributeValue[0]);
+		player.lostPlayerCoin(attackPower[level]); //(プレイヤーの)コインの損失処理
+		player.addAttributeAccumulation(attribute, attributeValue[level]);
 	}
 }
 
-/// <summary>
-/// プレイヤーとの位置関係から移動速度を得る
-/// </summary>
-void Enemy::getMoveSpeed(Player& player) {
-	distance = player.center - (QUARTER_BLOCK_SIZE_D + pos); //距離
-	distanceSquared = distance * distance; //距離の2乗
-	distanceNormalized.dx = abs(distance.dx) / sqrt(distanceSquared.dx + distanceSquared.dy); //x方向の正規化
-	distanceNormalized.dy = abs(distance.dy) / sqrt(distanceSquared.dx + distanceSquared.dy); //y方向の正規化
-	moveSpeed = 4 * distanceNormalized; //移動速度
-}
 
 /// <summary>
-/// 画面上のx座標にいる条件
+/// 属性を取得
 /// </summary>
-bool Enemy::onScreenX() {
-	return screenPos.dx >= 0 && screenPos.dx <= WIN_WIDTH;
-}
-
-/// <summary>
-/// 画面上のy座標にいる条件
-/// </summary>
-bool Enemy::onScreenY() {
-	return screenPos.dy >= 0 && screenPos.dy <= WIN_HEIGHT;
-}
-
 void Enemy::getAttribute() {
 	attribute = getRandom(0, 3);
 }
 
+void Enemy::getLevel() {
+	level = getRandom(0, 2);
+}
+
+/// <summary>
+/// 死亡時間をカウント
+/// </summary>
 void Enemy::countDeadTime() {
 	if (deadFlag) deadTime++;
 	if (deadTime >= 30) {
@@ -161,11 +119,21 @@ void Enemy::countDeadTime() {
 	}
 }
 
+/// <summary>
+/// リサージュ用の時間カウント処理
+/// </summary>
+void Enemy::countTime() {
+	//lissajousTimeが7200（800と450の最小公倍数）より小さいとき、カウント
+	lissajousTime = (lissajousTime < 7200) ? ++lissajousTime : 0;
+}
+
+/// <summary>
+/// リサージュ曲線を描く
+/// </summary>
 void Enemy::lissajous() {
-	lissajousTime++;
-	movePattern2.dx = sin(lissajousRandom * lissajousTime / 800) * 10;
-	movePattern2.dy = cos(lissajousRandom * lissajousTime / 450) * 10;
-	pos += movePattern2;
+	moveSpeed2.dx = sin(lissajousRandom * lissajousTime / 800) * 10;
+	moveSpeed2.dy = cos(lissajousRandom * lissajousTime / 450) * 10;
+	pos += moveSpeed2;
 }
 
 /// <summary>
@@ -199,9 +167,13 @@ void Enemy::update(Player& player) {
 
 	if (activity) {
 		collision(player); //プレイヤーとの衝突処理
-		getMoveSpeed(player); //移動速度取得
-		move(player); //移動処理
-		//lissajous();
+		if (pattern % 2 == 0)
+			tracking.update(player, pos, screenPos); //追跡移動の更新処理
+		else {
+			countTime();
+			lissajous();
+		}
+
 		draw(); //描画処理
 	}
 
@@ -224,11 +196,16 @@ void Enemy::update(Player& player) {
 	                 player.slash, false);
 }
 
-void Enemy::initProcess(Player& player) {
+void Enemy::initialize(Player& player) {
 	initPosition(); //初期位置の取得
-	getAttribute();
+	getAttribute(); //属性を取得
+	getLevel(); //レベルを取得
 	relativeDistanceUpdate(player); //プレイヤーとの相対距離を取得
+
+	pattern = getRandom(0, 3);
+
 	lissajousRandom = getRandom(1, 15);
+
 	if (abs(relativeDistance.dx) <= 500 && abs(relativeDistance.dy) <= 500) {
 		activity = true;
 	}

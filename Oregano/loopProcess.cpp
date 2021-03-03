@@ -24,7 +24,7 @@ void loopProcess() {
 	Player player(input); //プレイヤークラス
 
 	Enemy enemy;
-	vector<Enemy> enemies(5);
+	vector<Enemy> enemies(20);
 
 	EventBase event; //イベントクラス
 	EventField field(input, event, player); //フィールドクラス
@@ -66,13 +66,11 @@ void loopProcess() {
 
 			for (auto& i : enemies) {
 				if (!i.activity && !i.deadFlag) {
-					i.initProcess(player);
+					i.initialize(player);
 				}
 				i.update(player);
 				if (i.deadFlag) particle.update(particles, i.screenPos, i.attribute);
 			}
-
-			//SetDrawBright(0xff, 0xff, 0xff);
 		}
 			/* メニューシーン処理 */
 		else if (EventBase::gameScene == MENU_ITEM_SCENE) {

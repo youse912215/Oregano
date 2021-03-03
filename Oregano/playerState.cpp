@@ -28,9 +28,9 @@ void PlayerState::changeBattleStyle(std::vector<int>& coin, const int& dir) {
 /// </summary>
 void PlayerState::switchStyleAutomatically(std::vector<int>& coin) {
 	if (coin[battleStyle] <= 0) {
-		//全てのコインの中で0でない要素を探し、見つかった最初の要素のイテレーターを返す
+		//全てのコインの中で0以上の要素を探し、見つかった最初の要素のイテレーターを返す
 		auto itr = find_if(coin.begin(), coin.end(),
-		                   [](int x) { return x != 0; });
+		                   [](int x) { return x > 0; });
 		//0以外の要素が見つかれば、その要素をbattleStyleに代入
 		if (itr != coin.end())
 			battleStyle = distance(coin.begin(), itr); //戦闘スタイルを切り替える
