@@ -22,25 +22,25 @@ public:
 	Vec2 operator()(const double& dx, const double& dy);
 };
 
-class dVec2 {
+class Vec2d {
 public:
 	double dx;
 	double dy;
 
-	dVec2(double dx = 0, double dy = 0);
+	Vec2d(double dx = 0, double dy = 0);
 
-	dVec2 operator +(const dVec2& other) const;
-	dVec2 operator -(const dVec2& other) const;
-	dVec2 operator *(const dVec2& other) const;
-	dVec2 operator /(const dVec2& other) const;
-	dVec2& operator =(const dVec2& other);
-	dVec2& operator +=(const dVec2& other);
-	dVec2& operator -=(const dVec2& other);
+	Vec2d operator +(const Vec2d& other) const;
+	Vec2d operator -(const Vec2d& other) const;
+	Vec2d operator *(const Vec2d& other) const;
+	Vec2d operator /(const Vec2d& other) const;
+	Vec2d& operator =(const Vec2d& other);
+	Vec2d& operator +=(const Vec2d& other);
+	Vec2d& operator -=(const Vec2d& other);
 
-	//dVec2 operator *=(const double& a);
+	//Vec2d operator *=(const double& a);
 
-	friend dVec2 operator +(const double& a, dVec2& other);
-	friend dVec2 operator -(dVec2& other, const double& a);
-	friend dVec2 operator *(const double& a, dVec2& other);
-	friend dVec2 operator /(const double& a, dVec2& other);
+	friend Vec2d operator +(const double& a, Vec2d& other);
+	friend Vec2d operator -(Vec2d& other, const double& a);
+	friend Vec2d operator *(const double& a, Vec2d& other);
+	friend Vec2d operator /(const double& a, Vec2d& other);
 };

@@ -17,8 +17,8 @@ Player::Player(Input& input) :
 
 	coin{50, 0, 0, 0}, attributeAccumulation{0, 0, 0, 0},
 
-	knifeCenter(0.0, 0.0), slashCenter(0.0, 0.0),
-	knife(false), slash(false), shield(false),
+	stateAbnormal(4), knifeCenter(0.0, 0.0),
+	slashCenter(0.0, 0.0), knife(false), slash(false), shield(false),
 
 	/* データ類 */
 	status(PLAYER_STATUS_SIZE), possessionItem(PLAYER_ITEM_SIZE),
@@ -211,7 +211,7 @@ void Player::update() {
 	DrawFormatString(0, 465, GetColor(0, 255, 0), "　刃　　　TF:%d, CDR:%d", slash, cooldown[1], false);
 	DrawFormatString(0, 480, GetColor(0, 255, 0), "シールド　TF:%d, CDR:%d, Value:%d",
 	                 shield, cooldown[2], shieldAct.shieldValue, false);
-	DrawFormatString(0, 550, GetColor(255, 100, 100), "コイン0:%d, スタイル:%d", coin0, battleStyle, false);
+	DrawFormatString(0, 550, GetColor(255, 100, 100), "スタイル:%d", battleStyle, false);
 	DrawFormatString(0, 565, GetColor(0x00, 0x8d, 0x56), "花萌葱:%d, コイン:%d", attributeAccumulation[0], coin[0], false);
 	DrawFormatString(0, 580, GetColor(0xef, 0xbb, 0x2c), "深支子:%d, コイン:%d", attributeAccumulation[1], coin[1], false);
 	DrawFormatString(0, 595, GetColor(0x4b, 0x5e, 0xaa), "燕子花:%d, コイン:%d", attributeAccumulation[2], coin[2], false);

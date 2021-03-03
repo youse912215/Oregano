@@ -10,7 +10,10 @@ DataSource::DataSource() {
 	knifeGraph = LoadGraph("resource/organism/knife.png");
 	slashGraph = LoadGraph("resource/organism/slash.png");
 	shieldGraph = LoadGraph("resource/organism/shield.png");
-	bloodGraph = LoadGraph("resource/organism/blood.png");
+	red = LoadGraph("resource/Effect/bloodRed.png");
+	blue = LoadGraph("resource/Effect/bloodBlue.png");
+	yellow = LoadGraph("resource/Effect/bloodYellow.png");
+	green = LoadGraph("resource/Effect/bloodGreen.png");
 }
 
 DataSource::~DataSource() {
@@ -21,13 +24,8 @@ DataSource::~DataSource() {
 	DeleteGraph(knifeGraph);
 	DeleteGraph(slashGraph);
 	DeleteGraph(shieldGraph);
-	DeleteGraph(bloodGraph);
-}
-
-int DataSource::playerGraph() {
-	return player;
-}
-
-int DataSource::mapChipGraph() {
-	return mapChip;
+	DeleteGraph(red);
+	DeleteGraph(blue);
+	DeleteGraph(yellow);
+	DeleteGraph(green);
 }

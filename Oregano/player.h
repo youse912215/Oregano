@@ -12,7 +12,7 @@ private:
 	Input& input; //入力クラスから
 	DataSource source; //データソースクラスから
 
-	dVec2 pos; //プレイヤー座標
+	Vec2d pos; //プレイヤー座標
 
 
 	vector<int> cooldown; //アクションのクールダウン
@@ -28,7 +28,6 @@ private:
 	void shieldUpdate(); //シールド更新処理
 
 	void coinUpdate();
-	int coin0;
 	vector<int> coin;
 
 	vector<int> attributeAccumulation; //属性耐久値
@@ -37,11 +36,13 @@ private:
 	void changeBattleStyle(const int& dir); //戦闘スタイルを切り替える
 	void battleStyleUpdate();
 
+	vector<bool> stateAbnormal; //状態異常（0:猛毒、1:痙攣、2:混乱、3:出血）
+
 
 public:
-	dVec2 center; //プレイヤーの中心座標
-	dVec2 knifeCenter; //ナイフの中心座標
-	dVec2 slashCenter; //刃の中心座標
+	Vec2d center; //プレイヤーの中心座標
+	Vec2d knifeCenter; //ナイフの中心座標
+	Vec2d slashCenter; //刃の中心座標
 
 	bool knife;
 	bool slash;

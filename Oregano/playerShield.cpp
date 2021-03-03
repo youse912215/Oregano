@@ -10,7 +10,7 @@ PlayerShield::PlayerShield() : shieldPos(0.0, 0.0), shieldValue(15) {
 /// 初期化
 /// </summary>
 /// <param name="pos">プレイヤーの座標</param>
-void PlayerShield::initialize(dVec2& pos) {
+void PlayerShield::initialize(Vec2d& pos) {
 	shieldPos = pos;
 }
 

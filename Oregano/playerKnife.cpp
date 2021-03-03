@@ -12,7 +12,7 @@ PlayerKnife::PlayerKnife() :
 /// </summary>
 /// <param name="pos">プレイヤーの座標</param>
 /// <param name="knifeCenter">プレイヤーの中心座標</param>
-void PlayerKnife::initialize(dVec2& pos, dVec2& knifeCenter) {
+void PlayerKnife::initialize(Vec2d& pos, Vec2d& knifeCenter) {
 	knifePos = pos + knifeAddPos; //ナイフの座標の更新
 	knifeCenter = HALF_BLOCK_SIZE_D + knifePos; //ナイフの中心位置の更新
 }
@@ -33,7 +33,7 @@ void PlayerKnife::knifeCooldown(vector<int>& cooldown, vector<bool>& cooldownFla
 /// <summary>
 /// ナイフのポジジョンをセットする
 /// </summary>
-void PlayerKnife::setKnifePosition(dVec2& pos) {
+void PlayerKnife::setKnifePosition(Vec2d& pos) {
 	/* x方向 */
 	if (knifePos.dx < pos.dx) knifeAddPos.dx -= KNIFE_SPEED;
 	else if (knifePos.dx > pos.dx) knifeAddPos.dx += KNIFE_SPEED;
@@ -47,7 +47,7 @@ void PlayerKnife::setKnifePosition(dVec2& pos) {
 /// <summary>
 /// ナイフのポジジョンをリセットする
 /// </summary>
-void PlayerKnife::resetKnifePosition(dVec2& center, bool& knife) {
+void PlayerKnife::resetKnifePosition(Vec2d& center, bool& knife) {
 	if (deleteKnife(center)) {
 		knife = false;
 		knifeAddPos = 0.0;
@@ -71,7 +71,7 @@ void PlayerKnife::accelKnife(Input& input) {
 /// ナイフの削除条件
 /// </summary>
 /// <returns></returns>
-bool PlayerKnife::deleteKnife(dVec2& center) {
+bool PlayerKnife::deleteKnife(Vec2d& center) {
 	//プレイヤーからの距離が3マス分離れているか
 	return abs(knifePos.dx + HALF_BLOCK_SIZE_D - center.dx) >= maxRange
 		|| abs(knifePos.dy + HALF_BLOCK_SIZE_D - center.dy) >= maxRange;

@@ -1,15 +1,16 @@
 #include "effectParticle.h"
 #include "random.h"
+#include "constant.h"
 #include "DxLib.h"
 #include <cmath>
-
 
 EffectParticle::EffectParticle() :
 	movePos(10.0, 10.0), moveDir(1.0, 1.0),
 	pos(0.0, 0.0), moveDistance(0.0, 0.0), radius(0.0),
 
 	moveSize(1.5), isAlive(false), generationTime(0.0),
-	graphSize(8), minRand(0), maxRand(360), maxRange(50.0), maxTime(180.0) {
+	graphSize(8), minRand(0), maxRand(360), maxRange(50.0), maxTime(180.0),
+	blendColor{green, yellow, blue, red} {
 }
 
 EffectParticle::~EffectParticle() {
@@ -19,7 +20,7 @@ EffectParticle::~EffectParticle() {
 /// ポジションをセット
 /// </summary>
 /// <param name="deadPos"></param>
-void EffectParticle::setPosition(dVec2& deadPos) {
+void EffectParticle::setPosition(Vec2d& deadPos) {
 	movePos = generationTime * moveDir; //移動量を計算
 	pos += movePos; //移動
 	moveDistance = pos - deadPos; //発生ポジジョンからの距離を計算
@@ -37,7 +38,7 @@ void EffectParticle::setPosition(dVec2& deadPos) {
 /// パーティクル発生
 /// </summary>
 /// <param name="deadPos">敵が死んだ座標</param>
-void EffectParticle::occurrenceParticle(dVec2& deadPos) {
+void EffectParticle::occurrenceParticle(Vec2d& deadPos, const int& attribute) {
 	generationTime++;
 
 	setPosition(deadPos); //ポジションをセット
@@ -48,7 +49,8 @@ void EffectParticle::occurrenceParticle(dVec2& deadPos) {
 	DrawRotaGraph2(static_cast<int>(pos.dx) - static_cast<int>(radius),
 	               static_cast<int>(pos.dy) - static_cast<int>(radius),
 	               8, 8, radius / 5.0, getAngle(minRand, maxRand),
-	               source.bloodGraph, true, false);
+	               //敵のattributeによって色が変化
+	               blendColor[attribute], true, false);
 
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0); //ノーブレンド
 
@@ -61,7 +63,7 @@ void EffectParticle::occurrenceParticle(dVec2& deadPos) {
 /// 初期化
 /// </summary>
 /// <param name="deadPos">敵が死んだ座標</param>
-void EffectParticle::initialize(dVec2& deadPos) {
+void EffectParticle::initialize(Vec2d& deadPos) {
 	pos = deadPos; //ポジジョンセット
 
 	/* ランダムで方向を切り替える */
@@ -76,13 +78,14 @@ void EffectParticle::initialize(dVec2& deadPos) {
 /// </summary>
 /// <param name="particles">パーティクルの配列</param>
 /// <param name="deadPos">敵が死んだ座標</param>
-void EffectParticle::update(std::vector<EffectParticle>& particles, dVec2& deadPos) {
+void EffectParticle::update(std::vector<EffectParticle>& particles, Vec2d& deadPos, const int& attribute) {
 	for (auto& i : particles) {
 		//パーティクルが生存していないとき
 		if (!i.isAlive) {
 			i.initialize(deadPos); //初期化
+			//i.changeColor(attribute);
 			break; //抜け出す
 		}
-		i.occurrenceParticle(deadPos); //パーティクル発生
+		i.occurrenceParticle(deadPos, attribute); //パーティクル発生
 	}
 }

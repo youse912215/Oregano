@@ -15,11 +15,11 @@ public:
 	int knifeGraph;
 	int slashGraph;
 	int shieldGraph;
-	int bloodGraph;
+	int red;
+	int blue;
+	int green;
+	int yellow;
 
 	DataSource();
 	~DataSource();
-
-	int playerGraph();
-	int mapChipGraph();
 };

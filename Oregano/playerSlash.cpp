@@ -9,7 +9,7 @@ PlayerSlash::PlayerSlash() : slashPos(0.0) {
 /// 初期化
 /// </summary>
 /// <param name="pos">プレイヤーの座標</param>
-void PlayerSlash::initialize(dVec2& pos) {
+void PlayerSlash::initialize(Vec2d& pos) {
 	slashPos = pos - HALF_BLOCK_SIZE_D; //刃座標
 }
 

@@ -23,12 +23,6 @@ void loopProcess() {
 	DataSource source; //素材クラス
 	Player player(input); //プレイヤークラス
 
-	//Enemy enemy(source.enemy1, player);
-	/*vector<Enemy*> enemies;
-
-	for (unsigned int i = 0; i < 2; ++i)
-		enemies.push_back(new Enemy(player));*/
-
 	Enemy enemy;
 	vector<Enemy> enemies(5);
 
@@ -39,8 +33,6 @@ void loopProcess() {
 	GameUI gameUI(input); //ゲームUIクラス
 	SceneTitle title(save);
 
-	//EffectParticle particle;
-
 	EffectParticle particle;
 	vector<EffectParticle> particles(100);
 
@@ -49,7 +41,7 @@ void loopProcess() {
 	while (true) {
 		ClearDrawScreen(); //画面クリア
 
-		MapDraw mapDraw_(source.mapChipGraph()); //マップクラス
+		MapDraw mapDraw_(source.mapChip); //マップクラス
 		MapCollision collision(mapDraw_); //コリジョンクラス
 
 		input.update(); //入力処理
@@ -72,24 +64,12 @@ void loopProcess() {
 
 			gameUI.update(); //UI更新処理
 
-			//enemy.update();
-			/*for (unsigned int i = 0; i != enemies.size(); ++i) {
-				enemies[i]->update();
-			}
-
-			for (unsigned int i = enemies.size() - 1; i != 0; --i) {
-				if (!enemies[i]->deadFlag) continue;
-				delete enemies[i];
-				enemies.erase(enemies.begin() + i);
-				enemies.push_back(new Enemy(player));
-			}*/
-
 			for (auto& i : enemies) {
 				if (!i.activity && !i.deadFlag) {
 					i.initProcess(player);
 				}
 				i.update(player);
-				if (i.deadFlag) particle.update(particles, i.screenPos);
+				if (i.deadFlag) particle.update(particles, i.screenPos, i.attribute);
 			}
 
 			//SetDrawBright(0xff, 0xff, 0xff);

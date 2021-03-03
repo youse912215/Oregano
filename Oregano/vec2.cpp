@@ -56,7 +56,7 @@ Vec2 operator+(const int& a, Vec2& other) {
 	return v;
 }
 
-//dVec2 dVec2::operator*=(const double& a) {
+//Vec2d Vec2d::operator*=(const double& a) {
 //	Vec2 v;
 //	return v;
 //}
@@ -64,78 +64,78 @@ Vec2 operator+(const int& a, Vec2& other) {
 
 //------------------------------------------------//
 
-dVec2::dVec2(double dx, double dy) : dx(dx), dy(dy) {
+Vec2d::Vec2d(double dx, double dy) : dx(dx), dy(dy) {
 }
 
-dVec2 dVec2::operator+(const dVec2& other) const {
-	dVec2 v;
+Vec2d Vec2d::operator+(const Vec2d& other) const {
+	Vec2d v;
 	v.dx = this->dx + other.dx;
 	v.dy = this->dy + other.dy;
 	return v;
 }
 
-dVec2 dVec2::operator-(const dVec2& other) const {
-	dVec2 v;
+Vec2d Vec2d::operator-(const Vec2d& other) const {
+	Vec2d v;
 	v.dx = this->dx - other.dx;
 	v.dy = this->dy - other.dy;
 	return v;
 }
 
-dVec2 dVec2::operator*(const dVec2& other) const {
-	dVec2 v;
+Vec2d Vec2d::operator*(const Vec2d& other) const {
+	Vec2d v;
 	v.dx = this->dx * other.dx;
 	v.dy = this->dy * other.dy;
 	return v;
 }
 
-dVec2 dVec2::operator/(const dVec2& other) const {
-	dVec2 v;
+Vec2d Vec2d::operator/(const Vec2d& other) const {
+	Vec2d v;
 	v.dx = this->dx / other.dx;
 	v.dy = this->dy / other.dy;
 	return v;
 }
 
-dVec2& dVec2::operator=(const dVec2& other) {
+Vec2d& Vec2d::operator=(const Vec2d& other) {
 	dx = other.dx;
 	dy = other.dy;
 	return *this;
 }
 
-dVec2& dVec2::operator+=(const dVec2& other) {
+Vec2d& Vec2d::operator+=(const Vec2d& other) {
 	dx += other.dx;
 	dy += other.dy;
 	return *this;
 }
 
-dVec2& dVec2::operator-=(const dVec2& other) {
+Vec2d& Vec2d::operator-=(const Vec2d& other) {
 	dx -= other.dx;
 	dy -= other.dy;
 	return *this;
 }
 
-dVec2 operator+(const double& a, dVec2& other) {
-	dVec2 v;
+Vec2d operator+(const double& a, Vec2d& other) {
+	Vec2d v;
 	v.dx = a + other.dx;
 	v.dy = a + other.dy;
 	return v;
 }
 
-dVec2 operator-(dVec2& other, const double& a) {
-	dVec2 v;
+Vec2d operator-(Vec2d& other, const double& a) {
+	Vec2d v;
 	v.dx = other.dx - a;
 	v.dy = other.dy - a;
 	return v;
 }
 
-dVec2 operator*(const double& a, dVec2& other) {
-	dVec2 v;
+Vec2d operator*(const double& a, Vec2d& other) {
+	Vec2d v;
 	v.dx = a * other.dx;
 	v.dy = a * other.dy;
 	return v;
 }
 
-dVec2 operator/(const double& a, dVec2& other) {
-	dVec2 v;
+Vec2d operator/(const double& a, Vec2d& other) {
+	Vec2d v;
 	v.dx = a / other.dx;
 	v.dy = a / other.dy;
 	return v;

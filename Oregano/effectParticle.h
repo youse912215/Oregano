@@ -1,16 +1,17 @@
 #pragma once
 #include "vec2.h"
-#include "dataSource.h"
+
 #include <vector>
 
-class EffectParticle {
-private:
-	DataSource source;
+#include "dataSource.h"
 
-	dVec2 movePos; //移動量
-	dVec2 moveDir; //移動方向
-	dVec2 pos; //ポジジョン
-	dVec2 moveDistance; //移動距離
+
+class EffectParticle : public DataSource {
+private:
+	Vec2d movePos; //移動量
+	Vec2d moveDir; //移動方向
+	Vec2d pos; //ポジジョン
+	Vec2d moveDistance; //移動距離
 
 	double radius; //半径
 	double moveSize; //移動サイズ
@@ -24,14 +25,17 @@ private:
 	const double maxRange; //最大範囲
 	const double maxTime; //最大時間
 
-	void initialize(dVec2& deadPos); //初期化
-	void setPosition(dVec2& deadPos); //ポジジョンをセット
-	void occurrenceParticle(dVec2& deadPos); //パーティクル発生
+	std::vector<int> blendColor;
+
+	void initialize(Vec2d& deadPos); //初期化
+	void setPosition(Vec2d& deadPos); //ポジジョンをセット
+	void occurrenceParticle(Vec2d& deadPos, const int& attribute); //パーティクル発生
+	//void changeColor(const int& attribute);
 
 public:
 	EffectParticle();
 	~EffectParticle();
 
-	void update(std::vector<EffectParticle>& particles, dVec2& deadPos); //更新処理
+	void update(std::vector<EffectParticle>& particles, Vec2d& deadPos, const int& attribute); //更新処理
 
 };
