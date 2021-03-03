@@ -133,9 +133,9 @@
     <ClCompile Include="dataSave.cpp" />
     <ClCompile Include="dataSource.cpp" />
     <ClCompile Include="dataText.cpp" />
-    <ClCompile Include="effectEmitter.cpp" />
+    <ClCompile Include="effectSpurt.cpp" />
     <ClCompile Include="effectOccurred.cpp" />
-    <ClCompile Include="effectParticle.cpp" />
+    <ClCompile Include="effectBlood.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemyTracking.cpp" />
     <ClCompile Include="eventBase.cpp" />
@@ -167,7 +167,7 @@
     <ClInclude Include="dataSave.h" />
     <ClInclude Include="dataSource.h" />
     <ClInclude Include="dataText.h" />
-    <ClInclude Include="effectEmitter.h" />
+    <ClInclude Include="effectSpurt.h" />
     <ClInclude Include="effectOccurred.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="enemyTracking.h" />
@@ -181,7 +181,7 @@
     <ClInclude Include="mapCollision.h" />
     <ClInclude Include="mapDraw.h" />
     <ClInclude Include="mapLoad.h" />
-    <ClInclude Include="effectParticle.h" />
+    <ClInclude Include="effectBlood.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="playerKnife.h" />
     <ClInclude Include="playerShield.h" />

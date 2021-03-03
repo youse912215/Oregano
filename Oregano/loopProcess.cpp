@@ -6,7 +6,6 @@
 #include "enemy.h"
 #include "mapDraw.h"
 #include "mapCollision.h"
-#include "mapAutogeneration.h"
 #include "eventField.h"
 #include "eventBase.h"
 #include "dataSave.h"
@@ -15,7 +14,9 @@
 
 #include "sceneTitle.h"
 
-#include "effectParticle.h"
+#include "effectBlood.h"
+#include "effectSpurt.h"
+
 
 void loopProcess() {
 
@@ -24,7 +25,7 @@ void loopProcess() {
 	Player player(input); //プレイヤークラス
 
 	Enemy enemy;
-	vector<Enemy> enemies(20);
+	vector<Enemy> enemies(30);
 
 	EventBase event; //イベントクラス
 	EventField field(input, event, player); //フィールドクラス
@@ -33,10 +34,11 @@ void loopProcess() {
 	GameUI gameUI(input); //ゲームUIクラス
 	SceneTitle title(save);
 
-	EffectParticle particle;
-	vector<EffectParticle> particles(100);
+	EffectBlood blood;
+	vector<EffectBlood> bloods(100);
 
-	MapAutogeneration mapp;
+	EffectSpurt spurt;
+	vector<EffectSpurt> spurts(150);
 
 	while (true) {
 		ClearDrawScreen(); //画面クリア
@@ -62,15 +64,23 @@ void loopProcess() {
 
 			field.update(); //フィールド更新処理
 
-			gameUI.update(); //UI更新処理
+			gameUI.update(); //UI更新処理2
 
+			/* 敵の複製 */
 			for (auto& i : enemies) {
+				//生存していないかつ、死亡時間でないとき
 				if (!i.activity && !i.deadFlag) {
-					i.initialize(player);
+					i.initialize(player); //初期化
 				}
-				i.update(player);
-				if (i.deadFlag) particle.update(particles, i.screenPos, i.attribute);
+				i.update(player); //更新処理
+				//死亡時間のとき
+				if (i.deadFlag) {
+					blood.update(bloods, i.screenPos, i.attribute); //血のエフェクト
+					if (i.deadTime <= 15) spurt.update(spurts, i.screenPos); //噴き出し（コイン）エフェクト
+				}
 			}
+
+
 		}
 			/* メニューシーン処理 */
 		else if (EventBase::gameScene == MENU_ITEM_SCENE) {
@@ -85,7 +95,4 @@ void loopProcess() {
 		windowSettingInLoop(); //ループ内ウィンドウ設定
 		if (ProcessMessage() == -1) break; //Windowsシステムからくる情報を処理
 	}
-	/*for (unsigned int i = 0; i != enemies.size(); ++i) {
-		delete enemies[i];
-	}*/
 }

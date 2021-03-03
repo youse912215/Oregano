@@ -34,17 +34,9 @@ int changeSign(const int& min, const int& max) {
 }
 
 /// <summary>
-/// ランダムな角度を入手
+/// ランダムなラジアンを入手
 /// </summary>
 /// <returns></returns>
-double getAngle(const int& min, const int& max) {
+double getRadian(const int& min, const int& max) {
 	return getRandom(min, max) * (DX_PI / 180);
-}
-
-/// <summary>
-/// 円のポジションをセットする
-/// </summary>
-/// <returns></returns>
-double setCirclePosition() {
-	return getRandom(0, 180) * 0.001 * changeSign(0, 10);
 }

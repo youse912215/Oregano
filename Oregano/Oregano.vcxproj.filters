@@ -165,12 +165,6 @@
     <ClCompile Include="playerAction.cpp">
       <Filter>ソース ファイル\Organism\Player</Filter>
     </ClCompile>
-    <ClCompile Include="effectParticle.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="effectEmitter.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="effectOccurred.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
@@ -179,6 +173,12 @@
     </ClCompile>
     <ClCompile Include="enemyTracking.cpp">
       <Filter>ソース ファイル\Organism\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="effectBlood.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="effectSpurt.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -260,12 +260,6 @@
     <ClInclude Include="playerAction.h">
       <Filter>ヘッダー ファイル\Organism\Player</Filter>
     </ClInclude>
-    <ClInclude Include="effectEmitter.h">
-      <Filter>ヘッダー ファイル\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="effectParticle.h">
-      <Filter>ヘッダー ファイル\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="effectOccurred.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
@@ -274,6 +268,12 @@
     </ClInclude>
     <ClInclude Include="enemyTracking.h">
       <Filter>ヘッダー ファイル\Organism\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="effectBlood.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="effectSpurt.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
