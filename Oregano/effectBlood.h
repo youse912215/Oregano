@@ -3,7 +3,7 @@
 #include "vec2.h"
 #include <vector>
 
-class EffectBlood : public DataSource {
+class EffectBlood {
 private:
 	Vec2d movePos; //移動量
 	Vec2d moveDir; //移動方向
@@ -22,17 +22,20 @@ private:
 	const double maxRange; //最大範囲
 	const double maxTime; //最大時間
 
-	std::vector<int> color; //パーティクル用の色
+	int blood;
+
+	void getGraphColor(DataSource& source, const int& attribute);
 
 	void initialize(Vec2d& deadPos); //初期化
 	void setPosition(Vec2d& deadPos); //ポジジョンをセット
-	void occurrenceParticle(Vec2d& deadPos, const int& attribute); //パーティクル発生
-	void draw(const int& attribute); //描画処理
+	void occurrenceParticle(DataSource& source, Vec2d& deadPos, const int& attribute); //パーティクル発生
+	void draw(); //描画処理
 
 public:
 	EffectBlood();
 	~EffectBlood();
 
-	void update(std::vector<EffectBlood>& particles, Vec2d& deadPos, const int& attribute); //更新処理
+	void update(std::vector<EffectBlood>& particles, DataSource& source, Vec2d& deadPos,
+	            const int& attribute); //更新処理
 
 };

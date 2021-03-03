@@ -13,6 +13,6 @@ public:
 	SceneTitle(DataSave& save);
 	~SceneTitle();
 
-	void titleProcess(); //タイトル処理
-	vector<vector<vector<int>>>& returnMapAll(); //タイトル画面でロードしたマップ三次元配列を返す
+	void update(); //タイトル処理
+	vector<vector<vector<int>>>& roadingMap(); //タイトル画面でロードしたマップ三次元配列を返す
 };

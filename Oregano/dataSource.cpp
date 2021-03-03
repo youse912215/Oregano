@@ -14,6 +14,7 @@ DataSource::DataSource() {
 	blue = LoadGraph("resource/Effect/bloodBlue.png");
 	yellow = LoadGraph("resource/Effect/bloodYellow.png");
 	green = LoadGraph("resource/Effect/bloodGreen.png");
+	bloodGraph = LoadGraph("resource/Effect/bloodColor.png");
 }
 
 DataSource::~DataSource() {
@@ -28,4 +29,5 @@ DataSource::~DataSource() {
 	DeleteGraph(blue);
 	DeleteGraph(yellow);
 	DeleteGraph(green);
+	DeleteGraph(bloodGraph);
 }

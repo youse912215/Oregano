@@ -137,6 +137,7 @@
     <ClCompile Include="effectOccurred.cpp" />
     <ClCompile Include="effectBlood.cpp" />
     <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="enemyConclusion.cpp" />
     <ClCompile Include="enemyTracking.cpp" />
     <ClCompile Include="eventBase.cpp" />
     <ClCompile Include="eventField.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="effectSpurt.h" />
     <ClInclude Include="effectOccurred.h" />
     <ClInclude Include="enemy.h" />
+    <ClInclude Include="enemyConclusion.h" />
     <ClInclude Include="enemyTracking.h" />
     <ClInclude Include="eventBase.h" />
     <ClInclude Include="eventField.h" />

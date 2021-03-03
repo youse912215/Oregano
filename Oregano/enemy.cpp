@@ -30,7 +30,7 @@ Enemy::~Enemy() {
 /// <summary>
 /// 描画処理
 /// </summary>
-void Enemy::draw() {
+void Enemy::draw(DataSource& source) {
 	//DrawGraph(static_cast<int>(screenPos.dx), static_cast<int>(screenPos.dy), graph, true); //敵
 
 	//属性（attribute）によって、画像を変更する
@@ -157,7 +157,7 @@ double Enemy::getPopLocation(const int& mapDir, const int& coordinate1, const in
 /// <summary>
 /// 更新処理
 /// </summary>
-void Enemy::update(Player& player) {
+void Enemy::update(Player& player, DataSource& source) {
 	relativeDistanceUpdate(player); //プレイヤーとの相対距離を取得
 
 	if (player.knife) hitKnife(player); //ナイフが当たったとき
@@ -174,7 +174,7 @@ void Enemy::update(Player& player) {
 			lissajous();
 		}
 
-		draw(); //描画処理
+		draw(source); //描画処理
 	}
 
 

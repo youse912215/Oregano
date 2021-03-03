@@ -1,9 +1,11 @@
 #pragma once
+#include <vector>
 
 class DataSource {
 private:
 
 	//int actionUI; //アクションUI画像ファイルの読み込み
+
 
 protected:
 	int actionUI; //アクションUI画像ファイルの読み込
@@ -15,6 +17,7 @@ public:
 	int knifeGraph;
 	int slashGraph;
 	int shieldGraph;
+	int bloodGraph;
 	int red;
 	int blue;
 	int green;

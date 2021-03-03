@@ -3,25 +3,18 @@
 #include "dataSource.h"
 #include "effectBlood.h"
 #include <vector>
-#include "player.h"
-#include "inputProcess.h"
-
 
 using namespace std;
 
 class Enemy {
 private:
-	//Player player(Input input); //プレイヤークラスから
-	DataSource source;
-
 	Vec2d pos; //全体マップの座標
 	Vec2d center; //全体マップの中心座標
 	Vec2d screenCenter; //画面上の中心座標
 
-
 	Vec2d relativeDistance; //プレイヤーとの相対距離
 
-	void draw(); //描画処理
+	void draw(DataSource& source); //描画処理
 
 	void dead(); //死亡処理
 
@@ -70,6 +63,6 @@ public:
 	~Enemy();
 
 
-	void update(Player& player); //更新処理
+	void update(Player& player, DataSource& source); //更新処理
 	void initialize(Player& player);
 };

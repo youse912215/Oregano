@@ -180,6 +180,9 @@
     <ClCompile Include="effectSpurt.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="enemyConclusion.cpp">
+      <Filter>ソース ファイル\Organism\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mapDraw.h">
@@ -274,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="effectSpurt.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyConclusion.h">
+      <Filter>ヘッダー ファイル\Organism\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

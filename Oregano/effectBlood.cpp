@@ -8,8 +8,8 @@ EffectBlood::EffectBlood() :
 	pos(0.0, 0.0), moveDistance(0.0, 0.0), radius(0.0),
 
 	moveSize(1.5), isAlive(false), generationTime(0.0),
-	graphSize(8), minRand(0), maxRand(360), maxRange(50.0), maxTime(180.0),
-	color{green, yellow, blue, red} {
+	graphSize(8), minRand(0), maxRand(360), maxRange(50.0), maxTime(180.0) {
+	blood = 0;
 }
 
 EffectBlood::~EffectBlood() {
@@ -36,29 +36,43 @@ void EffectBlood::setPosition(Vec2d& deadPos) {
 /// <summary>
 /// パーティクル発生
 /// </summary>
+/// <param name="source">データソースクラス</param>
 /// <param name="deadPos">敵が死んだ座標</param>
 /// <param name="attribute">敵の属性</param>
-void EffectBlood::occurrenceParticle(Vec2d& deadPos, const int& attribute) {
+void EffectBlood::occurrenceParticle(DataSource& source, Vec2d& deadPos, const int& attribute) {
 	generationTime++; //発生時間をカウント
+
 	setPosition(deadPos); //ポジションをセット
-	draw(attribute); //描画処理
+	getGraphColor(source, attribute); //画像の色を取得
+	draw(); //描画処理
 }
 
 /// <summary>
 /// 描画処理
 /// </summary>
-/// <param name="attribute">敵の属性</param>
-void EffectBlood::draw(const int& attribute) {
+void EffectBlood::draw() {
 	SetDrawBlendMode(DX_BLENDMODE_ADD, 150); //加算ブレンド
 
 	/* 素材の描画 */
 	DrawRotaGraph2(static_cast<int>(pos.dx) - static_cast<int>(radius),
 	               static_cast<int>(pos.dy) - static_cast<int>(radius),
-	               8, 8, radius / 5.0, getRadian(minRand, maxRand),
 	               //敵のattributeによって色が変化
-	               color[attribute], true, false);
+	               8, 8, radius / 5.0, getRadian(minRand, maxRand),
+	               blood, true, false);
 
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0); //ブレンドオフ
+}
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name="source">データソースクラス</param>
+/// <param name="attribute">敵の属性</param>
+void EffectBlood::getGraphColor(DataSource& source, const int& attribute) {
+	if (attribute == 0) blood = source.green; //緑
+	else if (attribute == 1) blood = source.yellow; //黄
+	else if (attribute == 2) blood = source.blue; //青
+	else if (attribute == 3) blood = source.red; //赤
 }
 
 /// <summary>
@@ -79,15 +93,17 @@ void EffectBlood::initialize(Vec2d& deadPos) {
 /// 更新処理
 /// </summary>
 /// <param name="particles">パーティクルの配列</param>
+/// <param name="source">データソースクラス</param>
 /// <param name="deadPos">敵が死んだ座標</param>
 /// <param name="attribute">敵の属性</param>
-void EffectBlood::update(std::vector<EffectBlood>& particles, Vec2d& deadPos, const int& attribute) {
+void EffectBlood::update(std::vector<EffectBlood>& particles, DataSource& source, Vec2d& deadPos,
+                         const int& attribute) {
 	for (auto& i : particles) {
 		//パーティクルが生存していないとき
 		if (!i.isAlive) {
 			i.initialize(deadPos); //初期化
 			break; //抜け出す
 		}
-		i.occurrenceParticle(deadPos, attribute); //パーティクル発生
+		i.occurrenceParticle(source, deadPos, attribute); //パーティクル発生
 	}
 }
