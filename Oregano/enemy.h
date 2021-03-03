@@ -14,16 +14,16 @@ private:
 	//Player player(Input input); //プレイヤークラスから
 	DataSource source;
 
-	Vec2 pos; //全体マップの座標
-	Vec2 center; //全体マップの中心座標
-	Vec2 distance; //プレイヤーとの距離
-	Vec2 distanceSquared; //距離の2乗
-	Vec2 distanceNormalized; //正規化した距離
-	Vec2 moveSpeed; //移動速度
-	Vec2 screenCenter; //画面上の中心座標
+	dVec2 pos; //全体マップの座標
+	dVec2 center; //全体マップの中心座標
+	dVec2 distance; //プレイヤーとの距離
+	dVec2 distanceSquared; //距離の2乗
+	dVec2 distanceNormalized; //正規化した距離
+	dVec2 moveSpeed; //移動速度
+	dVec2 screenCenter; //画面上の中心座標
 
 
-	Vec2 relativeDistance; //プレイヤーとの相対距離
+	dVec2 relativeDistance; //プレイヤーとの相対距離
 
 	int attackPower;
 
@@ -57,15 +57,17 @@ private:
 	void countDeadTime();
 
 	void lissajous();
-	Vec2 movePattern2;
+	dVec2 movePattern2;
 	double lissajousTime;
 	int lissajousRandom;
 
 public:
+	dVec2 screenPos; //画面上の座標
+
 	bool activity;
 	bool deadFlag;
 	int deadTime;
-	Vec2 screenPos; //画面上の座標
+
 
 	Enemy();
 	~Enemy();

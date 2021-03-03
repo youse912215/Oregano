@@ -12,7 +12,7 @@ private:
 	Input& input; //入力クラスから
 	DataSource source; //データソースクラスから
 
-	Vec2 pos; //プレイヤー座標
+	dVec2 pos; //プレイヤー座標
 
 
 	vector<int> cooldown; //アクションのクールダウン
@@ -39,9 +39,9 @@ private:
 
 
 public:
-	Vec2 center; //プレイヤーの中心座標
-	Vec2 knifeCenter; //ナイフの中心座標
-	Vec2 slashCenter; //刃の中心座標
+	dVec2 center; //プレイヤーの中心座標
+	dVec2 knifeCenter; //ナイフの中心座標
+	dVec2 slashCenter; //刃の中心座標
 
 	bool knife;
 	bool slash;

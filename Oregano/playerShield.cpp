@@ -2,17 +2,15 @@
 #include "constant.h"
 #include "DxLib.h"
 
-void PlayerShield::draw(DataSource& source) {
-	DrawGraph(static_cast<int>(shieldPos.dx), static_cast<int>(shieldPos.dy), source.shieldGraph, true);
+
+PlayerShield::PlayerShield() : shieldPos(0.0, 0.0), shieldValue(15) {
 }
 
-PlayerShield::PlayerShield() {
-	shieldPos = 0; //シールドの座標
-	shieldValue = 15;
-}
-
-
-void PlayerShield::initialize(Vec2& pos) {
+/// <summary>
+/// 初期化
+/// </summary>
+/// <param name="pos">プレイヤーの座標</param>
+void PlayerShield::initialize(dVec2& pos) {
 	shieldPos = pos;
 }
 
@@ -26,4 +24,12 @@ void PlayerShield::shieldCooldown(std::vector<int>& cooldown, std::vector<bool>&
 		cooldown[SHIELD] = 0; //クールダウンをリセット
 		cooldownFlag[SHIELD] = false; //クールダウンフラグをfalse
 	}
+}
+
+/// <summary>
+/// 描画処理
+/// </summary>
+/// <param name="source">データソース</param>
+void PlayerShield::draw(DataSource& source) {
+	DrawGraph(static_cast<int>(shieldPos.dx), static_cast<int>(shieldPos.dy), source.shieldGraph, true);
 }

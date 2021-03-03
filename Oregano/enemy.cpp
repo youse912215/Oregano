@@ -9,25 +9,17 @@
 
 
 Enemy::Enemy() :
-	coin{5, 15, 25}, attributeValue{15, 30, 50} {
-	this->pos.dx = getPopLocation(ONE_MAP_X, 7/*getRandom(4, TOTAL_MAPS_X - 1)*/, getRandom(AREA_MIN, AREA_MAX));
-	this->pos.dy = getPopLocation(ONE_MAP_Y, 7/*getRandom(5, TOTAL_MAPS_Y - 1)*/, getRandom(AREA_MIN, AREA_MAX));
-	this->center = QUARTER_BLOCK_SIZE_D + pos;
-	screenPos = 0;
-	screenCenter = 0;
-	relativeDistance = 0;
+	pos(0.0, 0.0), center(0.0, 0.0),
+	screenCenter(0.0, 0.0), relativeDistance(0.0, 0.0),
 
-	attackPower = 5;
+	attackPower(5), coin{5, 15, 25}, attribute(0), attributeValue{15, 30, 50},
 
-	activity = false;
-	deadFlag = false;
+	lissajousTime(0), lissajousRandom(0),
 
-	deadTime = 0;
+	screenPos(0.0, 0.0),
 
-	attribute = 0;
+	activity(false), deadFlag(false), deadTime(0) {
 
-	lissajousTime = 0;
-	lissajousRandom = 0;
 }
 
 Enemy::~Enemy() {
@@ -136,7 +128,7 @@ void Enemy::collision(Player& player) {
 /// ƒvƒŒƒCƒ„[‚Æ‚ÌˆÊ’uŠÖŒW‚©‚çˆÚ“®‘¬“x‚ğ“¾‚é
 /// </summary>
 void Enemy::getMoveSpeed(Player& player) {
-	distance = player.center - this->center; //‹——£
+	distance = player.center - (QUARTER_BLOCK_SIZE_D + pos); //‹——£
 	distanceSquared = distance * distance; //‹——£‚Ì2æ
 	distanceNormalized.dx = abs(distance.dx) / sqrt(distanceSquared.dx + distanceSquared.dy); //x•ûŒü‚Ì³‹K‰»
 	distanceNormalized.dy = abs(distance.dy) / sqrt(distanceSquared.dx + distanceSquared.dy); //y•ûŒü‚Ì³‹K‰»
@@ -173,8 +165,7 @@ void Enemy::lissajous() {
 	lissajousTime++;
 	movePattern2.dx = sin(lissajousRandom * lissajousTime / 800) * 10;
 	movePattern2.dy = cos(lissajousRandom * lissajousTime / 450) * 10;
-	pos.dx += movePattern2.dx;
-	pos.dy += movePattern2.dy;
+	pos += movePattern2;
 }
 
 /// <summary>

@@ -2,15 +2,17 @@
 
 #include <DxLib.h>
 
-PlayerKnife::PlayerKnife() : curvatureSpeed(KNIFE_SPEED / 2.0), maxRange(BLOCK_SIZE * 3.0) {
-	knifePos = 0; //ナイフ座標
-	knifeAddPos = 0; //ナイフの加算分の座標
+PlayerKnife::PlayerKnife() :
+	curvatureSpeed(KNIFE_SPEED / 2.0), maxRange(BLOCK_SIZE * 3.0),
+	knifePos(0.0, 0.0), knifeAddPos(0.0, 0.0) {
 }
 
 /// <summary>
-/// ナイフ初期化
+/// 初期化
 /// </summary>
-void PlayerKnife::initialize(Vec2& pos, Vec2& knifeCenter) {
+/// <param name="pos">プレイヤーの座標</param>
+/// <param name="knifeCenter">プレイヤーの中心座標</param>
+void PlayerKnife::initialize(dVec2& pos, dVec2& knifeCenter) {
 	knifePos = pos + knifeAddPos; //ナイフの座標の更新
 	knifeCenter = HALF_BLOCK_SIZE_D + knifePos; //ナイフの中心位置の更新
 }
@@ -31,25 +33,24 @@ void PlayerKnife::knifeCooldown(vector<int>& cooldown, vector<bool>& cooldownFla
 /// <summary>
 /// ナイフのポジジョンをセットする
 /// </summary>
-void PlayerKnife::setKnifePosition(Vec2& pos) {
+void PlayerKnife::setKnifePosition(dVec2& pos) {
 	/* x方向 */
 	if (knifePos.dx < pos.dx) knifeAddPos.dx -= KNIFE_SPEED;
 	else if (knifePos.dx > pos.dx) knifeAddPos.dx += KNIFE_SPEED;
-	else knifeAddPos.dx = 0;
+	else knifeAddPos.dx = 0.0;
 	/* y方向 */
 	if (knifePos.dy < pos.dy) knifeAddPos.dy -= KNIFE_SPEED;
 	else if (knifePos.dy > pos.dy)knifeAddPos.dy += KNIFE_SPEED;
-	else knifeAddPos.dy = 0;
+	else knifeAddPos.dy = 0.0;
 }
 
 /// <summary>
 /// ナイフのポジジョンをリセットする
 /// </summary>
-void PlayerKnife::resetKnifePosition(Vec2& center, bool& knife) {
+void PlayerKnife::resetKnifePosition(dVec2& center, bool& knife) {
 	if (deleteKnife(center)) {
 		knife = false;
-		knifeAddPos.dx = 0.0;
-		knifeAddPos.dy = 0.0;
+		knifeAddPos = 0.0;
 	}
 }
 
@@ -70,7 +71,7 @@ void PlayerKnife::accelKnife(Input& input) {
 /// ナイフの削除条件
 /// </summary>
 /// <returns></returns>
-bool PlayerKnife::deleteKnife(Vec2& center) {
+bool PlayerKnife::deleteKnife(dVec2& center) {
 	//プレイヤーからの距離が3マス分離れているか
 	return abs(knifePos.dx + HALF_BLOCK_SIZE_D - center.dx) >= maxRange
 		|| abs(knifePos.dy + HALF_BLOCK_SIZE_D - center.dy) >= maxRange;

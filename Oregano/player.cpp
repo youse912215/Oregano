@@ -17,6 +17,9 @@ Player::Player(Input& input) :
 
 	coin{50, 0, 0, 0}, attributeAccumulation{0, 0, 0, 0},
 
+	knifeCenter(0.0, 0.0), slashCenter(0.0, 0.0),
+	knife(false), slash(false), shield(false),
+
 	/* データ類 */
 	status(PLAYER_STATUS_SIZE), possessionItem(PLAYER_ITEM_SIZE),
 	possessionAccessory(PLAYER_ACCESSORY_SIZE), possessionJewel(PLAYER_JEWEL_SIZE),
@@ -25,18 +28,6 @@ Player::Player(Input& input) :
 	this->pos.dx = static_cast<int>(WIN_WIDTH / 2 - BLOCK_SIZE / 2); //プレイヤーx座標
 	this->pos.dy = static_cast<int>(WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2); //プレイヤーy座標
 	center = HALF_BLOCK_SIZE_D + pos; //プレイヤーの中心座標
-
-	knifeCenter = 0; //ナイフの中心座標
-	knife = false; //ナイフフラグ
-
-
-	slashCenter = 0; //刃の中心座標
-	slash = false; //刃フラグ
-
-
-	shield = false; //シールドフラグ
-
-	coin0 = 100;
 
 	battleStyle = 0;
 }
@@ -48,30 +39,15 @@ Player::~Player() {
 /// 描画処理
 /// </summary>
 void Player::draw() {
-	////刃
-	//if (slash)
-	//	DrawGraph(static_cast<int>(slashPos.dx), static_cast<int>(slashPos.dy), source.slashGraph, true);
-
-	////シールド
-	//if (shield)
-	//	DrawGraph(static_cast<int>(shieldPos.dx), static_cast<int>(shieldPos.dy), source.shieldGraph, true);
-
 	//プレイヤー
 	DrawRectGraph(static_cast<int>(this->pos.dx),
 	              static_cast<int>(this->pos.dy),
 	              0, 0, BLOCK_SIZE, BLOCK_SIZE,
 	              source.player, true, false);
 
-
 	DrawFormatString(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy),
 	                 GetColor(255, 0, 0), "%lf, %lf, %lf, %lf",
 	                 this->pos.dx, this->pos.dy, center.dx, center.dy, false);
-	/*DrawFormatString(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy) - 15,
-	                 GetColor(255, 0, 0), "X%lf, Y%lf",
-	                 knifePos.dx, knifePos.dy, false);*/
-	/*DrawFormatString(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy) - 30,
-	                 GetColor(255, 0, 0), "X%lf, Y%lf",
-	                 slashPos.dx, slashPos.dy, false);*/
 }
 
 /// <summary>

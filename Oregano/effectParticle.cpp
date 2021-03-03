@@ -4,99 +4,85 @@
 #include <cmath>
 
 
-EffectParticle::EffectParticle() {
-	initPos.dx = 400.0;
-	initPos.dy = 400.0;
+EffectParticle::EffectParticle() :
+	movePos(10.0, 10.0), moveDir(1.0, 1.0),
+	pos(0.0, 0.0), moveDistance(0.0, 0.0), radius(0.0),
 
-	moveSize = 1.5;
-	//movePos(10.0, 10.0);
-
-	movePos.dx = 10.0;
-	movePos.dy = 10.0;
-
-	//moveDir(1.0, 1.0);
-
-	moveDir.dx = 1.0;
-	moveDir.dy = 1.0;
-
-	//pos(400.0, 400.0);
-	pos.dx = 0.0;
-	pos.dy = 0.0;
-
-	radius = 0.0;
-
-	moveDistance = 0.0;
-
-	generationTime = 0.0;
-
-	lifeTime = false;
+	moveSize(1.5), isAlive(false), generationTime(0.0),
+	graphSize(8), minRand(0), maxRand(360), maxRange(50.0), maxTime(180.0) {
 }
 
 EffectParticle::~EffectParticle() {
 }
 
-void EffectParticle::setPosition(Vec2& deadPos) {
-	/*moveDir(getRandomD(changeSign(0, 9), 3 * changeSign(0, 9)),
-	        getRandomD(changeSign(0, 9), 3 * changeSign(0, 9)));*/
+/// <summary>
+/// ポジションをセット
+/// </summary>
+/// <param name="deadPos"></param>
+void EffectParticle::setPosition(dVec2& deadPos) {
+	movePos = generationTime * moveDir; //移動量を計算
+	pos += movePos; //移動
+	moveDistance = pos - deadPos; //発生ポジジョンからの距離を計算
+	radius = (maxTime - generationTime) * moveSize / 10.0; //半径を計算
 
-	movePos = generationTime * moveDir;
-
-	pos += movePos;
-
-	//moveDistance = pos - initPos;
-	moveDistance = pos - deadPos;
-
-	radius = (60.0 - generationTime) * moveSize / 10.0;
-
-	if (abs(moveDistance.dx) >= 50.0 || abs(moveDistance.dy) >= 50.0) {
-		generationTime = 0.0;
-		/*pos.dx = initPos.dx;
-		pos.dy = initPos.dy;*/
-		pos.dx = deadPos.dx;
-		pos.dy = deadPos.dy;
-		lifeTime = false;
+	/* 発生場所からmaxRange以上のとき */
+	if (abs(moveDistance.dx) >= maxRange || abs(moveDistance.dy) >= maxRange) {
+		generationTime = 0.0; //発生時間をリセット
+		pos = deadPos; //ポジションをリセット
+		isAlive = false; //生存状態をfalse
 	}
 }
 
-
-void EffectParticle::occurrenceParticle(Vec2& deadPos) {
+/// <summary>
+/// パーティクル発生
+/// </summary>
+/// <param name="deadPos">敵が死んだ座標</param>
+void EffectParticle::occurrenceParticle(dVec2& deadPos) {
 	generationTime++;
 
-	setPosition(deadPos);
+	setPosition(deadPos); //ポジションをセット
 
-	/*DrawCircle(static_cast<int>(pos.dx), static_cast<int>(pos.dy),
-	           static_cast<int>(radius),
-	           GetColor(255, 0, 0), true);*/
+	SetDrawBlendMode(DX_BLENDMODE_ADD, 150); //加算ブレンド
 
-	SetDrawBlendMode(DX_BLENDMODE_ADD, 150);
-
-
+	/* 素材の描画 */
 	DrawRotaGraph2(static_cast<int>(pos.dx) - static_cast<int>(radius),
 	               static_cast<int>(pos.dy) - static_cast<int>(radius),
-	               8, 8, radius / 5.0, getAngle(0, 360),
+	               8, 8, radius / 5.0, getAngle(minRand, maxRand),
 	               source.bloodGraph, true, false);
 
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0); //ノーブレンド
 
 	DrawFormatString(400, 400, GetColor(255, 255, 255),
 	                 "dx:%.1lf, dy:%.1lf, Time:%.1lf, L:%d", pos.dx, pos.dy,
-	                 radius, lifeTime, false);
+	                 radius, isAlive, false);
 }
 
-void EffectParticle::initProcess(Vec2& deadPos) {
-	//pos = initPos;
-	pos = deadPos;
-	moveDir.dx = static_cast<double>(changeSign(0, 1)) * getRandomD(0, 360) / 360.0;
-	moveDir.dy = static_cast<double>(changeSign(0, 1)) * getRandomD(0, 360) / 360.0;
-	lifeTime = true;
+/// <summary>
+/// 初期化
+/// </summary>
+/// <param name="deadPos">敵が死んだ座標</param>
+void EffectParticle::initialize(dVec2& deadPos) {
+	pos = deadPos; //ポジジョンセット
+
+	/* ランダムで方向を切り替える */
+	moveDir.dx = static_cast<double>(changeSign(minRand, maxRand)) * getRandomD(minRand, maxRand) / maxTime;
+	moveDir.dy = static_cast<double>(changeSign(minRand, maxRand)) * getRandomD(minRand, maxRand) / maxTime;
+
+	isAlive = true; //パーティクルの生存状態をtrue
 }
 
-void EffectParticle::update(std::vector<EffectParticle>& particles, Vec2& deadPos) {
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="particles">パーティクルの配列</param>
+/// <param name="deadPos">敵が死んだ座標</param>
+void EffectParticle::update(std::vector<EffectParticle>& particles, dVec2& deadPos) {
 	for (auto& i : particles) {
-		if (!i.lifeTime) {
-			i.initProcess(deadPos);
-			break;
+		//パーティクルが生存していないとき
+		if (!i.isAlive) {
+			i.initialize(deadPos); //初期化
+			break; //抜け出す
 		}
-		i.occurrenceParticle(deadPos);
+		i.occurrenceParticle(deadPos); //パーティクル発生
 	}
 }
