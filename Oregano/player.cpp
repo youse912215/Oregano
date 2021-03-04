@@ -14,18 +14,19 @@ PlayerSlash slashAct;
 PlayerShield shieldAct;
 PlayerState stateAct;
 
-Player::Player(Input& input) :
-	input(input), coin{50, 0, 0, 0}, cooldown(4),
+Player::Player(Input& input, MapDraw& draw_) : input(input),
+                                               draw_(draw_), coin{50, 0, 0, 0}, cooldown(4),
 
-	cooldownFlag(4),
+                                               cooldownFlag(4),
 
-	knifeCenter(0.0, 0.0), slashCenter(0.0, 0.0),
-	knife(false), slash(false), shield(false), elimination(false),
+                                               knifeCenter(0.0, 0.0), slashCenter(0.0, 0.0),
+                                               knife(false), slash(false), shield(false), elimination(false),
 
-	/* データ類 */
-	status(PLAYER_STATUS_SIZE), possessionItem(PLAYER_ITEM_SIZE),
-	possessionAccessory(PLAYER_ACCESSORY_SIZE), possessionJewel(PLAYER_JEWEL_SIZE),
-	possessionMineral(PLAYER_MINERAL_SIZE) {
+                                               /* データ類 */
+                                               status(PLAYER_STATUS_SIZE), possessionItem(PLAYER_ITEM_SIZE),
+                                               possessionAccessory(PLAYER_ACCESSORY_SIZE),
+                                               possessionJewel(PLAYER_JEWEL_SIZE),
+                                               possessionMineral(PLAYER_MINERAL_SIZE) {
 
 	this->pos.dx = static_cast<int>(WIN_WIDTH / 2 - BLOCK_SIZE / 2); //プレイヤーx座標
 	this->pos.dy = static_cast<int>(WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2); //プレイヤーy座標
@@ -169,6 +170,7 @@ void Player::stateAbnormalUpdate() {
 	stateAct.valueReset(elimination, cooldownFlag); //状態異常等を解消
 	stateAct.countCooldown(cooldown, cooldownFlag); //状態解消のクールダウン処理
 	stateAct.getStateAbnormal(); //状態異常を取得
+	stateAct.getPoisonState(draw_); //毒床上で猛毒状態を取得
 	stateAct.switchStyleAutomatically(coin); //生存状態を更新
 }
 

@@ -1,8 +1,12 @@
 #include "playerState.h"
 #include "eventBase.h"
+#include "moveProcess.h"
+
+MoveProcess move_;
 
 PlayerState::PlayerState() :
-	stateAbnormal{false, false, false, false}, attributeAccumulation{0, 0, 0, 0} {
+	stateAbnormal{false, false, false, false},
+	attributeAccumulation{0, 0, 0, 0} {
 	battleStyle = 0;
 }
 
@@ -28,6 +32,16 @@ void PlayerState::getStateAbnormal() {
 	for (unsigned int i = 0; i != stateAbnormal.size(); ++i) {
 		if (attributeAccumulation[i] < 100) continue; //条件以外のとき、処理をスキップする
 		stateAbnormal[i] = true; //状態異常をtrue
+	}
+}
+
+/// <summary>
+/// 状態異常を取得
+/// </summary>
+/// <param name="draw_">マップの描画クラス</param>
+void PlayerState::getPoisonState(MapDraw& draw_) {
+	if (move_.mapCondition(draw_, POISON)) {
+		stateAbnormal[DEADLY_POISON] = true; //猛毒状態を付与
 	}
 }
 

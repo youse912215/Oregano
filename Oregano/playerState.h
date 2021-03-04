@@ -1,4 +1,5 @@
 #pragma once
+#include "mapDraw.h"
 #include <vector>
 
 class PlayerState {
@@ -12,6 +13,7 @@ public:
 
 	void changeBattleStyle(std::vector<int>& coin, const int& dir); //戦闘スタイルを切り替える
 	void getStateAbnormal(); //状態異常を取得
+	void getPoisonState(MapDraw& draw_); //床上で猛毒状態を取得
 	void switchStyleAutomatically(std::vector<int>& coin); //現在の戦闘スタイルを変更
 	void calculateValue(const int& attribute, const int& attributeValue); //属性蓄積値の計算
 	void valueReset(bool& elimination, std::vector<bool>& cooldownFlag); //属性耐久値等のリセット

@@ -3,6 +3,7 @@
 
 PlayerState state_;
 
+
 bool MoveProcess::mapCondition(MapDraw& draw, const int& mapInfo) {
 	return draw.mapCentral[draw.blockArea.y][draw.blockArea.x] == mapInfo;
 }

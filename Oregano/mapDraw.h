@@ -1,5 +1,6 @@
 #pragma once
 #include "mapBase.h"
+#include "dataSource.h"
 #include "vec2.h"
 #include <vector>
 
@@ -7,7 +8,7 @@ using namespace std;
 
 class MapDraw : public MapBase {
 private:
-	int graph; //マップ画像
+	DataSource source_;
 	int mapBetweenDistance; //マップ間距離（1600px）
 
 	Vec2 screen; //画面上の座標
@@ -60,8 +61,10 @@ public:
 	vector<vector<int>> mapBottomCentral; //下マップ
 	vector<vector<int>> mapBottomRight; //右下マップ
 
-	MapDraw(int graph);
+	MapDraw();
 	~MapDraw();
+
+	void initialize();
 
 	void update(vector<vector<vector<int>>>& mapAll); //更新処理
 };

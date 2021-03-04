@@ -4,61 +4,74 @@
 #include "eventBase.h"
 
 MapCollision::MapCollision(MapDraw& map) : map(map), collisionFlag(12),
-                                           boundaryCriteria{
-	                                           //¶ğŒ
-	                                           map.currentCorner[LEFT] == AREA_MAX && map.currentCorner[RIGHT] ==
-	                                           AREA_MIN
-	                                           && map.currentMap.x >= map.currentBoundaryMap1.x && map.currentMap.x ==
-	                                           map.currentBoundaryMap2.x,
-	                                           //‰EğŒ
-	                                           map.currentCorner[LEFT] == AREA_MAX && map.currentCorner[RIGHT] ==
-	                                           AREA_MIN
-	                                           && map.currentMap.x == map.currentBoundaryMap1.x && map.currentMap.x <=
-	                                           map.currentBoundaryMap2.x,
-	                                           //ãğŒ
-	                                           map.currentCorner[UP] == AREA_MAX && map.currentCorner[DOWN] == AREA_MIN
-	                                           && map.currentMap.y >= map.currentBoundaryMap1.y && map.currentMap.y ==
-	                                           map.currentBoundaryMap2.y,
-	                                           //‰ºğŒ
-	                                           map.currentCorner[UP] == AREA_MAX && map.currentCorner[DOWN] == AREA_MIN
-	                                           && map.currentMap.y == map.currentBoundaryMap1.y && map.currentMap.y <=
-	                                           map.currentBoundaryMap2.y,
-	                                           //’†‰›‰¡1ğŒ
-	                                           map.currentCorner[CENTER_X1] == AREA_MAX && map.currentCorner[CENTER_X2]
-	                                           == AREA_MIN
-	                                           && map.currentMap.x >= map.currentBoundaryMap1.x && map.currentMap.x ==
-	                                           map.currentBoundaryMap2.x,
-	                                           //’†‰›‰¡2ğŒ
-	                                           map.currentCorner[CENTER_X1] == AREA_MAX && map.currentCorner[CENTER_X2]
-	                                           == AREA_MIN
-	                                           && map.currentMap.x == map.currentBoundaryMap1.x && map.currentMap.x <=
-	                                           map.currentBoundaryMap2.x,
-	                                           //’†‰›c1ğŒ
-	                                           map.currentCorner[CENTER_Y1] == AREA_MAX && map.currentCorner[CENTER_Y2]
-	                                           == AREA_MIN
-	                                           && map.currentMap.y >= map.currentBoundaryMap1.y && map.currentMap.y ==
-	                                           map.currentBoundaryMap2.y,
-	                                           //’†‰›c2ğŒ
-	                                           map.currentCorner[CENTER_Y1] == AREA_MAX && map.currentCorner[CENTER_Y2]
-	                                           == AREA_MIN
-	                                           && map.currentMap.y == map.currentBoundaryMap1.y && map.currentMap.y <=
-	                                           map.currentBoundaryMap2.y,
-	                                           //‹«ŠEüŒğ·‚Ì“ÁêğŒ
-	                                           map.currentCorner[LEFT] == AREA_MAX && map.currentCorner[RIGHT] ==
-	                                           AREA_MIN
-	                                           && map.currentCorner[UP] == AREA_MAX && map.currentCorner[DOWN] ==
-	                                           AREA_MIN
-	                                           && map.currentMap.x == map.currentBoundaryMap1.x && map.currentMap.y >
-	                                           map.currentBoundaryMap1.y
-	                                           && map.currentMap.x < map.currentBoundaryMap2.x && map.currentMap.y ==
-	                                           map.currentBoundaryMap2.y
-                                           } {
+                                           boundaryCriteria(9) {
 }
 
 MapCollision::~MapCollision() {
+
 }
 
+/// <summary>
+/// ‰Šú‰»
+/// </summary>
+void MapCollision::initialize() {
+	boundaryCriteria = {
+			//¶ğŒ
+			map.currentCorner[LEFT] == AREA_MAX && map.currentCorner[RIGHT] ==
+			AREA_MIN
+			&& map.currentMap.x >= map.currentBoundaryMap1.x && map.currentMap.x ==
+			map.currentBoundaryMap2.x,
+			//‰EğŒ
+			map.currentCorner[LEFT] == AREA_MAX && map.currentCorner[RIGHT] ==
+			AREA_MIN
+			&& map.currentMap.x == map.currentBoundaryMap1.x && map.currentMap.x <=
+			map.currentBoundaryMap2.x,
+			//ãğŒ
+			map.currentCorner[UP] == AREA_MAX && map.currentCorner[DOWN] == AREA_MIN
+			&& map.currentMap.y >= map.currentBoundaryMap1.y && map.currentMap.y ==
+			map.currentBoundaryMap2.y,
+			//‰ºğŒ
+			map.currentCorner[UP] == AREA_MAX && map.currentCorner[DOWN] == AREA_MIN
+			&& map.currentMap.y == map.currentBoundaryMap1.y && map.currentMap.y <=
+			map.currentBoundaryMap2.y,
+			//’†‰›‰¡1ğŒ
+			map.currentCorner[CENTER_X1] == AREA_MAX && map.currentCorner[CENTER_X2]
+			== AREA_MIN
+			&& map.currentMap.x >= map.currentBoundaryMap1.x && map.currentMap.x ==
+			map.currentBoundaryMap2.x,
+			//’†‰›‰¡2ğŒ
+			map.currentCorner[CENTER_X1] == AREA_MAX && map.currentCorner[CENTER_X2]
+			== AREA_MIN
+			&& map.currentMap.x == map.currentBoundaryMap1.x && map.currentMap.x <=
+			map.currentBoundaryMap2.x,
+			//’†‰›c1ğŒ
+			map.currentCorner[CENTER_Y1] == AREA_MAX && map.currentCorner[CENTER_Y2]
+			== AREA_MIN
+			&& map.currentMap.y >= map.currentBoundaryMap1.y && map.currentMap.y ==
+			map.currentBoundaryMap2.y,
+			//’†‰›c2ğŒ
+			map.currentCorner[CENTER_Y1] == AREA_MAX && map.currentCorner[CENTER_Y2]
+			== AREA_MIN
+			&& map.currentMap.y == map.currentBoundaryMap1.y && map.currentMap.y <=
+			map.currentBoundaryMap2.y,
+			//‹«ŠEüŒğ·‚Ì“ÁêğŒ
+			map.currentCorner[LEFT] == AREA_MAX && map.currentCorner[RIGHT] ==
+			AREA_MIN
+			&& map.currentCorner[UP] == AREA_MAX && map.currentCorner[DOWN] ==
+			AREA_MIN
+			&& map.currentMap.x == map.currentBoundaryMap1.x && map.currentMap.y >
+			map.currentBoundaryMap1.y
+			&& map.currentMap.x < map.currentBoundaryMap2.x && map.currentMap.y ==
+			map.currentBoundaryMap2.y
+		};
+}
+
+/// <summary>
+/// XVˆ—
+/// </summary>
 void MapCollision::update() {
+
+	initialize(); //‰Šú‰»
 
 	/* 12ƒ•Š‚ÅÕ“Ë”»’è‚ğs‚¤ */
 	collisionDetectionLeftUp(); //¶ã
@@ -229,32 +242,27 @@ void MapCollision::collisionDetectionCenterDown2() {
 bool MapCollision::collisionDetection(const int& dirXY, const int& dirX, const int& dirY) {
 	switch (dirXY) {
 	case MAP_TOP_LEFT:
-		return map.mapTopLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] >= collisionRange();
+		return map.mapTopLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
 	case MAP_TOP_CENTRAL:
-		return map.mapTopCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= collisionRange();
+		return map.mapTopCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
 	case MAP_TOP_RIGHT:
-		return map.mapTopRight[map.currentCorner[dirY]][map.currentCorner[dirX]] >= collisionRange();
+		return map.mapTopRight[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
 	case MAP_LEFT_CENTRAL:
-		return map.mapLeftCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= collisionRange();
+		return map.mapLeftCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
 	case MAP_CENTRAL:
-		return map.mapCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= collisionRange();
+		return map.mapCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
 	case MAP_RIGHT_CENTRAL:
-		return map.mapRightCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= collisionRange();
+		return map.mapRightCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
 	case MAP_BOTTOM_LEFT:
-		return map.mapBottomLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] >= collisionRange();
+		return map.mapBottomLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
 	case MAP_BOTTOM_CENTRAL:
-		return map.mapBottomCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= collisionRange();
+		return map.mapBottomCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
 	case MAP_BOTTOM_RIGHT:
-		return map.mapBottomRight[map.currentCorner[dirY]][map.currentCorner[dirX]] >= collisionRange();
+		return map.mapBottomRight[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
 	default:
 		return false;
 	}
 }
-
-int MapCollision::collisionRange() {
-	return WALL;
-}
-
 
 //¶ãi3“_j•ûŒü‚ÌÕ“Ë”»’è
 bool MapCollision::leftUpCollisionFlag() {

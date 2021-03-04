@@ -1,6 +1,7 @@
 #pragma once
 #include "vec2.h"
 #include "inputProcess.h"
+#include "mapDraw.h"
 #include "dataSource.h"
 #include <vector>
 
@@ -10,6 +11,7 @@ using namespace std;
 class Player {
 private:
 	Input& input; //入力クラスから
+	MapDraw& draw_;
 	DataSource source; //データソースクラスから
 
 	Vec2d pos; //プレイヤー座標
@@ -51,7 +53,7 @@ public:
 	vector<int> possessionJewel;
 	vector<int> possessionMineral;
 
-	Player(Input& input);
+	Player(Input& input, MapDraw& draw_);
 	~Player();
 
 	void update(); //更新処理

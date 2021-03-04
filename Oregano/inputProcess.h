@@ -9,7 +9,7 @@ using namespace std;
 
 class Input {
 private:
-	MoveProcess move_;
+	MoveProcess move_; //移動処理クラス
 
 	static char oldkeys[256]; //前のキー入力の状態
 	static char keys[256]; //キー入力の状態

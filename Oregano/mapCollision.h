@@ -36,6 +36,8 @@ private:
 	vector<bool> collisionFlag; //Õ“Ëƒtƒ‰ƒO
 	vector<bool> boundaryCriteria; //Še•ûŒü‚Ì‹«ŠEğŒ
 
+	void initialize();
+
 public:
 	MapCollision(MapDraw& map);
 	~MapCollision();
