@@ -1,7 +1,6 @@
 #include "playerState.h"
 #include "eventBase.h"
 #include "moveProcess.h"
-#include "DxLib.h"
 
 MoveProcess move_;
 
@@ -9,7 +8,7 @@ PlayerState::PlayerState() : poisonTime(0), roughTime(0), attributeMax(100), tim
                              poisonDamage(50), roughDamage(100),
                              eliminateCoin(300),
                              stateAbnormal{false, false, false, false}, attributeAccumulation{0, 0, 0, 0},
-                             coin{1000, 1000, 1000, 1000},
+                             coin{100, 100, 100, 100},
                              battleStyle(0) {
 }
 

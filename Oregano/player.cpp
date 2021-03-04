@@ -1,9 +1,6 @@
 #include "DxLib.h"
 #include "player.h"
 #include "constant.h"
-#include "eventBase.h"
-#include <algorithm>
-
 #include "playerKnife.h"
 #include "playerShield.h"
 #include "playerSlash.h"
@@ -63,7 +60,7 @@ void Player::actionCommand() {
 	/* シールド */
 	if (input.X && !cooldownFlag[SHIELD]) {
 		shield = true; //シールドを付与
-		shieldAct.value = 15; //シールド量を追加
+		shieldAct.giveShield(stateAct.battleStyle); //シールド量を追加
 		cooldownFlag[SHIELD] = true; //クールダウンフラグをtrue
 	}
 	/* 状態を解消 */

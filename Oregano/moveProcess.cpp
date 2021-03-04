@@ -8,24 +8,36 @@ bool MoveProcess::mapCondition(MapDraw& draw, const int& mapInfo) {
 	return draw.mapCentral[draw.blockArea.y][draw.blockArea.x] == mapInfo;
 }
 
+/// <summary>
+/// 左衝突フラグ
+/// </summary>
 bool MoveProcess::collisionDirectionLeft(MapCollision& collision) {
 	if (!state_.stateAbnormal[CONFUSION])
 		return collision.leftCollisionFlag();
 	return collision.rightCollisionFlag();
 }
 
+/// <summary>
+/// 右衝突フラグ
+/// </summary>
 bool MoveProcess::collisionDirectionRight(MapCollision& collision) {
 	if (!state_.stateAbnormal[CONFUSION])
 		return collision.rightCollisionFlag();
 	return collision.leftCollisionFlag();
 }
 
+/// <summary>
+/// 上衝突フラグ
+/// </summary>
 bool MoveProcess::collisionDirectionUp(MapCollision& collision) {
 	if (!state_.stateAbnormal[CONFUSION])
 		return collision.upCollisionFlag();
 	return collision.downCollisionFlag();
 }
 
+/// <summary>
+/// 下衝突フラグ
+/// </summary>
 bool MoveProcess::collisionDirectionDown(MapCollision& collision) {
 	if (!state_.stateAbnormal[CONFUSION])
 		return collision.downCollisionFlag();
@@ -54,9 +66,10 @@ int MoveProcess::movingDistance(MapDraw& draw) {
 /// 方向を反転
 /// </summary>
 int MoveProcess::invert() {
+	//混乱状態以外のとき
 	if (!state_.stateAbnormal[CONFUSION])
-		return 1;
-	return -1;
+		return 1; //そのまま返す
+	return -1; //反転して返す
 }
 
 /// <summary>
@@ -65,10 +78,10 @@ int MoveProcess::invert() {
 /// <param name="dir">方向</param>
 int MoveProcess::changeDirection(const int& dir) {
 	if (!state_.stateAbnormal[CONFUSION]) return dir;
-	if (dir == LEFT) return RIGHT;
-	if (dir == RIGHT) return LEFT;
-	if (dir == UP) return DOWN;
-	if (dir == DOWN) return UP;
+	if (dir == LEFT) return RIGHT; //左→右
+	if (dir == RIGHT) return LEFT; //右→左
+	if (dir == UP) return DOWN; //上→下
+	if (dir == DOWN) return UP; //下→上
 	return 0;
 }
 

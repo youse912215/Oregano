@@ -7,7 +7,7 @@ private:
 	DataSource source_; //データソースクラス
 
 public:
-	void update(); //更新処理
-
 	EnemyConclusion(Player& player_);
+
+	void update(); //更新処理
 };

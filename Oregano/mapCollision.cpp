@@ -1,7 +1,6 @@
 #include "mapCollision.h"
 #include "constant.h"
 #include "mapDraw.h"
-#include "eventBase.h"
 
 MapCollision::MapCollision(MapDraw& map) : map(map), collisionFlag(12),
                                            boundaryCriteria(9) {

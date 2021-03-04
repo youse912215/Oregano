@@ -11,9 +11,7 @@
 #include "dataSave.h"
 #include "gameUI.h"
 #include "dataText.h"
-
 #include "sceneTitle.h"
-
 
 void loopProcess() {
 
@@ -53,7 +51,7 @@ void loopProcess() {
 
 			gameUI.update(); //UI更新処理2
 
-			//enemy.update(); //敵更新処理
+			enemy.update(); //敵更新処理
 		}
 			/* メニューシーン処理 */
 		else if (EventBase::gameScene == MENU_ITEM_SCENE) {

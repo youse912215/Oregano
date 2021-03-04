@@ -12,15 +12,16 @@ EnemyTracking tracking;
 
 Enemy::Enemy() :
 	pos(0.0, 0.0), center(0.0, 0.0),
-	screenCenter(0.0, 0.0), relativeDistance(0.0, 0.0),
+	screenCenter(0.0, 0.0), relativeDistance(0.0, 0.0), coin{5, 15, 25},
+	attackPower{5, 25, 50}, level(0), attributeValue{15, 30, 50},
 
-	coin{5, 15, 25}, attackPower{5, 25, 50}, level(0), attributeValue{15, 30, 50}, lissajousTime(0),
+	lissajousMaxTime(7200.0), lissajousX(800.0), lissajousY(450.0), controlSpeed(10.0), lissajousTime(0),
 
 	lissajousRandom(0), pattern(0),
 
-	screenPos(0.0, 0.0), attribute(0),
+	screenPos(0.0, 0.0), deadTime(0),
 
-	activity(false), deadFlag(false), deadTime(0) {
+	attribute(0), activity(false), deadFlag(false) {
 
 }
 
@@ -31,8 +32,6 @@ Enemy::~Enemy() {
 /// 描画処理
 /// </summary>
 void Enemy::draw(DataSource& source) {
-	//DrawGraph(static_cast<int>(screenPos.dx), static_cast<int>(screenPos.dy), graph, true); //敵
-
 	//属性（attribute）によって、画像を変更する
 	DrawRectGraph(static_cast<int>(screenPos.dx),
 	              static_cast<int>(screenPos.dy),
@@ -124,16 +123,16 @@ void Enemy::countDeadTime() {
 /// </summary>
 void Enemy::countTime() {
 	//lissajousTimeが7200（800と450の最小公倍数）より小さいとき、カウント
-	lissajousTime = (lissajousTime < 7200) ? ++lissajousTime : 0;
+	lissajousTime = (lissajousTime < lissajousMaxTime) ? ++lissajousTime : 0;
 }
 
 /// <summary>
 /// リサージュ曲線を描く
 /// </summary>
 void Enemy::lissajous() {
-	moveSpeed2.dx = sin(lissajousRandom * lissajousTime / 800) * 10;
-	moveSpeed2.dy = cos(lissajousRandom * lissajousTime / 450) * 10;
-	pos += moveSpeed2;
+	lissajousSpeed.dx = sin(lissajousRandom * lissajousTime / lissajousX) * controlSpeed; //x方向
+	lissajousSpeed.dy = cos(lissajousRandom * lissajousTime / lissajousY) * controlSpeed; //y方向
+	pos += lissajousSpeed; //移動速度を加算
 }
 
 /// <summary>
@@ -163,20 +162,18 @@ void Enemy::update(Player& player, DataSource& source) {
 	if (player.knife) hitKnife(player); //ナイフが当たったとき
 	if (player.slash) hitSlash(player); //刃が当たったとき
 
-	countDeadTime();
+	countDeadTime(); //死亡時間をカウント
 
 	if (activity) {
 		collision(player); //プレイヤーとの衝突処理
 		if (pattern % 2 == 0)
 			tracking.update(player, pos, screenPos); //追跡移動の更新処理
 		else {
-			countTime();
-			lissajous();
+			countTime(); //リサージュ用の時間カウント処理
+			lissajous(); //リサージュ曲線描画
 		}
-
 		draw(source); //描画処理
 	}
-
 
 	DrawFormatString(200, 185, GetColor(0, 0, 255),
 	                 "En座標：%lf, %lf",
@@ -202,11 +199,10 @@ void Enemy::initialize(Player& player) {
 	getLevel(); //レベルを取得
 	relativeDistanceUpdate(player); //プレイヤーとの相対距離を取得
 
-	pattern = getRandom(0, 3);
+	pattern = getRandom(0, 1); //敵のパターンをランダムで生成
+	lissajousRandom = getRandom(1, 15); //リサージュ曲線の種類をランダムで生成
 
-	lissajousRandom = getRandom(1, 15);
-
-	if (abs(relativeDistance.dx) <= 500 && abs(relativeDistance.dy) <= 500) {
+	if (abs(relativeDistance.dx) <= WIN_WIDTH && abs(relativeDistance.dy) <= WIN_HEIGHT) {
 		activity = true;
 	}
 }

@@ -64,7 +64,7 @@ void EffectBlood::draw() {
 }
 
 /// <summary>
-/// 
+/// 属性による色変化
 /// </summary>
 /// <param name="source">データソースクラス</param>
 /// <param name="attribute">敵の属性</param>

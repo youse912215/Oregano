@@ -7,11 +7,8 @@ using namespace std;
 
 class MapBase {
 private:
-	const string comma = ","; //カンマ
-	const string csvNum[9] = {
-			"00", "01", "02", "03", "04", "05", "06", "07", "08",
-		}; //csvファイル名を変更するための数字
-
+	const string comma; //カンマ
+	const string csvNum[6]; //csvファイル名を変更するための数字
 
 protected:
 	string initialCsv; //初期地点のマップ(中央)

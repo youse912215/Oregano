@@ -2,7 +2,6 @@
 #include "constant.h"
 #include "mapAutogeneration.h"
 #include "dataSource.h"
-#include "DxLib.h"
 
 MapAutogeneration autogeneration;
 MapLoad load;

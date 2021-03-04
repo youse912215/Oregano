@@ -2,8 +2,18 @@
 #include "constant.h"
 #include "DxLib.h"
 
+PlayerShield::PlayerShield() : shieldQuantity(15), addQuantity(45), cooldownMax(120), shieldPos(0.0, 0.0), value(0) {
+}
 
-PlayerShield::PlayerShield() : shieldPos(0.0, 0.0), value(15) {
+/// <summary>
+/// シールドを追加で付与
+/// </summary>
+/// <param name="battleStyle">戦闘スタイル</param>
+/// <returns></returns>
+int PlayerShield::addShield(const int& battleStyle) {
+	//戦闘スタイルが燕子花(対混乱)のとき
+	if (battleStyle == CONFUSION) return addQuantity; //シールドを追加
+	return 0;
 }
 
 /// <summary>
@@ -20,7 +30,7 @@ void PlayerShield::initialize(Vec2d& pos) {
 void PlayerShield::countCooldown(std::vector<int>& cooldown, std::vector<bool>& cooldownFlag, bool& shield) {
 	if (cooldownFlag[SHIELD] && !shield) cooldown[SHIELD]++; //クールダウン開始
 
-	if (cooldown[SHIELD] >= 120) {
+	if (cooldown[SHIELD] >= cooldownMax) {
 		cooldown[SHIELD] = 0; //クールダウンをリセット
 		cooldownFlag[SHIELD] = false; //クールダウンフラグをfalse
 	}
@@ -39,4 +49,12 @@ void PlayerShield::draw(DataSource& source) {
 /// </summary>
 void PlayerShield::zeroOut() {
 	if (value <= 0) value = 0;
+}
+
+/// <summary>
+/// シールドを付与
+/// </summary>
+/// <param name="battleStyle">戦闘スタイル</param>
+void PlayerShield::giveShield(const int& battleStyle) {
+	value = shieldQuantity + addShield(battleStyle); //シールド量を追加
 }

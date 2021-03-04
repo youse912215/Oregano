@@ -1,8 +1,4 @@
 #include "mapBase.h"
-
-#include <DxLib.h>
-
-#include "constant.h"
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -10,7 +6,8 @@
 using namespace std;
 
 //初期化
-MapBase::MapBase() {
+MapBase::MapBase() :
+	comma{","}, csvNum{"00", "01", "02", "03", "04", "05"} {
 	initialCsv = "resource/csv/map_x00y00.csv"; //初期地点のマップ(中央)
 }
 

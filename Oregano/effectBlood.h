@@ -22,9 +22,9 @@ private:
 	const double maxRange; //最大範囲
 	const double maxTime; //最大時間
 
-	int blood;
+	int blood; //画像
 
-	void getGraphColor(DataSource& source, const int& attribute);
+	void getGraphColor(DataSource& source, const int& attribute); //属性による色変化
 
 	void initialize(Vec2d& deadPos); //初期化
 	void setPosition(Vec2d& deadPos); //ポジジョンをセット

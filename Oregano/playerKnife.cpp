@@ -1,6 +1,5 @@
 #include "playerKnife.h"
-
-#include <DxLib.h>
+#include "DxLib.h"
 
 PlayerKnife::PlayerKnife() :
 	curvatureSpeed(KNIFE_SPEED / 2.0), maxRange(BLOCK_SIZE * 3.0),

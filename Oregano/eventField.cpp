@@ -1,6 +1,5 @@
 #include "eventField.h"
 #include "constant.h"
-#include "mapDraw.h"
 #include "DxLib.h"
 
 EventField::EventField(Input& input, EventBase& event, Player& player)

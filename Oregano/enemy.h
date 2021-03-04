@@ -14,6 +14,7 @@ private:
 
 	Vec2d relativeDistance; //プレイヤーとの相対距離
 
+
 	void draw(DataSource& source); //描画処理
 
 	void dead(); //死亡処理
@@ -36,32 +37,33 @@ private:
 	vector<int> attackPower; //攻撃力
 	int level; //レベル
 
-
 	vector<int> attributeValue;
 	void getAttribute(); //属性を棕櫚得
 	void getLevel(); //レベルを取得
 
 
-	void countTime(); //リサージュ用のカウント処理
-	void lissajous(); //リサージュ曲線を描く
-	Vec2d moveSpeed2; //移動速度
+	Vec2d lissajousSpeed; //移動速度
+	const double lissajousMaxTime; //リサージュを制御する時間
+	const double lissajousX; //リサージュ横幅
+	const double lissajousY; //リサージュの縦幅
+	const double controlSpeed; //制御速度
 	double lissajousTime; //リサージュ用の時間
 	int lissajousRandom; //リサージュ用のランダム変数
+	void countTime(); //リサージュ用のカウント処理
+	void lissajous(); //リサージュ曲線を描く
 
-	int pattern;
+	int pattern; //出現パターン
 
 public:
 	Vec2d screenPos; //画面上の座標
 
-	int attribute;
-	bool activity;
-	bool deadFlag;
-	int deadTime;
-
+	int deadTime; //死亡時間（復活までの時間）
+	int attribute; //属性
+	bool activity; //活動状態
+	bool deadFlag; //死亡フラグ
 
 	Enemy();
 	~Enemy();
-
 
 	void update(Player& player, DataSource& source); //更新処理
 	void initialize(Player& player);
