@@ -16,7 +16,6 @@ private:
 
 	Vec2d pos; //プレイヤー座標
 
-	vector<int> coin; //コイン（HP、攻撃の役割）
 	vector<int> cooldown; //アクションのクールダウン
 	vector<bool> cooldownFlag; //クールダウンのフラグ
 
@@ -24,11 +23,10 @@ private:
 
 	void actionCommand(); //アクションコマンドの処理
 
-
 	void knifeUpdate(); //ナイフ更新処理
 	void slashUpdate(); //刃更新処理
 	void shieldUpdate(); //シールド更新処理
-	void stateAbnormalUpdate(); //状態異常更新処理
+	void stateUpdate(); //状態更新処理
 
 	bool state(const int& num);
 	bool cool(const int& num);

@@ -15,7 +15,7 @@ PlayerShield shieldAct;
 PlayerState stateAct;
 
 Player::Player(Input& input, MapDraw& draw_) : input(input),
-                                               draw_(draw_), coin{50, 0, 0, 0}, cooldown(4),
+                                               draw_(draw_), cooldown(4),
 
                                                cooldownFlag(4),
 
@@ -73,10 +73,10 @@ void Player::actionCommand() {
 	/* 戦闘スタイル切替 */
 	//Lボタン
 	if (input.LB)
-		stateAct.changeBattleStyle(coin, LEFT); //左のスタイルへ
+		stateAct.changeBattleStyle(LEFT); //左のスタイルへ
 	//Rボタン
 	if (input.RB)
-		stateAct.changeBattleStyle(coin, RIGHT); //右のスタイルへ
+		stateAct.changeBattleStyle(RIGHT); //右のスタイルへ
 }
 
 /// <summary>
@@ -85,10 +85,10 @@ void Player::actionCommand() {
 /// <param name="attackPower">敵の攻撃力</param>
 void Player::lostPlayerCoin(const int& attackPower) {
 	if (!shield) {
-		coin[stateAct.battleStyle] -= attackPower; //コイン損失
+		stateAct.coin[stateAct.battleStyle] -= attackPower; //コイン損失
 		//コインが0以下ならば、
-		if (coin[stateAct.battleStyle] <= 0)
-			coin[stateAct.battleStyle] = 0; //0以下になったら0に戻す
+		if (stateAct.coin[stateAct.battleStyle] <= 0)
+			stateAct.coin[stateAct.battleStyle] = 0; //0以下になったら0に戻す
 	}
 	else {
 		shieldAct.value -= attackPower; //シールド量減少
@@ -102,7 +102,7 @@ void Player::lostPlayerCoin(const int& attackPower) {
 /// <param name="enemyCoin">敵の所持コイン</param>
 /// <param name="attribute">敵の属性</param>
 void Player::addPlayerCoin(const int& attribute, const int& enemyCoin) {
-	coin[attribute] += enemyCoin;
+	stateAct.coin[attribute] += enemyCoin;
 }
 
 /// <summary>
@@ -166,12 +166,11 @@ void Player::shieldUpdate() {
 /// <summary>
 /// 状態更新処理
 /// </summary>
-void Player::stateAbnormalUpdate() {
+void Player::stateUpdate() {
 	stateAct.valueReset(elimination, cooldownFlag); //状態異常等を解消
 	stateAct.countCooldown(cooldown, cooldownFlag); //状態解消のクールダウン処理
-	stateAct.getStateAbnormal(); //状態異常を取得
-	stateAct.getPoisonState(draw_); //毒床上で猛毒状態を取得
-	stateAct.switchStyleAutomatically(coin); //生存状態を更新
+	stateAct.stateAbnormalUpdate(draw_);
+	stateAct.switchStyleAutomatically(); //生存状態を更新
 }
 
 /// <summary>
@@ -183,7 +182,7 @@ void Player::update() {
 	knifeUpdate(); //ナイフ更新処理
 	slashUpdate(); //刃更新処理
 	shieldUpdate(); //シールド更新処理
-	stateAbnormalUpdate(); //更新処理
+	stateUpdate(); //更新処理
 
 	draw(); //描画処理
 
@@ -197,13 +196,13 @@ void Player::update() {
 
 	DrawFormatString(0, 550, GetColor(255, 100, 100), "スタイル:%d", stateAct.battleStyle, false);
 	DrawFormatString(0, 565, GetColor(0x00, 0x8d, 0x56), "花萌葱:%d, コイン:%d, 状態:%d",
-	                 stateAct.attributeAccumulation[0], coin[0], state(0), false);
+	                 stateAct.attributeAccumulation[0], stateAct.coin[0], state(0), false);
 	DrawFormatString(0, 580, GetColor(0xef, 0xbb, 0x2c), "深支子:%d, コイン:%d, 状態:%d",
-	                 stateAct.attributeAccumulation[1], coin[1], state(1), false);
+	                 stateAct.attributeAccumulation[1], stateAct.coin[1], state(1), false);
 	DrawFormatString(0, 595, GetColor(0x4b, 0x5e, 0xaa), "燕子花:%d, コイン:%d, 状態:%d",
-	                 stateAct.attributeAccumulation[2], coin[2], state(2), false);
+	                 stateAct.attributeAccumulation[2], stateAct.coin[2], state(2), false);
 	DrawFormatString(0, 610, GetColor(0xee, 0x86, 0x9a), "中紅花:%d, コイン:%d, 状態:%d",
-	                 stateAct.attributeAccumulation[3], coin[3], state(3), false);
+	                 stateAct.attributeAccumulation[3], stateAct.coin[3], state(3), false);
 
 	/*DrawFormatString(0, 500, GetColor(120, 0, 100), "トレジャーランク:%d, 花萌葱:%d, 金糸雀:%d, 葡萄染:%d, 白百合:%d",
 	                 status[TREASURE_RANK], status[GREEN_COIN], status[YELLOW_COIN],
