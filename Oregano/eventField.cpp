@@ -168,8 +168,8 @@ void EventField::update() {
 	DrawFormatString(300, 0, GetColor(130, 130, 255), "イベント:%d, 向き:%d, T%d",
 	                 this->actionFlagX, input.moveDirection,
 	                 event.getEventCoordinate(8, 7, 12, 24), false);
-	DrawFormatString(100, 0, GetColor(255, 0, 0), "cx:%d, cy:%d,",
-	                 event.centralPlayerPosition(POSITION_X), event.centralPlayerPosition(POSITION_Y), false);
+	/*DrawFormatString(100, 0, GetColor(255, 0, 0), "cx:%d, cy:%d,",
+	                 event.centralPlayerPosition(POSITION_X), event.centralPlayerPosition(POSITION_Y), false);*/
 
 	player.update(); //プレイヤー更新処理
 }

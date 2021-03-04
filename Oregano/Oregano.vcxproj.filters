@@ -183,6 +183,9 @@
     <ClCompile Include="enemyConclusion.cpp">
       <Filter>ソース ファイル\Organism\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="moveProcess.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mapDraw.h">
@@ -280,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="enemyConclusion.h">
       <Filter>ヘッダー ファイル\Organism\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="moveProcess.h">
+      <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

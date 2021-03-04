@@ -48,13 +48,13 @@ void loopProcess() {
 			collision.update(); //コリジョン更新処理
 
 			//if (!gameUI.changeFlag) //移動処理（アクション変更時は移動不可）
-			input.moveProcess(collision);
+			input.movement(collision, mapDraw_);
 
 			field.update(); //フィールド更新処理
 
 			gameUI.update(); //UI更新処理2
 
-			enemy.update(); //敵更新処理
+			//enemy.update(); //敵更新処理
 		}
 			/* メニューシーン処理 */
 		else if (EventBase::gameScene == MENU_ITEM_SCENE) {

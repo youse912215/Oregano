@@ -339,4 +339,7 @@ void MapDraw::update(vector<vector<vector<int>>>& mapAll) {
 	DrawFormatString(0, 60, GetColor(255, 255, 255), "screenX:%d, screenY:%d",
 	                 1 * BLOCK_SIZE + screen.x + mapBetweenDistance * centerPos.x,
 	                 1 * BLOCK_SIZE + screen.y + mapBetweenDistance * centerPos.y, false);
+
+	DrawFormatString(200, 100, GetColor(255, 0, 255), "É}ÉbÉvèÓïÒ:%d",
+	                 mapCentral[blockArea.y][blockArea.x], false);
 }

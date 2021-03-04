@@ -11,7 +11,7 @@ private:
 	int mapBetweenDistance; //マップ間距離（1600px）
 
 	Vec2 screen; //画面上の座標
-	Vec2 blockArea; //1ブロック区画（マップ）内の座標
+
 	Vec2 mapAspectSize; //1マップあたりの配列のサイズ
 	Vec2 centerPos; //マップの中央位置
 
@@ -42,6 +42,8 @@ private:
 public:
 	static int mapX; //マップ内の中央のx座標
 	static int mapY; //マップ内の中央のy座標
+
+	Vec2 blockArea; //1ブロック区画（マップ）内の座標
 
 	Vec2 currentMap; //現在のマップ座標
 	Vec2 currentBoundaryMap1; //現在のマップの境界座標

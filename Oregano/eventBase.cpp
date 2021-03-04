@@ -60,8 +60,11 @@ bool EventBase::getEventCoordinate(const int& mapX, const int& mapY, const int& 
 }
 
 void EventBase::update() {
-	moveGameTime(); //ゲーム時間起動
-	changeTime(); //夜の状態を変更
+	//moveGameTime(); //ゲーム時間起動
+	//changeTime(); //夜の状態を変更
+
+	DrawFormatString(100, 0, GetColor(255, 0, 0), "cx:%d, cy:%d,",
+	                 centralPlayerPosition(POSITION_X), centralPlayerPosition(POSITION_Y), false);
 
 	DrawFormatString(WIN_WIDTH - 300, WIN_HEIGHT - 15, GetColor(255, 0, 0), "TIME:%d, 夜:%d",
 	                 gameTime, night, false);

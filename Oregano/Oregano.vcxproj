@@ -148,6 +148,7 @@
     <ClCompile Include="mapAutogeneration.cpp" />
     <ClCompile Include="mapBase.cpp" />
     <ClCompile Include="mapCollision.cpp" />
+    <ClCompile Include="moveProcess.cpp" />
     <ClCompile Include="mapDraw.cpp" />
     <ClCompile Include="mapLoad.cpp" />
     <ClCompile Include="playerAction.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="mapAutogeneration.h" />
     <ClInclude Include="mapBase.h" />
     <ClInclude Include="mapCollision.h" />
+    <ClInclude Include="moveProcess.h" />
     <ClInclude Include="mapDraw.h" />
     <ClInclude Include="mapLoad.h" />
     <ClInclude Include="effectBlood.h" />

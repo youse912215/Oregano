@@ -7,7 +7,7 @@
 char Input::oldkeys[KEY_BUFFER_MAX] = {0};
 char Input::keys[KEY_BUFFER_MAX] = {0};
 
-Input::Input() : padNum(14), oldPadNum(14), STICK(4), buttonFlag(10) {
+Input::Input() : padNum(14), oldPadNum(14), buttonFlag(10), STICK(4) {
 	A = false;
 	B = false;
 	X = false;
@@ -73,38 +73,30 @@ void Input::inputModeChange() {
 /// <summary>
 /// スティック（十字キー）移動処理
 /// </summary>
-void Input::moveProcess(MapCollision& collision) {
+void Input::movement(MapCollision& collision, MapDraw& draw) {
 
 	//左移動
 	if (getInputButton(STICK_LEFT)) {
-		MapDraw::mapX -= MOVING_DISTANCE;
-		if (collision.leftCollisionFlag() || A) MapDraw::mapX += MOVING_DISTANCE;
-		moveDirection = LEFT;
-		STICK[LEFT] = true;
+		move_.left(collision, draw);
+		directionProcess(LEFT);
 	}
 	else STICK[LEFT] = false;
 	//右移動
 	if (getInputButton(STICK_RIGHT)) {
-		MapDraw::mapX += MOVING_DISTANCE;
-		if (collision.rightCollisionFlag() || A) MapDraw::mapX -= MOVING_DISTANCE;
-		moveDirection = RIGHT;
-		STICK[RIGHT] = true;
+		move_.right(collision, draw);
+		directionProcess(RIGHT);
 	}
 	else STICK[RIGHT] = false;
 	//上移動
 	if (getInputButton(STICK_UP)) {
-		MapDraw::mapY -= MOVING_DISTANCE;
-		if (collision.upCollisionFlag() || A) MapDraw::mapY += MOVING_DISTANCE;
-		moveDirection = UP;
-		STICK[UP] = true;
+		move_.up(collision, draw);
+		directionProcess(UP);
 	}
 	else STICK[UP] = false;
 	//下移動
 	if (getInputButton(STICK_DOWN)) {
-		MapDraw::mapY += MOVING_DISTANCE;
-		if (collision.downCollisionFlag() || A) MapDraw::mapY -= MOVING_DISTANCE;
-		moveDirection = DOWN;
-		STICK[DOWN] = true;
+		move_.down(collision, draw);
+		directionProcess(DOWN);
 	}
 	else STICK[DOWN] = false;
 
@@ -121,8 +113,15 @@ void Input::moveProcess(MapCollision& collision) {
 	                 getInputButton(STICK_LEFT), getInputButton(STICK_RIGHT), false);
 	DrawFormatString(0, 230, GetColor(255, 255, 120), "  %d",
 	                 getInputButton(STICK_DOWN), false);
+}
 
-
+/// <summary>
+/// 方向処理
+/// </summary>
+/// <param name="dir">移動方向</param>
+void Input::directionProcess(const int& dir) {
+	moveDirection = dir; //移動方向をdirにする
+	STICK[dir] = true; //スティックの方向dirをtrue
 }
 
 /// <summary>
@@ -220,7 +219,6 @@ bool Input::getInputButton(const int& buttonName) {
 	default: return false;
 	}
 }
-
 
 /// <summary>
 /// 更新処理
