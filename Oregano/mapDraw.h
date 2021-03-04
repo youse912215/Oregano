@@ -15,7 +15,7 @@ private:
 	Vec2 mapAspectSize; //1マップあたりの配列のサイズ
 	Vec2 centerPos; //マップの中央位置
 
-	vector<int> information; //マップ名情報
+	const int informationSize; //マップ情報数
 
 	/* 各方向の境界 */
 	enum BOUNDARY {

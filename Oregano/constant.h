@@ -269,3 +269,14 @@ enum ACTION_COMMAND {
 	//èÛë‘âè¡
 	ELIMINATION,
 };
+
+enum STATE_ABNORMAL {
+	//ñ“ì≈
+	DEADLY_POISON,
+	//·zùπ
+	CRAMPS,
+	//ç¨óê
+	CONFUSION,
+	//èoåå
+	BLOODING
+};

@@ -4,41 +4,9 @@
 int MapDraw::mapX = INITIAL_X; //x方向
 int MapDraw::mapY = INITIAL_Y; //y方向
 
-MapDraw::MapDraw(int graph) : graph(graph),
+MapDraw::MapDraw(int graph) : graph(graph), informationSize(15),
 
-                              information{
-	                              //花床
-	                              FLOOR_FLOWER,
-	                              //宝箱の床
-	                              FLOOR_TREASURE,
-	                              //床（通常道）
-	                              FLOOR_NORMAL,
-	                              //花1
-	                              FLOWER1,
-	                              //花2
-	                              FLOWER2,
-	                              //でこぼこ
-	                              ROUGH,
-	                              //浅瀬
-	                              SHALLOW,
-	                              //水沼
-	                              SWAMP,
-	                              //毒沼
-	                              POISON,
-	                              //氷床
-	                              ICE,
-	                              //ランダムマップ(森)
-	                              RANDOM_MAP1,
-	                              //ランダムマップ2(沼地)
-	                              RANDOM_MAP2,
-	                              //壁
-	                              WALL,
-	                              //外海
-	                              SEA,
-	                              //宝箱
-	                              TREASURE_BOX,
-                              },
-
+                              /* 各角のマップ座標 */
                               currentCorner{
 	                              ((mapX - 32) / BLOCK_SIZE) % AREA_WIDTH, ((mapX + 31) / BLOCK_SIZE) % AREA_WIDTH,
 	                              ((mapY - 48) / BLOCK_SIZE) % AREA_HEIGHT, ((mapY + 15) / BLOCK_SIZE) % AREA_HEIGHT,
@@ -46,6 +14,7 @@ MapDraw::MapDraw(int graph) : graph(graph),
 	                              ((mapY - 32) / BLOCK_SIZE) % AREA_HEIGHT, (mapY / BLOCK_SIZE) % AREA_HEIGHT,
                               },
 
+                              /* 9か所のマップ配列 */
                               mapTopLeft(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapTopCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
                               mapTopRight(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
@@ -133,7 +102,7 @@ int MapDraw::matrixY(const int& mapInfo) {
 vector<vector<int>> MapDraw::drawCurrentMaps(const int& dirX, const int& dirY,
                                              vector<vector<vector<int>>>& mapAll) {
 	/*マップチップの描画*/
-	for (auto i : information) //マップ情報（名称）の数だけ繰り返す
+	for (auto i = 0; i < informationSize; ++i) //マップ情報（名称）の数だけ繰り返す
 		drawMapChips(i, centerPos.x + dirX, centerPos.y + dirY,
 		             mapAll[(currentMap.x + dirX) + (currentMap.y + dirY) * TOTAL_MAPS_Y]);
 
@@ -324,21 +293,21 @@ void MapDraw::update(vector<vector<vector<int>>>& mapAll) {
 	                 mapBottomCentral[currentCorner[DOWN]][currentCorner[CENTER_X2]],
 	                 mapBottomCentral[currentCorner[DOWN]][currentCorner[RIGHT]], false);*/
 
-	DrawFormatString(150, 15, GetColor(255, 255, 255), "L:%d, R:%d, U:%d, D:%d",
-	                 currentCorner[LEFT], currentCorner[RIGHT], currentCorner[UP], currentCorner[DOWN], false);
-	DrawFormatString(150, 30, GetColor(255, 255, 255), "CX1:%d, CX2:%d, CY1:%d, CY2:%d",
-	                 currentCorner[CENTER_X1], currentCorner[CENTER_X2], currentCorner[CENTER_Y1],
-	                 currentCorner[CENTER_Y2], false);
+	//DrawFormatString(150, 15, GetColor(255, 255, 255), "L:%d, R:%d, U:%d, D:%d",
+	//                 currentCorner[LEFT], currentCorner[RIGHT], currentCorner[UP], currentCorner[DOWN], false);
+	//DrawFormatString(150, 30, GetColor(255, 255, 255), "CX1:%d, CX2:%d, CY1:%d, CY2:%d",
+	//                 currentCorner[CENTER_X1], currentCorner[CENTER_X2], currentCorner[CENTER_Y1],
+	//                 currentCorner[CENTER_Y2], false);
 
 	DrawFormatString(0, 15, GetColor(255, 255, 255), "(iniY:%d, iniX:%d)", centerPos.y, centerPos.x, false);
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "mX%d, mY%d", currentMap.x, currentMap.y, false);
-	DrawFormatString(0, 45, GetColor(255, 255, 255), "cby1:%d, cbx1:%d, cby2:%d, cbx2:%d",
-	                 currentBoundaryMap1.y, currentBoundaryMap1.x, currentBoundaryMap2.y, currentBoundaryMap2.x, false);
+	//DrawFormatString(0, 45, GetColor(255, 255, 255), "cby1:%d, cbx1:%d, cby2:%d, cbx2:%d",
+	//                 currentBoundaryMap1.y, currentBoundaryMap1.x, currentBoundaryMap2.y, currentBoundaryMap2.x, false);
 	DrawFormatString(0, 880, GetColor(200, 120, 0), "X%d, Y%d", mapX, mapY, false);
 
-	DrawFormatString(0, 60, GetColor(255, 255, 255), "screenX:%d, screenY:%d",
-	                 1 * BLOCK_SIZE + screen.x + mapBetweenDistance * centerPos.x,
-	                 1 * BLOCK_SIZE + screen.y + mapBetweenDistance * centerPos.y, false);
+	//DrawFormatString(0, 60, GetColor(255, 255, 255), "screenX:%d, screenY:%d",
+	//                 1 * BLOCK_SIZE + screen.x + mapBetweenDistance * centerPos.x,
+	//                 1 * BLOCK_SIZE + screen.y + mapBetweenDistance * centerPos.y, false);
 
 	DrawFormatString(200, 100, GetColor(255, 0, 255), "マップ情報:%d",
 	                 mapCentral[blockArea.y][blockArea.x], false);

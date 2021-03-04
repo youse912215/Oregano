@@ -78,27 +78,27 @@ void Input::movement(MapCollision& collision, MapDraw& draw) {
 	//ç∂à⁄ìÆ
 	if (getInputButton(STICK_LEFT)) {
 		move_.left(collision, draw);
-		directionProcess(LEFT);
+		directionProcess(move_.changeDirection(LEFT));
 	}
-	else STICK[LEFT] = false;
+	else STICK[move_.changeDirection(LEFT)] = false;
 	//âEà⁄ìÆ
 	if (getInputButton(STICK_RIGHT)) {
 		move_.right(collision, draw);
-		directionProcess(RIGHT);
+		directionProcess(move_.changeDirection(RIGHT));
 	}
-	else STICK[RIGHT] = false;
+	else STICK[move_.changeDirection(RIGHT)] = false;
 	//è„à⁄ìÆ
 	if (getInputButton(STICK_UP)) {
 		move_.up(collision, draw);
-		directionProcess(UP);
+		directionProcess(move_.changeDirection(UP));
 	}
-	else STICK[UP] = false;
+	else STICK[move_.changeDirection(UP)] = false;
 	//â∫à⁄ìÆ
 	if (getInputButton(STICK_DOWN)) {
 		move_.down(collision, draw);
-		directionProcess(DOWN);
+		directionProcess(move_.changeDirection(DOWN));
 	}
-	else STICK[DOWN] = false;
+	else STICK[move_.changeDirection(DOWN)] = false;
 
 	DrawFormatString(0, 150, GetColor(255, 255, 120), "%d   %d",
 	                 collision.leftCollisionFlag(), collision.rightCollisionFlag(), false);

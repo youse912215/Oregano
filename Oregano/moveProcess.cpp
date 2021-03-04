@@ -1,7 +1,34 @@
 #include "moveProcess.h"
+#include "playerState.h"
+
+PlayerState state_;
 
 bool MoveProcess::mapCondition(MapDraw& draw, const int& mapInfo) {
 	return draw.mapCentral[draw.blockArea.y][draw.blockArea.x] == mapInfo;
+}
+
+bool MoveProcess::collisionDirectionLeft(MapCollision& collision) {
+	if (!state_.stateAbnormal[CONFUSION])
+		return collision.leftCollisionFlag();
+	return collision.rightCollisionFlag();
+}
+
+bool MoveProcess::collisionDirectionRight(MapCollision& collision) {
+	if (!state_.stateAbnormal[CONFUSION])
+		return collision.rightCollisionFlag();
+	return collision.leftCollisionFlag();
+}
+
+bool MoveProcess::collisionDirectionUp(MapCollision& collision) {
+	if (!state_.stateAbnormal[CONFUSION])
+		return collision.upCollisionFlag();
+	return collision.downCollisionFlag();
+}
+
+bool MoveProcess::collisionDirectionDown(MapCollision& collision) {
+	if (!state_.stateAbnormal[CONFUSION])
+		return collision.downCollisionFlag();
+	return collision.upCollisionFlag();
 }
 
 /// <summary>
@@ -16,38 +43,66 @@ int MoveProcess::movingDistance(MapDraw& draw) {
 	//…À‚Ì‚Æ‚«
 	if (mapCondition(draw, SWAMP))
 		return MOVING_DISTANCE / 4; //ˆÚ“®‹——£‚ğ1/4
+	if (mapCondition(draw, ICE))
+		return MOVING_DISTANCE * 2; //ˆÚ“®‹——£‚ğ2”{
 	//‚»‚êˆÈŠO
 	return MOVING_DISTANCE; //’Êí‚ÌˆÚ“®‹——£
+}
+
+/// <summary>
+/// •ûŒü‚ğ”½“]
+/// </summary>
+int MoveProcess::invert() {
+	if (!state_.stateAbnormal[CONFUSION])
+		return 1;
+	return -1;
+}
+
+/// <summary>
+/// •ûŒü‚Ìî•ñ‚ğØ‚è‘Ö‚¦‚é
+/// </summary>
+/// <param name="dir">•ûŒü</param>
+int MoveProcess::changeDirection(const int& dir) {
+	if (!state_.stateAbnormal[CONFUSION]) return dir;
+	if (dir == LEFT) return RIGHT;
+	if (dir == RIGHT) return LEFT;
+	if (dir == UP) return DOWN;
+	if (dir == DOWN) return UP;
+	return 0;
 }
 
 /// <summary>
 /// ¶ˆÚ“®
 /// </summary>
 void MoveProcess::left(MapCollision& collision, MapDraw& draw) {
-	MapDraw::mapX -= movingDistance(draw);
-	if (collision.leftCollisionFlag()) MapDraw::mapX += movingDistance(draw);
+	MapDraw::mapX -= movingDistance(draw) * invert(); //’Êí
+	if (collisionDirectionLeft(collision))
+		MapDraw::mapX += movingDistance(draw) * invert(); //Õ“Ë
 }
 
 /// <summary>
 /// ‰EˆÚ“®
 /// </summary>
 void MoveProcess::right(MapCollision& collision, MapDraw& draw) {
-	MapDraw::mapX += movingDistance(draw);
-	if (collision.rightCollisionFlag()) MapDraw::mapX -= movingDistance(draw);
+	MapDraw::mapX += movingDistance(draw) * invert(); //’Êí
+	if (collisionDirectionRight(collision))
+		MapDraw::mapX -= movingDistance(draw) * invert(); //Õ“Ë
 }
 
 /// <summary>
 /// ãˆÚ“®
 /// </summary>
 void MoveProcess::up(MapCollision& collision, MapDraw& draw) {
-	MapDraw::mapY -= movingDistance(draw);
-	if (collision.upCollisionFlag()) MapDraw::mapY += movingDistance(draw);
+	MapDraw::mapY -= movingDistance(draw) * invert(); //’Êí
+	if (collisionDirectionUp(collision))
+		MapDraw::mapY += movingDistance(draw) * invert(); //Õ“Ë
 }
 
 /// <summary>
 /// ‰ºˆÚ“®
 /// </summary>
 void MoveProcess::down(MapCollision& collision, MapDraw& draw) {
-	MapDraw::mapY += movingDistance(draw);
-	if (collision.downCollisionFlag()) MapDraw::mapY -= movingDistance(draw);
+	MapDraw::mapY += movingDistance(draw) * invert(); //’Êí
+	if (collisionDirectionDown(collision))
+		MapDraw::mapY -= movingDistance(draw) * invert(); //Õ“Ë
 }

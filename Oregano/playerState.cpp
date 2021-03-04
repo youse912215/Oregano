@@ -1,9 +1,8 @@
 #include "playerState.h"
-
 #include "eventBase.h"
 
 PlayerState::PlayerState() :
-	stateAbnormal(4), attributeAccumulation{0, 0, 0, 0} {
+	stateAbnormal{false, false, false, false}, attributeAccumulation{0, 0, 0, 0} {
 	battleStyle = 0;
 }
 
@@ -20,7 +19,16 @@ void PlayerState::changeBattleStyle(std::vector<int>& coin, const int& dir) {
 	else if (dir == RIGHT && battleStyle != 3)
 		//前のスタイルのコインが0ではないとき
 		battleStyle = coin[battleStyle + 1] != 0 ? ++battleStyle : battleStyle; //次のスタイルに切り替え
+}
 
+/// <summary>
+/// 状態異常を取得
+/// </summary>
+void PlayerState::getStateAbnormal() {
+	for (unsigned int i = 0; i != stateAbnormal.size(); ++i) {
+		if (attributeAccumulation[i] < 100) continue; //条件以外のとき、処理をスキップする
+		stateAbnormal[i] = true; //状態異常をtrue
+	}
 }
 
 /// <summary>
@@ -71,7 +79,7 @@ void PlayerState::valueReset(bool& elimination, std::vector<bool>& cooldownFlag)
 }
 
 /// <summary>
-/// 
+/// 状態のクールダウン処理
 /// </summary>
 /// <param name="cooldown"></param>
 /// <param name="cooldownFlag"></param>
@@ -82,15 +90,5 @@ void PlayerState::countCooldown(std::vector<int>& cooldown, std::vector<bool>& c
 	if (cooldown[ELIMINATION] >= 120) {
 		cooldown[ELIMINATION] = 0; //クールダウンをリセット
 		cooldownFlag[ELIMINATION] = false; //クールダウンフラグをfalse
-	}
-}
-
-/// <summary>
-/// 状態異常を取得
-/// </summary>
-void PlayerState::getStateAbnormal() {
-	for (unsigned int i = 0; i != stateAbnormal.size(); ++i) {
-		if (attributeAccumulation[i] < 100) continue; //条件以外のとき、処理をスキップする
-		stateAbnormal[i] = true; //状態異常をtrue
 	}
 }
