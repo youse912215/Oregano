@@ -1,5 +1,4 @@
 #pragma once
-#include "vec2.h"
 #include <vector>
 
 class PlayerState {
@@ -19,6 +18,10 @@ public:
 	void switchStyleAutomatically(std::vector<int>& coin);
 
 	void calculateValue(const int& attribute, const int& attributeValue);
+
+	void valueReset(bool& elimination, std::vector<bool>& cooldownFlag);
+
+	void countCooldown(std::vector<int>& cooldown, std::vector<bool>& cooldownFlag);
 
 	PlayerState();
 };

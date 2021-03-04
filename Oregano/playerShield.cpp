@@ -3,7 +3,7 @@
 #include "DxLib.h"
 
 
-PlayerShield::PlayerShield() : shieldPos(0.0, 0.0), shieldValue(15) {
+PlayerShield::PlayerShield() : shieldPos(0.0, 0.0), value(15) {
 }
 
 /// <summary>
@@ -17,7 +17,7 @@ void PlayerShield::initialize(Vec2d& pos) {
 /// <summary>
 /// シールドのクールダウン処理
 /// </summary>
-void PlayerShield::shieldCooldown(std::vector<int>& cooldown, std::vector<bool>& cooldownFlag, bool& shield) {
+void PlayerShield::countCooldown(std::vector<int>& cooldown, std::vector<bool>& cooldownFlag, bool& shield) {
 	if (cooldownFlag[SHIELD] && !shield) cooldown[SHIELD]++; //クールダウン開始
 
 	if (cooldown[SHIELD] >= 120) {
@@ -32,4 +32,11 @@ void PlayerShield::shieldCooldown(std::vector<int>& cooldown, std::vector<bool>&
 /// <param name="source">データソース</param>
 void PlayerShield::draw(DataSource& source) {
 	DrawGraph(static_cast<int>(shieldPos.dx), static_cast<int>(shieldPos.dy), source.shieldGraph, true);
+}
+
+/// <summary>
+/// 0以下は0にする処理
+/// </summary>
+void PlayerShield::zeroOut() {
+	if (value <= 0) value = 0;
 }

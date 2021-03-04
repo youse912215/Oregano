@@ -265,5 +265,7 @@ enum ACTION_COMMAND {
 	//n
 	SLASH,
 	//ƒV[ƒ‹ƒh
-	SHIELD
+	SHIELD,
+	//ó‘Ô‰ðÁ
+	ELIMINATION,
 };

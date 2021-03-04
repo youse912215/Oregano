@@ -14,7 +14,7 @@ public:
 	Vec2d knifeAddPos; //ナイフの加算分の座標
 
 	void initialize(Vec2d& pos, Vec2d& knifeCenter); //ナイフの初期化
-	void knifeCooldown(std::vector<int>& cooldown, std::vector<bool>& cooldownFlag); //ナイフのクールダウン処理
+	void countCooldown(std::vector<int>& cooldown, std::vector<bool>& cooldownFlag); //ナイフのクールダウン処理
 	void setKnifePosition(Vec2d& pos); //ナイフのポジジョンセット
 	void resetKnifePosition(Vec2d& center, bool& knife); //ナイフのポジジョンリセット
 	void accelKnife(Input& input); //ナイフの加速

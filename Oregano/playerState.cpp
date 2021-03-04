@@ -55,6 +55,37 @@ void PlayerState::calculateValue(const int& attribute, const int& attributeValue
 }
 
 /// <summary>
+/// 属性耐性値をリセットと状態異常を解消
+/// </summary>
+/// <param name="elimination">解消フラグ</param>
+void PlayerState::valueReset(bool& elimination, std::vector<bool>& cooldownFlag) {
+	//現在の戦闘スタイルの状態異常がtrueかつ、解消フラグがtrueのとき
+	if (elimination) {
+		if (stateAbnormal[battleStyle]) {
+			attributeAccumulation[battleStyle] = 0; //属性耐性値をリセット
+			stateAbnormal[battleStyle] = false; //状態異常を解消
+			cooldownFlag[ELIMINATION] = true; //クールダウンフラグをtrue
+		}
+		elimination = false; //解消フラグをfalse
+	}
+}
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name="cooldown"></param>
+/// <param name="cooldownFlag"></param>
+void PlayerState::countCooldown(std::vector<int>& cooldown, std::vector<bool>& cooldownFlag) {
+	if (cooldownFlag[ELIMINATION]) cooldown[ELIMINATION]++; //クールダウン開始
+
+	//クールダウンは120秒
+	if (cooldown[ELIMINATION] >= 120) {
+		cooldown[ELIMINATION] = 0; //クールダウンをリセット
+		cooldownFlag[ELIMINATION] = false; //クールダウンフラグをfalse
+	}
+}
+
+/// <summary>
 /// 状態異常を取得
 /// </summary>
 void PlayerState::getStateAbnormal() {

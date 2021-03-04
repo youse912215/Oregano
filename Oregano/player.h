@@ -29,6 +29,7 @@ private:
 	void stateAbnormalUpdate(); //状態異常更新処理
 
 	bool state(const int& num);
+	bool cool(const int& num);
 
 public:
 	Vec2d center; //プレイヤーの中心座標
@@ -38,6 +39,7 @@ public:
 	bool knife;
 	bool slash;
 	bool shield;
+	bool elimination;
 
 	void lostPlayerCoin(const int& attackPower); //コインの損失処理
 	void addPlayerCoin(const int& attribute, const int& enemyCoin); //コインの追加処理

@@ -20,7 +20,9 @@ void PlayerKnife::initialize(Vec2d& pos, Vec2d& knifeCenter) {
 /// <summary>
 /// ナイフのクールダウン処理
 /// </summary>
-void PlayerKnife::knifeCooldown(vector<int>& cooldown, vector<bool>& cooldownFlag) {
+/// <param name="cooldown">クールダウン</param>
+/// <param name="cooldownFlag">クールダウンフラグ</param>
+void PlayerKnife::countCooldown(vector<int>& cooldown, vector<bool>& cooldownFlag) {
 	if (cooldownFlag[KNIFE]) cooldown[KNIFE]++; //クールダウン開始
 
 	//クールダウンは30秒
