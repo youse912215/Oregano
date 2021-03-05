@@ -4,7 +4,7 @@
 #include "effectSpurt.h"
 
 /* 敵 */
-vector<Enemy> enemies(5);
+vector<Enemy> enemies(15);
 
 /* 血のエフェクト */
 EffectBlood blood_;
@@ -14,7 +14,7 @@ vector<EffectBlood> bloods_(100);
 EffectSpurt spurt_;
 vector<EffectSpurt> spurts_(150);
 
-EnemyConclusion::EnemyConclusion(Player& player_) : player_(player_) {
+EnemyConclusion::EnemyConclusion(Player& player_) : player_(player_), showTime(15) {
 }
 
 /// <summary>
@@ -28,10 +28,12 @@ void EnemyConclusion::update() {
 			i.initialize(player_); //初期化
 		}
 		i.update(player_, source_); //更新処理
-		//死亡時間のとき
-		if (i.deadFlag) {
+
+		//プレイヤーからダメージを受けたとき
+		if (i.intervalFlag[KNIFE] || i.intervalFlag[SLASH])
 			blood_.update(bloods_, source_, i.screenPos, i.attribute); //血のエフェクト
-			if (i.deadTime <= 15) spurt_.update(spurts_, i.screenPos); //噴き出し（コイン）エフェクト
-		}
+		//死亡時間のとき
+		if (i.deadFlag && i.deadTime <= showTime)
+			spurt_.update(spurts_, i.screenPos); //噴き出し（コイン）エフェクト
 	}
 }

@@ -12,16 +12,17 @@ EnemyTracking tracking;
 
 Enemy::Enemy() :
 	pos(0.0, 0.0), center(0.0, 0.0),
-	screenCenter(0.0, 0.0), relativeDistance(0.0, 0.0), coin{5, 15, 25},
-	attackPower{5, 25, 50}, level(0), attributeValue{15, 30, 50},
+	screenCenter(0.0, 0.0), relativeDistance(0.0, 0.0), life(0), initLife{1, 2, 3}, possessionCoin{5, 15, 25},
+	attackPower{5, 25, 50},
+	level(0), damageInterval(2), damageFlag(2), attributeValue{15, 30, 50}, lissajousMaxTime(7200.0),
 
-	lissajousMaxTime(7200.0), lissajousX(800.0), lissajousY(450.0), controlSpeed(10.0), lissajousTime(0),
+	lissajousX(800.0), lissajousY(450.0), controlSpeed(10.0), lissajousTime(0), lissajousRandom(0),
 
-	lissajousRandom(0), pattern(0),
+	pattern(0), screenPos(0.0, 0.0),
 
-	screenPos(0.0, 0.0), deadTime(0),
+	deadTime(0), attribute(0),
 
-	attribute(0), activity(false), deadFlag(false) {
+	activity(false), deadFlag(false), intervalFlag(2) {
 
 }
 
@@ -44,7 +45,7 @@ void Enemy::draw(DataSource& source) {
 /// 死亡処理
 /// </summary>
 void Enemy::dead() {
-	deadFlag = true;
+	deadFlag = true; //死亡状態をtrue
 	activity = false; //活動状態をfalse
 }
 
@@ -66,19 +67,58 @@ void Enemy::hitKnife(Player& player) {
 	//ナイフとの相対距離がWEAPON_COLLISION_DISTANCE以下のとき
 	if (abs(screenCenter.dx - player.knifeCenter.dx) <= WEAPON_COLLISION_DISTANCE
 		&& abs(screenCenter.dy - player.knifeCenter.dy) <= WEAPON_COLLISION_DISTANCE) {
-		dead(); //死亡処理
-		player.addPlayerCoin(attribute, this->coin[level]); //コイン追加処理
+		takeDamage(KNIFE); //ダメージを受ける
 	}
 }
 
 /// <summary>
 /// 刃ヒット時の処理
 /// </summary>
-void Enemy::hitSlash(Player& player) {
+void Enemy::hitSlash() {
 	//
 	if (abs(relativeDistance.dx) <= 80.0 && abs(relativeDistance.dy) <= 80.0) {
+		takeDamage(SLASH); //ダメージを受ける
+	}
+}
+
+/// <summary>
+/// ダメージを受ける
+/// </summary>
+/// <param name="act">プレイヤーのアクション</param>
+void Enemy::takeDamage(const int& act) {
+	if (damageInterval[act] == 0) {
+		damageFlag[act] = true;
+		intervalFlag[act] = true;
+	}
+}
+
+/// <summary>
+/// ダメージ処理
+/// </summary>
+/// <param name="act">プレイヤーのアクション</param>
+void Enemy::damageProcess(Player& player, const int& act) {
+	if (intervalFlag[act])
+		damageInterval[act]++;
+
+	if (damageInterval[act] >= 15) {
+		damageInterval[act] = 0;
+		intervalFlag[act] = false;
+	}
+
+	if (damageFlag[act]) {
+		life -= player.addDamage(act);
+		damageFlag[act] = false;
+	}
+}
+
+/// <summary>
+/// 0ライフの処理
+/// </summary>
+void Enemy::noLife(Player& player) {
+	if (life <= 0) {
+		life = 0;
 		dead(); //死亡処理
-		player.addPlayerCoin(attribute, this->coin[level]); //コイン追加処理
+		player.addPlayerCoin(attribute, possessionCoin[level]); //コイン追加処理
 	}
 }
 
@@ -89,22 +129,22 @@ void Enemy::collision(Player& player) {
 	//プレイヤーとの距離がENEMY_COLLISION_DISTANCE以下のとき
 	if (abs(relativeDistance.dx) <= ENEMY_COLLISION_DISTANCE
 		&& abs(relativeDistance.dy) <= ENEMY_COLLISION_DISTANCE) {
-		dead(); //死亡処理
+		life = 0;
+		//dead(); //死亡処理
 		player.lostPlayerCoin(attackPower[level]); //(プレイヤーの)コインの損失処理
-		player.addAttributeAccumulation(attribute, attributeValue[level]);
+		player.addAttributeAccumulation(attribute, attributeValue[level]); //属性耐久値を加算
 	}
 }
 
-
 /// <summary>
-/// 属性を取得
+/// ステータスを設定
 /// </summary>
-void Enemy::getAttribute() {
-	attribute = getRandom(0, 3);
-}
-
-void Enemy::getLevel() {
-	level = getRandom(0, 2);
+void Enemy::setStatus() {
+	pattern = getRandom(0, 1); //敵のパターンをランダムで生成
+	lissajousRandom = getRandom(1, 15); //リサージュ曲線の種類をランダムで生成
+	attribute = getRandom(0, 3); //属性値
+	level = getRandom(0, 2); //レベル
+	life = initLife[level]; //ライフ
 }
 
 /// <summary>
@@ -137,10 +177,17 @@ void Enemy::lissajous() {
 
 /// <summary>
 /// 初期位置の取得
+/// 現在のプレイヤーの位置から周辺にかけて出現
 /// </summary>
-void Enemy::initPosition() {
-	pos.dx = getPopLocation(ONE_MAP_X, 3, getRandom(AREA_MIN, AREA_MAX)); //x座標
-	pos.dy = getPopLocation(ONE_MAP_Y, 3, getRandom(AREA_MIN, AREA_MAX)); //y座標
+void Enemy::initPosition(Player& player) {
+	//x座標
+	pos.dx = getPopLocation(ONE_MAP_X, //マップサイズ
+	                        player.currentMapPos(MAP_X_), //全体マップ座標
+	                        getRandom(AREA_MIN, AREA_MAX)); //1区画座標
+	//y座標
+	pos.dy = getPopLocation(ONE_MAP_Y, //マップサイズ
+	                        player.currentMapPos(MAP_Y_), //全体マップ座標
+	                        getRandom(AREA_MIN, AREA_MAX)); //1区画座標
 }
 
 /// <summary>
@@ -160,7 +207,12 @@ void Enemy::update(Player& player, DataSource& source) {
 	relativeDistanceUpdate(player); //プレイヤーとの相対距離を取得
 
 	if (player.knife) hitKnife(player); //ナイフが当たったとき
-	if (player.slash) hitSlash(player); //刃が当たったとき
+	if (player.slash) hitSlash(); //刃が当たったとき
+
+	damageProcess(player, KNIFE); //ナイフダメージ処理
+	damageProcess(player, SLASH); //刃ダメージ処理
+
+	noLife(player); //0ライフ処理
 
 	countDeadTime(); //死亡時間をカウント
 
@@ -175,6 +227,11 @@ void Enemy::update(Player& player, DataSource& source) {
 		draw(source); //描画処理
 	}
 
+	//敵が画面サイズの2倍の範囲外にいるとき
+	if (abs(relativeDistance.dx) >= WIN_WIDTH && abs(relativeDistance.dy) >= WIN_HEIGHT) {
+		dead();
+	}
+
 	DrawFormatString(200, 185, GetColor(0, 0, 255),
 	                 "En座標：%lf, %lf",
 	                 pos.dx, pos.dy, false);
@@ -186,23 +243,18 @@ void Enemy::update(Player& player, DataSource& source) {
 	                 abs(relativeDistance.dx),
 	                 abs(relativeDistance.dy), false);
 	DrawFormatString(200, 230, GetColor(0, 0, 255),
-	                 "act：%d, dead:%d, dTime:%d",
-	                 activity, deadFlag, deadTime, false);
-	DrawFormatString(200, 260, GetColor(0, 0, 255),
-	                 "slash:%d",
-	                 player.slash, false);
+	                 "act：%d, dead:%d, dTime:%d, LIFE:%d, dm1:%d, dm2:%d",
+	                 activity, deadFlag, deadTime, life,
+	                 player.addDamage(0), player.addDamage(1), false);
 }
 
 void Enemy::initialize(Player& player) {
-	initPosition(); //初期位置の取得
-	getAttribute(); //属性を取得
-	getLevel(); //レベルを取得
+	initPosition(player); //初期位置の取得
+	setStatus(); //ステータスを設定
 	relativeDistanceUpdate(player); //プレイヤーとの相対距離を取得
 
-	pattern = getRandom(0, 1); //敵のパターンをランダムで生成
-	lissajousRandom = getRandom(1, 15); //リサージュ曲線の種類をランダムで生成
-
+	//敵が画面サイズの2倍の範囲内にいるとき
 	if (abs(relativeDistance.dx) <= WIN_WIDTH && abs(relativeDistance.dy) <= WIN_HEIGHT) {
-		activity = true;
+		activity = true; //活動状態をtrue
 	}
 }

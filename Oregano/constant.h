@@ -22,8 +22,8 @@ const double WEAPON_COLLISION_DISTANCE = HALF_BLOCK_SIZE_D; //敵と武器との衝突距
 const int TOTAL_MAPS_X = 5; //横方向のマップ総数
 const int TOTAL_MAPS_Y = 5; //縦方向のマップ総数
 
-const int ONE_MAP_X = BLOCK_SIZE * AREA_WIDTH;
-const int ONE_MAP_Y = BLOCK_SIZE * AREA_HEIGHT;
+const int ONE_MAP_X = BLOCK_SIZE * AREA_WIDTH; //1マップの横幅
+const int ONE_MAP_Y = BLOCK_SIZE * AREA_HEIGHT; //1マップの縦幅
 
 const int HALF_MAP_X = ONE_MAP_X / 2; //1マップの半分サイズ
 const int HALF_MAP_Y = ONE_MAP_Y / 2; //1マップの半分サイズ

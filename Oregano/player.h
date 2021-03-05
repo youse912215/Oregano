@@ -44,6 +44,8 @@ public:
 	void lostPlayerCoin(const int& attackPower); //コインの損失処理
 	void addPlayerCoin(const int& attribute, const int& enemyCoin); //コインの追加処理
 	void addAttributeAccumulation(const int& attribute, const int& attributeValue); //属性値の蓄積処理
+	int addDamage(const int& act); //敵へのダメージ
+	int currentMapPos(const int& pos); //現在のマップを返す
 
 	vector<int> status;
 	vector<int> possessionItem;

@@ -114,6 +114,16 @@ void Player::addAttributeAccumulation(const int& attribute, const int& attribute
 
 }
 
+/// <summary>
+/// 敵へのダメージ
+/// </summary>
+/// <param name="act">プレイヤーのアクション</param>
+int Player::addDamage(const int& act) {
+	if (stateAct.battleStyle != BLOODING)
+		return act + 1; //通常はact+1ダメージ
+	return (act + 1) * 2; //戦闘スタイルが中紅花(対出血)のとき2倍
+}
+
 bool Player::state(const int& num) {
 	return stateAct.stateAbnormal[num];
 }
@@ -145,7 +155,8 @@ void Player::slashUpdate() {
 	slashAct.initialize(this->pos); //刃の初期化
 	slashAct.countCooldown(cooldown, cooldownFlag, slash);
 
-	if (slash) slashAct.draw(source);
+	//刃の入力があったとき
+	if (slash) slashAct.draw(source); //描画処理
 }
 
 /// <summary>
@@ -157,7 +168,8 @@ void Player::shieldUpdate() {
 
 	if (shieldAct.value <= 0) shield = false; //シールド量が0になったら、シールド消失
 
-	if (shield) shieldAct.draw(source);
+	//シールドの入力があったとき
+	if (shield) shieldAct.draw(source); //描画処理
 }
 
 /// <summary>
@@ -166,8 +178,17 @@ void Player::shieldUpdate() {
 void Player::stateUpdate() {
 	stateAct.valueReset(elimination, cooldownFlag); //状態異常等を解消
 	stateAct.countCooldown(cooldown, cooldownFlag); //状態解消のクールダウン処理
-	stateAct.stateAbnormalUpdate(draw_);
+	stateAct.stateAbnormalUpdate(draw_); //状態異常更新処理
 	stateAct.switchStyleAutomatically(); //生存状態を更新
+}
+
+/// <summary>
+/// 現在のマップを返す
+/// </summary>
+/// <param name="pos">xまたはy</param>
+int Player::currentMapPos(const int& pos) {
+	if (pos == MAP_X_) return draw_.currentMap.x; //xマップ
+	return draw_.currentMap.y; //yマップ
 }
 
 /// <summary>
@@ -200,6 +221,8 @@ void Player::update() {
 	                 stateAct.attributeAccumulation[2], stateAct.coin[2], state(2), false);
 	DrawFormatString(0, 610, GetColor(0xee, 0x86, 0x9a), "中紅花:%d, コイン:%d, 状態:%d",
 	                 stateAct.attributeAccumulation[3], stateAct.coin[3], state(3), false);
+
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "mX%d, mY%d", draw_.currentMap.x, draw_.currentMap.y, false);
 
 	/*DrawFormatString(0, 500, GetColor(120, 0, 100), "トレジャーランク:%d, 花萌葱:%d, 金糸雀:%d, 葡萄染:%d, 白百合:%d",
 	                 status[TREASURE_RANK], status[GREEN_COIN], status[YELLOW_COIN],

@@ -8,7 +8,7 @@ PlayerState::PlayerState() : poisonTime(0), roughTime(0), attributeMax(100), tim
                              poisonDamage(50), roughDamage(100),
                              eliminateCoin(300),
                              stateAbnormal{false, false, false, false}, attributeAccumulation{0, 0, 0, 0},
-                             coin{100, 100, 100, 100},
+                             coin{10000, 10000, 10000, 10000},
                              battleStyle(0) {
 }
 
@@ -27,10 +27,12 @@ void PlayerState::getStateAbnormal() {
 /// </summary>
 /// <param name="draw_">マップの描画クラス</param>
 void PlayerState::getFloorState(MapDraw& draw_) {
-	if (move_.mapCondition(draw_, POISON)) {
+	//毒床の上にいるときかつ、戦闘スタイルが花萌葱(対猛毒)以外のとき
+	if (move_.mapCondition(draw_, POISON) && battleStyle != DEADLY_POISON) {
 		stateAbnormal[DEADLY_POISON] = true; //猛毒状態を付与
 	}
-	else if (move_.mapCondition(draw_, ROUGH)) {
+		//凸凹床の上にいるときかつ、戦闘スタイルが深支子(対痙攣)以外のとき
+	else if (move_.mapCondition(draw_, ROUGH) && battleStyle != CRAMPS) {
 		//0から100まで時間を動かす
 		roughTime = roughTime <= timeMax ? ++roughTime : 0; //凸凹時間をカウント
 	}

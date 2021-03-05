@@ -12,43 +12,46 @@ bool MoveProcess::mapCondition(MapDraw& draw, const int& mapInfo) {
 /// 左衝突フラグ
 /// </summary>
 bool MoveProcess::collisionDirectionLeft(MapCollision& collision) {
+	//混乱状態以外のとき
 	if (!state_.stateAbnormal[CONFUSION])
-		return collision.leftCollisionFlag();
-	return collision.rightCollisionFlag();
+		return collision.leftCollisionFlag(); //そのまま返す
+	return collision.rightCollisionFlag(); //反転して返す
 }
 
 /// <summary>
 /// 右衝突フラグ
 /// </summary>
 bool MoveProcess::collisionDirectionRight(MapCollision& collision) {
+	//混乱状態以外のとき
 	if (!state_.stateAbnormal[CONFUSION])
-		return collision.rightCollisionFlag();
-	return collision.leftCollisionFlag();
+		return collision.rightCollisionFlag(); //そのまま返す
+	return collision.leftCollisionFlag(); //反転して返す
 }
 
 /// <summary>
 /// 上衝突フラグ
 /// </summary>
 bool MoveProcess::collisionDirectionUp(MapCollision& collision) {
+	//混乱状態以外のとき
 	if (!state_.stateAbnormal[CONFUSION])
-		return collision.upCollisionFlag();
-	return collision.downCollisionFlag();
+		return collision.upCollisionFlag(); //そのまま返す
+	return collision.downCollisionFlag(); //反転して返す
 }
 
 /// <summary>
 /// 下衝突フラグ
 /// </summary>
 bool MoveProcess::collisionDirectionDown(MapCollision& collision) {
+	//混乱状態以外のとき
 	if (!state_.stateAbnormal[CONFUSION])
-		return collision.downCollisionFlag();
-	return collision.upCollisionFlag();
+		return collision.downCollisionFlag(); //そのまま返す
+	return collision.upCollisionFlag(); //反転して返す
 }
 
 /// <summary>
 /// 現在のマップの情報によって、移動距離を返す
 /// </summary>
 /// <param name="draw">マップ描画クラス</param>
-/// <param name="mapInfo">マップ情報</param>
 int MoveProcess::movingDistance(MapDraw& draw) {
 	//浅瀬のとき
 	if (mapCondition(draw, SHALLOW))
@@ -56,6 +59,7 @@ int MoveProcess::movingDistance(MapDraw& draw) {
 	//水沼のとき
 	if (mapCondition(draw, SWAMP))
 		return MOVING_DISTANCE / 4; //移動距離を1/4
+	//氷のとき
 	if (mapCondition(draw, ICE))
 		return MOVING_DISTANCE * 2; //移動距離を2倍
 	//それ以外
