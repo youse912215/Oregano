@@ -20,10 +20,11 @@ Player::Player(Input& input, MapDraw& draw_) : input(input),
                                                knife(false), slash(false), shield(false), elimination(false),
 
                                                /* データ類 */
-                                               status(PLAYER_STATUS_SIZE), possessionItem(PLAYER_ITEM_SIZE),
+                                               status(PLAYER_STATUS_SIZE)/*,
+                                               possessionItem(PLAYER_ITEM_SIZE),
                                                possessionAccessory(PLAYER_ACCESSORY_SIZE),
                                                possessionJewel(PLAYER_JEWEL_SIZE),
-                                               possessionMineral(PLAYER_MINERAL_SIZE) {
+                                               possessionMineral(PLAYER_MINERAL_SIZE)*/ {
 
 	this->pos.dx = static_cast<int>(WIN_WIDTH / 2 - BLOCK_SIZE / 2); //プレイヤーx座標
 	this->pos.dy = static_cast<int>(WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2); //プレイヤーy座標
@@ -187,7 +188,7 @@ void Player::stateUpdate() {
 /// </summary>
 /// <param name="pos">xまたはy</param>
 int Player::currentMapPos(const int& pos) {
-	if (pos == MAP_X_) return draw_.currentMap.x; //xマップ
+	if (pos == POSITION_X) return draw_.currentMap.x; //xマップ
 	return draw_.currentMap.y; //yマップ
 }
 

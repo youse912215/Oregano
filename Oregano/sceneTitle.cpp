@@ -7,6 +7,8 @@ MapAutogeneration autogeneration;
 MapLoad load;
 DataSource source;
 
+int SceneTitle::gameScene = TITLE_SCENE;
+
 SceneTitle::SceneTitle(DataSave& save) : save(save) {
 }
 
@@ -21,7 +23,10 @@ void SceneTitle::update() {
 	CALL_ONCE(autogeneration.writeRandomMap()); //マップ自動生成
 	load.roadMapData(); //マップデータ読み込み
 
-	EventBase::gameScene = GAME_SCENE; //ゲームシーンへ
+	save.update();
+	gameScene = GAME_SCENE; //ゲームシーンへ
+
+
 }
 
 /// <summary>

@@ -4,7 +4,7 @@
 #include "effectSpurt.h"
 
 /* 敵 */
-vector<Enemy> enemies(15);
+vector<Enemy> enemies(1);
 
 /* 血のエフェクト */
 EffectBlood blood_;

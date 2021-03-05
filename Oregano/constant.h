@@ -42,25 +42,8 @@ const int MOVE_RANGE = 1000; //移動範囲（この数字のマップチップまで移動可能）
 
 const int GAME_HOUR = 1200; //1時間あたりのgameTime
 
-const int PLAYER_STATUS_SIZE = 21; //プレイヤーステータス(距離以外)のサイズ
-const int PLAYER_ITEM_SIZE = 160; //プレイヤーのアイテムサイズ
-const int PLAYER_ACCESSORY_SIZE = 80; //プレイヤーのアクセサリーサイズ
-const int PLAYER_JEWEL_SIZE = 32; //プレイヤーのジュエルサイズ
-const int PLAYER_MINERAL_SIZE = 8; //プレイヤーの鉱物サイズ
-
+const int PLAYER_STATUS_SIZE = 9; //プレイヤーステータス(距離以外)のサイズ
 const int STATUS_INFORMATION_SIZE = PLAYER_STATUS_SIZE + 2; //ステータスのサイズ
-const int COIN_INFORMATION_SIZE = 4312; //コイン情報のサイズ
-const int ITEM_INFORMATION_SIZE = 2120; //アイテム情報のサイズ
-const int ACCESSORY_INFORMATION_SIZE = 128; //アクセサリー情報のサイズ
-const int JEWEL_INFORMATION_SIZE = 72; //ジュエル情報のサイズ
-const int MINERAL_INFORMATION_SIZE = 128; //鉱物情報のサイズ 
-const int EVENT_INFORMATION_SIZE = 8; //1イベントあたりの情報のサイズ
-
-const int COIN_EVENT_SIZE = 250; //コインイベントのサイズ
-const int ITEM_EVENT_SIZE = 120; //アイテムイベントのサイズ
-const int ACCESSORY_EVENT_SIZE = 20; //アクセサリーイベントのサイズ
-const int JEWEL_EVENT_SIZE = 5; //ジュエルイベントのサイズ
-const int MINERAL_EVENT_SIZE = 20; //鉱物イベントのサイズ
 
 const int ALL_COIN_TYPE = 4; //コインの種類
 
@@ -78,12 +61,13 @@ const int TERMINAL_CHAR = 1;
 
 //ゲームシーン
 enum GAME_SCENE {
+	//タイトル
 	TITLE_SCENE,
+	//ロード
 	ROAD_SCENE,
+	//ゲーム
 	GAME_SCENE,
 	MENU_ITEM_SCENE,
-	MENU_STATUS_SCENE,
-	MENU_EQUIPMENT_SCENE,
 	END_SCENE,
 };
 
@@ -109,21 +93,35 @@ enum DIRECTION_INFORMATION {
 	CROSS,
 };
 
+//衝突判定を行う角部分の情報
 enum CORNER_INFORMATION {
+	//左上
 	LEFT_UP,
+	//右上
 	RIGHT_UP,
+	//左下
 	LEFT_DOWN,
+	//右下
 	RIGHT_DOWN,
+	//中央左1
 	CENTER_LEFT1,
+	//中央右1
 	CENTER_RIGHT1,
+	//中央上1
 	CENTER_UP1,
+	//中央下1
 	CENTER_DOWN1,
+	//中央左2
 	CENTER_LEFT2,
+	//中央右2
 	CENTER_RIGHT2,
+	//中央上2
 	CENTER_UP2,
+	//中央下2
 	CENTER_DOWN2,
 };
 
+//全ての方向（9方向）
 enum DIRECTION_MAP {
 	MAP_TOP_LEFT,
 	MAP_TOP_CENTRAL,
@@ -136,6 +134,7 @@ enum DIRECTION_MAP {
 	MAP_BOTTOM_RIGHT
 };
 
+//向きを符号とする
 enum DIRECTION_SIGN {
 	Left = -1,
 	Right = 1,
@@ -201,64 +200,7 @@ enum POSITION_INFORMATION {
 	POSITION_Y,
 };
 
-enum STATUS {
-	//トレジャーランク
-	TREASURE_RANK,
-	//花萌葱のコイン
-	GREEN_COIN,
-	//金糸雀のコイン
-	YELLOW_COIN,
-	//葡萄染のコイン
-	PURPLE_COIN,
-	//白百合のコイン
-	WHITE_COIN,
-	//生命力
-	CURRENT_LIFE,
-	//最大生命力
-	MAX_LIFE,
-	//攻撃力
-	ATTACK,
-	//猛毒耐性
-	DEADLY_POISON_RESISTANCE,
-	//猛毒属性値
-	DEADLY_POISON_VALUE,
-	//猛毒蓄積
-	DEADLY_POISON_ACCUMULATION,
-	//麻痺耐性
-	PARALYSIS_RESISTANCE,
-	//麻痺属性値
-	PARALYSIS_VALUE,
-	//麻痺蓄積
-	PARALYSIS_ACCUMULATION,
-	//催眠耐性
-	HYPNOSIS_RESISTANCE,
-	//催眠耐性
-	HYPNOSIS_VALUE,
-	//催眠蓄積
-	HYPNOSIS_ACCUMULATION,
-	//出血耐性
-	BLOODING_RESISTANCE,
-	//出血属性値
-	BLOODING_VALUE,
-	//出血蓄積
-	BLOODING_ACCUMULATION,
-	//交渉力
-	BARGAINING_POWER,
-	//現在のマップ座標
-	CURRENT_MAP_X,
-	CURRENT_MAP_Y,
-};
-
-enum ITEM_INFORMATION {
-	MAP_X_,
-	MAP_Y_,
-	CURRENT_X_,
-	CURRENT_Y_,
-	DIRECTION_,
-	EVENT_NO_,
-	ITEM_TYPE_,
-};
-
+//アクションコマンド
 enum ACTION_COMMAND {
 	//投げナイフ
 	KNIFE,
@@ -270,6 +212,7 @@ enum ACTION_COMMAND {
 	ELIMINATION,
 };
 
+//状態異常
 enum STATE_ABNORMAL {
 	//猛毒
 	DEADLY_POISON,

@@ -12,13 +12,14 @@ EnemyTracking tracking;
 
 Enemy::Enemy() :
 	pos(0.0, 0.0), center(0.0, 0.0),
-	screenCenter(0.0, 0.0), relativeDistance(0.0, 0.0), life(0), initLife{1, 2, 3}, possessionCoin{5, 15, 25},
+	screenCenter(0.0, 0.0), relativeDistance(0.0, 0.0), initLife{1, 2, 3}, possessionCoin{5, 15, 25},
 	attackPower{5, 25, 50},
-	level(0), damageInterval(2), damageFlag(2), attributeValue{15, 30, 50}, lissajousMaxTime(7200.0),
+	attributeValue{15, 30, 50},
+	life(0), pattern(0), level(0), damageInterval(2), damageFlag(2),
 
-	lissajousX(800.0), lissajousY(450.0), controlSpeed(10.0), lissajousTime(0), lissajousRandom(0),
+	lissajousMaxTime(7200.0), lissajousX(800.0), lissajousY(450.0), controlSpeed(10.0), lissajousTime(0),
 
-	pattern(0), screenPos(0.0, 0.0),
+	lissajousRandom(0), screenPos(0.0, 0.0),
 
 	deadTime(0), attribute(0),
 
@@ -182,11 +183,11 @@ void Enemy::lissajous() {
 void Enemy::initPosition(Player& player) {
 	//x座標
 	pos.dx = getPopLocation(ONE_MAP_X, //マップサイズ
-	                        player.currentMapPos(MAP_X_), //全体マップ座標
+	                        player.currentMapPos(POSITION_X), //全体マップ座標
 	                        getRandom(AREA_MIN, AREA_MAX)); //1区画座標
 	//y座標
 	pos.dy = getPopLocation(ONE_MAP_Y, //マップサイズ
-	                        player.currentMapPos(MAP_Y_), //全体マップ座標
+	                        player.currentMapPos(POSITION_Y), //全体マップ座標
 	                        getRandom(AREA_MIN, AREA_MAX)); //1区画座標
 }
 

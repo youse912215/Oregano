@@ -241,23 +241,23 @@ void MapCollision::collisionDetectionCenterDown2() {
 bool MapCollision::collisionDetection(const int& dirXY, const int& dirX, const int& dirY) {
 	switch (dirXY) {
 	case MAP_TOP_LEFT:
-		return map.mapTopLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
+		return map.mapTopLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL + 10;
 	case MAP_TOP_CENTRAL:
-		return map.mapTopCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
+		return map.mapTopCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL + 10;
 	case MAP_TOP_RIGHT:
-		return map.mapTopRight[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
+		return map.mapTopRight[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL + 10;
 	case MAP_LEFT_CENTRAL:
-		return map.mapLeftCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
+		return map.mapLeftCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL + 10;
 	case MAP_CENTRAL:
-		return map.mapCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
+		return map.mapCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL + 10;
 	case MAP_RIGHT_CENTRAL:
-		return map.mapRightCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
+		return map.mapRightCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL + 10;
 	case MAP_BOTTOM_LEFT:
-		return map.mapBottomLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
+		return map.mapBottomLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL + 10;
 	case MAP_BOTTOM_CENTRAL:
-		return map.mapBottomCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
+		return map.mapBottomCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL + 10;
 	case MAP_BOTTOM_RIGHT:
-		return map.mapBottomRight[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
+		return map.mapBottomRight[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL + 10;
 	default:
 		return false;
 	}

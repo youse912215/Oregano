@@ -1,6 +1,6 @@
 #include "playerState.h"
-#include "eventBase.h"
 #include "moveProcess.h"
+#include "sceneTitle.h"
 
 MoveProcess move_;
 
@@ -8,7 +8,7 @@ PlayerState::PlayerState() : poisonTime(0), roughTime(0), attributeMax(100), tim
                              poisonDamage(50), roughDamage(100),
                              eliminateCoin(300),
                              stateAbnormal{false, false, false, false}, attributeAccumulation{0, 0, 0, 0},
-                             coin{10000, 10000, 10000, 10000},
+                             coin({10000, 10000, 10000, 10000}),
                              battleStyle(0) {
 }
 
@@ -99,7 +99,7 @@ void PlayerState::switchStyleAutomatically() {
 		if (itr != coin.end())
 			battleStyle = distance(coin.begin(), itr); //戦闘スタイルを切り替える
 		else
-			EventBase::gameScene = END_SCENE; //全てのコインが0になり、ゲームオーバーシーンへ
+			SceneTitle::gameScene = END_SCENE; //全てのコインが0になり、ゲームオーバーシーンへ
 	}
 }
 

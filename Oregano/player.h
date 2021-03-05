@@ -48,10 +48,10 @@ public:
 	int currentMapPos(const int& pos); //Œ»İ‚Ìƒ}ƒbƒv‚ğ•Ô‚·
 
 	vector<int> status;
-	vector<int> possessionItem;
+	/*vector<int> possessionItem;
 	vector<int> possessionAccessory;
 	vector<int> possessionJewel;
-	vector<int> possessionMineral;
+	vector<int> possessionMineral;*/
 
 	Player(Input& input, MapDraw& draw_);
 	~Player();

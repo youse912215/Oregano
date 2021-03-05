@@ -1,8 +1,8 @@
 #include "DxLib.h"
 #include "constant.h"
-#include "eventBase.h"
 #include "mapDraw.h"
 #include "inputProcess.h"
+#include "sceneTitle.h"
 
 char Input::oldkeys[KEY_BUFFER_MAX] = {0};
 char Input::keys[KEY_BUFFER_MAX] = {0};
@@ -174,7 +174,7 @@ void Input::eventProcess() {
 /// </summary>
 void Input::endProcess() {
 	if (getInputButton(VIEW_BUTTON)) {
-		EventBase::gameScene = END_SCENE;
+		SceneTitle::gameScene = END_SCENE;
 	}
 }
 

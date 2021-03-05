@@ -4,7 +4,7 @@ class DataSource {
 private:
 
 protected:
-	int actionUI; //アクションUI画像ファイルの読み込
+	int actionUI; //アクションUI画像ファイルの読み込み
 
 public:
 	int enemyGraph;
@@ -17,6 +17,8 @@ public:
 	int blue;
 	int green;
 	int yellow;
+	int BlurGraph1;
+	int BlurGraph2;
 
 	DataSource();
 	~DataSource();

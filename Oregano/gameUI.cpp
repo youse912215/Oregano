@@ -2,7 +2,7 @@
 #include "DxLib.h"
 #include "constant.h"
 
-GameUI::GameUI(Input& input) : input(input) {
+GameUI::GameUI(Input& input, MapDraw& map) : input(input), map(map) {
 	pos.x = WIN_WIDTH - BLOCK_SIZE * 2;
 	pos.y = WIN_HEIGHT - BLOCK_SIZE * 2;
 	graphPos = 0;
@@ -12,26 +12,23 @@ GameUI::GameUI(Input& input) : input(input) {
 GameUI::~GameUI() {
 }
 
-void GameUI::draw() {
-	DrawRectGraph(pos.x, pos.y, graphPos, 0,
-	              BLOCK_SIZE, BLOCK_SIZE, actionUI, true, false);
+/// <summary>
+/// Ç⁄Ç©ÇµÇÃï`âÊ
+/// </summary>
+void GameUI::drawblur() {
+	if (!(map.currentMap.x >= 3 && map.currentMap.y <= 2))
+		DrawGraph(0, 0, source.BlurGraph1, true);
+	else
+		DrawGraph(0, 0, source.BlurGraph2, true);
 }
 
-void GameUI::actionModeChange() {
-	if (input.B) {
-		changeFlag = !changeFlag ? true : false;
-	}
-
-	if (input.LB && graphPos != 0 && changeFlag) graphPos -= BLOCK_SIZE;
-
-	if (input.RB && graphPos != BLOCK_SIZE * 2 && changeFlag) graphPos += BLOCK_SIZE;
+/// <summary>
+/// ï`âÊèàóù
+/// </summary>
+void GameUI::draw() {
+	drawblur(); //Ç⁄Ç©ÇµÇÃï`âÊ
 }
 
 void GameUI::update() {
-	actionModeChange();
-	//stopIntervalTime();
 	draw();
-
-	DrawFormatString(pos.x - BLOCK_SIZE, pos.y + BLOCK_SIZE, GetColor(255, 0, 0), "TF:%d, mode:%d",
-	                 changeFlag, graphPos, false);
 }
