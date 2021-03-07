@@ -12,6 +12,7 @@ private:
 	Vec2d center; //全体マップの中心座標
 	Vec2d screenCenter; //画面上の中心座標
 	Vec2d relativeDistance; //プレイヤーとの相対距離
+	const int lifeheight; //縦幅
 
 	/* 処理系 */
 	void initPosition(Player& player); //初期位置の取得

@@ -17,8 +17,14 @@ public:
 	int blue;
 	int green;
 	int yellow;
-	int BlurGraph1;
-	int BlurGraph2;
+	int blurGraph1;
+	int blurGraph2;
+	int enemyLife;
+	int coinGraph;
+	int conditionGraph;
+	int passiveGraph;
+	int menuGraph;
+	int modeGraph;
 
 	DataSource();
 	~DataSource();

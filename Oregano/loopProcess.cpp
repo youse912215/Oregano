@@ -46,11 +46,11 @@ void loopProcess() {
 
 			player.update(); //プレイヤー更新処理
 
-			enemy.update(); //敵更新処理
+			//enemy.update(); //敵更新処理
 
-			save.update();
+			save.update(); //データセーブ
 
-			//gameUI.update(); //UI更新処理
+			gameUI.update(); //UI更新処理
 		}
 			/* メニューシーン処理 */
 		else if (SceneTitle::gameScene == MENU_ITEM_SCENE) {

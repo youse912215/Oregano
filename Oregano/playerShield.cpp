@@ -11,8 +11,8 @@ PlayerShield::PlayerShield() : shieldQuantity(15), addQuantity(45), cooldownMax(
 /// <param name="battleStyle">戦闘スタイル</param>
 /// <returns></returns>
 int PlayerShield::addShield(const int& battleStyle) {
-	//戦闘スタイルが燕子花(対混乱)のとき
-	if (battleStyle == CONFUSION) return addQuantity; //シールドを追加
+	//戦闘スタイルが深支子(対痙攣)のとき
+	if (battleStyle == CRAMPS) return addQuantity; //シールドを追加
 	return 0;
 }
 

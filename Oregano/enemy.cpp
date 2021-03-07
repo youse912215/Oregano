@@ -12,9 +12,9 @@ EnemyTracking tracking;
 
 Enemy::Enemy() :
 	pos(0.0, 0.0), center(0.0, 0.0),
-	screenCenter(0.0, 0.0), relativeDistance(0.0, 0.0), initLife{1, 2, 3}, possessionCoin{5, 15, 25},
-	attackPower{5, 25, 50},
-	attributeValue{15, 30, 50},
+	screenCenter(0.0, 0.0), relativeDistance(0.0, 0.0), lifeheight(8), initLife{1, 2, 3, 4},
+	possessionCoin{1, 5, 10, 15}, attackPower{2, 10, 20, 30},
+	attributeValue{5, 10, 20, 30},
 	life(0), pattern(0), level(0), damageInterval(2), damageFlag(2),
 
 	lissajousMaxTime(7200.0), lissajousX(800.0), lissajousY(450.0), controlSpeed(10.0), lissajousTime(0),
@@ -34,12 +34,18 @@ Enemy::~Enemy() {
 /// 描画処理
 /// </summary>
 void Enemy::draw(DataSource& source) {
-	//属性（attribute）によって、画像を変更する
+	/*属性（attribute）によって、画像を変更する*/
 	DrawRectGraph(static_cast<int>(screenPos.dx),
 	              static_cast<int>(screenPos.dy),
 	              attribute * static_cast<int>(HALF_BLOCK_SIZE_D), 0,
 	              static_cast<int>(HALF_BLOCK_SIZE_D), static_cast<int>(HALF_BLOCK_SIZE_D),
-	              source.enemyGraph, true, false);
+	              source.enemyGraph, true, false); //敵
+	/* lifeによって、画像を変更する */
+	DrawRectGraph(static_cast<int>(screenPos.dx),
+	              static_cast<int>(screenPos.dy) - 10,
+	              0, life * lifeheight - lifeheight,
+	              static_cast<int>(HALF_BLOCK_SIZE_D), lifeheight,
+	              source.enemyLife, true, false); //life
 }
 
 /// <summary>
@@ -144,7 +150,7 @@ void Enemy::setStatus() {
 	pattern = getRandom(0, 1); //敵のパターンをランダムで生成
 	lissajousRandom = getRandom(1, 15); //リサージュ曲線の種類をランダムで生成
 	attribute = getRandom(0, 3); //属性値
-	level = getRandom(0, 2); //レベル
+	level = getRandom(0, 3); //レベル
 	life = initLife[level]; //ライフ
 }
 
@@ -217,6 +223,7 @@ void Enemy::update(Player& player, DataSource& source) {
 
 	countDeadTime(); //死亡時間をカウント
 
+	/* 活動状態のとき */
 	if (activity) {
 		collision(player); //プレイヤーとの衝突処理
 		if (pattern % 2 == 0)
@@ -230,7 +237,8 @@ void Enemy::update(Player& player, DataSource& source) {
 
 	//敵が画面サイズの2倍の範囲外にいるとき
 	if (abs(relativeDistance.dx) >= WIN_WIDTH && abs(relativeDistance.dy) >= WIN_HEIGHT) {
-		dead();
+		screenPos = -HALF_BLOCK_SIZE; //画面外にポジションをセット
+		dead(); //死亡処理
 	}
 
 	DrawFormatString(200, 185, GetColor(0, 0, 255),

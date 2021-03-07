@@ -14,8 +14,14 @@ DataSource::DataSource() {
 	blue = LoadGraph("resource/Effect/bloodBlue.png");
 	yellow = LoadGraph("resource/Effect/bloodYellow.png");
 	green = LoadGraph("resource/Effect/bloodGreen.png");
-	BlurGraph1 = LoadGraph("resource/UI/blur1.png");
-	BlurGraph2 = LoadGraph("resource/UI/blur2.png");
+	blurGraph1 = LoadGraph("resource/UI/blur1.png");
+	blurGraph2 = LoadGraph("resource/UI/blur2.png");
+	enemyLife = LoadGraph("resource/UI/enemyLife.png");
+	coinGraph = LoadGraph("resource/UI/coin.png");
+	conditionGraph = LoadGraph("resource/UI/condition.png");
+	passiveGraph = LoadGraph("resource/UI/passive.png");
+	menuGraph = LoadGraph("resource/UI/menu.png");
+	modeGraph = LoadGraph("resource/UI/mode.png");
 }
 
 DataSource::~DataSource() {
@@ -30,6 +36,12 @@ DataSource::~DataSource() {
 	DeleteGraph(blue);
 	DeleteGraph(yellow);
 	DeleteGraph(green);
-	DeleteGraph(BlurGraph1);
-	DeleteGraph(BlurGraph2);
+	DeleteGraph(blurGraph1);
+	DeleteGraph(blurGraph2);
+	DeleteGraph(enemyLife);
+	DeleteGraph(coinGraph);
+	DeleteGraph(conditionGraph);
+	DeleteGraph(passiveGraph);
+	DeleteGraph(menuGraph);
+	DeleteGraph(modeGraph);
 }

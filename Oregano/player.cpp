@@ -19,12 +19,7 @@ Player::Player(Input& input, MapDraw& draw_) : input(input),
                                                knifeCenter(0.0, 0.0), slashCenter(0.0, 0.0),
                                                knife(false), slash(false), shield(false), elimination(false),
 
-                                               /* データ類 */
-                                               status(PLAYER_STATUS_SIZE)/*,
-                                               possessionItem(PLAYER_ITEM_SIZE),
-                                               possessionAccessory(PLAYER_ACCESSORY_SIZE),
-                                               possessionJewel(PLAYER_JEWEL_SIZE),
-                                               possessionMineral(PLAYER_MINERAL_SIZE)*/ {
+                                               status(PLAYER_STATUS_SIZE) {
 
 	this->pos.dx = static_cast<int>(WIN_WIDTH / 2 - BLOCK_SIZE / 2); //プレイヤーx座標
 	this->pos.dy = static_cast<int>(WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2); //プレイヤーy座標
@@ -61,7 +56,7 @@ void Player::actionCommand() {
 	/* シールド */
 	if (input.X && !cooldownFlag[SHIELD]) {
 		shield = true; //シールドを付与
-		shieldAct.giveShield(stateAct.battleStyle); //シールド量を追加
+		shieldAct.giveShield(PlayerState::battleStyle); //シールド量を追加
 		cooldownFlag[SHIELD] = true; //クールダウンフラグをtrue
 	}
 	/* 状態を解消 */
@@ -83,10 +78,10 @@ void Player::actionCommand() {
 /// <param name="attackPower">敵の攻撃力</param>
 void Player::lostPlayerCoin(const int& attackPower) {
 	if (!shield) {
-		stateAct.coin[stateAct.battleStyle] -= attackPower; //コイン損失
+		PlayerState::coin[PlayerState::battleStyle] -= attackPower; //コイン損失
 		//コインが0以下ならば、
-		if (stateAct.coin[stateAct.battleStyle] <= 0)
-			stateAct.coin[stateAct.battleStyle] = 0; //0以下になったら0に戻す
+		if (PlayerState::coin[PlayerState::battleStyle] <= 0)
+			PlayerState::coin[PlayerState::battleStyle] = 0; //0以下になったら0に戻す
 	}
 	else {
 		shieldAct.value -= attackPower; //シールド量減少
@@ -100,7 +95,7 @@ void Player::lostPlayerCoin(const int& attackPower) {
 /// <param name="enemyCoin">敵の所持コイン</param>
 /// <param name="attribute">敵の属性</param>
 void Player::addPlayerCoin(const int& attribute, const int& enemyCoin) {
-	stateAct.coin[attribute] += enemyCoin;
+	PlayerState::coin[attribute] += enemyCoin;
 }
 
 /// <summary>
@@ -126,7 +121,7 @@ int Player::addDamage(const int& act) {
 }
 
 bool Player::state(const int& num) {
-	return stateAct.stateAbnormal[num];
+	return stateAct.condition[num];
 }
 
 bool Player::cool(const int& num) {
@@ -145,6 +140,7 @@ void Player::knifeUpdate() {
 		knifeAct.setKnifePosition(this->pos); //ナイフのポジジョンセット
 		knifeAct.accelKnife(input); //ナイフの加速
 		knifeAct.resetKnifePosition(center, knife); //ナイフのポジジョンリセット
+		knifeAct.calculateRadian(this->pos);
 		knifeAct.draw(source); //描画処理
 	}
 }
@@ -157,7 +153,10 @@ void Player::slashUpdate() {
 	slashAct.countCooldown(cooldown, cooldownFlag, slash);
 
 	//刃の入力があったとき
-	if (slash) slashAct.draw(source); //描画処理
+	if (slash) {
+		slashAct.countTime(); //描画時間カウント
+		slashAct.draw(source); //描画処理
+	}
 }
 
 /// <summary>
@@ -215,13 +214,13 @@ void Player::update() {
 
 	DrawFormatString(0, 550, GetColor(255, 100, 100), "スタイル:%d", stateAct.battleStyle, false);
 	DrawFormatString(0, 565, GetColor(0x00, 0x8d, 0x56), "花萌葱:%d, コイン:%d, 状態:%d",
-	                 stateAct.attributeAccumulation[0], stateAct.coin[0], state(0), false);
+	                 PlayerState::attributeAccumulation[0], PlayerState::coin[0], state(0), false);
 	DrawFormatString(0, 580, GetColor(0xef, 0xbb, 0x2c), "深支子:%d, コイン:%d, 状態:%d",
-	                 stateAct.attributeAccumulation[1], stateAct.coin[1], state(1), false);
+	                 PlayerState::attributeAccumulation[1], PlayerState::coin[1], state(1), false);
 	DrawFormatString(0, 595, GetColor(0x4b, 0x5e, 0xaa), "燕子花:%d, コイン:%d, 状態:%d",
-	                 stateAct.attributeAccumulation[2], stateAct.coin[2], state(2), false);
+	                 PlayerState::attributeAccumulation[2], PlayerState::coin[2], state(2), false);
 	DrawFormatString(0, 610, GetColor(0xee, 0x86, 0x9a), "中紅花:%d, コイン:%d, 状態:%d",
-	                 stateAct.attributeAccumulation[3], stateAct.coin[3], state(3), false);
+	                 PlayerState::attributeAccumulation[3], PlayerState::coin[3], state(3), false);
 
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "mX%d, mY%d", draw_.currentMap.x, draw_.currentMap.y, false);
 

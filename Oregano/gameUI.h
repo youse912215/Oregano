@@ -12,7 +12,10 @@ private:
 	DataSource source; //ソースクラス
 
 	Vec2 pos; //UI位置
+	Vec2 menuSize; //メニューサイズ
+	
 	int graphPos; //画像位置
+	const int margin; //余白サイズ
 
 	void drawblur(); //ぼかしの描画
 	void draw(); //描画処理

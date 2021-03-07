@@ -4,21 +4,23 @@
 
 MoveProcess move_;
 
+vector<int> PlayerState::coin = {10000, 10000, 10000, 10000};
+vector<int> PlayerState::attributeAccumulation = {0, 0, 0, 0};
+int PlayerState::battleStyle = 0;
+
+
 PlayerState::PlayerState() : poisonTime(0), roughTime(0), attributeMax(100), timeMax(100), cooldownMax(120),
                              poisonDamage(50), roughDamage(100),
-                             eliminateCoin(300),
-                             stateAbnormal{false, false, false, false}, attributeAccumulation{0, 0, 0, 0},
-                             coin({10000, 10000, 10000, 10000}),
-                             battleStyle(0) {
+                             eliminateCoin(300), condition{false, false, false, false} {
 }
 
 /// <summary>
 /// 状態異常を取得
 /// </summary>
 void PlayerState::getStateAbnormal() {
-	for (unsigned int i = 0; i != stateAbnormal.size(); ++i) {
+	for (unsigned int i = 0; i != condition.size(); ++i) {
 		if (attributeAccumulation[i] < attributeMax) continue; //条件以外のとき、処理をスキップする
-		stateAbnormal[i] = true; //状態異常をtrue
+		condition[i] = true; //状態異常をtrue
 	}
 }
 
@@ -29,10 +31,10 @@ void PlayerState::getStateAbnormal() {
 void PlayerState::getFloorState(MapDraw& draw_) {
 	//毒床の上にいるときかつ、戦闘スタイルが花萌葱(対猛毒)以外のとき
 	if (move_.mapCondition(draw_, POISON) && battleStyle != DEADLY_POISON) {
-		stateAbnormal[DEADLY_POISON] = true; //猛毒状態を付与
+		condition[DEADLY_POISON] = true; //猛毒状態を付与
 	}
-		//凸凹床の上にいるときかつ、戦闘スタイルが深支子(対痙攣)以外のとき
-	else if (move_.mapCondition(draw_, ROUGH) && battleStyle != CRAMPS) {
+		//凸凹床の上にいるときかつ、戦闘スタイルが燕子花(対混乱)以外のとき
+	else if (move_.mapCondition(draw_, ROUGH) && battleStyle != CONFUSION) {
 		//0から100まで時間を動かす
 		roughTime = roughTime <= timeMax ? ++roughTime : 0; //凸凹時間をカウント
 	}
@@ -43,9 +45,9 @@ void PlayerState::getFloorState(MapDraw& draw_) {
 /// 猛毒状態をカウント
 /// </summary>
 void PlayerState::countStateTime() {
-	if (stateAbnormal[DEADLY_POISON])
+	if (condition[DEADLY_POISON])
 		poisonTime++; //猛毒状態なら時間をカウント
-	else if (poisonTime >= timeMax || !stateAbnormal[DEADLY_POISON])
+	else if (poisonTime >= timeMax || !condition[DEADLY_POISON])
 		poisonTime = 0; //最大時間または猛毒状態が解消されたら、時間をリセット
 }
 
@@ -127,9 +129,9 @@ void PlayerState::calculateValue(const int& attribute, const int& attributeValue
 void PlayerState::valueReset(bool& elimination, vector<bool>& cooldownFlag) {
 	//現在の戦闘スタイルの状態異常がtrueかつ、解消フラグがtrueのとき
 	if (elimination) {
-		if (stateAbnormal[battleStyle] && coin[battleStyle] >= eliminateCoin) {
+		if (condition[battleStyle] && coin[battleStyle] >= eliminateCoin) {
 			attributeAccumulation[battleStyle] = 0; //属性耐性値をリセット
-			stateAbnormal[battleStyle] = false; //状態異常を解消
+			condition[battleStyle] = false; //状態異常を解消
 			cooldownFlag[ELIMINATION] = true; //クールダウンフラグをtrue
 			coin[battleStyle] -= eliminateCoin;
 		}

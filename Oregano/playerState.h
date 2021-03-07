@@ -19,12 +19,12 @@ private:
 	void continuousDamage(const int& time, const int& value); //継続ダメージを付与
 
 public:
-	vector<bool> stateAbnormal; //状態異常（0:猛毒、1:痙攣、2:混乱、3:出血）
-	vector<int> attributeAccumulation; //属性耐久値
-	vector<int> coin; //コイン（HP、攻撃の役割）
+	vector<bool> condition; //状態異常（0:猛毒、1:痙攣、2:混乱、3:出血）
+	static vector<int> attributeAccumulation; //属性耐久値
+	static vector<int> coin; //コイン（HP、攻撃の役割）
 
 	/*（0:花萌葱(対猛毒), 1:深支子(対痙攣), 2:燕子花(対混乱), 3:中紅花(対出血)）*/
-	int battleStyle; //戦闘スタイル(0~3)
+	static int battleStyle; //戦闘スタイル(0~3)
 
 	void changeBattleStyle(const int& dir); //戦闘スタイルを切り替える
 

@@ -89,13 +89,13 @@ void DataSave::roadBinaryFile(vector<int>& currentData, vector<int>& lastTimeDat
 /// </summary>
 void DataSave::getCurrentStatus() {
 	//現在の各コインを代入
-	for (unsigned int i = 0; i != player.coin.size(); ++i)
-		currentStatus[i] = player.coin[i];
+	for (unsigned int i = 0; i != PlayerState::coin.size(); ++i)
+		currentStatus[i] = PlayerState::coin[i];
 	//現在の属性耐久値を代入
-	for (unsigned int i = 0; i != player.attributeAccumulation.size(); ++i)
-		currentStatus[i + player.coin.size()] = player.coin[i];
+	for (unsigned int i = 0; i != PlayerState::attributeAccumulation.size(); ++i)
+		currentStatus[i + PlayerState::coin.size()] = PlayerState::coin[i];
 	//現在の戦闘スタイルを代入
-	currentStatus[player.coin.size() + player.attributeAccumulation.size()] = player.battleStyle;
+	currentStatus[PlayerState::coin.size() + PlayerState::attributeAccumulation.size()] = PlayerState::battleStyle;
 	//各マップ座標
 	currentStatus[9] = MapDraw::mapX; //現在のマップx座標を代入
 	currentStatus[10] = MapDraw::mapY; //現在のマップy座標を代入
@@ -106,13 +106,13 @@ void DataSave::getCurrentStatus() {
 /// </summary>
 void DataSave::getLastTimeStatus() {
 	//前回までの各コインを代入
-	for (unsigned int i = 0; i != player.coin.size(); ++i)
-		player.coin[i] = lastTimeStatus[i];
+	for (unsigned int i = 0; i != PlayerState::coin.size(); ++i)
+		PlayerState::coin[i] = lastTimeStatus[i];
 	//前回までの属性耐久値を代入
-	for (unsigned int i = 0; i != player.attributeAccumulation.size(); ++i)
-		player.coin[i] = lastTimeStatus[i + player.coin.size()];
+	for (unsigned int i = 0; i != PlayerState::attributeAccumulation.size(); ++i)
+		PlayerState::coin[i] = lastTimeStatus[i + PlayerState::coin.size()];
 	//前回までの戦闘スタイルを代入
-	player.battleStyle = lastTimeStatus[player.coin.size() + player.attributeAccumulation.size()];
+	PlayerState::battleStyle = lastTimeStatus[PlayerState::coin.size() + PlayerState::attributeAccumulation.size()];
 	//各マップ座標
 	MapDraw::mapX = lastTimeStatus[9]; //前回までのマップx座標を代入
 	MapDraw::mapY = lastTimeStatus[10]; //前回までのマップy座標を代入

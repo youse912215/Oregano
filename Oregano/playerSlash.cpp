@@ -2,7 +2,15 @@
 #include "constant.h"
 #include "DxLib.h"
 
-PlayerSlash::PlayerSlash() : slashPos(0.0) {
+PlayerSlash::PlayerSlash() : drawTime(0), graphNum(3), graphWidth(128), slashPos(0.0) {
+}
+
+/// <summary>
+/// 描画時間カウント
+/// </summary>
+/// <param name="slash">刃フラグ</param>
+void PlayerSlash::countTime() {
+	drawTime = drawTime <= graphNum ? ++drawTime : 0; //graphNum分時間をカウント
 }
 
 /// <summary>
@@ -16,6 +24,9 @@ void PlayerSlash::initialize(Vec2d& pos) {
 /// <summary>
 /// 刃のクールダウン処理
 /// </summary>
+/// <param name="cooldown">クールダウン</param>
+/// <param name="cooldownFlag">クールダウンフラグ</param>
+/// <param name="slash">刃フラグ</param>
 void PlayerSlash::countCooldown(std::vector<int>& cooldown, std::vector<bool>& cooldownFlag, bool& slash) {
 	if (cooldownFlag[SLASH]) cooldown[SLASH]++; //クールダウン開始
 
@@ -29,6 +40,12 @@ void PlayerSlash::countCooldown(std::vector<int>& cooldown, std::vector<bool>& c
 	}
 }
 
+/// <summary>
+/// 描画処理
+/// </summary>
+/// <param name="source">データソースクラス</param>
 void PlayerSlash::draw(DataSource& source) {
-	DrawGraph(static_cast<int>(slashPos.dx), static_cast<int>(slashPos.dy), source.slashGraph, true);
+	DrawRectGraph(static_cast<int>(slashPos.dx), static_cast<int>(slashPos.dy),
+	              graphWidth * drawTime, 0, graphWidth, graphWidth,
+	              source.slashGraph, true, false); //刃を回転して描画
 }

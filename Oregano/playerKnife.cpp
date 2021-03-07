@@ -1,9 +1,39 @@
 #include "playerKnife.h"
 #include "DxLib.h"
+#include <cmath>
 
 PlayerKnife::PlayerKnife() :
-	curvatureSpeed(KNIFE_SPEED / 2.0), maxRange(BLOCK_SIZE * 3.0),
-	knifePos(0.0, 0.0), knifeAddPos(0.0, 0.0) {
+	center(0.0, 0.0), radian(0.0), sign(0.0), curvatureSpeed(KNIFE_SPEED / 2.0),
+	maxRange(BLOCK_SIZE * 3.0), reverseFlag(false), knifePos(0.0, 0.0), knifeAddPos(0.0, 0.0) {
+}
+
+/// <summary>
+/// 描画用のラジアン計算
+/// </summary>
+/// /// <param name="pos">プレイヤー座標</param>
+void PlayerKnife::calculateRadian(Vec2d& pos) {
+	changeDirection(pos); //方向変更
+
+	//ラジアンを計算し、ナイフの位置によって、signが変わる
+	radian = atan2(this->center.dy - (pos.dy + HALF_BLOCK_SIZE_D),
+	               abs(this->center.dx - (pos.dx + HALF_BLOCK_SIZE_D))) * sign;
+}
+
+/// <summary>
+/// 方向変更
+/// </summary>
+/// <param name="pos">プレイヤー座標</param>
+void PlayerKnife::changeDirection(Vec2d& pos) {
+	//ナイフの位置がプレイヤーより左側にあるとき
+	if (this->center.dx <= pos.dx + HALF_BLOCK_SIZE_D) {
+		reverseFlag = true; //反転
+		sign = -1.0; //反転
+	}
+		//右側にあるとき
+	else {
+		reverseFlag = false; //通常
+		sign = 1.0; //通常
+	}
 }
 
 /// <summary>
@@ -13,7 +43,8 @@ PlayerKnife::PlayerKnife() :
 /// <param name="knifeCenter">プレイヤーの中心座標</param>
 void PlayerKnife::initialize(Vec2d& pos, Vec2d& knifeCenter) {
 	knifePos = pos + knifeAddPos; //ナイフの座標の更新
-	knifeCenter = HALF_BLOCK_SIZE_D + knifePos; //ナイフの中心位置の更新
+	this->center = HALF_BLOCK_SIZE_D + knifePos; //ナイフの中心位置の更新
+	knifeCenter = this->center; //プレイヤーに渡す
 }
 
 /// <summary>
@@ -48,8 +79,8 @@ void PlayerKnife::setKnifePosition(Vec2d& pos) {
 /// <summary>
 /// ナイフのポジジョンをリセットする
 /// </summary>
-void PlayerKnife::resetKnifePosition(Vec2d& center, bool& knife) {
-	if (deleteKnife(center)) {
+void PlayerKnife::resetKnifePosition(Vec2d& playerCenter, bool& knife) {
+	if (deleteKnife(playerCenter)) {
 		knife = false;
 		knifeAddPos = 0.0;
 	}
@@ -72,16 +103,22 @@ void PlayerKnife::accelKnife(Input& input) {
 /// ナイフの削除条件
 /// </summary>
 /// <returns></returns>
-bool PlayerKnife::deleteKnife(Vec2d& center) {
+bool PlayerKnife::deleteKnife(Vec2d& playerCenter) {
 	//プレイヤーからの距離が3マス分離れているか
-	return abs(knifePos.dx + HALF_BLOCK_SIZE_D - center.dx) >= maxRange
-		|| abs(knifePos.dy + HALF_BLOCK_SIZE_D - center.dy) >= maxRange;
+	return abs(this->center.dx - playerCenter.dx) >= maxRange
+		|| abs(this->center.dy - playerCenter.dy) >= maxRange;
 }
 
 /// <summary>
 /// 描画処理
+/// ナイフを正しい向きで描画する
 /// </summary>
 /// <param name="source">データソース</param>
 void PlayerKnife::draw(DataSource& source) {
-	DrawGraph(static_cast<int>(knifePos.dx), static_cast<int>(knifePos.dy), source.knifeGraph, true);
+	DrawRotaGraph(static_cast<int>(this->center.dx),
+	              static_cast<int>(this->center.dy),
+	              1.0, radian,
+	              source.knifeGraph, true, reverseFlag);
+
+
 }

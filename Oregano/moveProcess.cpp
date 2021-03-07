@@ -9,118 +9,121 @@ bool MoveProcess::mapCondition(MapDraw& draw, const int& mapInfo) {
 }
 
 /// <summary>
-/// ¶Õ“Ëƒtƒ‰ƒO
+/// å·¦è¡çªãƒ•ãƒ©ã‚°
 /// </summary>
 bool MoveProcess::collisionDirectionLeft(MapCollision& collision) {
-	//¬—ó‘ÔˆÈŠO‚Ì‚Æ‚«
-	if (!state_.stateAbnormal[CONFUSION])
-		return collision.leftCollisionFlag(); //‚»‚Ì‚Ü‚Ü•Ô‚·
-	return collision.rightCollisionFlag(); //”½“]‚µ‚Ä•Ô‚·
+	//æ··ä¹±çŠ¶æ…‹ä»¥å¤–ã®ã¨ã
+	if (!state_.condition[CONFUSION])
+		return collision.leftCollisionFlag(); //ãã®ã¾ã¾è¿”ã™
+	return collision.rightCollisionFlag(); //åè»¢ã—ã¦è¿”ã™
 }
 
 /// <summary>
-/// ‰EÕ“Ëƒtƒ‰ƒO
+/// å³è¡çªãƒ•ãƒ©ã‚°
 /// </summary>
 bool MoveProcess::collisionDirectionRight(MapCollision& collision) {
-	//¬—ó‘ÔˆÈŠO‚Ì‚Æ‚«
-	if (!state_.stateAbnormal[CONFUSION])
-		return collision.rightCollisionFlag(); //‚»‚Ì‚Ü‚Ü•Ô‚·
-	return collision.leftCollisionFlag(); //”½“]‚µ‚Ä•Ô‚·
+	//æ··ä¹±çŠ¶æ…‹ä»¥å¤–ã®ã¨ã
+	if (!state_.condition[CONFUSION])
+		return collision.rightCollisionFlag(); //ãã®ã¾ã¾è¿”ã™
+	return collision.leftCollisionFlag(); //åè»¢ã—ã¦è¿”ã™
 }
 
 /// <summary>
-/// ãÕ“Ëƒtƒ‰ƒO
+/// ä¸Šè¡çªãƒ•ãƒ©ã‚°
 /// </summary>
 bool MoveProcess::collisionDirectionUp(MapCollision& collision) {
-	//¬—ó‘ÔˆÈŠO‚Ì‚Æ‚«
-	if (!state_.stateAbnormal[CONFUSION])
-		return collision.upCollisionFlag(); //‚»‚Ì‚Ü‚Ü•Ô‚·
-	return collision.downCollisionFlag(); //”½“]‚µ‚Ä•Ô‚·
+	//æ··ä¹±çŠ¶æ…‹ä»¥å¤–ã®ã¨ã
+	if (!state_.condition[CONFUSION])
+		return collision.upCollisionFlag(); //ãã®ã¾ã¾è¿”ã™
+	return collision.downCollisionFlag(); //åè»¢ã—ã¦è¿”ã™
 }
 
 /// <summary>
-/// ‰ºÕ“Ëƒtƒ‰ƒO
+/// ä¸‹è¡çªãƒ•ãƒ©ã‚°
 /// </summary>
 bool MoveProcess::collisionDirectionDown(MapCollision& collision) {
-	//¬—ó‘ÔˆÈŠO‚Ì‚Æ‚«
-	if (!state_.stateAbnormal[CONFUSION])
-		return collision.downCollisionFlag(); //‚»‚Ì‚Ü‚Ü•Ô‚·
-	return collision.upCollisionFlag(); //”½“]‚µ‚Ä•Ô‚·
+	//æ··ä¹±çŠ¶æ…‹ä»¥å¤–ã®ã¨ã
+	if (!state_.condition[CONFUSION])
+		return collision.downCollisionFlag(); //ãã®ã¾ã¾è¿”ã™
+	return collision.upCollisionFlag(); //åè»¢ã—ã¦è¿”ã™
 }
 
 /// <summary>
-/// Œ»İ‚Ìƒ}ƒbƒv‚Ìî•ñ‚É‚æ‚Á‚ÄAˆÚ“®‹——£‚ğ•Ô‚·
+/// ç¾åœ¨ã®ãƒãƒƒãƒ—ã®æƒ…å ±ã«ã‚ˆã£ã¦ã€ç§»å‹•è·é›¢ã‚’è¿”ã™
 /// </summary>
-/// <param name="draw">ƒ}ƒbƒv•`‰æƒNƒ‰ƒX</param>
+/// <param name="draw">ãƒãƒƒãƒ—æç”»ã‚¯ãƒ©ã‚¹</param>
 int MoveProcess::movingDistance(MapDraw& draw) {
-	//ó£‚Ì‚Æ‚«
-	if (mapCondition(draw, SHALLOW))
-		return MOVING_DISTANCE / 2; //ˆÚ“®‹——£‚ğ1/2
-	//…À‚Ì‚Æ‚«
-	if (mapCondition(draw, SWAMP))
-		return MOVING_DISTANCE / 4; //ˆÚ“®‹——£‚ğ1/4
-	//•X‚Ì‚Æ‚«
-	if (mapCondition(draw, ICE))
-		return MOVING_DISTANCE * 2; //ˆÚ“®‹——£‚ğ2”{
-	//‚»‚êˆÈŠO
-	return MOVING_DISTANCE; //’Êí‚ÌˆÚ“®‹——£
+	//æˆ¦é—˜ã‚¹ã‚¿ã‚¤ãƒ«ãŒç‡•å­èŠ±(å¯¾æ··ä¹±)ä»¥å¤–ã®ã¨ã
+	if (PlayerState::battleStyle != CONFUSION) {
+		//æµ…ç€¬ã®ã¨ã
+		if (mapCondition(draw, SHALLOW))
+			return MOVING_DISTANCE / 2; //ç§»å‹•è·é›¢ã‚’1/2
+		//æ°´æ²¼ã®ã¨ã
+		if (mapCondition(draw, SWAMP))
+			return MOVING_DISTANCE / 4; //ç§»å‹•è·é›¢ã‚’1/4
+		//æ°·ã®ã¨ã
+		if (mapCondition(draw, ICE))
+			return MOVING_DISTANCE * 2; //ç§»å‹•è·é›¢ã‚’2å€
+	}
+	//ãã‚Œä»¥å¤–
+	return MOVING_DISTANCE; //é€šå¸¸ã®ç§»å‹•è·é›¢
 }
 
 /// <summary>
-/// •ûŒü‚ğ”½“]
+/// æ–¹å‘ã‚’åè»¢
 /// </summary>
 int MoveProcess::invert() {
-	//¬—ó‘ÔˆÈŠO‚Ì‚Æ‚«
-	if (!state_.stateAbnormal[CONFUSION])
-		return 1; //‚»‚Ì‚Ü‚Ü•Ô‚·
-	return -1; //”½“]‚µ‚Ä•Ô‚·
+	//æ··ä¹±çŠ¶æ…‹ä»¥å¤–ã®ã¨ã
+	if (!state_.condition[CONFUSION])
+		return 1; //ãã®ã¾ã¾è¿”ã™
+	return -1; //åè»¢ã—ã¦è¿”ã™
 }
 
 /// <summary>
-/// •ûŒü‚Ìî•ñ‚ğØ‚è‘Ö‚¦‚é
+/// æ–¹å‘ã®æƒ…å ±ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
 /// </summary>
-/// <param name="dir">•ûŒü</param>
+/// <param name="dir">æ–¹å‘</param>
 int MoveProcess::changeDirection(const int& dir) {
-	if (!state_.stateAbnormal[CONFUSION]) return dir;
-	if (dir == LEFT) return RIGHT; //¶¨‰E
-	if (dir == RIGHT) return LEFT; //‰E¨¶
-	if (dir == UP) return DOWN; //ã¨‰º
-	if (dir == DOWN) return UP; //‰º¨ã
+	if (!state_.condition[CONFUSION]) return dir;
+	if (dir == LEFT) return RIGHT; //å·¦â†’å³
+	if (dir == RIGHT) return LEFT; //å³â†’å·¦
+	if (dir == UP) return DOWN; //ä¸Šâ†’ä¸‹
+	if (dir == DOWN) return UP; //ä¸‹â†’ä¸Š
 	return 0;
 }
 
 /// <summary>
-/// ¶ˆÚ“®
+/// å·¦ç§»å‹•
 /// </summary>
 void MoveProcess::left(MapCollision& collision, MapDraw& draw) {
-	MapDraw::mapX -= movingDistance(draw) * invert(); //’Êí
+	MapDraw::mapX -= movingDistance(draw) * invert(); //é€šå¸¸æ™‚
 	if (collisionDirectionLeft(collision))
-		MapDraw::mapX += movingDistance(draw) * invert(); //Õ“Ë
+		MapDraw::mapX += movingDistance(draw) * invert(); //è¡çªæ™‚
 }
 
 /// <summary>
-/// ‰EˆÚ“®
+/// å³ç§»å‹•
 /// </summary>
 void MoveProcess::right(MapCollision& collision, MapDraw& draw) {
-	MapDraw::mapX += movingDistance(draw) * invert(); //’Êí
+	MapDraw::mapX += movingDistance(draw) * invert(); //é€šå¸¸æ™‚
 	if (collisionDirectionRight(collision))
-		MapDraw::mapX -= movingDistance(draw) * invert(); //Õ“Ë
+		MapDraw::mapX -= movingDistance(draw) * invert(); //è¡çªæ™‚
 }
 
 /// <summary>
-/// ãˆÚ“®
+/// ä¸Šç§»å‹•
 /// </summary>
 void MoveProcess::up(MapCollision& collision, MapDraw& draw) {
-	MapDraw::mapY -= movingDistance(draw) * invert(); //’Êí
+	MapDraw::mapY -= movingDistance(draw) * invert(); //é€šå¸¸æ™‚
 	if (collisionDirectionUp(collision))
-		MapDraw::mapY += movingDistance(draw) * invert(); //Õ“Ë
+		MapDraw::mapY += movingDistance(draw) * invert(); //è¡çªæ™‚
 }
 
 /// <summary>
-/// ‰ºˆÚ“®
+/// ä¸‹ç§»å‹•
 /// </summary>
 void MoveProcess::down(MapCollision& collision, MapDraw& draw) {
-	MapDraw::mapY += movingDistance(draw) * invert(); //’Êí
+	MapDraw::mapY += movingDistance(draw) * invert(); //é€šå¸¸æ™‚
 	if (collisionDirectionDown(collision))
-		MapDraw::mapY -= movingDistance(draw) * invert(); //Õ“Ë
+		MapDraw::mapY -= movingDistance(draw) * invert(); //è¡çªæ™‚
 }
