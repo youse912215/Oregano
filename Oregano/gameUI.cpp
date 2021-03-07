@@ -2,10 +2,23 @@
 #include "DxLib.h"
 #include "constant.h"
 
-GameUI::GameUI(Input& input, MapDraw& map) : input(input), map(map), menuSize(256, 64), margin(16) {
-	pos.x = WIN_WIDTH - BLOCK_SIZE * 2;
-	pos.y = WIN_HEIGHT - BLOCK_SIZE * 2;
-	graphPos = 0;
+GameUI::GameUI(Input& input, MapDraw& map) :
+	input(input), map(map), margin(16),
+	/*　メニュー */
+	menuLength(256, 64),
+	menuSize(WIN_WIDTH - menuLength.x - margin, margin),
+	/* パッシブ */
+	passiveSize(margin, WIN_HEIGHT - 128 - margin),
+	/* 状態異常 */
+	conditionSize(WIN_WIDTH - 256 - margin, WIN_HEIGHT - 128 - margin),
+	/* モード */
+	modeLeftSize(BLOCK_SIZE * 7 - margin, WIN_HEIGHT - 128 - margin),
+	modeLength(64, 128),
+	modeRightSize(BLOCK_SIZE * 16 + 32 - margin, WIN_HEIGHT - modeLength.y - margin),
+	/* アクション */
+	actionLength(512, 128),
+	actionSize(BLOCK_SIZE * 8 + 16 - margin, WIN_HEIGHT - actionLength.y - margin) {
+
 	changeFlag = false;
 }
 
@@ -15,7 +28,7 @@ GameUI::~GameUI() {
 /// <summary>
 /// ぼかしの描画
 /// </summary>
-void GameUI::drawblur() {
+void GameUI::drawBlur() {
 	//マップ座標（3, 2）より右上以外は通常ぼかし
 	if (!(map.currentMap.x >= 3 && map.currentMap.y <= 2))
 		DrawGraph(0, 0, source.blurGraph1, true);
@@ -28,20 +41,29 @@ void GameUI::drawblur() {
 /// 描画処理
 /// </summary>
 void GameUI::draw() {
-	drawblur(); //ぼかし
+	drawBlur(); //ぼかし
 
 	DrawGraph(margin, margin, source.coinGraph, true); //コイン
-	DrawRectGraph(WIN_WIDTH - menuSize.x - margin, margin,
-	              0, 0, menuSize.x, menuSize.y,
-	              menuGraph, true, false, false); //メニュー
-	DrawGraph(margin, WIN_HEIGHT - 128 - margin, passiveGraph, true); //パッシブ
-	DrawGraph(WIN_WIDTH - 256 - margin, WIN_HEIGHT - 128 - margin,
-	          conditionGraph, true); //状態異常
-	DrawRectGraph(BLOCK_SIZE * 7 - margin, WIN_HEIGHT - 128 - margin,
-	              0, 0, 64, 128, modeGraph, true, false, false);
-	DrawRectGraph(BLOCK_SIZE * 16 + 32 - margin, WIN_HEIGHT - 128 - margin,
-	              64, 0, 64, 128, modeGraph, true, false, false);
 
+	DrawRectGraph(menuSize.x, menuSize.y,
+	              0, 0, menuLength.x, menuLength.y,
+	              menuGraph, true, false, false); //メニュー
+
+	DrawGraph(passiveSize.x, passiveSize.y, passiveGraph, true); //パッシブ
+
+	DrawGraph(conditionSize.x, conditionSize.y, conditionGraph, true); //状態異常
+
+	DrawRectGraph(modeLeftSize.x, modeLeftSize.y,
+	              0, 0, modeLength.x, modeLength.y, modeGraph,
+	              true, false, false); //Lモード
+
+	DrawRectGraph(modeRightSize.x, modeRightSize.y,
+	              modeLength.x, 0, modeLength.x, modeLength.y, modeGraph,
+	              true, false, false); //Rモード
+
+	DrawRectGraph(actionSize.x, actionSize.y,
+	              0, 0, actionLength.x, actionLength.y, actionGraph,
+	              true, false, false); //アクション
 }
 
 void GameUI::update() {

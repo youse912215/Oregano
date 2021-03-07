@@ -11,17 +11,25 @@ private:
 	MapDraw& map; //マップ描画クラス
 	DataSource source; //ソースクラス
 
-	Vec2 pos; //UI位置
-	Vec2 menuSize; //メニューサイズ
-	
-	int graphPos; //画像位置
 	const int margin; //余白サイズ
 
-	void drawblur(); //ぼかしの描画
+	Vec2 menuLength; //メニュー長
+	Vec2 menuSize; //メニューサイズ
+	Vec2 passiveSize; //パッシブサイズ
+	Vec2 conditionSize; //状態異常サイズ
+	Vec2 modeLeftSize; //Lモードサイズ
+	Vec2 modeLength; //モード長
+	Vec2 modeRightSize; //Rモードサイズ
+	Vec2 actionLength; //アクション長
+	Vec2 actionSize; //アクションサイズ
+
+	void drawBlur(); //ぼかしの描画
 	void draw(); //描画処理
 
+	bool changeFlag; //切替フラグ
+
 public:
-	bool changeFlag;
+
 
 	GameUI(Input& input, MapDraw& map);
 	~GameUI();

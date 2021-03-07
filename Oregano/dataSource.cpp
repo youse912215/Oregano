@@ -22,6 +22,7 @@ DataSource::DataSource() {
 	passiveGraph = LoadGraph("resource/UI/passive.png");
 	menuGraph = LoadGraph("resource/UI/menu.png");
 	modeGraph = LoadGraph("resource/UI/mode.png");
+	actionGraph = LoadGraph("resource/UI/action.png");
 }
 
 DataSource::~DataSource() {
@@ -44,4 +45,5 @@ DataSource::~DataSource() {
 	DeleteGraph(passiveGraph);
 	DeleteGraph(menuGraph);
 	DeleteGraph(modeGraph);
+	DeleteGraph(actionGraph);
 }

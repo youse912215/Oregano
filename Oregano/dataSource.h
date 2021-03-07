@@ -25,6 +25,7 @@ public:
 	int passiveGraph;
 	int menuGraph;
 	int modeGraph;
+	int actionGraph;
 
 	DataSource();
 	~DataSource();
