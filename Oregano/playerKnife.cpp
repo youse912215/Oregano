@@ -92,11 +92,11 @@ void PlayerKnife::resetKnifePosition(Vec2d& playerCenter, vector<bool>& actionFl
 /// </summary>
 void PlayerKnife::accelKnife(Input& input) {
 	/* x•ûŒü */
-	if (input.STICK[LEFT]) knifeAddPos.dx -= curvatureSpeed;
-	else if (input.STICK[RIGHT]) knifeAddPos.dx += curvatureSpeed;
+	if (input.stickFlag[LEFT]) knifeAddPos.dx -= curvatureSpeed;
+	else if (input.stickFlag[RIGHT]) knifeAddPos.dx += curvatureSpeed;
 	/* y•ûŒü */
-	if (input.STICK[UP]) knifeAddPos.dy -= curvatureSpeed;
-	else if (input.STICK[DOWN]) knifeAddPos.dy += curvatureSpeed;
+	if (input.stickFlag[UP]) knifeAddPos.dy -= curvatureSpeed;
+	else if (input.stickFlag[DOWN]) knifeAddPos.dy += curvatureSpeed;
 }
 
 /// <summary>

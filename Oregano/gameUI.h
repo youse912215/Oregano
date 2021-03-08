@@ -14,6 +14,8 @@ private:
 	DataSource source; //ソースクラス
 
 	const int margin; //余白サイズ
+	const int eventSize; //イベント数
+	const int eventLength; //1イベントあたりの情報サイズ長
 
 	Vec2 menuLength; //メニュー長
 	Vec2 menuSize; //メニューサイズ
@@ -24,15 +26,19 @@ private:
 	Vec2 modeRightSize; //Rモードサイズ
 	Vec2 actionLength; //アクション長
 	Vec2 actionSize; //アクションサイズ
+	Vec2 speechBalloonPos; //噴き出し位置
 
-	bool changeFlag; //切替フラグ
+	bool positionMatchDecision(const int& i); //プレイヤーとイベント位置の一致条件
 
 	void drawBlur(); //ぼかしの描画
 	void drawFilter(); //UIのフィルタの描画
+	void drawSpeechBalloon(); //イベント用噴き出しの描画
 	void draw(); //描画処理
 
 public:
-	vector<int> mapEventPos;
+	vector<int> mapEventPos; //イベント座標
+
+	int eventNum; //セーブフラグ
 
 	GameUI(Input& input, Player& player, MapDraw& map);
 	~GameUI();

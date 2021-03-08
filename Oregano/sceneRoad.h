@@ -5,15 +5,15 @@
 
 using namespace std;
 
-class SceneTitle {
+class SceneRoad {
 private:
 	DataSave& save; //データセーブクラスから
 	//MapLoad& load; //マップロードクラスから
 public:
 	static int gameScene;
 
-	SceneTitle(DataSave& save);
-	~SceneTitle();
+	SceneRoad(DataSave& save);
+	~SceneRoad();
 
 	void update(); //タイトル処理
 	vector<vector<vector<int>>>& roadingMap(); //タイトル画面でロードしたマップ三次元配列を返す

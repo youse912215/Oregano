@@ -30,24 +30,27 @@ private:
 	void padsInformation(); //ジョイパッド情報
 	void inputModeChange(); //キーボードとジョイパッドを切り替える
 	void eventProcess(); //ボタン入力処理
-	void endProcess(); //終了処理
 
 public:
+	/* 各ボタンフラグ */
 	bool A;
 	bool B;
 	bool X;
 	bool Y;
 	bool LB;
 	bool RB;
+	bool VIEW;
+	bool MENU;
 
 	vector<bool> buttonFlag; //ボタンフラグ
-	vector<bool> STICK;
-	bool anySTICK();
+	vector<bool> stickFlag; //スティックフラグ
+	bool anySTICK(); //いずれかのスティック状態を返す
 
 	int moveDirection; //今見ている移動方向
 
 	Input(); //コンストラクタ
 
 	void movement(MapCollision& collision, MapDraw& draw); //入力処理
+	void menuProcess(); //メニュー処理
 	void update(); //更新処理
 };

@@ -1,6 +1,6 @@
 #include "playerState.h"
 #include "moveProcess.h"
-#include "sceneTitle.h"
+#include "sceneRoad.h"
 
 MoveProcess move_;
 
@@ -122,7 +122,7 @@ void PlayerState::switchStyleAutomatically() {
 		if (itr != coin.end())
 			battleStyle = distance(coin.begin(), itr); //戦闘スタイルを切り替える
 		else
-			SceneTitle::gameScene = END_SCENE; //全てのコインが0になり、ゲームオーバーシーンへ
+			SceneRoad::gameScene = END_SCENE; //全てのコインが0になり、ゲームオーバーシーンへ
 	}
 }
 

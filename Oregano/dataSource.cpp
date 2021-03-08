@@ -26,6 +26,7 @@ DataSource::DataSource() {
 	filterGraph1 = LoadGraph("resource/UI/filter1.png");
 	filterGraph2 = LoadGraph("resource/UI/filter2.png");
 	shieldGauge = LoadGraph("resource/UI/shieldGauge.png");
+	eventGraph = LoadGraph("resource/UI/event.png");
 }
 
 DataSource::~DataSource() {
@@ -52,4 +53,5 @@ DataSource::~DataSource() {
 	DeleteGraph(filterGraph1);
 	DeleteGraph(filterGraph2);
 	DeleteGraph(shieldGauge);
+	DeleteGraph(eventGraph);
 }

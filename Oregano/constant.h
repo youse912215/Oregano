@@ -3,6 +3,8 @@
 const int WIN_MAGNIFICATION = 100; //ウインドウ倍率
 const int WIN_WIDTH = 16 * WIN_MAGNIFICATION; //ウィンドウ横幅
 const int WIN_HEIGHT = 9 * WIN_MAGNIFICATION; //ウィンドウ縦幅
+const int HALF_WIN_WIDTH = WIN_WIDTH / 2; //ウィンドウ横幅の半分
+const int HALF_WIN_HEIGHT = WIN_HEIGHT / 2; //ウィンドウ縦幅の半分
 
 const int BLOCK_SIZE = 64; //ブロックサイズ（int型）
 const int HALF_BLOCK_SIZE = 32; //ブロックサイズの1/2（int型）
@@ -68,6 +70,7 @@ enum GAME_SCENE {
 	ROAD_SCENE,
 	//ゲーム
 	GAME_SCENE,
+	SAVE_SCENE,
 	MENU_SCENE,
 	GAME_OVER_SCENE,
 	END_SCENE,

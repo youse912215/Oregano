@@ -134,13 +134,10 @@
     <ClCompile Include="dataSource.cpp" />
     <ClCompile Include="dataText.cpp" />
     <ClCompile Include="effectSpurt.cpp" />
-    <ClCompile Include="effectOccurred.cpp" />
     <ClCompile Include="effectBlood.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemyConclusion.cpp" />
     <ClCompile Include="enemyTracking.cpp" />
-    <ClCompile Include="eventBase.cpp" />
-    <ClCompile Include="eventField.cpp" />
     <ClCompile Include="gameUI.cpp" />
     <ClCompile Include="inputProcess.cpp" />
     <ClCompile Include="loopProcess.cpp" />
@@ -151,16 +148,18 @@
     <ClCompile Include="moveProcess.cpp" />
     <ClCompile Include="mapDraw.cpp" />
     <ClCompile Include="mapLoad.cpp" />
-    <ClCompile Include="playerAction.cpp" />
     <ClCompile Include="playerKnife.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playerShield.cpp" />
     <ClCompile Include="playerSlash.cpp" />
     <ClCompile Include="playerState.cpp" />
     <ClCompile Include="random.cpp" />
+    <ClCompile Include="sceneEnd.cpp" />
     <ClCompile Include="sceneGame.cpp" />
+    <ClCompile Include="sceneGameOver.cpp" />
     <ClCompile Include="sceneMenu.cpp" />
-    <ClCompile Include="sceneTitle.cpp" />
+    <ClCompile Include="sceneRoad.cpp" />
+    <ClCompile Include="sceneSave.cpp" />
     <ClCompile Include="vec2.cpp" />
     <ClCompile Include="windowPreference.cpp" />
   </ItemGroup>
@@ -170,12 +169,9 @@
     <ClInclude Include="dataSource.h" />
     <ClInclude Include="dataText.h" />
     <ClInclude Include="effectSpurt.h" />
-    <ClInclude Include="effectOccurred.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="enemyConclusion.h" />
     <ClInclude Include="enemyTracking.h" />
-    <ClInclude Include="eventBase.h" />
-    <ClInclude Include="eventField.h" />
     <ClInclude Include="gameUI.h" />
     <ClInclude Include="inputProcess.h" />
     <ClInclude Include="loopProcess.h" />
@@ -189,13 +185,15 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="playerKnife.h" />
     <ClInclude Include="playerShield.h" />
-    <ClInclude Include="playerAction.h" />
     <ClInclude Include="playerSlash.h" />
     <ClInclude Include="playerState.h" />
     <ClInclude Include="random.h" />
+    <ClInclude Include="sceneEnd.h" />
     <ClInclude Include="sceneGame.h" />
+    <ClInclude Include="sceneGameOver.h" />
     <ClInclude Include="sceneMenu.h" />
-    <ClInclude Include="sceneTitle.h" />
+    <ClInclude Include="sceneRoad.h" />
+    <ClInclude Include="sceneSave.h" />
     <ClInclude Include="vec2.h" />
     <ClInclude Include="windowPreference.h" />
   </ItemGroup>

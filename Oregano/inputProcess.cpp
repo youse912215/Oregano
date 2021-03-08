@@ -2,21 +2,26 @@
 #include "constant.h"
 #include "mapDraw.h"
 #include "inputProcess.h"
-#include "sceneTitle.h"
+#include "sceneRoad.h"
 
 char Input::oldkeys[KEY_BUFFER_MAX] = {0};
 char Input::keys[KEY_BUFFER_MAX] = {0};
 
 Input::Input() :
-	padNum(14), oldPadNum(14), buttonFlag(10), STICK(4) {
+	/* ボタン情報関係 */
+	mode(false), padNum(14), oldPadNum(14),
+	/* 入力情報数 */
+	buttonFlag(10), stickFlag(4),
+	/* 初期は正面向き */
+	moveDirection(DOWN) {
 	A = false;
 	B = false;
 	X = false;
 	Y = false;
 	LB = false;
 	RB = false;
-	mode = false;
-	moveDirection = DOWN; //正面向き
+	VIEW = false;
+	MENU = false;
 }
 
 /// <summary>
@@ -68,7 +73,7 @@ void Input::padsInformation() {
 /// キーボードとマウスパッドを切り替える
 /// </summary>
 void Input::inputModeChange() {
-	if (keys[KEY_INPUT_TAB] && !oldkeys[KEY_INPUT_TAB]) mode = !mode ? true : false;
+	if (keys[KEY_INPUT_Q] && !oldkeys[KEY_INPUT_Q]) mode = !mode ? true : false;
 }
 
 /// <summary>
@@ -81,25 +86,25 @@ void Input::movement(MapCollision& collision, MapDraw& draw) {
 		move_.left(collision, draw); //衝突判定など
 		directionProcess(move_.changeDirection(LEFT)); //方向処理
 	}
-	else STICK[move_.changeDirection(LEFT)] = false; //スティック状態をfalse
+	else stickFlag[move_.changeDirection(LEFT)] = false; //スティック状態をfalse
 	//右移動
 	if (getInputButton(STICK_RIGHT)) {
 		move_.right(collision, draw); //衝突判定など
 		directionProcess(move_.changeDirection(RIGHT)); //方向処理
 	}
-	else STICK[move_.changeDirection(RIGHT)] = false; //スティック状態をfalse
+	else stickFlag[move_.changeDirection(RIGHT)] = false; //スティック状態をfalse
 	//上移動
 	if (getInputButton(STICK_UP)) {
 		move_.up(collision, draw); //衝突判定など
 		directionProcess(move_.changeDirection(UP)); //方向処理
 	}
-	else STICK[move_.changeDirection(UP)] = false; //スティック状態をfalse
+	else stickFlag[move_.changeDirection(UP)] = false; //スティック状態をfalse
 	//下移動
 	if (getInputButton(STICK_DOWN)) {
 		move_.down(collision, draw); //衝突判定など
 		directionProcess(move_.changeDirection(DOWN)); //方向処理
 	}
-	else STICK[move_.changeDirection(DOWN)] = false; //スティック状態をfalse
+	else stickFlag[move_.changeDirection(DOWN)] = false; //スティック状態をfalse
 }
 
 /// <summary>
@@ -108,51 +113,59 @@ void Input::movement(MapCollision& collision, MapDraw& draw) {
 /// <param name="dir">移動方向</param>
 void Input::directionProcess(const int& dir) {
 	moveDirection = dir; //移動方向をdirにする
-	STICK[dir] = true; //スティックの方向dirをtrue
+	stickFlag[dir] = true; //スティックの方向dirをtrue
 }
 
 /// <summary>
 /// いずれかのスティックが押されているかを返す
 /// </summary>
 bool Input::anySTICK() {
-	return STICK[LEFT] || STICK[RIGHT] || STICK[UP] || STICK[DOWN];
+	return stickFlag[LEFT] || stickFlag[RIGHT] || stickFlag[UP] || stickFlag[DOWN];
 }
 
 /// <summary>
 /// ボタン入力処理
 /// </summary>
 void Input::eventProcess() {
-	//キャンセル入力
+	//A入力
 	if (getInputButton(A_BUTTON)) A = true;
 	else A = false;
 
-	//入力
+	//B入力
 	if (getInputButton(B_BUTTON)) B = true;
 	else B = false;
 
-	//決定入力
+	//X入力
 	if (getInputButton(X_BUTTON)) X = true;
 	else X = false;
 
-	//入力
+	//Y入力
 	if (getInputButton(Y_BUTTON)) Y = true;
 	else Y = false;
 
-	//入力
+	//L入力
 	if (getInputButton(L_BUTTON)) LB = true;
 	else LB = false;
 
-	//入力
+	//R入力
 	if (getInputButton(R_BUTTON)) RB = true;
 	else RB = false;
+
+	//VIEW入力
+	if (getInputButton(VIEW_BUTTON)) VIEW = true;
+	else VIEW = false;
+
+	//MENU入力
+	if (getInputButton(MENU_BUTTON)) MENU = true;
+	else MENU = false;
 }
 
 /// <summary>
-/// 終了処理
+/// メニュー処理
 /// </summary>
-void Input::endProcess() {
-	if (getInputButton(VIEW_BUTTON)) {
-		SceneTitle::gameScene = END_SCENE;
+void Input::menuProcess() {
+	if (MENU) {
+		SceneRoad::gameScene = MENU_SCENE;
 	}
 }
 
@@ -182,10 +195,10 @@ bool Input::getInputButton(const int& buttonName) {
 			|| !mode && keys[KEY_INPUT_6] && !oldkeys[KEY_INPUT_6];
 	case VIEW_BUTTON: //VIEWボタン
 		return mode && padNum[VIEW_BUTTON] && !oldPadNum[VIEW_BUTTON]
-			|| !mode && keys[KEY_INPUT_ESCAPE] && !oldkeys[KEY_INPUT_ESCAPE];
+			|| !mode && keys[KEY_INPUT_TAB] && !oldkeys[KEY_INPUT_TAB];
 	case MENU_BUTTON: //MENUボタン
 		return mode && padNum[MENU_BUTTON] && !oldPadNum[MENU_BUTTON]
-			|| !mode && keys[KEY_INPUT_8] && !oldkeys[KEY_INPUT_8];
+			|| !mode && keys[KEY_INPUT_ESCAPE] && !oldkeys[KEY_INPUT_ESCAPE];
 	case STICK_LEFT: //左スティック
 		return mode && padNum[STICK_LEFT] || !mode && keys[KEY_INPUT_LEFT];
 	case STICK_RIGHT: //右スティック
@@ -206,5 +219,5 @@ void Input::update() {
 	padsInformation(); //ジョイパッド情報
 	inputModeChange(); //モードチェンジ
 	eventProcess(); //イベント入力処理
-	endProcess(); //終了入力処理
+	menuProcess(); //終了入力処理
 }

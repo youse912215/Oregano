@@ -37,12 +37,6 @@
     <Filter Include="ソース ファイル\Vector">
       <UniqueIdentifier>{7e57e0c3-2ca7-4753-acc9-1b3d7787be9a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Event">
-      <UniqueIdentifier>{89538ecd-ad36-4936-b56c-aff53cdddd7f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Event">
-      <UniqueIdentifier>{611726a3-1074-4b0a-acae-9d141f8c1b7a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\Data">
       <UniqueIdentifier>{8fd7ab99-12d0-4315-9939-16dcdedb3e55}</UniqueIdentifier>
     </Filter>
@@ -111,14 +105,8 @@
     <ClCompile Include="vec2.cpp">
       <Filter>ソース ファイル\Vector</Filter>
     </ClCompile>
-    <ClCompile Include="eventField.cpp">
-      <Filter>ソース ファイル\Event</Filter>
-    </ClCompile>
     <ClCompile Include="dataSave.cpp">
       <Filter>ソース ファイル\Data</Filter>
-    </ClCompile>
-    <ClCompile Include="eventBase.cpp">
-      <Filter>ソース ファイル\Event</Filter>
     </ClCompile>
     <ClCompile Include="dataSource.cpp">
       <Filter>ソース ファイル\Data</Filter>
@@ -133,9 +121,6 @@
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="sceneGame.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="sceneTitle.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="random.cpp">
@@ -162,12 +147,6 @@
     <ClCompile Include="playerSlash.cpp">
       <Filter>ソース ファイル\Organism\Player</Filter>
     </ClCompile>
-    <ClCompile Include="playerAction.cpp">
-      <Filter>ソース ファイル\Organism\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="effectOccurred.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="playerState.cpp">
       <Filter>ソース ファイル\Organism\Player</Filter>
     </ClCompile>
@@ -185,6 +164,18 @@
     </ClCompile>
     <ClCompile Include="moveProcess.cpp">
       <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneSave.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneRoad.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneGameOver.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneEnd.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -212,14 +203,8 @@
     <ClInclude Include="vec2.h">
       <Filter>ヘッダー ファイル\Vector</Filter>
     </ClInclude>
-    <ClInclude Include="eventField.h">
-      <Filter>ヘッダー ファイル\Event</Filter>
-    </ClInclude>
     <ClInclude Include="dataSave.h">
       <Filter>ヘッダー ファイル\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="eventBase.h">
-      <Filter>ヘッダー ファイル\Event</Filter>
     </ClInclude>
     <ClInclude Include="dataSource.h">
       <Filter>ヘッダー ファイル\Data</Filter>
@@ -234,9 +219,6 @@
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="sceneMenu.h">
-      <Filter>ヘッダー ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="sceneTitle.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="random.h">
@@ -263,12 +245,6 @@
     <ClInclude Include="playerShield.h">
       <Filter>ヘッダー ファイル\Organism\Player</Filter>
     </ClInclude>
-    <ClInclude Include="playerAction.h">
-      <Filter>ヘッダー ファイル\Organism\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="effectOccurred.h">
-      <Filter>ヘッダー ファイル\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="playerState.h">
       <Filter>ヘッダー ファイル\Organism\Player</Filter>
     </ClInclude>
@@ -286,6 +262,18 @@
     </ClInclude>
     <ClInclude Include="moveProcess.h">
       <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneSave.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneRoad.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneGameOver.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneEnd.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

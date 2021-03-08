@@ -29,6 +29,7 @@ public:
 	int filterGraph1;
 	int filterGraph2;
 	int shieldGauge;
+	int eventGraph;
 
 	DataSource();
 	~DataSource();

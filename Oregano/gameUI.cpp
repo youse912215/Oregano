@@ -3,29 +3,29 @@
 #include "constant.h"
 #include "playerState.h"
 #include "dataText.h"
+#include "sceneRoad.h"
 
 DataText text_;
 PlayerState state__;
 
 GameUI::GameUI(Input& input, Player& player, MapDraw& map) :
-	input(input), player(player), map(map), margin(16), menuLength(256, 64),
+	input(input), player(player), map(map), margin(16), eventSize(9), eventLength(4),
 	/*　メニュー */
-	menuSize(WIN_WIDTH - menuLength.x - margin, margin),
-	passiveSize(margin, WIN_HEIGHT - 128 - margin),
+	menuLength(256, 64), menuSize(WIN_WIDTH - menuLength.x - margin, margin),
 	/* パッシブ */
-	conditionSize(WIN_WIDTH - 256 - margin, WIN_HEIGHT - 128 - margin),
+	passiveSize(margin, WIN_HEIGHT - 128 - margin),
 	/* 状態異常 */
-	modeLeftSize(BLOCK_SIZE * 7 - margin, WIN_HEIGHT - 128 - margin),
+	conditionSize(WIN_WIDTH - 256 - margin, WIN_HEIGHT - 128 - margin),
 	/* モード */
+	modeLeftSize(BLOCK_SIZE * 7 - margin, WIN_HEIGHT - 128 - margin),
 	modeLength(64, 128),
 	modeRightSize(BLOCK_SIZE * 16 + 32 - margin, WIN_HEIGHT - modeLength.y - margin),
-	actionLength(512, 128),
 	/* アクション */
-	actionSize(BLOCK_SIZE * 8 + 16 - margin, WIN_HEIGHT - actionLength.y - margin),
+	actionLength(512, 128),
 	/* マップ上イベント */
-	mapEventPos(MAP_EVENT_SIZE) {
-
-	changeFlag = false;
+	actionSize(BLOCK_SIZE * 8 + 16 - margin, WIN_HEIGHT - actionLength.y - margin),
+	speechBalloonPos(HALF_WIN_WIDTH - 32, HALF_WIN_HEIGHT - 100), mapEventPos(MAP_EVENT_SIZE),
+	eventNum(0) {
 }
 
 GameUI::~GameUI() {
@@ -69,11 +69,43 @@ void GameUI::drawFilter() {
 }
 
 /// <summary>
+/// プレイヤーとイベント位置の一致条件
+/// </summary>
+/// <param name="i">イベント番号</param>
+bool GameUI::positionMatchDecision(const int& i) {
+	return map.currentMap.x == mapEventPos[i * eventLength] //マップx座標
+		&& map.currentMap.y == mapEventPos[i * eventLength + 1] //マップy座標
+		&& map.blockArea.x == mapEventPos[i * eventLength + 2] //区画x座標
+		&& map.blockArea.y == mapEventPos[i * eventLength + 3]; //区画y座標
+}
+
+/// <summary>
+/// イベント用噴き出しの描画
+/// </summary>
+void GameUI::drawSpeechBalloon() {
+	//イベント数分繰り返す
+	for (int i = 0; i < eventSize; ++i) {
+		//プレイヤーとイベント位置が一致
+		if (!positionMatchDecision(i))
+			continue; //条件以外のとき、処理をスキップする
+		DrawGraph(speechBalloonPos.x, speechBalloonPos.y, source.eventGraph, true); //噴き出し
+
+		eventNum = i; //今いる位置のイベント番号を代入
+
+		if (input.VIEW) {
+			//目的地点のイベント番号(eventSize - 1)以外なら
+			if (eventNum != eventSize - 1) {
+				SceneRoad::gameScene = SAVE_SCENE; //VIEWボタンを押したとき、セーブシーンへ
+			}
+			else SceneRoad::gameScene = END_SCENE; //VIEWボタンを押したとき、エンドシーンへ
+		}
+	}
+}
+
+/// <summary>
 /// 描画処理
 /// </summary>
 void GameUI::draw() {
-	drawBlur(); //ぼかし
-
 	DrawGraph(margin, margin, coinGraph, true); //コイン
 
 	DrawRectGraph(menuSize.x, menuSize.y,
@@ -95,13 +127,14 @@ void GameUI::draw() {
 	DrawRectGraph(actionSize.x, actionSize.y,
 	              0, 0, actionLength.x, actionLength.y, actionGraph,
 	              true, false, false); //アクション
-
-	drawFilter();
+	drawFilter(); //フィルター描画
 }
 
 void GameUI::update() {
+	//drawBlur(); //ぼかし
 	//draw();
 	//text_.drawText();
+	drawSpeechBalloon(); //イベント用噴き出し描画
 
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "%d, %d, %d, %d",
 	                 mapEventPos[0], mapEventPos[1], mapEventPos[2], mapEventPos[3], false);
