@@ -17,9 +17,8 @@ Player::Player(Input& input, MapDraw& draw_) : input(input),
                                                cooldownFlag(4),
 
                                                knifeCenter(0.0, 0.0), slashCenter(0.0, 0.0),
-                                               knife(false), slash(false), shield(false), elimination(false),
 
-                                               status(PLAYER_STATUS_SIZE) {
+                                               actionFlag{false, false, false, false} {
 
 	this->pos.dx = static_cast<int>(WIN_WIDTH / 2 - BLOCK_SIZE / 2); //プレイヤーx座標
 	this->pos.dy = static_cast<int>(WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2); //プレイヤーy座標
@@ -35,7 +34,8 @@ Player::~Player() {
 void Player::draw() {
 	//プレイヤー
 	DrawRectGraph(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy),
-	              0, 0, BLOCK_SIZE, BLOCK_SIZE,
+	              BLOCK_SIZE * input.moveDirection, BLOCK_SIZE * PlayerState::battleStyle,
+	              BLOCK_SIZE, BLOCK_SIZE,
 	              source.player, true, false);
 }
 
@@ -45,23 +45,23 @@ void Player::draw() {
 void Player::actionCommand() {
 	/* ナイフ入力 */
 	if (input.A && cooldown[KNIFE] == 0 && input.anySTICK()) {
-		knife = true; //ナイフ投射
+		actionFlag[KNIFE] = true; //ナイフ投射
 		cooldownFlag[KNIFE] = true; //クールダウンフラグをtrue
 	}
 	/* 刃入力 */
 	if (input.B && cooldown[SLASH] == 0) {
-		slash = true; //刃を回転
+		actionFlag[SLASH] = true; //刃を回転
 		cooldownFlag[SLASH] = true; //クールダウンフラグをtrue
 	}
 	/* シールド */
 	if (input.X && !cooldownFlag[SHIELD]) {
-		shield = true; //シールドを付与
+		actionFlag[SHIELD] = true; //シールドを付与
 		shieldAct.giveShield(PlayerState::battleStyle); //シールド量を追加
 		cooldownFlag[SHIELD] = true; //クールダウンフラグをtrue
 	}
-	/* 状態を解消 */
-	if (input.Y && !cooldownFlag[ELIMINATION]) {
-		elimination = true; //状態を解消
+	/* いずれかの状態異常のとき、状態を解消 */
+	if (input.Y && !cooldownFlag[RECOVERY] && stateAct.anyCondition()) {
+		actionFlag[RECOVERY] = true; //状態を解消
 	}
 	/* 戦闘スタイル切替 */
 	//Lボタン
@@ -77,8 +77,9 @@ void Player::actionCommand() {
 /// </summary>
 /// <param name="attackPower">敵の攻撃力</param>
 void Player::lostPlayerCoin(const int& attackPower) {
-	if (!shield) {
-		PlayerState::coin[PlayerState::battleStyle] -= attackPower; //コイン損失
+	if (!actionFlag[SHIELD]) {
+		PlayerState::coin[PlayerState::battleStyle]
+			-= attackPower * stateAct.addConditionDamage(); //コイン損失
 		//コインが0以下ならば、
 		if (PlayerState::coin[PlayerState::battleStyle] <= 0)
 			PlayerState::coin[PlayerState::battleStyle] = 0; //0以下になったら0に戻す
@@ -106,7 +107,8 @@ void Player::addPlayerCoin(const int& attribute, const int& enemyCoin) {
 /// <param name="attributeValue">敵の属性値</param>
 void Player::addAttributeAccumulation(const int& attribute, const int& attributeValue) {
 	//シールドがないとき
-	if (!shield) stateAct.calculateValue(attribute, attributeValue); //属性蓄積値の計算
+	if (!actionFlag[SHIELD])
+		stateAct.calculateValue(attribute, attributeValue); //属性蓄積値の計算
 
 }
 
@@ -136,10 +138,10 @@ void Player::knifeUpdate() {
 	knifeAct.countCooldown(cooldown, cooldownFlag); //ナイフのクールダウン処理
 
 	//ナイフ入力があったとき
-	if (knife) {
+	if (actionFlag[KNIFE]) {
 		knifeAct.setKnifePosition(this->pos); //ナイフのポジジョンセット
 		knifeAct.accelKnife(input); //ナイフの加速
-		knifeAct.resetKnifePosition(center, knife); //ナイフのポジジョンリセット
+		knifeAct.resetKnifePosition(center, actionFlag); //ナイフのポジジョンリセット
 		knifeAct.calculateRadian(this->pos);
 		knifeAct.draw(source); //描画処理
 	}
@@ -150,10 +152,10 @@ void Player::knifeUpdate() {
 /// </summary>
 void Player::slashUpdate() {
 	slashAct.initialize(this->pos); //刃の初期化
-	slashAct.countCooldown(cooldown, cooldownFlag, slash);
+	slashAct.countCooldown(cooldown, cooldownFlag, actionFlag);
 
 	//刃の入力があったとき
-	if (slash) {
+	if (actionFlag[SLASH]) {
 		slashAct.countTime(); //描画時間カウント
 		slashAct.draw(source); //描画処理
 	}
@@ -164,21 +166,21 @@ void Player::slashUpdate() {
 /// </summary>
 void Player::shieldUpdate() {
 	shieldAct.initialize(this->pos); //シールドの初期化
-	shieldAct.countCooldown(cooldown, cooldownFlag, shield); //シールドのクールダウン処理
+	shieldAct.countCooldown(cooldown, cooldownFlag, actionFlag); //シールドのクールダウン処理
 
-	if (shieldAct.value <= 0) shield = false; //シールド量が0になったら、シールド消失
+	if (shieldAct.value <= 0) actionFlag[SHIELD] = false; //シールド量が0になったら、シールド消失
 
 	//シールドの入力があったとき
-	if (shield) shieldAct.draw(source); //描画処理
+	if (actionFlag[SHIELD]) shieldAct.draw(source); //描画処理
 }
 
 /// <summary>
 /// 状態更新処理
 /// </summary>
 void Player::stateUpdate() {
-	stateAct.valueReset(elimination, cooldownFlag); //状態異常等を解消
+	stateAct.valueReset(actionFlag, cooldownFlag); //状態異常等を解消
 	stateAct.countCooldown(cooldown, cooldownFlag); //状態解消のクールダウン処理
-	stateAct.stateAbnormalUpdate(draw_); //状態異常更新処理
+	stateAct.conditionUpdate(draw_); //状態異常更新処理
 	stateAct.switchStyleAutomatically(); //生存状態を更新
 }
 
@@ -197,19 +199,17 @@ int Player::currentMapPos(const int& pos) {
 void Player::update() {
 	actionCommand(); //アクションコマンド処理
 
+	draw(); //描画処理
+
 	knifeUpdate(); //ナイフ更新処理
 	slashUpdate(); //刃更新処理
 	shieldUpdate(); //シールド更新処理
 	stateUpdate(); //更新処理
 
-	draw(); //描画処理
-
-	DrawFormatString(0, 450, GetColor(0, 255, 0), "ナイフ　　TF:%d, CDR:%d", knife, cooldown[0], false);
-	DrawFormatString(0, 465, GetColor(0, 255, 0), "　刃　　　TF:%d, CDR:%d", slash, cooldown[1], false);
-	DrawFormatString(0, 480, GetColor(0, 255, 0), "シールド　TF:%d, CDR:%d, Value:%d",
-	                 shield, cooldown[2], shieldAct.value, false);
-	DrawFormatString(0, 495, GetColor(0, 255, 0), "　解消　　TF:%d, CDR:%d, CDRflag:%d",
-	                 elimination, cooldown[3], cool(3), false);
+	/*DrawFormatString(0, 450, GetColor(0, 255, 0), "ナイフ　　CDR:%d", cooldown[0], false);
+	DrawFormatString(0, 465, GetColor(0, 255, 0), "　刃　　　CDR:%d", cooldown[1], false);
+	DrawFormatString(0, 480, GetColor(0, 255, 0), "シールド　Value:%d", cooldown[2], shieldAct.value, false);
+	DrawFormatString(0, 495, GetColor(0, 255, 0), "　解消　　CDR:%d, CDRflag:%d", cooldown[3], cool(3), false);
 
 
 	DrawFormatString(0, 550, GetColor(255, 100, 100), "スタイル:%d", stateAct.battleStyle, false);
@@ -222,7 +222,7 @@ void Player::update() {
 	DrawFormatString(0, 610, GetColor(0xee, 0x86, 0x9a), "中紅花:%d, コイン:%d, 状態:%d",
 	                 PlayerState::attributeAccumulation[3], PlayerState::coin[3], state(3), false);
 
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "mX%d, mY%d", draw_.currentMap.x, draw_.currentMap.y, false);
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "mX%d, mY%d", draw_.currentMap.x, draw_.currentMap.y, false);*/
 
 	/*DrawFormatString(0, 500, GetColor(120, 0, 100), "トレジャーランク:%d, 花萌葱:%d, 金糸雀:%d, 葡萄染:%d, 白百合:%d",
 	                 status[TREASURE_RANK], status[GREEN_COIN], status[YELLOW_COIN],

@@ -21,7 +21,7 @@ void loopProcess() {
 	Player player(input, draw_); //プレイヤークラス
 	EnemyConclusion enemy(player); //敵まとめクラス
 
-	GameUI gameUI(input, draw_); //ゲームUIクラス
+	GameUI gameUI(input, player, draw_); //ゲームUIクラス
 
 	PlayerState state;
 	DataSave save(state); //セーブデータクラス
@@ -33,7 +33,9 @@ void loopProcess() {
 		input.update(); //入力処理
 
 		/* タイトルシーン処理 */
-		if (SceneTitle::gameScene == TITLE_SCENE) title.update();
+		if (SceneTitle::gameScene == TITLE_SCENE) {
+			title.update();
+		}
 
 			/* ゲームシーン処理 */
 		else if (SceneTitle::gameScene == GAME_SCENE) {
@@ -46,9 +48,7 @@ void loopProcess() {
 
 			player.update(); //プレイヤー更新処理
 
-			//enemy.update(); //敵更新処理
-
-			save.update(); //データセーブ
+			enemy.update(); //敵更新処理
 
 			gameUI.update(); //UI更新処理
 		}

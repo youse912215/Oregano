@@ -22,7 +22,7 @@ public:
 	void initialize(Vec2d& pos, Vec2d& knifeCenter); //ナイフの初期化
 	void countCooldown(std::vector<int>& cooldown, std::vector<bool>& cooldownFlag); //ナイフのクールダウン処理
 	void setKnifePosition(Vec2d& pos); //ナイフのポジジョンセット
-	void resetKnifePosition(Vec2d& playerCenter, bool& knife); //ナイフのポジジョンリセット
+	void resetKnifePosition(Vec2d& playerCenter, vector<bool>& actionFlag); //ナイフのポジジョンリセット
 	void accelKnife(Input& input); //ナイフの加速
 	bool deleteKnife(Vec2d& playerCenter); //ナイフの削除条件
 	void calculateRadian(Vec2d& pos); //描画用のラジアン計算

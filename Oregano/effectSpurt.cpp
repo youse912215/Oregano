@@ -49,6 +49,7 @@ void EffectSpurt::occurrenceParticle(Vec2d& deadPos) {
 	/* 移動距離がmaxRangeのとき */
 	if (abs(moveDistance.dy) >= 150.0) {
 		generationTime = 0.0; //生存時間をリセット
+		pos = deadPos; //ポジションをリセット
 		isAlive = false; //生存状態をfalse
 	}
 

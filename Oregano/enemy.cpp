@@ -12,9 +12,9 @@ EnemyTracking tracking;
 
 Enemy::Enemy() :
 	pos(0.0, 0.0), center(0.0, 0.0),
-	screenCenter(0.0, 0.0), relativeDistance(0.0, 0.0), lifeheight(8), initLife{1, 2, 3, 4},
-	possessionCoin{1, 5, 10, 15}, attackPower{2, 10, 20, 30},
-	attributeValue{5, 10, 20, 30},
+	screenCenter(0.0, 0.0), relativeDistance(0.0, 0.0), lifeHeight(8), intervalMax(15),
+	initLife{1, 2, 3, 4}, possessionCoin{1, 2, 3, 4}, attackPower{2, 4, 8, 10},
+	attributeValue{1, 2, 3, 5},
 	life(0), pattern(0), level(0), damageInterval(2), damageFlag(2),
 
 	lissajousMaxTime(7200.0), lissajousX(800.0), lissajousY(450.0), controlSpeed(10.0), lissajousTime(0),
@@ -43,8 +43,8 @@ void Enemy::draw(DataSource& source) {
 	/* lifeによって、画像を変更する */
 	DrawRectGraph(static_cast<int>(screenPos.dx),
 	              static_cast<int>(screenPos.dy) - 10,
-	              0, life * lifeheight - lifeheight,
-	              static_cast<int>(HALF_BLOCK_SIZE_D), lifeheight,
+	              0, life * lifeHeight - lifeHeight,
+	              static_cast<int>(HALF_BLOCK_SIZE_D), lifeHeight,
 	              source.enemyLife, true, false); //life
 }
 
@@ -52,8 +52,8 @@ void Enemy::draw(DataSource& source) {
 /// 死亡処理
 /// </summary>
 void Enemy::dead() {
-	deadFlag = true; //死亡状態をtrue
 	activity = false; //活動状態をfalse
+	deadFlag = true; //死亡状態をtrue
 }
 
 /// <summary>
@@ -104,17 +104,20 @@ void Enemy::takeDamage(const int& act) {
 /// </summary>
 /// <param name="act">プレイヤーのアクション</param>
 void Enemy::damageProcess(Player& player, const int& act) {
+	/* 間隔フラグがtrueのとき */
 	if (intervalFlag[act])
-		damageInterval[act]++;
+		damageInterval[act]++; //ダメージ間隔時間をカウント
 
-	if (damageInterval[act] >= 15) {
-		damageInterval[act] = 0;
-		intervalFlag[act] = false;
+	/* ダメージ間隔時間がintervalMax異常なら */
+	if (damageInterval[act] >= intervalMax) {
+		damageInterval[act] = 0; //ダメージ間隔時間を0
+		intervalFlag[act] = false; //間隔フラグをfalse
 	}
 
+	/* ダメージフラグがtrueのとき */
 	if (damageFlag[act]) {
-		life -= player.addDamage(act);
-		damageFlag[act] = false;
+		life -= player.addDamage(act); //ダメージ
+		damageFlag[act] = false; //ダメージフラグをfalse
 	}
 }
 
@@ -123,9 +126,9 @@ void Enemy::damageProcess(Player& player, const int& act) {
 /// </summary>
 void Enemy::noLife(Player& player) {
 	if (life <= 0) {
-		life = 0;
-		dead(); //死亡処理
+		life = 0; //ライフを0にする
 		player.addPlayerCoin(attribute, possessionCoin[level]); //コイン追加処理
+		dead(); //死亡処理
 	}
 }
 
@@ -136,8 +139,7 @@ void Enemy::collision(Player& player) {
 	//プレイヤーとの距離がENEMY_COLLISION_DISTANCE以下のとき
 	if (abs(relativeDistance.dx) <= ENEMY_COLLISION_DISTANCE
 		&& abs(relativeDistance.dy) <= ENEMY_COLLISION_DISTANCE) {
-		life = 0;
-		//dead(); //死亡処理
+		dead(); //死亡処理
 		player.lostPlayerCoin(attackPower[level]); //(プレイヤーの)コインの損失処理
 		player.addAttributeAccumulation(attribute, attributeValue[level]); //属性耐久値を加算
 	}
@@ -213,13 +215,11 @@ double Enemy::getPopLocation(const int& mapDir, const int& coordinate1, const in
 void Enemy::update(Player& player, DataSource& source) {
 	relativeDistanceUpdate(player); //プレイヤーとの相対距離を取得
 
-	if (player.knife) hitKnife(player); //ナイフが当たったとき
-	if (player.slash) hitSlash(); //刃が当たったとき
+	if (player.actionFlag[KNIFE]) hitKnife(player); //ナイフが当たったとき
+	if (player.actionFlag[SLASH]) hitSlash(); //刃が当たったとき
 
 	damageProcess(player, KNIFE); //ナイフダメージ処理
 	damageProcess(player, SLASH); //刃ダメージ処理
-
-	noLife(player); //0ライフ処理
 
 	countDeadTime(); //死亡時間をカウント
 
@@ -233,15 +233,17 @@ void Enemy::update(Player& player, DataSource& source) {
 			lissajous(); //リサージュ曲線描画
 		}
 		draw(source); //描画処理
+
+		noLife(player); //0ライフ処理	
 	}
 
 	//敵が画面サイズの2倍の範囲外にいるとき
 	if (abs(relativeDistance.dx) >= WIN_WIDTH && abs(relativeDistance.dy) >= WIN_HEIGHT) {
-		screenPos = -HALF_BLOCK_SIZE; //画面外にポジションをセット
+		screenPos = -500.0; //画面外にポジションをセット
 		dead(); //死亡処理
 	}
 
-	DrawFormatString(200, 185, GetColor(0, 0, 255),
+	/*DrawFormatString(200, 185, GetColor(0, 0, 255),
 	                 "En座標：%lf, %lf",
 	                 pos.dx, pos.dy, false);
 	DrawFormatString(200, 200, GetColor(0, 0, 255),
@@ -254,7 +256,7 @@ void Enemy::update(Player& player, DataSource& source) {
 	DrawFormatString(200, 230, GetColor(0, 0, 255),
 	                 "act：%d, dead:%d, dTime:%d, LIFE:%d, dm1:%d, dm2:%d",
 	                 activity, deadFlag, deadTime, life,
-	                 player.addDamage(0), player.addDamage(1), false);
+	                 player.addDamage(0), player.addDamage(1), false);*/
 }
 
 void Enemy::initialize(Player& player) {

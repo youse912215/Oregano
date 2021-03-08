@@ -13,7 +13,8 @@ public:
 	Vec2d slashPos; //刃座標
 
 	void initialize(Vec2d& pos); //初期化
-	void countCooldown(std::vector<int>& cooldown, std::vector<bool>& cooldownFlag, bool& slash); //刃のクールダウン処理
+	void countCooldown(std::vector<int>& cooldown, std::vector<bool>& cooldownFlag, std::vector<bool>& actionFlag);
+	//刃のクールダウン処理
 	void countTime(); //描画時間カウント
 	void draw(DataSource& source); //描画処理
 

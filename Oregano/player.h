@@ -36,27 +36,16 @@ public:
 	Vec2d knifeCenter; //ナイフの中心座標
 	Vec2d slashCenter; //刃の中心座標
 
-	bool knife;
-	bool slash;
-	bool shield;
-	bool elimination;
-
-	void lostPlayerCoin(const int& attackPower); //コインの損失処理
-	void addPlayerCoin(const int& attribute, const int& enemyCoin); //コインの追加処理
-	void addAttributeAccumulation(const int& attribute, const int& attributeValue); //属性値の蓄積処理
-	int addDamage(const int& act); //敵へのダメージ
-	int currentMapPos(const int& pos); //現在のマップを返す
-
-	vector<int> status;
-	/*vector<int> possessionItem;
-	vector<int> possessionAccessory;
-	vector<int> possessionJewel;
-	vector<int> possessionMineral;*/
+	vector<bool> actionFlag; //アクションフラグ
 
 	Player(Input& input, MapDraw& draw_);
 	~Player();
 
+	int addDamage(const int& act); //敵へのダメージ
+	int currentMapPos(const int& pos); //現在のマップを返す
+
+	void lostPlayerCoin(const int& attackPower); //コインの損失処理
+	void addPlayerCoin(const int& attribute, const int& enemyCoin); //コインの追加処理
+	void addAttributeAccumulation(const int& attribute, const int& attributeValue); //属性値の蓄積処理
 	void update(); //更新処理
 };
-
-//----------------------------------------------------------------------------------//

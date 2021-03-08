@@ -14,7 +14,7 @@ vector<EffectBlood> bloods_(100);
 EffectSpurt spurt_;
 vector<EffectSpurt> spurts_(150);
 
-EnemyConclusion::EnemyConclusion(Player& player_) : player_(player_), showTime(15) {
+EnemyConclusion::EnemyConclusion(Player& player_) : player_(player_), showTime(20) {
 }
 
 /// <summary>

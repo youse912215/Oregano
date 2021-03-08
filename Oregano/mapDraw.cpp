@@ -327,16 +327,16 @@ void MapDraw::update(vector<vector<vector<int>>>& mapAll) {
 	//                 currentCorner[CENTER_X1], currentCorner[CENTER_X2], currentCorner[CENTER_Y1],
 	//                 currentCorner[CENTER_Y2], false);
 
-	DrawFormatString(0, 15, GetColor(255, 255, 255), "(iniY:%d, iniX:%d)", centerPos.y, centerPos.x, false);
+	//DrawFormatString(0, 15, GetColor(255, 255, 255), "(iniY:%d, iniX:%d)", centerPos.y, centerPos.x, false);
 	/*DrawFormatString(0, 0, GetColor(255, 255, 255), "mX%d, mY%d", currentMap.x, currentMap.y, false);*/
 	//DrawFormatString(0, 45, GetColor(255, 255, 255), "cby1:%d, cbx1:%d, cby2:%d, cbx2:%d",
 	//                 currentBoundaryMap1.y, currentBoundaryMap1.x, currentBoundaryMap2.y, currentBoundaryMap2.x, false);
-	DrawFormatString(0, 880, GetColor(200, 120, 0), "X%d, Y%d", mapX, mapY, false);
+	//DrawFormatString(0, 880, GetColor(200, 120, 0), "X%d, Y%d", mapX, mapY, false);
 
 	//DrawFormatString(0, 60, GetColor(255, 255, 255), "screenX:%d, screenY:%d",
 	//                 1 * BLOCK_SIZE + screen.x + mapBetweenDistance * centerPos.x,
 	//                 1 * BLOCK_SIZE + screen.y + mapBetweenDistance * centerPos.y, false);
 
-	DrawFormatString(200, 100, GetColor(255, 0, 255), "マップ情報:%d",
-	                 mapCentral[blockArea.y][blockArea.x], false);
+	/*DrawFormatString(200, 100, GetColor(255, 0, 255), "マップ情報:%d",
+	                 mapCentral[blockArea.y][blockArea.x], false);*/
 }

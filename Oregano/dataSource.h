@@ -26,6 +26,9 @@ public:
 	int menuGraph;
 	int modeGraph;
 	int actionGraph;
+	int filterGraph1;
+	int filterGraph2;
+	int shieldGauge;
 
 	DataSource();
 	~DataSource();

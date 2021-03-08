@@ -2,10 +2,12 @@
 #include "constant.h"
 #include "mapAutogeneration.h"
 #include "dataSource.h"
+#include "dataText.h"
 
 MapAutogeneration autogeneration;
 MapLoad load;
 DataSource source;
+DataText text;
 
 int SceneTitle::gameScene = TITLE_SCENE;
 
@@ -22,8 +24,8 @@ void SceneTitle::update() {
 	CALL_ONCE(save.roadSaveData()); //ファイル読み込み処理
 	CALL_ONCE(autogeneration.writeRandomMap()); //マップ自動生成
 	load.roadMapData(); //マップデータ読み込み
+	text.roadFont(); //フォントのロード
 
-	save.update();
 	gameScene = GAME_SCENE; //ゲームシーンへ
 
 

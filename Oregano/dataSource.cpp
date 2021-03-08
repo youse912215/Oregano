@@ -23,6 +23,9 @@ DataSource::DataSource() {
 	menuGraph = LoadGraph("resource/UI/menu.png");
 	modeGraph = LoadGraph("resource/UI/mode.png");
 	actionGraph = LoadGraph("resource/UI/action.png");
+	filterGraph1 = LoadGraph("resource/UI/filter1.png");
+	filterGraph2 = LoadGraph("resource/UI/filter2.png");
+	shieldGauge = LoadGraph("resource/UI/shieldGauge.png");
 }
 
 DataSource::~DataSource() {
@@ -46,4 +49,7 @@ DataSource::~DataSource() {
 	DeleteGraph(menuGraph);
 	DeleteGraph(modeGraph);
 	DeleteGraph(actionGraph);
+	DeleteGraph(filterGraph1);
+	DeleteGraph(filterGraph2);
+	DeleteGraph(shieldGauge);
 }

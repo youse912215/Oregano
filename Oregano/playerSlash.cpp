@@ -27,11 +27,12 @@ void PlayerSlash::initialize(Vec2d& pos) {
 /// <param name="cooldown">クールダウン</param>
 /// <param name="cooldownFlag">クールダウンフラグ</param>
 /// <param name="slash">刃フラグ</param>
-void PlayerSlash::countCooldown(std::vector<int>& cooldown, std::vector<bool>& cooldownFlag, bool& slash) {
+void PlayerSlash::countCooldown(std::vector<int>& cooldown, std::vector<bool>& cooldownFlag,
+                                std::vector<bool>& actionFlag) {
 	if (cooldownFlag[SLASH]) cooldown[SLASH]++; //クールダウン開始
 
 	if (cooldown[SLASH] >= 20 && cooldown[SLASH] < 60) {
-		slash = false; //刃を収める
+		actionFlag[SLASH] = false; //刃を収める
 	}
 		//クールダウンは60秒
 	else if (cooldown[SLASH] >= 60) {

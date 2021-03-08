@@ -209,7 +209,7 @@ enum ACTION_COMMAND {
 	//ƒV[ƒ‹ƒh
 	SHIELD,
 	//ó‘Ô‰ðÁ
-	ELIMINATION,
+	RECOVERY,
 };
 
 //ó‘ÔˆÙí

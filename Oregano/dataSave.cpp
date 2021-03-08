@@ -93,7 +93,7 @@ void DataSave::getCurrentStatus() {
 		currentStatus[i] = PlayerState::coin[i];
 	//現在の属性耐久値を代入
 	for (unsigned int i = 0; i != PlayerState::attributeAccumulation.size(); ++i)
-		currentStatus[i + PlayerState::coin.size()] = PlayerState::coin[i];
+		currentStatus[i + PlayerState::coin.size()] = PlayerState::attributeAccumulation[i];
 	//現在の戦闘スタイルを代入
 	currentStatus[PlayerState::coin.size() + PlayerState::attributeAccumulation.size()] = PlayerState::battleStyle;
 	//各マップ座標
@@ -110,7 +110,7 @@ void DataSave::getLastTimeStatus() {
 		PlayerState::coin[i] = lastTimeStatus[i];
 	//前回までの属性耐久値を代入
 	for (unsigned int i = 0; i != PlayerState::attributeAccumulation.size(); ++i)
-		PlayerState::coin[i] = lastTimeStatus[i + PlayerState::coin.size()];
+		PlayerState::attributeAccumulation[i] = lastTimeStatus[i + PlayerState::coin.size()];
 	//前回までの戦闘スタイルを代入
 	PlayerState::battleStyle = lastTimeStatus[PlayerState::coin.size() + PlayerState::attributeAccumulation.size()];
 	//各マップ座標
@@ -145,35 +145,6 @@ void DataSave::writeSaveData() {
 	/* ステータス */
 	getCurrentStatus();
 	writeBinaryFile(currentStatus, lastTimeStatus, statusData);
-
-	///* 所持アイテム */
-	//getCurrentEvent(currentPossessionItem, player.possessionItem);
-	//writeBinaryFile(currentPossessionItem, lastTimePossessionItem, possessionItemData);
-	///* 所持アクセサリー */
-	//getCurrentEvent(currentPossessionAccessory, player.possessionAccessory);
-	//writeBinaryFile(currentPossessionAccessory, lastTimePossessionAccessory, possessionAccessoryData);
-	///* 所持ジュエル */
-	//getCurrentEvent(currentPossessionJewel, player.possessionJewel);
-	//writeBinaryFile(currentPossessionJewel, lastTimePossessionJewel, possessionJewelData);
-	///* 所持ジュエル */
-	//getCurrentEvent(currentPossessionMineral, player.possessionMineral);
-	//writeBinaryFile(currentPossessionMineral, lastTimePossessionMineral, possessionMineralData);
-
-	///* フィールドコイン */
-	//getCurrentEvent(currentCoin, field.coin);
-	//writeBinaryFile(currentCoin, lastTimeCoin, coinData);
-	///* フィールドアイテム */
-	//getCurrentEvent(currentItem, field.item);
-	//writeBinaryFile(currentItem, lastTimeItem, itemData);
-	///* フィールドアクセサリー */
-	//getCurrentEvent(currentAccessory, field.accessory);
-	//writeBinaryFile(currentAccessory, lastTimeAccessory, accessoryData);
-	///* フィールドジュエル */
-	//getCurrentEvent(currentJewel, field.jewel);
-	//writeBinaryFile(currentJewel, lastTimeJewel, jewelData);
-	///* フィールド鉱物 */
-	//getCurrentEvent(currentMineral, field.mineral);
-	//writeBinaryFile(currentMineral, lastTimeMineral, mineralData);
 }
 
 /// <summary>
@@ -189,6 +160,6 @@ void DataSave::roadSaveData() {
 /// 更新処理
 /// </summary>
 void DataSave::update() {
-	DrawFormatString(0, 700, GetColor(255, 0, 0), "%d, %d, %d, %d",
-	                 player.coin[0], player.coin[1], player.coin[2], player.coin[3], false);
+	/*DrawFormatString(0, 700, GetColor(255, 0, 0), "%d, %d, %d, %d",
+	                 player.coin[0], player.coin[1], player.coin[2], player.coin[3], false);*/
 }

@@ -79,9 +79,9 @@ void PlayerKnife::setKnifePosition(Vec2d& pos) {
 /// <summary>
 /// ナイフのポジジョンをリセットする
 /// </summary>
-void PlayerKnife::resetKnifePosition(Vec2d& playerCenter, bool& knife) {
+void PlayerKnife::resetKnifePosition(Vec2d& playerCenter, vector<bool>& actionFlag) {
 	if (deleteKnife(playerCenter)) {
-		knife = false;
+		actionFlag[KNIFE] = false;
 		knifeAddPos = 0.0;
 	}
 }

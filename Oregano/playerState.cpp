@@ -4,20 +4,20 @@
 
 MoveProcess move_;
 
-vector<int> PlayerState::coin = {10000, 10000, 10000, 10000};
+vector<bool> PlayerState::condition = {false, false, false, false};
+vector<int> PlayerState::coin = {10, 10, 10, 10};
 vector<int> PlayerState::attributeAccumulation = {0, 0, 0, 0};
 int PlayerState::battleStyle = 0;
 
-
-PlayerState::PlayerState() : poisonTime(0), roughTime(0), attributeMax(100), timeMax(100), cooldownMax(120),
-                             poisonDamage(50), roughDamage(100),
-                             eliminateCoin(300), condition{false, false, false, false} {
+PlayerState::PlayerState() : poisonTime(0), roughTime(0), attributeMax(10), timeMax(100), cooldownMax(120),
+                             poisonDamage(5), roughDamage(10),
+                             recoveryCoin(30) {
 }
 
 /// <summary>
 /// 状態異常を取得
 /// </summary>
-void PlayerState::getStateAbnormal() {
+void PlayerState::getCondition() {
 	for (unsigned int i = 0; i != condition.size(); ++i) {
 		if (attributeAccumulation[i] < attributeMax) continue; //条件以外のとき、処理をスキップする
 		condition[i] = true; //状態異常をtrue
@@ -66,12 +66,33 @@ void PlayerState::continuousDamage(const int& time, const int& value) {
 /// 状態異常更新処理
 /// </summary>
 /// <param name="draw_"></param>
-void PlayerState::stateAbnormalUpdate(MapDraw& draw_) {
-	getStateAbnormal(); //状態異常を取得
+void PlayerState::conditionUpdate(MapDraw& draw_) {
+	getCondition(); //状態異常を取得
 	getFloorState(draw_); //猛毒状態を取得
 	countStateTime(); //猛毒時間をカウント
 	continuousDamage(poisonTime, poisonDamage); //猛毒ダメージを付与
 	continuousDamage(roughTime, roughDamage); //凸凹ダメージを付与
+}
+
+/// <summary>
+/// 状態異常による追加ダメージ
+/// </summary>
+int PlayerState::addConditionDamage() {
+	//出血状態以外のとき
+	if (!condition[BLOODING])
+		return 1; //追加ダメージなし
+	return 2; //ダメージ2倍として返す
+}
+
+/// <summary>
+/// いずれかの状態異常を返す
+/// </summary>
+bool PlayerState::anyCondition() {
+	if (condition[DEADLY_POISON] || condition[CRAMPS]
+		|| condition[CONFUSION] || condition[BLOODING]) {
+		return true;
+	}
+	return false;
 }
 
 /// <summary>
@@ -116,26 +137,26 @@ void PlayerState::calculateValue(const int& attribute, const int& attributeValue
 		if (attributeAccumulation[attribute] < attributeMax)
 			attributeAccumulation[attribute] += attributeValue; //属性蓄積値を加算
 		else if (attributeAccumulation[attribute] >= attributeMax)
-			attributeAccumulation[attribute] = attributeMax; //100以上は属性蓄積値を最大値にする
+			attributeAccumulation[attribute] = attributeMax; //attributeMax以上は属性蓄積値を最大値にする
 	}
 }
 
 /// <summary>
 /// 属性耐性値をリセットと状態異常を解消
 /// </summary>
-/// <param name="elimination">解消フラグ</param>
+/// <param name="recovery">解消フラグ</param>
 /// <param name="cooldownFlag">クールダウンフラグ</param>
 /// <param name="coin">プレイヤーコイン</param>
-void PlayerState::valueReset(bool& elimination, vector<bool>& cooldownFlag) {
+void PlayerState::valueReset(vector<bool>& actionFlag, vector<bool>& cooldownFlag) {
 	//現在の戦闘スタイルの状態異常がtrueかつ、解消フラグがtrueのとき
-	if (elimination) {
-		if (condition[battleStyle] && coin[battleStyle] >= eliminateCoin) {
+	if (actionFlag[RECOVERY]) {
+		if (condition[battleStyle] && coin[battleStyle] >= recoveryCoin) {
 			attributeAccumulation[battleStyle] = 0; //属性耐性値をリセット
 			condition[battleStyle] = false; //状態異常を解消
-			cooldownFlag[ELIMINATION] = true; //クールダウンフラグをtrue
-			coin[battleStyle] -= eliminateCoin;
+			cooldownFlag[RECOVERY] = true; //クールダウンフラグをtrue
+			coin[battleStyle] -= recoveryCoin;
 		}
-		elimination = false; //解消フラグをfalse
+		actionFlag[RECOVERY] = false; //解消フラグをfalse
 	}
 }
 
@@ -145,11 +166,11 @@ void PlayerState::valueReset(bool& elimination, vector<bool>& cooldownFlag) {
 /// <param name="cooldown">クールダウン</param>
 /// <param name="cooldownFlag">クールダウンフラグ</param>
 void PlayerState::countCooldown(vector<int>& cooldown, vector<bool>& cooldownFlag) {
-	if (cooldownFlag[ELIMINATION]) cooldown[ELIMINATION]++; //クールダウン開始
+	if (cooldownFlag[RECOVERY]) cooldown[RECOVERY]++; //クールダウン開始
 
 	//クールダウンはcooldownMax秒
-	if (cooldown[ELIMINATION] >= cooldownMax) {
-		cooldown[ELIMINATION] = 0; //クールダウンをリセット
-		cooldownFlag[ELIMINATION] = false; //クールダウンフラグをfalse
+	if (cooldown[RECOVERY] >= cooldownMax) {
+		cooldown[RECOVERY] = 0; //クールダウンをリセット
+		cooldownFlag[RECOVERY] = false; //クールダウンフラグをfalse
 	}
 }

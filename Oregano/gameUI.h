@@ -3,11 +3,12 @@
 #include "inputProcess.h"
 #include "dataSource.h"
 #include "mapDraw.h"
-//#include "player.h"
+#include "player.h"
 
 class GameUI : public DataSource {
 private:
 	Input& input; //入力クラス
+	Player& player;
 	MapDraw& map; //マップ描画クラス
 	DataSource source; //ソースクラス
 
@@ -23,15 +24,16 @@ private:
 	Vec2 actionLength; //アクション長
 	Vec2 actionSize; //アクションサイズ
 
-	void drawBlur(); //ぼかしの描画
-	void draw(); //描画処理
-
 	bool changeFlag; //切替フラグ
+
+	void drawBlur(); //ぼかしの描画
+	void drawFilter(); //UIのフィルタの描画
+	void draw(); //描画処理
 
 public:
 
 
-	GameUI(Input& input, MapDraw& map);
+	GameUI(Input& input, Player& player, MapDraw& map);
 	~GameUI();
 
 

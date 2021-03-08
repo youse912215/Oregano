@@ -100,7 +100,7 @@ void Input::movement(MapCollision& collision, MapDraw& draw) {
 	}
 	else STICK[move_.changeDirection(DOWN)] = false;
 
-	DrawFormatString(0, 150, GetColor(255, 255, 120), "%d   %d",
+	/*DrawFormatString(0, 150, GetColor(255, 255, 120), "%d   %d",
 	                 collision.leftCollisionFlag(), collision.rightCollisionFlag(), false);
 	DrawFormatString(0, 135, GetColor(255, 255, 120), "  %d",
 	                 collision.upCollisionFlag(), false);
@@ -112,7 +112,7 @@ void Input::movement(MapCollision& collision, MapDraw& draw) {
 	DrawFormatString(0, 215, GetColor(255, 255, 120), "%d   %d",
 	                 getInputButton(STICK_LEFT), getInputButton(STICK_RIGHT), false);
 	DrawFormatString(0, 230, GetColor(255, 255, 120), "  %d",
-	                 getInputButton(STICK_DOWN), false);
+	                 getInputButton(STICK_DOWN), false);*/
 }
 
 /// <summary>
@@ -159,14 +159,14 @@ void Input::eventProcess() {
 	if (getInputButton(R_BUTTON)) RB = true;
 	else RB = false;
 
-	DrawFormatString(150, 150, GetColor(0, 255, 120), "%d   %d",
+	/*DrawFormatString(150, 150, GetColor(0, 255, 120), "%d   %d",
 	                 X, B, false);
 	DrawFormatString(150, 135, GetColor(0, 255, 120), "  %d",
 	                 Y, false);
 	DrawFormatString(150, 165, GetColor(0, 255, 120), "  %d",
 	                 A, false);
 	DrawFormatString(150, 180, GetColor(0, 255, 120), "%d   %d",
-	                 LB, RB, false);
+	                 LB, RB, false);*/
 }
 
 /// <summary>

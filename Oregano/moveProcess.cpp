@@ -74,7 +74,7 @@ int MoveProcess::movingDistance(MapDraw& draw) {
 /// </summary>
 int MoveProcess::invert() {
 	//混乱状態以外のとき
-	if (!state_.condition[CONFUSION])
+	if (!PlayerState::condition[CONFUSION])
 		return 1; //そのまま返す
 	return -1; //反転して返す
 }
@@ -84,7 +84,7 @@ int MoveProcess::invert() {
 /// </summary>
 /// <param name="dir">方向</param>
 int MoveProcess::changeDirection(const int& dir) {
-	if (!state_.condition[CONFUSION]) return dir;
+	if (!PlayerState::condition[CONFUSION]) return dir;
 	if (dir == LEFT) return RIGHT; //左→右
 	if (dir == RIGHT) return LEFT; //右→左
 	if (dir == UP) return DOWN; //上→下
