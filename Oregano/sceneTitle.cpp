@@ -21,14 +21,13 @@ SceneTitle::~SceneTitle() {
 /// 更新処理
 /// </summary>
 void SceneTitle::update() {
-	CALL_ONCE(save.roadSaveData()); //ファイル読み込み処理
-	CALL_ONCE(autogeneration.writeRandomMap()); //マップ自動生成
+	save.roadMapData(); //マップデータの読み込み
+	save.roadSaveData(); //セーブデータ読み込み
+	autogeneration.writeRandomMap(); //マップ自動生成
 	load.roadMapData(); //マップデータ読み込み
 	text.roadFont(); //フォントのロード
 
 	gameScene = GAME_SCENE; //ゲームシーンへ
-
-
 }
 
 /// <summary>

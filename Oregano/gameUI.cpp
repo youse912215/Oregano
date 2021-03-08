@@ -8,21 +8,22 @@ DataText text_;
 PlayerState state__;
 
 GameUI::GameUI(Input& input, Player& player, MapDraw& map) :
-	input(input), player(player), map(map), margin(16),
+	input(input), player(player), map(map), margin(16), menuLength(256, 64),
 	/*　メニュー */
-	menuLength(256, 64),
 	menuSize(WIN_WIDTH - menuLength.x - margin, margin),
-	/* パッシブ */
 	passiveSize(margin, WIN_HEIGHT - 128 - margin),
-	/* 状態異常 */
+	/* パッシブ */
 	conditionSize(WIN_WIDTH - 256 - margin, WIN_HEIGHT - 128 - margin),
-	/* モード */
+	/* 状態異常 */
 	modeLeftSize(BLOCK_SIZE * 7 - margin, WIN_HEIGHT - 128 - margin),
+	/* モード */
 	modeLength(64, 128),
 	modeRightSize(BLOCK_SIZE * 16 + 32 - margin, WIN_HEIGHT - modeLength.y - margin),
-	/* アクション */
 	actionLength(512, 128),
-	actionSize(BLOCK_SIZE * 8 + 16 - margin, WIN_HEIGHT - actionLength.y - margin) {
+	/* アクション */
+	actionSize(BLOCK_SIZE * 8 + 16 - margin, WIN_HEIGHT - actionLength.y - margin),
+	/* マップ上イベント */
+	mapEventPos(MAP_EVENT_SIZE) {
 
 	changeFlag = false;
 }
@@ -99,6 +100,9 @@ void GameUI::draw() {
 }
 
 void GameUI::update() {
-	draw();
-	text_.drawText();
+	//draw();
+	//text_.drawText();
+
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "%d, %d, %d, %d",
+	                 mapEventPos[0], mapEventPos[1], mapEventPos[2], mapEventPos[3], false);
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include "playerState.h"
-#include "player.h"
+#include "gameUI.h"
 #include <vector>
 #include <string>
 
@@ -8,33 +8,35 @@ using namespace std;
 
 class DataSave {
 private:
-	PlayerState& player;
+	PlayerState& player; //プレイヤー状態クラス
+	GameUI& UI; //UIクラス
 
 	vector<int> currentStatus; //現在までのステータス格納用
 	vector<int> lastTimeStatus; //前回までのステータス格納用
 	string statusData; //セーブデータのバイナリファイル
 
-	int getFileSize(string fileName);
+	vector<int> roadMap; //マップバッファ確保用
+	vector<int> storeMap; //マップ格納用
+	string mapData; //セーブデータのバイナリファイル
 
-	void writeBinaryFile(vector<int>& currentData, vector<int>& lastTimeData, string fileName);
-	void roadBinaryFile(vector<int>& currentData, vector<int>& lastTimeData, string fileName);
+	int getFileSize(string fileName); //ファイルサイズを取得
 
-	void getCurrentStatus();
-	void getLastTimeStatus();
+	void writeBinaryFile(vector<int>& currentData, vector<int>& lastTimeData,
+	                     string fileName); //バイナリファイルのの書き込み
+	void roadBinaryFile(vector<int>& currentData, vector<int>& lastTimeData,
+	                    string fileName); //バイナリファイルの読み込み
 
-	void getCurrentEvent(vector<int>& currentEvent, vector<int>& saveLocation);
-	void getLastTimeEvent(vector<int>& lastTimeEvent, vector<int>& saveLocation);
+	void getCurrentStatus(); //現在までのプレイヤーのステータスを取得
+	void getLastTimeStatus(); //前回までのプレイヤーのステータスを取得
+
+	void storingEvent(vector<int>& roadData, vector<int>& saveLocation); //イベント座標を格納
 
 public:
-	DataSave(PlayerState& player);
+	DataSave(PlayerState& player, GameUI& UI);
 	~DataSave();
 
-	vector<int> roadItemText;
-	vector<int> OutputItemText;
+	void writeSaveData(); //セーブデータの書き込み
+	void roadSaveData(); //セーブデータの読み込み
 
-	void writeSaveData();
-	void roadSaveData();
-
-
-	void update();
+	void roadMapData(); //マップデータの読み込み
 };

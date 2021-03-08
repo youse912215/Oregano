@@ -44,6 +44,7 @@ const int GAME_HOUR = 1200; //1時間あたりのgameTime
 
 const int PLAYER_STATUS_SIZE = 9; //プレイヤーステータス(距離以外)のサイズ
 const int STATUS_INFORMATION_SIZE = PLAYER_STATUS_SIZE + 2; //ステータスのサイズ
+const int MAP_EVENT_SIZE = 36; //マップイベント格納サイズ
 
 const int ALL_COIN_TYPE = 4; //コインの種類
 
@@ -67,7 +68,8 @@ enum GAME_SCENE {
 	ROAD_SCENE,
 	//ゲーム
 	GAME_SCENE,
-	MENU_ITEM_SCENE,
+	MENU_SCENE,
+	GAME_OVER_SCENE,
 	END_SCENE,
 };
 

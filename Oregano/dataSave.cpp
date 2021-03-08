@@ -7,30 +7,11 @@
 #include <cmath>
 #include "DxLib.h"
 
-DataSave::DataSave(PlayerState& player)
-	: player(player),
-	  currentStatus(STATUS_INFORMATION_SIZE) //ステータス
-/* 所持品 */
-/*currentPossessionItem(PLAYER_ITEM_SIZE), currentPossessionAccessory(PLAYER_ACCESSORY_SIZE),
-currentPossessionJewel(PLAYER_JEWEL_SIZE), currentPossessionMineral(PLAYER_MINERAL_SIZE),*/
-/* フィールド */
-/*currentCoin(COIN_INFORMATION_SIZE), currentItem(ITEM_INFORMATION_SIZE),
-currentAccessory(ACCESSORY_INFORMATION_SIZE), currentJewel(JEWEL_INFORMATION_SIZE),
-currentMineral(MINERAL_INFORMATION_SIZE), roadItemText(120)*/ {
-	statusData = "resource\\Data\\statusData.bin"; //ステータス
-	///* 所持品 */
-	//possessionItemData = "resource\\Data\\possessionItemData.bin";
-	//possessionAccessoryData = "resource\\Data\\possessionAccessoryData.bin";
-	//possessionJewelData = "resource\\Data\\possessionJewelData.bin";
-	//possessionMineralData = "resource\\Data\\possessionMineralData.bin";
-	///*　フィールド */
-	//coinData = "resource\\Data\\coinData.bin";
-	//itemData = "resource\\Data\\itemData.bin";
-	//accessoryData = "resource\\Data\\accessoryData.bin";
-	//jewelData = "resource\\Data\\jewelData.bin";
-	//mineralData = "resource\\Data\\mineralData.bin";
-
-	//itemTextData = "resource\\Data\\itemTextLengthData.bin";
+DataSave::DataSave(PlayerState& player, GameUI& UI)
+	: player(player), UI(UI),
+	  currentStatus(STATUS_INFORMATION_SIZE), roadMap(MAP_EVENT_SIZE) {
+	statusData = "resource\\Data\\statusData.bin";
+	mapData = "resource\\Data\\mapData.bin";
 }
 
 DataSave::~DataSave() {
@@ -119,23 +100,13 @@ void DataSave::getLastTimeStatus() {
 }
 
 /// <summary>
-/// 現在までのフィールドイベント状況を取得
-/// </summary>
-/// <param name="currentEvent">現在までのイベント</param>
-/// <param name="saveLocation">フィールドイベント</param>
-void DataSave::getCurrentEvent(vector<int>& currentEvent, vector<int>& saveLocation) {
-	for (unsigned int i = 0; i < currentEvent.size(); ++i)
-		currentEvent[i] = saveLocation[i];
-}
-
-/// <summary>
-/// 前回までのフィールドイベント状況を取得
+/// イベント座標を格納
 /// </summary>
 /// <param name="lastTimeEvent">前回までのイベント</param>
 /// <param name="saveLocation">フィールドイベント</param>
-void DataSave::getLastTimeEvent(vector<int>& lastTimeEvent, vector<int>& saveLocation) {
-	for (unsigned int i = 0; i < lastTimeEvent.size(); ++i)
-		saveLocation[i] = lastTimeEvent[i];
+void DataSave::storingEvent(vector<int>& roadData, vector<int>& saveLocation) {
+	for (unsigned int i = 0; i < roadData.size(); ++i)
+		saveLocation[i] = roadData[i];
 }
 
 /// <summary>
@@ -154,12 +125,15 @@ void DataSave::roadSaveData() {
 	/* ステータス */
 	roadBinaryFile(currentStatus, lastTimeStatus, statusData);
 	getLastTimeStatus();
+
+
 }
 
 /// <summary>
-/// 更新処理
+/// マップデータの読み込み
 /// </summary>
-void DataSave::update() {
-	/*DrawFormatString(0, 700, GetColor(255, 0, 0), "%d, %d, %d, %d",
-	                 player.coin[0], player.coin[1], player.coin[2], player.coin[3], false);*/
+void DataSave::roadMapData() {
+	/* マップイベント座標の格納 */
+	roadBinaryFile(roadMap, storeMap, mapData);
+	storingEvent(storeMap, UI.mapEventPos);
 }

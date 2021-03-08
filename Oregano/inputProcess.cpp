@@ -7,15 +7,16 @@
 char Input::oldkeys[KEY_BUFFER_MAX] = {0};
 char Input::keys[KEY_BUFFER_MAX] = {0};
 
-Input::Input() : padNum(14), oldPadNum(14), buttonFlag(10), STICK(4) {
+Input::Input() :
+	padNum(14), oldPadNum(14), buttonFlag(10), STICK(4) {
 	A = false;
 	B = false;
 	X = false;
 	Y = false;
 	LB = false;
 	RB = false;
-	moveDirection = UP;
 	mode = false;
+	moveDirection = DOWN; //正面向き
 }
 
 /// <summary>
@@ -77,42 +78,28 @@ void Input::movement(MapCollision& collision, MapDraw& draw) {
 
 	//左移動
 	if (getInputButton(STICK_LEFT)) {
-		move_.left(collision, draw);
-		directionProcess(move_.changeDirection(LEFT));
+		move_.left(collision, draw); //衝突判定など
+		directionProcess(move_.changeDirection(LEFT)); //方向処理
 	}
-	else STICK[move_.changeDirection(LEFT)] = false;
+	else STICK[move_.changeDirection(LEFT)] = false; //スティック状態をfalse
 	//右移動
 	if (getInputButton(STICK_RIGHT)) {
-		move_.right(collision, draw);
-		directionProcess(move_.changeDirection(RIGHT));
+		move_.right(collision, draw); //衝突判定など
+		directionProcess(move_.changeDirection(RIGHT)); //方向処理
 	}
-	else STICK[move_.changeDirection(RIGHT)] = false;
+	else STICK[move_.changeDirection(RIGHT)] = false; //スティック状態をfalse
 	//上移動
 	if (getInputButton(STICK_UP)) {
-		move_.up(collision, draw);
-		directionProcess(move_.changeDirection(UP));
+		move_.up(collision, draw); //衝突判定など
+		directionProcess(move_.changeDirection(UP)); //方向処理
 	}
-	else STICK[move_.changeDirection(UP)] = false;
+	else STICK[move_.changeDirection(UP)] = false; //スティック状態をfalse
 	//下移動
 	if (getInputButton(STICK_DOWN)) {
-		move_.down(collision, draw);
-		directionProcess(move_.changeDirection(DOWN));
+		move_.down(collision, draw); //衝突判定など
+		directionProcess(move_.changeDirection(DOWN)); //方向処理
 	}
-	else STICK[move_.changeDirection(DOWN)] = false;
-
-	/*DrawFormatString(0, 150, GetColor(255, 255, 120), "%d   %d",
-	                 collision.leftCollisionFlag(), collision.rightCollisionFlag(), false);
-	DrawFormatString(0, 135, GetColor(255, 255, 120), "  %d",
-	                 collision.upCollisionFlag(), false);
-	DrawFormatString(0, 165, GetColor(255, 255, 120), "  %d",
-	                 collision.downCollisionFlag(), false);
-
-	DrawFormatString(0, 200, GetColor(255, 255, 120), "  %d",
-	                 getInputButton(STICK_UP), false);
-	DrawFormatString(0, 215, GetColor(255, 255, 120), "%d   %d",
-	                 getInputButton(STICK_LEFT), getInputButton(STICK_RIGHT), false);
-	DrawFormatString(0, 230, GetColor(255, 255, 120), "  %d",
-	                 getInputButton(STICK_DOWN), false);*/
+	else STICK[move_.changeDirection(DOWN)] = false; //スティック状態をfalse
 }
 
 /// <summary>
@@ -158,15 +145,6 @@ void Input::eventProcess() {
 	//入力
 	if (getInputButton(R_BUTTON)) RB = true;
 	else RB = false;
-
-	/*DrawFormatString(150, 150, GetColor(0, 255, 120), "%d   %d",
-	                 X, B, false);
-	DrawFormatString(150, 135, GetColor(0, 255, 120), "  %d",
-	                 Y, false);
-	DrawFormatString(150, 165, GetColor(0, 255, 120), "  %d",
-	                 A, false);
-	DrawFormatString(150, 180, GetColor(0, 255, 120), "%d   %d",
-	                 LB, RB, false);*/
 }
 
 /// <summary>

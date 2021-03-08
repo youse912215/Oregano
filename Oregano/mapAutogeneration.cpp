@@ -4,7 +4,9 @@
 #include <fstream>
 #include <sstream>
 
-MapAutogeneration::MapAutogeneration() : roadMap(AREA_HEIGHT, vector<int>(AREA_WIDTH)) {
+MapAutogeneration::MapAutogeneration() :
+	roadMap(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
+	copyMap(TOTAL_MAPS_X * TOTAL_MAPS_Y, vector<vector<int>>(AREA_HEIGHT, vector<int>(AREA_WIDTH))) {
 }
 
 MapAutogeneration::~MapAutogeneration() {
@@ -61,13 +63,13 @@ void MapAutogeneration::AssigningRandomNum(const int& randomMapNum) {
 /// </summary>
 /// <param name="x">マップのx座標</param>
 /// <param name="y">マップのy座標</param>
-void MapAutogeneration::fileWrite(const int& x, const int& y) {
+void MapAutogeneration::writeFile(const int& x, const int& y, vector<vector<int>>& map) {
 	ofstream fileWrite(mapConfirmation(x, y, initialCsv));
 	if (!fileWrite) return;
 
-	for (unsigned int j = 0; j != roadMap.at(0).size(); ++j) {
-		for (unsigned int i = 0; i != roadMap.size(); ++i) {
-			fileWrite << roadMap[j][i] << ","; //vector配列の中を順に格納
+	for (unsigned int j = 0; j != map.at(0).size(); ++j) {
+		for (unsigned int i = 0; i != map.size(); ++i) {
+			fileWrite << map[j][i] << ","; //vector配列の中を順に格納
 		}
 		fileWrite << endl; //改行
 	}
@@ -80,14 +82,39 @@ void MapAutogeneration::fileWrite(const int& x, const int& y) {
 /// </summary>
 void MapAutogeneration::writeRandomMap() {
 
-	for (unsigned int y = 0; y < 5; ++y) {
-		for (unsigned int x = 0; x < 5; ++x) {
+	for (unsigned int y = 0; y < TOTAL_MAPS_Y; ++y) {
+		for (unsigned int x = 0; x < TOTAL_MAPS_X; ++x) {
 			fileImport(x, y, roadMap); //マップデータのファイル読み込み
+
+			saveInitMap(x, y); //最初のマップをコピー（一時保存）
 
 			AssigningRandomNum(RANDOM_MAP1); //ランダムマップ1の数字をランダムに割り当て
 			AssigningRandomNum(RANDOM_MAP2); //ランダムマップ2の数字をランダムに割り当て
 
-			fileWrite(x, y); //csvファイルの書き込み
+			writeFile(x, y, roadMap); //csvファイルの書き込み
+		}
+	}
+}
+
+/// <summary>
+/// 最初のマップをコピー（一時保存）
+/// </summary>
+/// <param name="x">マップのx座標</param>
+/// <param name="y">マップのy座標</param>
+void MapAutogeneration::saveInitMap(const int& x, const int& y) {
+	copyMap[x + y * TOTAL_MAPS_Y].clear(); //中身を一旦クリア
+
+	for (auto& i : roadMap) //読み込んだ2次元配列データを
+		copyMap[x + y * TOTAL_MAPS_Y].push_back(i); //末尾に値を挿入する
+}
+
+/// <summary>
+/// CSVファイルを最初の状態にリセット
+/// </summary>
+void MapAutogeneration::resetFile() {
+	for (unsigned int y = 0; y < TOTAL_MAPS_Y; ++y) {
+		for (unsigned int x = 0; x < TOTAL_MAPS_X; ++x) {
+			writeFile(x, y, copyMap[x + y * TOTAL_MAPS_Y]);
 		}
 	}
 }

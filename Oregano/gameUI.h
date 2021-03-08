@@ -4,6 +4,7 @@
 #include "dataSource.h"
 #include "mapDraw.h"
 #include "player.h"
+#include <vector>
 
 class GameUI : public DataSource {
 private:
@@ -31,7 +32,7 @@ private:
 	void draw(); //•`‰æˆ—
 
 public:
-
+	vector<int> mapEventPos;
 
 	GameUI(Input& input, Player& player, MapDraw& map);
 	~GameUI();
