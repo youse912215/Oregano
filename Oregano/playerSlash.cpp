@@ -26,7 +26,7 @@ void PlayerSlash::initialize(Vec2d& pos) {
 /// </summary>
 /// <param name="cooldown">クールダウン</param>
 /// <param name="cooldownFlag">クールダウンフラグ</param>
-/// <param name="slash">刃フラグ</param>
+/// <param name="actionFlag">刃フラグ</param>
 void PlayerSlash::countCooldown(std::vector<int>& cooldown, std::vector<bool>& cooldownFlag,
                                 std::vector<bool>& actionFlag) {
 	if (cooldownFlag[SLASH]) cooldown[SLASH]++; //クールダウン開始

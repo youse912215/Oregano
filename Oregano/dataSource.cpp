@@ -4,6 +4,7 @@
 DataSource::DataSource() {
 	/* ‰æ‘œ */
 	player = LoadGraph("resource/organism/player.png");
+	playerDamage = LoadGraph("resource/organism/player2.png");
 	mapChip = LoadGraph("resource/map/mapchip.png");
 	actionUI = LoadGraph("resource\\UI\\actionUI.png");
 	enemyGraph = LoadGraph("resource/organism/enemy_1.png");
@@ -21,7 +22,6 @@ DataSource::DataSource() {
 	conditionGraph = LoadGraph("resource/UI/condition.png");
 	passiveGraph = LoadGraph("resource/UI/passive.png");
 	menuGraph = LoadGraph("resource/UI/menu.png");
-	modeGraph = LoadGraph("resource/UI/mode.png");
 	actionGraph = LoadGraph("resource/UI/action.png");
 	filterGraph1 = LoadGraph("resource/UI/filter1.png");
 	filterGraph2 = LoadGraph("resource/UI/filter2.png");
@@ -31,6 +31,7 @@ DataSource::DataSource() {
 
 DataSource::~DataSource() {
 	DeleteGraph(player);
+	DeleteGraph(playerDamage);
 	DeleteGraph(mapChip);
 	DeleteGraph(actionUI);
 	DeleteGraph(enemyGraph);
@@ -48,7 +49,6 @@ DataSource::~DataSource() {
 	DeleteGraph(conditionGraph);
 	DeleteGraph(passiveGraph);
 	DeleteGraph(menuGraph);
-	DeleteGraph(modeGraph);
 	DeleteGraph(actionGraph);
 	DeleteGraph(filterGraph1);
 	DeleteGraph(filterGraph2);

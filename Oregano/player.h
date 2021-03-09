@@ -19,6 +19,8 @@ private:
 	vector<int> cooldown; //アクションのクールダウン
 	vector<bool> cooldownFlag; //クールダウンのフラグ
 
+	bool damageFlag; //ダメージフラグ
+
 	void draw(); //描画処理
 
 	void actionCommand(); //アクションコマンドの処理
@@ -27,9 +29,6 @@ private:
 	void slashUpdate(); //刃更新処理
 	void shieldUpdate(); //シールド更新処理
 	void stateUpdate(); //状態更新処理
-
-	bool state(const int& num);
-	bool cool(const int& num);
 
 public:
 	Vec2d center; //プレイヤーの中心座標

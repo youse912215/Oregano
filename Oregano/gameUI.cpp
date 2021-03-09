@@ -13,19 +13,15 @@ GameUI::GameUI(Input& input, Player& player, MapDraw& map) :
 	/*　メニュー */
 	menuLength(256, 64), menuSize(WIN_WIDTH - menuLength.x - margin, margin),
 	/* パッシブ */
-	passiveSize(margin, WIN_HEIGHT - 128 - margin),
+	passiveLength(256, 128), passiveSize(margin, WIN_HEIGHT - 128 - margin),
 	/* 状態異常 */
 	conditionSize(WIN_WIDTH - 256 - margin, WIN_HEIGHT - 128 - margin),
-	/* モード */
-	modeLeftSize(BLOCK_SIZE * 7 - margin, WIN_HEIGHT - 128 - margin),
-	modeLength(64, 128),
-	modeRightSize(BLOCK_SIZE * 16 + 32 - margin, WIN_HEIGHT - modeLength.y - margin),
 	/* アクション */
-	actionLength(512, 128),
+	actionLength(512, 128), actionSize(BLOCK_SIZE * 8 + 16 - margin, WIN_HEIGHT - actionLength.y - margin),
+	/* 噴き出し */
+	speechBalloonLength(64, 64), speechBalloonPos(HALF_WIN_WIDTH - 32, HALF_WIN_HEIGHT - 100),
 	/* マップ上イベント */
-	actionSize(BLOCK_SIZE * 8 + 16 - margin, WIN_HEIGHT - actionLength.y - margin),
-	speechBalloonPos(HALF_WIN_WIDTH - 32, HALF_WIN_HEIGHT - 100), mapEventPos(MAP_EVENT_SIZE),
-	eventNum(0) {
+	mapEventPos(MAP_EVENT_SIZE), eventNum(0) {
 }
 
 GameUI::~GameUI() {
@@ -88,7 +84,10 @@ void GameUI::drawSpeechBalloon() {
 		//プレイヤーとイベント位置が一致
 		if (!positionMatchDecision(i))
 			continue; //条件以外のとき、処理をスキップする
-		DrawGraph(speechBalloonPos.x, speechBalloonPos.y, source.eventGraph, true); //噴き出し
+		DrawRectGraph(speechBalloonPos.x, speechBalloonPos.y,
+		              speechBalloonLength.x * input.device, 0,
+		              speechBalloonLength.x, speechBalloonLength.y, source.eventGraph,
+		              true, false, false); //噴き出し
 
 		eventNum = i; //今いる位置のイベント番号を代入
 
@@ -109,23 +108,20 @@ void GameUI::draw() {
 	DrawGraph(margin, margin, coinGraph, true); //コイン
 
 	DrawRectGraph(menuSize.x, menuSize.y,
-	              0, 0, menuLength.x, menuLength.y,
-	              menuGraph, true, false, false); //メニュー
+	              0, menuLength.y * input.device,
+	              menuLength.x, menuLength.y, menuGraph,
+	              true, false, false); //メニュー
 
-	DrawGraph(passiveSize.x, passiveSize.y, passiveGraph, true); //パッシブ
+	DrawRectGraph(passiveSize.x, passiveSize.y,
+	              0, passiveLength.y * input.device,
+	              passiveLength.x, passiveLength.y, passiveGraph,
+	              true, false, false); //パッシブ
 
 	DrawGraph(conditionSize.x, conditionSize.y, conditionGraph, true); //状態異常
 
-	DrawRectGraph(modeLeftSize.x, modeLeftSize.y,
-	              0, 0, modeLength.x, modeLength.y, modeGraph,
-	              true, false, false); //Lモード
-
-	DrawRectGraph(modeRightSize.x, modeRightSize.y,
-	              modeLength.x, 0, modeLength.x, modeLength.y, modeGraph,
-	              true, false, false); //Rモード
-
 	DrawRectGraph(actionSize.x, actionSize.y,
-	              0, 0, actionLength.x, actionLength.y, actionGraph,
+	              0, actionLength.y * input.device,
+	              actionLength.x, actionLength.y, actionGraph,
 	              true, false, false); //アクション
 	drawFilter(); //フィルター描画
 }
@@ -135,7 +131,4 @@ void GameUI::update() {
 	draw();
 	text_.drawText();
 	drawSpeechBalloon(); //イベント用噴き出し描画
-
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "%d, %d, %d, %d",
-	                 mapEventPos[0], mapEventPos[1], mapEventPos[2], mapEventPos[3], false);
 }

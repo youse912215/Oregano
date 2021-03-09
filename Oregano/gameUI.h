@@ -19,13 +19,12 @@ private:
 
 	Vec2 menuLength; //メニュー長
 	Vec2 menuSize; //メニューサイズ
+	Vec2 passiveLength; //パッシブ長
 	Vec2 passiveSize; //パッシブサイズ
 	Vec2 conditionSize; //状態異常サイズ
-	Vec2 modeLeftSize; //Lモードサイズ
-	Vec2 modeLength; //モード長
-	Vec2 modeRightSize; //Rモードサイズ
 	Vec2 actionLength; //アクション長
 	Vec2 actionSize; //アクションサイズ
+	Vec2 speechBalloonLength; //噴き出し長
 	Vec2 speechBalloonPos; //噴き出し位置
 
 	bool positionMatchDecision(const int& i); //プレイヤーとイベント位置の一致条件

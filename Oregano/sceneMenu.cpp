@@ -10,6 +10,8 @@ void SceneMenu::update() {
 	if (SceneLoad::gameScene == MENU_SCENE) {
 		SceneGame::countInterval(&interval, maxTime); //間隔時間をカウント
 
+		input.deviceModeChange(); //キーボードとジョイパッドを切り替える
+
 		//メニューボタンを押したときかつ、intervalがchangeTime以上なら
 		if (input.MENU && interval >= changeTime) {
 

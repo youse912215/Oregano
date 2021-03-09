@@ -11,7 +11,7 @@ int PlayerState::battleStyle = 0;
 
 PlayerState::PlayerState() : poisonTime(0), roughTime(0), attributeMax(10), timeMax(100), cooldownMax(120),
                              poisonDamage(1), roughDamage(2),
-                             recoveryCoin(10) {
+                             recoveryCoin(10), poisonDamageFlag(false), roughDamageFlag(false) {
 }
 
 /// <summary>
@@ -58,8 +58,12 @@ void PlayerState::countStateTime() {
 /// <param name="value">ダメージ量</param>
 void PlayerState::continuousDamage(const int& time, const int& value) {
 	//timeがtimeMaxのとき
-	if (time % timeMax == 0 && time != 0)
+	if (time % timeMax == 0 && time != 0) {
 		coin[battleStyle] -= value; //value分コインを減らす
+
+		if (time == poisonTime) poisonDamageFlag = true; //猛毒ダメージフラグをtrue
+		else roughDamageFlag = true; //凸凹ダメージフラグをtrue
+	}
 }
 
 /// <summary>
@@ -73,6 +77,9 @@ void PlayerState::conditionUpdate(MapDraw& draw_) {
 	continuousDamage(poisonTime, poisonDamage); //猛毒ダメージを付与
 	continuousDamage(roughTime, roughDamage); //凸凹ダメージを付与
 	resetCoin(); //コインを0にリセット
+
+	DrawFormatString(0, 600, GetColor(255, 255, 0),
+	                 "poison:%d, rough:%d", poisonDamageFlag, roughDamageFlag, false);
 }
 
 /// <summary>
@@ -106,18 +113,42 @@ bool PlayerState::anyCondition() {
 }
 
 /// <summary>
+/// ダメージフラグをリセット
+/// </summary>
+void PlayerState::resetDamageFlag() {
+	poisonDamageFlag = false; //猛毒ダメージフラグをfalse
+	roughDamageFlag = false; //凸凹ダメージフラグをfalse
+}
+
+/// <summary>
 /// 戦闘スタイルを切り替える
 /// </summary>
 void PlayerState::changeBattleStyle(const int& dir) {
-	//Lボタン入力かつ、戦闘スタイルが花萌葱(対猛毒スタイル)ではないとき
-	if (dir == LEFT && battleStyle != DEADLY_POISON)
-		//前のスタイルのコインが0ではないとき
-		battleStyle = coin[battleStyle - 1] != 0 ? --battleStyle : battleStyle; //前のスタイルに切り替え
+	//Lボタン入力かつ、戦闘スタイルが花萌葱(対猛毒)ではないとき
+	if (dir == LEFT && battleStyle != DEADLY_POISON) {
+		//前のスタイルのコインが0ではないとき、前のスタイルに切り替え
+		if (coin[battleStyle - 1] != 0)
+			battleStyle--;
+			//深支子(対痙攣)のコインが0ではないとき
+		else if (battleStyle == BLOODING && coin[CRAMPS] != 0)
+			battleStyle = CRAMPS;
+			//花萌葱(対猛毒)のコインが0ではないとき
+		else if ((battleStyle == CONFUSION || battleStyle == BLOODING) && coin[DEADLY_POISON] != 0)
+			battleStyle = DEADLY_POISON;
+	}
 
-		//Rボタン入力かつ、戦闘スタイルが中紅花(対出血スタイル)ではないとき
-	else if (dir == RIGHT && battleStyle != BLOODING)
-		//前のスタイルのコインが0ではないとき
-		battleStyle = coin[battleStyle + 1] != 0 ? ++battleStyle : battleStyle; //次のスタイルに切り替え
+		//Rボタン入力かつ、戦闘スタイルが中紅花(対出血)ではないとき
+	else if (dir == RIGHT && battleStyle != BLOODING) {
+		//次のスタイルのコインが0ではないとき、次のスタイルに切り替え
+		if (coin[battleStyle + 1] != 0)
+			battleStyle++;
+			//燕子花(対混乱)のコインが0ではないとき
+		else if (battleStyle == DEADLY_POISON && coin[CONFUSION] != 0)
+			battleStyle = CONFUSION;
+			//中紅花(対出血)のコインが0ではないとき
+		else if ((battleStyle == DEADLY_POISON || battleStyle == CRAMPS) && coin[BLOODING] != 0)
+			battleStyle = BLOODING;
+	}
 }
 
 /// <summary>
@@ -154,9 +185,8 @@ void PlayerState::calculateValue(const int& attribute, const int& attributeValue
 /// <summary>
 /// 属性耐性値をリセットと状態異常を解消
 /// </summary>
-/// <param name="recovery">解消フラグ</param>
+/// <param name="actionFlag">アクションフラグ</param>
 /// <param name="cooldownFlag">クールダウンフラグ</param>
-/// <param name="coin">プレイヤーコイン</param>
 void PlayerState::valueReset(vector<bool>& actionFlag, vector<bool>& cooldownFlag) {
 	//現在の戦闘スタイルの状態異常がtrueかつ、解消フラグがtrueのとき
 	if (actionFlag[RECOVERY]) {

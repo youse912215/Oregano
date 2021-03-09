@@ -70,10 +70,19 @@ enum GAME_SCENE {
 	ROAD_SCENE,
 	//ゲーム
 	GAME_SCENE,
+	//セーブ
 	SAVE_SCENE,
+	//メニュー
 	MENU_SCENE,
+	//ゲームオーバー
 	GAME_OVER_SCENE,
+	//エンド
 	END_SCENE,
+};
+
+enum DEVICE_MODE {
+	JOY_PAD,
+	KEYBOARD
 };
 
 //方向の情報

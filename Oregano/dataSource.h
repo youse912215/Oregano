@@ -8,8 +8,9 @@ protected:
 
 public:
 	int enemyGraph;
-	int player; //プレイヤー画像の読み込み
-	int mapChip; //マップチップ画像ファイルの読み込み
+	int player; //プレイヤー画像
+	int playerDamage; //プレイヤーダメージ画像
+	int mapChip; //マップチップ画像
 	int knifeGraph;
 	int slashGraph;
 	int shieldGraph;
@@ -24,7 +25,6 @@ public:
 	int conditionGraph;
 	int passiveGraph;
 	int menuGraph;
-	int modeGraph;
 	int actionGraph;
 	int filterGraph1;
 	int filterGraph2;

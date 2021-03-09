@@ -11,7 +11,7 @@ Input::Input() :
 	/* ボタン情報関係 */
 	mode(false), padNum(14), oldPadNum(14),
 	/* 入力情報数 */
-	buttonFlag(10), stickFlag(4),
+	buttonFlag(10), stickFlag(4), device(KEYBOARD),
 	/* 初期は正面向き */
 	moveDirection(DOWN) {
 	A = false;
@@ -72,8 +72,20 @@ void Input::padsInformation() {
 /// <summary>
 /// キーボードとマウスパッドを切り替える
 /// </summary>
-void Input::inputModeChange() {
-	if (keys[KEY_INPUT_Q] && !oldkeys[KEY_INPUT_Q]) mode = !mode ? true : false;
+void Input::deviceModeChange() {
+	if (VIEW) {
+		//キーボードのとき
+		if (device == KEYBOARD) {
+			device = JOY_PAD; //ジョイパッドに切り替える
+			mode = true; //モードをtrue
+		}
+		else {
+			//ジョイパッドのとき
+			device = KEYBOARD; //キーボードに切り替える
+			mode = false; //モードをfalse
+		}
+	}
+
 }
 
 /// <summary>
@@ -165,7 +177,7 @@ void Input::eventProcess() {
 /// </summary>
 void Input::menuProcess() {
 	if (MENU) {
-		SceneLoad::gameScene = MENU_SCENE;
+		SceneLoad::gameScene = MENU_SCENE; //メニューシーンへ
 	}
 }
 
@@ -217,6 +229,5 @@ bool Input::getInputButton(const int& buttonName) {
 void Input::update() {
 	keyboardInformation(); //キーボード情報
 	padsInformation(); //ジョイパッド情報
-	inputModeChange(); //モードチェンジ
 	eventProcess(); //イベント入力処理
 }

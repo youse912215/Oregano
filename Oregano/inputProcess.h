@@ -28,7 +28,6 @@ private:
 	void directionProcess(const int& dir); //方向処理
 	void keyboardInformation(); //キーボード情報
 	void padsInformation(); //ジョイパッド情報
-	void inputModeChange(); //キーボードとジョイパッドを切り替える
 	void eventProcess(); //ボタン入力処理
 
 public:
@@ -46,10 +45,12 @@ public:
 	vector<bool> stickFlag; //スティックフラグ
 	bool anySTICK(); //いずれかのスティック状態を返す
 
+	int device; //現在のデバイス
 	int moveDirection; //今見ている移動方向
 
 	Input(); //コンストラクタ
 
+	void deviceModeChange(); //キーボードとジョイパッドを切り替える
 	void movement(MapCollision& collision, MapDraw& draw); //入力処理
 	void menuProcess(); //メニュー処理
 	void update(); //更新処理
