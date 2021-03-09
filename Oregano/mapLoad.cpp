@@ -15,7 +15,7 @@ MapLoad::~MapLoad() {
 /// <summary>
 /// マップデータ配列を読み込み、三次元配列に格納
 /// </summary>
-void MapLoad::roadMapData() {
+void MapLoad::loadMapData() {
 	/*  */
 	for (int y = 0; y < TOTAL_MAPS_Y; ++y) {
 		for (int x = 0; x < TOTAL_MAPS_X; ++x) {

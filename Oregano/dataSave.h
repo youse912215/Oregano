@@ -19,11 +19,13 @@ private:
 	vector<int> storeMap; //マップ格納用
 	string mapData; //セーブデータのバイナリファイル
 
+	string initStatusData; //初期のセーブデータのバイナリファイル
+
 	int getFileSize(string fileName); //ファイルサイズを取得
 
 	void writeBinaryFile(vector<int>& currentData, vector<int>& lastTimeData,
 	                     string fileName); //バイナリファイルのの書き込み
-	void roadBinaryFile(vector<int>& currentData, vector<int>& lastTimeData,
+	void loadBinaryFile(vector<int>& currentData, vector<int>& lastTimeData,
 	                    string fileName); //バイナリファイルの読み込み
 
 	void getCurrentStatus(); //現在までのプレイヤーのステータスを取得
@@ -36,7 +38,8 @@ public:
 	~DataSave();
 
 	void writeSaveData(); //セーブデータの書き込み
-	void roadSaveData(); //セーブデータの読み込み
+	void loadSaveData(); //セーブデータの読み込み
+	void initLoadSaveData(); //初期セーブデータの読み込み
 
-	void roadMapData(); //マップデータの読み込み
+	void loadMapData(); //マップデータの読み込み
 };

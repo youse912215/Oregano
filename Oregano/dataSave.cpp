@@ -12,6 +12,7 @@ DataSave::DataSave(PlayerState& player, GameUI& UI)
 	  currentStatus(STATUS_INFORMATION_SIZE), roadMap(MAP_EVENT_SIZE) {
 	statusData = "resource\\Data\\statusData.bin";
 	mapData = "resource\\Data\\mapData.bin";
+	initStatusData = "resource\\Data\\initStatusData.bin";
 }
 
 DataSave::~DataSave() {
@@ -50,7 +51,7 @@ void DataSave::writeBinaryFile(vector<int>& currentData, vector<int>& lastTimeDa
 /// <summary>
 /// バイナリファイルの読み込み
 /// </summary>
-void DataSave::roadBinaryFile(vector<int>& currentData, vector<int>& lastTimeData, string fileName) {
+void DataSave::loadBinaryFile(vector<int>& currentData, vector<int>& lastTimeData, string fileName) {
 	/* バイナリファイル読み込み */
 	ifstream fileRead(fileName, ios::binary);
 	if (!fileRead) return;
@@ -121,19 +122,26 @@ void DataSave::writeSaveData() {
 /// <summary>
 /// セーブデータの読み込み
 /// </summary>
-void DataSave::roadSaveData() {
+void DataSave::loadSaveData() {
 	/* ステータス */
-	roadBinaryFile(currentStatus, lastTimeStatus, statusData);
+	loadBinaryFile(currentStatus, lastTimeStatus, statusData);
 	getLastTimeStatus();
+}
 
-
+/// <summary>
+/// 初期セーブデータの読み込み
+/// </summary>
+void DataSave::initLoadSaveData() {
+	/* ステータス */
+	loadBinaryFile(currentStatus, lastTimeStatus, initStatusData);
+	getLastTimeStatus();
 }
 
 /// <summary>
 /// マップデータの読み込み
 /// </summary>
-void DataSave::roadMapData() {
+void DataSave::loadMapData() {
 	/* マップイベント座標の格納 */
-	roadBinaryFile(roadMap, storeMap, mapData);
+	loadBinaryFile(roadMap, storeMap, mapData);
 	storingEvent(storeMap, UI.mapEventPos);
 }

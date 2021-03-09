@@ -6,7 +6,7 @@
 using namespace std;
 
 /// <summary>
-/// 定めたランダム値を入手
+/// int型の定めたランダム値を入手
 /// </summary>
 /// <param name="min">最小値</param>
 /// <param name="max">最大値</param>
@@ -18,6 +18,12 @@ int getRandom(int min, int max) {
 	return rand(mt);
 }
 
+/// <summary>
+/// double型の定めたランダム値を入手
+/// </summary>
+/// <param name="min">最小値</param>
+/// <param name="max">最大値</param>
+/// <returns>乱数</returns>
 double getRandomD(int min, const int max) {
 	random_device rd; //ランダム生成
 	mt19937 mt(rd()); //ランダムのシード

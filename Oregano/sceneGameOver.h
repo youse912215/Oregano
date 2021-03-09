@@ -8,9 +8,9 @@ private:
 	Input& input;
 
 public:
-	bool endFlag;
+	bool endFlag; //終了フラグ
 
 	SceneGameOver(DataSave& data, Input& input);
 
-	void update();
+	void update(); //更新処理
 };

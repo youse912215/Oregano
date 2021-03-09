@@ -3,7 +3,7 @@
 #include "constant.h"
 #include "playerState.h"
 #include "dataText.h"
-#include "sceneRoad.h"
+#include "sceneLoad.h"
 
 DataText text_;
 PlayerState state__;
@@ -75,8 +75,8 @@ void GameUI::drawFilter() {
 bool GameUI::positionMatchDecision(const int& i) {
 	return map.currentMap.x == mapEventPos[i * eventLength] //マップx座標
 		&& map.currentMap.y == mapEventPos[i * eventLength + 1] //マップy座標
-		&& map.blockArea.x == mapEventPos[i * eventLength + 2] //区画x座標
-		&& map.blockArea.y == mapEventPos[i * eventLength + 3]; //区画y座標
+		&& abs(map.blockArea.x - mapEventPos[i * eventLength + 2]) <= 1 //区画x座標
+		&& abs(map.blockArea.y - mapEventPos[i * eventLength + 3]) <= 1; //区画y座標
 }
 
 /// <summary>
@@ -95,9 +95,9 @@ void GameUI::drawSpeechBalloon() {
 		if (input.VIEW) {
 			//目的地点のイベント番号(eventSize - 1)以外なら
 			if (eventNum != eventSize - 1) {
-				SceneRoad::gameScene = SAVE_SCENE; //VIEWボタンを押したとき、セーブシーンへ
+				SceneLoad::gameScene = SAVE_SCENE; //VIEWボタンを押したとき、セーブシーンへ
 			}
-			else SceneRoad::gameScene = END_SCENE; //VIEWボタンを押したとき、エンドシーンへ
+			else SceneLoad::gameScene = END_SCENE; //VIEWボタンを押したとき、エンドシーンへ
 		}
 	}
 }
@@ -131,9 +131,9 @@ void GameUI::draw() {
 }
 
 void GameUI::update() {
-	//drawBlur(); //ぼかし
-	//draw();
-	//text_.drawText();
+	drawBlur(); //ぼかし
+	draw();
+	text_.drawText();
 	drawSpeechBalloon(); //イベント用噴き出し描画
 
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "%d, %d, %d, %d",

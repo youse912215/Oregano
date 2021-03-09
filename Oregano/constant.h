@@ -18,7 +18,7 @@ const int AREA_MAX = AREA_WIDTH - 1; //区画の最大値
 const double HALF_BLOCK_SIZE_D = 32.0; //ブロックサイズの1/2（double型）
 const double QUARTER_BLOCK_SIZE_D = HALF_BLOCK_SIZE_D / 2.0; //ブロックサイズの1/4（double型）
 
-const double ENEMY_COLLISION_DISTANCE = 48.0; //敵との衝突距離
+const double ENEMY_COLLISION_DISTANCE = 32.0; //敵との衝突距離
 const double WEAPON_COLLISION_DISTANCE = HALF_BLOCK_SIZE_D; //敵と武器との衝突距離
 
 const int TOTAL_MAPS_X = 5; //横方向のマップ総数

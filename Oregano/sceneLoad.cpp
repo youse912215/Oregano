@@ -1,4 +1,4 @@
-#include "sceneRoad.h"
+#include "sceneLoad.h"
 #include "constant.h"
 #include "mapAutogeneration.h"
 #include "dataSource.h"
@@ -9,24 +9,25 @@ MapLoad load;
 DataSource source;
 DataText text;
 
-int SceneRoad::gameScene = TITLE_SCENE;
+int SceneLoad::gameScene = TITLE_SCENE;
 
-SceneRoad::SceneRoad(DataSave& save) : save(save) {
+SceneLoad::SceneLoad(DataSave& save) : save(save) {
 }
 
-SceneRoad::~SceneRoad() {
+SceneLoad::~SceneLoad() {
 }
 
 /// <summary>
 /// 更新処理
 /// </summary>
-void SceneRoad::update() {
+void SceneLoad::update() {
 	if (gameScene == ROAD_SCENE) {
-		save.roadMapData(); //マップデータの読み込み
-		save.roadSaveData(); //セーブデータ読み込み
+		save.loadMapData(); //マップデータの読み込み
+		save.initLoadSaveData(); //セーブデータ読み込み
 		autogeneration.writeRandomMap(); //マップ自動生成
-		load.roadMapData(); //マップデータ読み込み
-		text.roadFont(); //フォントのロード
+		load.loadMapData(); //マップデータ読み込み
+		autogeneration.resetFile(); //CSVファイルのリセット
+		text.loadFont(); //フォントのロード
 
 		gameScene = GAME_SCENE; //ゲームシーンへ
 	}
@@ -35,6 +36,6 @@ void SceneRoad::update() {
 /// <summary>
 /// タイトル画面でロードしたマップ三次元配列を返す
 /// </summary>
-vector<vector<vector<int>>>& SceneRoad::roadingMap() {
+vector<vector<vector<int>>>& SceneLoad::roadingMap() {
 	return load.mapAll;
 }

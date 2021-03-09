@@ -47,7 +47,7 @@ void PlayerShield::draw(DataSource& source) {
 	DrawGraph(static_cast<int>(shieldPos.dx), static_cast<int>(shieldPos.dy),
 	          source.shieldGraph, true); //シールド
 	DrawRectGraph(static_cast<int>(shieldPos.dx), static_cast<int>(shieldPos.dy) - 10,
-	              0, gaugePos.x * value - gaugePos.y, gaugePos.x, gaugePos.y,
+	              0, gaugePos.y * value - gaugePos.y, gaugePos.x, gaugePos.y,
 	              source.shieldGauge, true, false, false); //シールドゲージ
 }
 

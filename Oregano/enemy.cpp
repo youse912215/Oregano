@@ -13,7 +13,7 @@ EnemyTracking tracking;
 Enemy::Enemy() :
 	pos(0.0, 0.0), center(0.0, 0.0),
 	screenCenter(0.0, 0.0), relativeDistance(0.0, 0.0), lifeHeight(8), intervalMax(15),
-	initLife{1, 2, 3, 4}, possessionCoin{1, 2, 3, 4}, attackPower{2, 4, 8, 10},
+	initLife{1, 2, 3, 4}, possessionCoin{1, 2, 3, 4}, attackPower{1, 2, 4, 8},
 	attributeValue{1, 2, 3, 5},
 	life(0), pattern(0), level(0), damageInterval(2), damageFlag(2),
 
@@ -149,7 +149,7 @@ void Enemy::collision(Player& player) {
 /// ステータスを設定
 /// </summary>
 void Enemy::setStatus() {
-	pattern = getRandom(0, 1); //敵のパターンをランダムで生成
+	pattern = getRandom(0, 4); //敵のパターンをランダムで生成
 	lissajousRandom = getRandom(1, 15); //リサージュ曲線の種類をランダムで生成
 	attribute = getRandom(0, 3); //属性値
 	level = getRandom(0, 3); //レベル
@@ -226,12 +226,16 @@ void Enemy::update(Player& player, DataSource& source) {
 	/* 活動状態のとき */
 	if (activity) {
 		collision(player); //プレイヤーとの衝突処理
-		if (pattern % 2 == 0)
-			tracking.update(player, pos, screenPos); //追跡移動の更新処理
-		else {
+
+		//パターンが0以外なら
+		if (pattern != 0) {
 			countTime(); //リサージュ用の時間カウント処理
 			lissajous(); //リサージュ曲線描画
 		}
+		else {
+			tracking.update(player, pos, screenPos); //追跡移動の更新処理
+		}
+
 		draw(source); //描画処理
 
 		noLife(player); //0ライフ処理	

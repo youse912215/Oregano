@@ -1,6 +1,6 @@
 #include "playerState.h"
 #include "moveProcess.h"
-#include "sceneRoad.h"
+#include "sceneLoad.h"
 
 MoveProcess move_;
 
@@ -10,8 +10,8 @@ vector<int> PlayerState::attributeAccumulation = {0, 0, 0, 0};
 int PlayerState::battleStyle = 0;
 
 PlayerState::PlayerState() : poisonTime(0), roughTime(0), attributeMax(10), timeMax(100), cooldownMax(120),
-                             poisonDamage(5), roughDamage(10),
-                             recoveryCoin(30) {
+                             poisonDamage(1), roughDamage(2),
+                             recoveryCoin(10) {
 }
 
 /// <summary>
@@ -72,6 +72,16 @@ void PlayerState::conditionUpdate(MapDraw& draw_) {
 	countStateTime(); //猛毒時間をカウント
 	continuousDamage(poisonTime, poisonDamage); //猛毒ダメージを付与
 	continuousDamage(roughTime, roughDamage); //凸凹ダメージを付与
+	resetCoin(); //コインを0にリセット
+}
+
+/// <summary>
+/// コインを0にリセット
+/// </summary>
+void PlayerState::resetCoin() {
+	//現在の戦闘スタイルのコインが0になったら、0にする
+	if (coin[battleStyle] < 0)
+		coin[battleStyle] = 0; //0にする
 }
 
 /// <summary>
@@ -122,7 +132,7 @@ void PlayerState::switchStyleAutomatically() {
 		if (itr != coin.end())
 			battleStyle = distance(coin.begin(), itr); //戦闘スタイルを切り替える
 		else
-			SceneRoad::gameScene = END_SCENE; //全てのコインが0になり、ゲームオーバーシーンへ
+			SceneLoad::gameScene = GAME_OVER_SCENE; //全てのコインが0になり、ゲームオーバーシーンへ
 	}
 }
 

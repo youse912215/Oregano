@@ -9,7 +9,9 @@
 #include "dataSave.h"
 #include "gameUI.h"
 
-#include "sceneRoad.h"
+#include "sceneTitle.h"
+#include "sceneLoad.h"
+#include "sceneGame.h"
 #include "sceneSave.h"
 #include "sceneMenu.h"
 #include "sceneGameOver.h"
@@ -29,7 +31,9 @@ void loopProcess() {
 	PlayerState state; //プレイヤー状態クラス
 	DataSave data(state, gameUI); //セーブデータクラス
 
-	SceneRoad road(data); //ロードシーンクラス
+	SceneTitle title(input); //タイトルシーンクラス
+	SceneLoad load(data); //ロードシーンクラス
+	SceneGame game(input, draw_, collision, load, player, enemy, gameUI); //ゲームシーンクラス
 	SceneSave save(data, input); //セーブシーンクラス
 	SceneMenu menu(input); //メニューシーンクラス
 	SceneGameOver gameOver(data, input); //ゲームオーバークラス
@@ -40,41 +44,21 @@ void loopProcess() {
 
 		input.update(); //入力処理
 
-		/* タイトルシーン処理 */
-		if (SceneRoad::gameScene == TITLE_SCENE) {
-			if (input.A) SceneRoad::gameScene = ROAD_SCENE;
-		}
-		/* ロードシーン処理 */
-		road.update(); //更新処理
+		title.update(); //タイトルシーン更新処理
 
-		/* ゲームシーン処理 */
-		if (SceneRoad::gameScene == GAME_SCENE) {
-			draw_.update(road.roadingMap()); //マップ更新処理
+		load.update(); //ロードシーン更新処理
 
-			collision.update(); //コリジョン更新処理
+		game.update(); //ゲームシーン更新処理
 
-			input.menuProcess(); //メニュー処理
-			input.movement(collision, draw_); //移動処理
+		save.update(); //セーブシーン更新処理
 
-			player.update(); //プレイヤー更新処理
+		menu.update(); //メニューシーン更新処理
 
-			//enemy.update(); //敵更新処理
+		gameOver.update(); //ゲームオーバーシーン更新処理
 
-			gameUI.update(); //UI更新処理
-		}
+		end.update(); //エンドシーン更新処理
 
-		/* セーブシーン処理 */
-		save.update(); //更新処理
-
-		/* メニューシーン処理 */
-		menu.update(); //更新処理
-
-		/* ゲームオーバーシーン処理 */
-		gameOver.update(); //更新処理
-
-		/* エンドシーン処理 */
-		end.update(); //更新処理
-
+		//終了フラグがtrueのとき
 		if (gameOver.endFlag || end.endFlag) break; //終了処理
 
 		windowSettingInLoop(); //ループ内ウィンドウ設定

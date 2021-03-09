@@ -13,5 +13,5 @@ public:
 	MapLoad();
 	~MapLoad();
 
-	void roadMapData(); //マップデータ配列を読み込み、三次元配列に格納
+	void loadMapData(); //マップデータ配列を読み込み、三次元配列に格納
 };

@@ -2,7 +2,7 @@
 #include "constant.h"
 #include "mapDraw.h"
 #include "inputProcess.h"
-#include "sceneRoad.h"
+#include "sceneLoad.h"
 
 char Input::oldkeys[KEY_BUFFER_MAX] = {0};
 char Input::keys[KEY_BUFFER_MAX] = {0};
@@ -165,7 +165,7 @@ void Input::eventProcess() {
 /// </summary>
 void Input::menuProcess() {
 	if (MENU) {
-		SceneRoad::gameScene = MENU_SCENE;
+		SceneLoad::gameScene = MENU_SCENE;
 	}
 }
 
@@ -219,5 +219,4 @@ void Input::update() {
 	padsInformation(); //ジョイパッド情報
 	inputModeChange(); //モードチェンジ
 	eventProcess(); //イベント入力処理
-	menuProcess(); //終了入力処理
 }

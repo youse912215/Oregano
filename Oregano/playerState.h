@@ -17,6 +17,7 @@ private:
 	void getFloorState(MapDraw& draw_); //床上での状態を取得
 	void countStateTime(); //猛毒時間をカウント
 	void continuousDamage(const int& time, const int& value); //継続ダメージを付与
+	void resetCoin(); //コインを0にリセット
 
 public:
 	static vector<bool> condition; //状態異常（0:猛毒、1:痙攣、2:混乱、3:出血）
@@ -35,7 +36,6 @@ public:
 	void valueReset(vector<bool>& actionFlag, vector<bool>& cooldownFlag); //属性耐久値等のリセット
 	void countCooldown(vector<int>& cooldown, vector<bool>& cooldownFlag); //状態のクールダウン処理
 	void conditionUpdate(MapDraw& draw_); //状態異常更新処理
-
 
 	PlayerState();
 };

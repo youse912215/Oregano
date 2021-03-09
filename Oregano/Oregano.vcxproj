@@ -158,8 +158,9 @@
     <ClCompile Include="sceneGame.cpp" />
     <ClCompile Include="sceneGameOver.cpp" />
     <ClCompile Include="sceneMenu.cpp" />
-    <ClCompile Include="sceneRoad.cpp" />
+    <ClCompile Include="sceneLoad.cpp" />
     <ClCompile Include="sceneSave.cpp" />
+    <ClCompile Include="sceneTitle.cpp" />
     <ClCompile Include="vec2.cpp" />
     <ClCompile Include="windowPreference.cpp" />
   </ItemGroup>
@@ -192,8 +193,9 @@
     <ClInclude Include="sceneGame.h" />
     <ClInclude Include="sceneGameOver.h" />
     <ClInclude Include="sceneMenu.h" />
-    <ClInclude Include="sceneRoad.h" />
+    <ClInclude Include="sceneLoad.h" />
     <ClInclude Include="sceneSave.h" />
+    <ClInclude Include="sceneTitle.h" />
     <ClInclude Include="vec2.h" />
     <ClInclude Include="windowPreference.h" />
   </ItemGroup>

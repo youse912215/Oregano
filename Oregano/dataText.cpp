@@ -11,7 +11,10 @@ DataText::DataText() :
 	} {
 }
 
-void DataText::roadFont() {
+/// <summary>
+/// フォントのロード
+/// </summary>
+void DataText::loadFont() {
 	LPCSTR fontPath = "resource\\Font\\SHOWG.TTF"; //フォントファイルのパス指定
 
 	/* フォントデータのロード */
@@ -32,6 +35,9 @@ void DataText::roadFont() {
 	}
 }
 
+/// <summary>
+/// テキストの描画
+/// </summary>
 void DataText::drawText() {
 	//現在の所持コイン数を表示
 	for (int i = 0; i <= BLOODING; ++i) {

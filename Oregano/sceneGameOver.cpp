@@ -1,5 +1,5 @@
 #include "sceneGameOver.h"
-#include "SceneRoad.h"
+#include "sceneLoad.h"
 
 SceneGameOver::SceneGameOver(DataSave& data, Input& input) :
 	data(data), input(input), endFlag(false) {
@@ -7,7 +7,12 @@ SceneGameOver::SceneGameOver(DataSave& data, Input& input) :
 
 void SceneGameOver::update() {
 	//ゲームオーバーシーンのとき
-	if (SceneRoad::gameScene == GAME_OVER_SCENE) {
+	if (SceneLoad::gameScene == GAME_OVER_SCENE) {
+
+		for (unsigned int i = 0; i != PlayerState::condition.size(); ++i) {
+			PlayerState::condition[i] = false; //状態異常をfalse
+		}
+
 		//Lボタンを押したとき
 		if (input.LB) {
 			endFlag = true; //終了フラグをtrue
@@ -15,8 +20,8 @@ void SceneGameOver::update() {
 
 		//Rボタンを押したとき
 		if (input.RB) {
-			data.roadSaveData(); //前回のセーブデータを読み込み
-			SceneRoad::gameScene = GAME_SCENE; //ゲームシーンへ
+			data.loadSaveData(); //前回のセーブデータを読み込み
+			SceneLoad::gameScene = GAME_SCENE; //ゲームシーンへ
 		}
 
 		DrawFormatString(0, 0, GetColor(255, 255, 255), "gameover", false);
