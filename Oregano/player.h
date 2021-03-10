@@ -17,7 +17,6 @@ private:
 	Vec2d pos; //プレイヤー座標
 
 	vector<int> cooldown; //アクションのクールダウン
-	vector<bool> cooldownFlag; //クールダウンのフラグ
 
 	bool damageFlag; //ダメージフラグ
 
@@ -36,6 +35,7 @@ public:
 	Vec2d slashCenter; //刃の中心座標
 
 	vector<bool> actionFlag; //アクションフラグ
+	vector<bool> cooldownFlag; //クールダウンのフラグ
 
 	Player(Input& input, MapDraw& draw_, DataSource& source);
 	~Player();

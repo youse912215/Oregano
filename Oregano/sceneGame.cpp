@@ -2,7 +2,8 @@
 
 SceneGame::SceneGame(Input& input, MapDraw& draw, MapCollision& collision, SceneLoad& load, Player& player,
                      EnemyConclusion& enemy, GameUI& gameUI) :
-	input(input), draw(draw), collision(collision), load(load), player(player), enemy(enemy), gameUI(gameUI) {
+	input(input), draw(draw), collision(collision), load(load), player(player), enemy(enemy), gameUI(gameUI),
+	timeMax(2147483646), popTime(150), enemyFlag(false), gameTime(0) {
 }
 
 /// <summary>
@@ -16,8 +17,22 @@ void SceneGame::countInterval(int* countTime, const int& maxTime) {
 	*countTime = (*countTime <= maxTime) ? ++(*countTime) : 0; //時間をカウントし、最大時間が過ぎると0に戻す
 }
 
+/// <summary>
+/// 時間をカウント
+/// </summary>
+void SceneGame::countTime() {
+	gameTime = gameTime < timeMax ? ++gameTime : 0; //ゲーム時間をカウント
+
+	//出現時間になったら、
+	if (!enemyFlag && gameTime >= popTime) {
+		enemyFlag = true; //敵が出現
+	}
+}
+
 void SceneGame::update() {
 	if (SceneLoad::gameScene == GAME_SCENE) {
+		countTime();
+
 		draw.update(load.roadingMap()); //マップ更新処理
 
 		collision.update(); //コリジョン更新処理
@@ -30,7 +45,9 @@ void SceneGame::update() {
 
 		player.update(); //プレイヤー更新処理
 
-		enemy.update(); //敵更新処理
+		//敵がフラグをtrueのとき
+		if (enemyFlag)
+			enemy.update(); //敵更新処理
 
 		gameUI.update(); //UI更新処理
 	}

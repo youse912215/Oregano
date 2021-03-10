@@ -57,7 +57,7 @@ void GameUI::drawFilter() {
 	}
 	/* 現在出来ないアクションをフィルターで隠す */
 	for (int i = 0; i < 3; ++i) {
-		if (!player.actionFlag[i]) continue;
+		if (!player.cooldownFlag[i]) continue;
 		DrawGraph(actionSize.x + BLOCK_SIZE * 2 * i, actionSize.y, source.filterGraph2, true);
 	}
 	if (!state__.anyCondition())

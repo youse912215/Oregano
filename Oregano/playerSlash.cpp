@@ -2,7 +2,7 @@
 #include "constant.h"
 #include "DxLib.h"
 
-PlayerSlash::PlayerSlash() : drawTime(0), graphNum(3), graphWidth(128), popTime(20), cooldownMax(60),
+PlayerSlash::PlayerSlash() : drawTime(0), graphNum(3), graphWidth(128), popTime(20), cooldownMax(120),
                              slashPos(0.0) {
 }
 

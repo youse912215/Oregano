@@ -77,12 +77,12 @@ void EnemyTracking::move(Player& player, Vec2d& pos, Vec2d& screenPos) {
 	if (screenPos.dy >= 0
 		&& screenPos.dy < player.center.dy
 		&& onScreenX(screenPos)) {
-		pos.dy += moveSpeed.dy; //ã‚Ö
+		pos.dy += moveSpeed.dy * moveOnLineX(player, screenPos); //ã‚Ö
 	}
 	else if (screenPos.dy >= player.center.dy
 		&& screenPos.dy < WIN_HEIGHT
 		&& onScreenX(screenPos)) {
-		pos.dy -= moveSpeed.dy; //‰º‚Ö
+		pos.dy -= moveSpeed.dy * moveOnLineX(player, screenPos); //‰º‚Ö
 	}
 }
 

@@ -39,7 +39,7 @@ void loopProcess() {
 	SceneGame game(input, draw_, collision, load, player, enemy, gameUI); //ゲームシーンクラス
 	SceneSave save(data, input, gameUI); //セーブシーンクラス
 	SceneMenu menu(input); //メニューシーンクラス
-	SceneGameOver gameOver(data, input); //ゲームオーバークラス
+	SceneGameOver gameOver(data, input, game); //ゲームオーバークラス
 	SceneEnd end(input); //エンドシーンクラス
 
 	source.playBgm(); //初期BGM

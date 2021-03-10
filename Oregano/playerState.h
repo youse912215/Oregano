@@ -8,18 +8,21 @@ private:
 
 	int poisonTime; //猛毒時間
 	int roughTime; //凸凹時間
+	int crampsTime; //痙攣時間
 	const int attributeMax; //最大耐久値
-	const int timeMax; //最大時間
+	const int damageTimeMax; //最大ダメージ時間
 	const int cooldownMax; //最大クールダウン
 	const int poisonDamage; //猛毒によるダメージ(減少コイン量)
 	const int roughDamage; //凸凹によるダメージ(減少コイン量)
 	const int recoveryCoin; //解消必要コイン
+	const int crampsTimeMax; //最大痙攣時間
 
 	void getCondition(); //状態異常を取得
 	void getFloorState(MapDraw& draw_); //床上での状態を取得
 	void countStateTime(); //猛毒時間をカウント
 	void continuousDamage(const int& time, const int& value); //継続ダメージを付与
 	void resetCoin(); //コインを0にリセット
+	void countCrampsTime(); //痙攣時間をカウント
 
 public:
 	static vector<bool> condition; //状態異常（0:猛毒、1:痙攣、2:混乱、3:出血）

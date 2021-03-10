@@ -9,9 +9,10 @@ vector<int> PlayerState::coin = {10, 10, 10, 10};
 vector<int> PlayerState::attributeAccumulation = {0, 0, 0, 0};
 int PlayerState::battleStyle = 0;
 
-PlayerState::PlayerState() : poisonTime(0), roughTime(0), attributeMax(10), timeMax(100), cooldownMax(120),
-                             poisonDamage(1), roughDamage(2),
-                             recoveryCoin(10), poisonDamageFlag(false), roughDamageFlag(false) {
+PlayerState::PlayerState() : poisonTime(0), roughTime(0), crampsTime(0), attributeMax(10), damageTimeMax(100),
+                             cooldownMax(120), poisonDamage(1),
+                             roughDamage(2), recoveryCoin(10), crampsTimeMax(60),
+                             poisonDamageFlag(false), roughDamageFlag(false) {
 }
 
 /// <summary>
@@ -36,7 +37,7 @@ void PlayerState::getFloorState(MapDraw& draw_) {
 		//凸凹床の上にいるときかつ、戦闘スタイルが燕子花(対混乱)以外のとき
 	else if (move_.mapCondition(draw_, ROUGH) && battleStyle != CONFUSION) {
 		//0から100まで時間を動かす
-		roughTime = roughTime <= timeMax ? ++roughTime : 0; //凸凹時間をカウント
+		roughTime = roughTime <= damageTimeMax ? ++roughTime : 0; //凸凹時間をカウント
 	}
 	else roughTime = 0; //凸凹時間をリセット
 }
@@ -47,7 +48,7 @@ void PlayerState::getFloorState(MapDraw& draw_) {
 void PlayerState::countStateTime() {
 	if (condition[DEADLY_POISON])
 		poisonTime++; //猛毒状態なら時間をカウント
-	else if (poisonTime >= timeMax || !condition[DEADLY_POISON])
+	else if (poisonTime >= damageTimeMax || !condition[DEADLY_POISON])
 		poisonTime = 0; //最大時間または猛毒状態が解消されたら、時間をリセット
 }
 
@@ -58,7 +59,7 @@ void PlayerState::countStateTime() {
 /// <param name="value">ダメージ量</param>
 void PlayerState::continuousDamage(const int& time, const int& value) {
 	//timeがtimeMaxのとき
-	if (time % timeMax == 0 && time != 0) {
+	if (time % damageTimeMax == 0 && time != 0) {
 		coin[battleStyle] -= value; //value分コインを減らす
 		source__.playSe(source__.seDamage); //ダメージSE
 
@@ -78,6 +79,7 @@ void PlayerState::conditionUpdate(MapDraw& draw_) {
 	continuousDamage(poisonTime, poisonDamage); //猛毒ダメージを付与
 	continuousDamage(roughTime, roughDamage); //凸凹ダメージを付与
 	resetCoin(); //コインを0にリセット
+	countCrampsTime(); //痙攣時間をカウント
 }
 
 /// <summary>
@@ -90,13 +92,29 @@ void PlayerState::resetCoin() {
 }
 
 /// <summary>
+/// 痙攣時間をカウント
+/// </summary>
+void PlayerState::countCrampsTime() {
+	//痙攣状態のとき
+	if (condition[CRAMPS]) {
+		crampsTime = crampsTime++; //痙攣時間をカウント
+	}
+
+	if (crampsTime >= crampsTimeMax) {
+		condition[CRAMPS] = false; //状態解除
+		attributeAccumulation[CRAMPS] = 0; //耐久値リセット
+		crampsTime = 0; //時間をリセット
+	}
+}
+
+/// <summary>
 /// 状態異常による追加ダメージ
 /// </summary>
 int PlayerState::addConditionDamage() {
 	//出血状態以外のとき
 	if (!condition[BLOODING])
 		return 1; //追加ダメージなし
-	return 2; //ダメージ2倍として返す
+	return 3; //ダメージ3倍として返す
 }
 
 /// <summary>

@@ -3,7 +3,7 @@
 #include "DxLib.h"
 
 PlayerShield::PlayerShield() :
-	gaugePos(64, 16), shieldQuantity(4), addQuantity(4), cooldownMax(120),
+	gaugePos(64, 16), shieldQuantity(4), addQuantity(4), cooldownMax(180),
 	shieldPos(0.0, 0.0), value(0) {
 }
 

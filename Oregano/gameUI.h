@@ -29,6 +29,7 @@ private:
 
 	bool positionMatchDecision(const int& i); //プレイヤーとイベント位置の一致条件
 
+	void startDecision();
 	void drawBlur(); //ぼかしの描画
 	void drawFilter(); //UIのフィルタの描画
 	void drawSpeechBalloon(); //イベント用噴き出しの描画
@@ -37,7 +38,7 @@ private:
 public:
 	vector<int> mapEventPos; //イベント座標
 
-	int eventNum; //セーブフラグ
+	int eventNum; //イベント番号
 
 	GameUI(Input& input, Player& player, MapDraw& map, DataSource& source);
 	~GameUI();

@@ -17,7 +17,15 @@ private:
 	EnemyConclusion& enemy; //敵まとめクラス
 	GameUI& gameUI; //ゲームUIクラス
 
+	const int timeMax; //最大時間
+	const int popTime; //出現時間
+
+	void countTime(); //時間をカウント
+
 public:
+	int gameTime; //ゲーム時間
+	bool enemyFlag; //敵出現フラグ
+
 	SceneGame(Input& input, MapDraw& draw, MapCollision& collision, SceneLoad& load, Player& player,
 	          EnemyConclusion& enemy, GameUI& gameUI);
 
