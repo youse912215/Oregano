@@ -10,7 +10,7 @@ private:
 	DataSave& save; //データセーブクラスから
 	//MapLoad& load; //マップロードクラスから
 public:
-	static int gameScene;
+	static int gameScene; //ゲームシーン
 
 	SceneLoad(DataSave& save);
 	~SceneLoad();

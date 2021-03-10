@@ -77,9 +77,6 @@ void PlayerState::conditionUpdate(MapDraw& draw_) {
 	continuousDamage(poisonTime, poisonDamage); //猛毒ダメージを付与
 	continuousDamage(roughTime, roughDamage); //凸凹ダメージを付与
 	resetCoin(); //コインを0にリセット
-
-	DrawFormatString(0, 600, GetColor(255, 255, 0),
-	                 "poison:%d, rough:%d", poisonDamageFlag, roughDamageFlag, false);
 }
 
 /// <summary>

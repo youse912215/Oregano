@@ -34,7 +34,7 @@ void loopProcess() {
 	SceneTitle title(input); //タイトルシーンクラス
 	SceneLoad load(data); //ロードシーンクラス
 	SceneGame game(input, draw_, collision, load, player, enemy, gameUI); //ゲームシーンクラス
-	SceneSave save(data, input); //セーブシーンクラス
+	SceneSave save(data, input, gameUI); //セーブシーンクラス
 	SceneMenu menu(input); //メニューシーンクラス
 	SceneGameOver gameOver(data, input); //ゲームオーバークラス
 	SceneEnd end(input); //エンドシーンクラス

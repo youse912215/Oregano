@@ -2,7 +2,9 @@
 #include "sceneLoad.h"
 #include "sceneGame.h"
 
-SceneMenu::SceneMenu(Input& input) : input(input), maxTime(10000), changeTime(30), interval(0) {
+SceneMenu::SceneMenu(Input& input) :
+	input(input), devicePos(300, WIN_HEIGHT / 2),
+	deviceSize(1024, 256), maxTime(10000), changeTime(30), interval(0) {
 }
 
 void SceneMenu::update() {
@@ -19,6 +21,11 @@ void SceneMenu::update() {
 			SceneLoad::gameScene = GAME_SCENE; //ゲームシーンへ
 		}
 
-		DrawFormatString(0, 0, GetColor(255, 255, 255), "menu", false);
+		DrawGraph(0, 0, menu, true); //背景
+
+		DrawRectGraph(devicePos.x, devicePos.y,
+		              0, deviceSize.y * input.device,
+		              deviceSize.x, deviceSize.y, deviceChange2,
+		              true, false, false); //デバイス種類
 	}
 }

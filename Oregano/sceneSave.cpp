@@ -3,8 +3,8 @@
 #include "sceneGame.h"
 #include "dataSave.h"
 
-SceneSave::SceneSave(DataSave& data, Input& input) :
-	data(data), input(input), maxTime(10000), changeTime(40), interval(0) {
+SceneSave::SceneSave(DataSave& data, Input& input, GameUI& UI) :
+	data(data), input(input), UI(UI), maxTime(10000), changeTime(40), interval(0) {
 }
 
 /// <summary>
@@ -21,6 +21,15 @@ void SceneSave::update() {
 			data.writeSaveData(); //データをセーブする
 			SceneLoad::gameScene = GAME_SCENE; //ゲームシーンへ戻る
 		}
-		DrawFormatString(0, 0, GetColor(255, 255, 255), "save", false);
+
+		if (UI.eventNum == 0) {
+			DrawGraph(0, 0, event1, true);
+		}
+		else if (UI.eventNum == 1) {
+			DrawGraph(0, 0, event2, true);
+		}
+		else {
+			DrawGraph(0, 0, event3, true);
+		}
 	}
 }

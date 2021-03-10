@@ -9,7 +9,7 @@ MapLoad load;
 DataSource source;
 DataText text;
 
-int SceneLoad::gameScene = TITLE_SCENE;
+int SceneLoad::gameScene = TITLE_SCENE; //タイトルシーン
 
 SceneLoad::SceneLoad(DataSave& save) : save(save) {
 }

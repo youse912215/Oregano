@@ -64,7 +64,7 @@ public:
 	MapDraw();
 	~MapDraw();
 
-	void initialize();
+	void initialize(); //‰Šú‰»
 
 	void update(vector<vector<vector<int>>>& mapAll); //XVˆ—
 };

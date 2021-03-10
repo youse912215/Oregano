@@ -52,16 +52,6 @@ const int ALL_COIN_TYPE = 4; //コインの種類
 
 const int TERMINAL_CHAR = 1;
 
-//一度のみ呼び出し
-#define CALL_ONCE(/*src*/function)\
-     do {\
-          static bool initialized = false;\
-          if (!initialized){\
-               /*src*/function;\
-               initialized = true;\
-          }\
-     } while (0)
-
 //ゲームシーン
 enum GAME_SCENE {
 	//タイトル

@@ -3,7 +3,7 @@
 #include "DxLib.h"
 
 SceneTitle::SceneTitle(Input& input) :
-	input(input) {
+	input(input), deviceSize(512, 128), startSize(128, 128), startPos(550, 575) {
 }
 
 void SceneTitle::update() {
@@ -16,6 +16,16 @@ void SceneTitle::update() {
 		if (input.A)
 			SceneLoad::gameScene = ROAD_SCENE; //ロードシーンへ
 
-		DrawFormatString(0, 0, GetColor(255, 255, 255), "%d", input.device);
+		DrawGraph(0, 0, title, true); //背景
+
+		DrawRectGraph(0, WIN_HEIGHT - deviceSize.y,
+		              0, deviceSize.y * input.device,
+		              deviceSize.x, deviceSize.y,
+		              deviceChange1, true, false, false); //デバイス種類
+
+		DrawRectGraph(startPos.x, startPos.y,
+		              0, startSize.x * input.device,
+		              startSize.x, startSize.y,
+		              titleStart, true, false, false); //スタートボタン配置
 	}
 }

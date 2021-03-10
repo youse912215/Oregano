@@ -27,6 +27,17 @@ DataSource::DataSource() {
 	filterGraph2 = LoadGraph("resource/UI/filter2.png");
 	shieldGauge = LoadGraph("resource/UI/shieldGauge.png");
 	eventGraph = LoadGraph("resource/UI/event.png");
+	title = LoadGraph("resource/Art/title.png");
+	menu = LoadGraph("resource/Art/menu.png");
+	gameover = LoadGraph("resource/Art/gameover.png");
+	clear = LoadGraph("resource/Art/clear.png");
+	event1 = LoadGraph("resource/Art/event1.png");
+	event2 = LoadGraph("resource/Art/event2.png");
+	event3 = LoadGraph("resource/Art/event3.png");
+	titleStart = LoadGraph("resource/Art/titleStart.png");
+	deviceChange1 = LoadGraph("resource/Art/deviceChange.png");
+	deviceChange2 = LoadGraph("resource/Art/deviceChange2.png");
+	gameOverEnd = LoadGraph("resource/Art/gameoverEnd.png");
 }
 
 DataSource::~DataSource() {
@@ -54,4 +65,15 @@ DataSource::~DataSource() {
 	DeleteGraph(filterGraph2);
 	DeleteGraph(shieldGauge);
 	DeleteGraph(eventGraph);
+	DeleteGraph(title);
+	DeleteGraph(menu);
+	DeleteGraph(clear);
+	DeleteGraph(gameover);
+	DeleteGraph(event1);
+	DeleteGraph(event2);
+	DeleteGraph(event3);
+	DeleteGraph(titleStart);
+	DeleteGraph(deviceChange1);
+	DeleteGraph(deviceChange2);
+	DeleteGraph(gameOverEnd);
 }

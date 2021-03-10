@@ -3,7 +3,7 @@
 #include <cmath>
 
 PlayerKnife::PlayerKnife() :
-	center(0.0, 0.0), radian(0.0), sign(0.0), curvatureSpeed(KNIFE_SPEED / 2.0),
+	center(0.0, 0.0), radian(0.0), sign(0.0), cooldownMax(30), curvatureSpeed(KNIFE_SPEED / 2.0),
 	maxRange(BLOCK_SIZE * 3.0), reverseFlag(false), knifePos(0.0, 0.0), knifeAddPos(0.0, 0.0) {
 }
 
@@ -56,7 +56,7 @@ void PlayerKnife::countCooldown(vector<int>& cooldown, vector<bool>& cooldownFla
 	if (cooldownFlag[KNIFE]) cooldown[KNIFE]++; //クールダウン開始
 
 	//クールダウンは30秒
-	if (cooldown[KNIFE] >= 30) {
+	if (cooldown[KNIFE] >= cooldownMax) {
 		cooldown[KNIFE] = 0; //クールダウンをリセット
 		cooldownFlag[KNIFE] = false; //クールダウンフラグをfalse
 	}
@@ -119,6 +119,4 @@ void PlayerKnife::draw(DataSource& source) {
 	              static_cast<int>(this->center.dy),
 	              1.0, radian,
 	              source.knifeGraph, true, reverseFlag);
-
-
 }

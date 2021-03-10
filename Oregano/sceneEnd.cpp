@@ -3,7 +3,8 @@
 #include "sceneLoad.h"
 
 SceneEnd::SceneEnd(Input& input) :
-	input(input), maxTime(10000), changeTime(30), interval(0), endFlag(false) {
+	input(input), startSize(128, 128), startPos(550, 700), maxTime(10000),
+	changeTime(30), interval(0), endFlag(false) {
 }
 
 /// <summary>
@@ -14,12 +15,17 @@ void SceneEnd::update() {
 	if (SceneLoad::gameScene == END_SCENE) {
 		SceneGame::countInterval(&interval, maxTime); //間隔時間をカウント
 
-		//VIEWボタンを押したときかつ、intervalがchangeTime以上なら
-		if (input.VIEW && interval >= changeTime) {
-
+		//Aボタンを押したときかつ、intervalがchangeTime以上なら
+		if (input.A && interval >= changeTime) {
 			interval = 0; //間隔時間をリセット
 			endFlag = true; //終了フラグをtrue
 		}
-		DrawFormatString(0, 0, GetColor(255, 255, 255), "clear", false);
+
+		DrawGraph(0, 0, clear, true); //背景
+
+		DrawRectGraph(startPos.x, startPos.y,
+		              0, startSize.x * input.device,
+		              startSize.x, startSize.y,
+		              titleStart, true, false, false); //スタートボタン配置
 	}
 }

@@ -57,7 +57,7 @@ void EffectBlood::draw() {
 	DrawRotaGraph2(static_cast<int>(pos.dx) - static_cast<int>(radius),
 	               static_cast<int>(pos.dy) - static_cast<int>(radius),
 	               //敵のattributeによって色が変化
-	               8, 8, radius / 5.0, getRadian(minRand, maxRand),
+	               graphSize, graphSize, radius / 5.0, getRadian(minRand, maxRand),
 	               blood, true, false);
 
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0); //ブレンドオフ

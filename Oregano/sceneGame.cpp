@@ -23,11 +23,14 @@ void SceneGame::update() {
 		collision.update(); //コリジョン更新処理
 
 		input.menuProcess(); //メニュー処理
-		input.movement(collision, draw); //移動処理
+
+		//痙攣状態でなければ
+		if (!PlayerState::condition[CRAMPS])
+			input.movement(collision, draw); //移動処理
 
 		player.update(); //プレイヤー更新処理
 
-		//enemy.update(); //敵更新処理
+		enemy.update(); //敵更新処理
 
 		gameUI.update(); //UI更新処理
 	}

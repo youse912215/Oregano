@@ -2,7 +2,8 @@
 #include "sceneLoad.h"
 
 SceneGameOver::SceneGameOver(DataSave& data, Input& input) :
-	data(data), input(input), endFlag(false) {
+	data(data), input(input), charSize(128, 128), charPos(250, 575), charInterval(650),
+	endFlag(false) {
 }
 
 void SceneGameOver::update() {
@@ -13,17 +14,27 @@ void SceneGameOver::update() {
 			PlayerState::condition[i] = false; //状態異常をfalse
 		}
 
-		//Lボタンを押したとき
-		if (input.LB) {
+		//Rボタンを押したとき
+		if (input.RB) {
 			endFlag = true; //終了フラグをtrue
 		}
 
-		//Rボタンを押したとき
-		if (input.RB) {
+		//Lボタンを押したとき
+		if (input.LB) {
 			data.loadSaveData(); //前回のセーブデータを読み込み
 			SceneLoad::gameScene = GAME_SCENE; //ゲームシーンへ
 		}
 
-		DrawFormatString(0, 0, GetColor(255, 255, 255), "gameover", false);
+		DrawGraph(0, 0, gameover, true); //背景
+
+		DrawRectGraph(charPos.x, charPos.y,
+		              0, charSize.y * input.device,
+		              charSize.x, charSize.y, gameOverEnd,
+		              true, false, false); //左側文字
+
+		DrawRectGraph(charPos.x + charInterval, charPos.y,
+		              charSize.x, charSize.y * input.device,
+		              charSize.x, charSize.y, gameOverEnd,
+		              true, false, false); //右側文字
 	}
 }

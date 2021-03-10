@@ -7,8 +7,7 @@
 
 #include "enemyTracking.h"
 
-EnemyTracking tracking;
-
+EnemyTracking tracking; //追跡クラス
 
 Enemy::Enemy() :
 	pos(0.0, 0.0), center(0.0, 0.0),
@@ -246,21 +245,6 @@ void Enemy::update(Player& player, DataSource& source) {
 		screenPos = -500.0; //画面外にポジションをセット
 		dead(); //死亡処理
 	}
-
-	/*DrawFormatString(200, 185, GetColor(0, 0, 255),
-	                 "En座標：%lf, %lf",
-	                 pos.dx, pos.dy, false);
-	DrawFormatString(200, 200, GetColor(0, 0, 255),
-	                 "スクリーン座標：%lf, %lf",
-	                 screenPos.dx, screenPos.dy, false);
-	DrawFormatString(200, 215, GetColor(0, 0, 255),
-	                 "相対座標：%lf, %lf",
-	                 abs(relativeDistance.dx),
-	                 abs(relativeDistance.dy), false);
-	DrawFormatString(200, 230, GetColor(0, 0, 255),
-	                 "act：%d, dead:%d, dTime:%d, LIFE:%d, dm1:%d, dm2:%d",
-	                 activity, deadFlag, deadTime, life,
-	                 player.addDamage(0), player.addDamage(1), false);*/
 }
 
 void Enemy::initialize(Player& player) {

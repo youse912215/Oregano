@@ -8,6 +8,8 @@ private:
 	int drawTime; //描画時間
 	const int graphNum; //画像数
 	const int graphWidth; //画像幅
+	const int popTime; //刃出現時間
+	const int cooldownMax; //最大クールダウン
 
 public:
 	Vec2d slashPos; //刃座標

@@ -276,23 +276,23 @@ bool MapCollision::collisionDetection(const int& dirXY, const int& dirX, const i
 	/* 判定箇所がWALL(壁)と重なっているならtrueを返す */
 	switch (dirXY) {
 	case MAP_TOP_LEFT: //左上マップ
-		return map.mapTopLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL + 10;
+		return map.mapTopLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
 	case MAP_TOP_CENTRAL: //中央上マップ
-		return map.mapTopCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL + 10;
+		return map.mapTopCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
 	case MAP_TOP_RIGHT: //右上マップ
-		return map.mapTopRight[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL + 10;
+		return map.mapTopRight[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
 	case MAP_LEFT_CENTRAL: //左中央マップ
-		return map.mapLeftCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL + 10;
+		return map.mapLeftCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
 	case MAP_CENTRAL: //中央マップ
-		return map.mapCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL + 10;
+		return map.mapCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
 	case MAP_RIGHT_CENTRAL: //右中央マップ
-		return map.mapRightCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL + 10;
+		return map.mapRightCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
 	case MAP_BOTTOM_LEFT: //左下マップ
-		return map.mapBottomLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL + 10;
+		return map.mapBottomLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
 	case MAP_BOTTOM_CENTRAL: //中央下マップ
-		return map.mapBottomCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL + 10;
+		return map.mapBottomCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
 	case MAP_BOTTOM_RIGHT: //右下マップ
-		return map.mapBottomRight[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL + 10;
+		return map.mapBottomRight[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
 	default:
 		return false; //それ以外はfalseを返す
 	}

@@ -1,11 +1,16 @@
 #pragma once
 #include "dataSave.h"
 #include "inputProcess.h"
+#include "dataSource.h"
 
-class SceneGameOver {
+class SceneGameOver : public DataSource {
 private:
-	DataSave& data;
-	Input& input;
+	DataSave& data; //セーブデータクラス
+	Input& input; //入力クラス
+
+	Vec2 charSize; //文字サイズ
+	Vec2 charPos; //文字位置
+	const int charInterval; //文字間隔
 
 public:
 	bool endFlag; //終了フラグ

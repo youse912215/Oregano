@@ -2,7 +2,8 @@
 #include "constant.h"
 #include "DxLib.h"
 
-PlayerSlash::PlayerSlash() : drawTime(0), graphNum(3), graphWidth(128), slashPos(0.0) {
+PlayerSlash::PlayerSlash() : drawTime(0), graphNum(3), graphWidth(128), popTime(20), cooldownMax(60),
+                             slashPos(0.0) {
 }
 
 /// <summary>
@@ -31,11 +32,11 @@ void PlayerSlash::countCooldown(std::vector<int>& cooldown, std::vector<bool>& c
                                 std::vector<bool>& actionFlag) {
 	if (cooldownFlag[SLASH]) cooldown[SLASH]++; //クールダウン開始
 
-	if (cooldown[SLASH] >= 20 && cooldown[SLASH] < 60) {
+	if (cooldown[SLASH] >= popTime && cooldown[SLASH] < cooldownMax) {
 		actionFlag[SLASH] = false; //刃を収める
 	}
 		//クールダウンは60秒
-	else if (cooldown[SLASH] >= 60) {
+	else if (cooldown[SLASH] >= cooldownMax) {
 		cooldown[SLASH] = 0; //クールダウンをリセット
 		cooldownFlag[SLASH] = false; //クールダウンフラグをfalse
 	}

@@ -9,6 +9,7 @@ private:
 	Vec2d center; //中心
 	double radian; //角度
 	double sign; //符号
+	const int cooldownMax; //最大クールダウン
 	const double curvatureSpeed; //曲げる速度
 	const double maxRange; //ナイフの最大範囲
 	bool reverseFlag; //反転フラグ

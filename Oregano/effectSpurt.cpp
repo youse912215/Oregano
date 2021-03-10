@@ -4,19 +4,23 @@
 #include <cmath>
 
 EffectSpurt::EffectSpurt() :
-	pos(0.0, 0.0), movePos(0.0, 0.0), moveDistance(0.0, 0.0), firstSpeed(5.0),
-	generationTime(0.0), g(9.8), radius(5.0), radian(0.0), isAlive(false) {
+	pos(0.0, 0.0), movePos(0.0, 0.0), moveDistance(0.0, 0.0),
+	radiusRange(5, 10), radianRange(60, 120), firstSpeed(5.0),
+	generationTime(0.0), g(9.8), radius(5.0), radian(0.0), maxTime(10.0), maxRange(150.0),
+	colorMax(255), isAlive(false) {
 }
 
 EffectSpurt::~EffectSpurt() {
 }
 
 void EffectSpurt::draw() {
-	SetDrawBlendMode(DX_BLENDMODE_INVSRC, getRandom(0, 255)); //加算ブレンド
+	SetDrawBlendMode(DX_BLENDMODE_INVSRC, getRandom(0, colorMax)); //加算ブレンド
 
 	/* 円の描画 */
 	DrawCircle(static_cast<int>(pos.dx), static_cast<int>(pos.dy), static_cast<int>(radius),
-	           GetColor(getRandom(0, 255), getRandom(0, 255), getRandom(0, 255)), true);
+	           GetColor(getRandom(0, colorMax),
+	                    getRandom(0, colorMax),
+	                    getRandom(0, colorMax)), true);
 
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0); //ブレンドオフ
 }
@@ -27,8 +31,8 @@ void EffectSpurt::draw() {
 /// <param name="deadPos"敵が死んだ座標</param>
 void EffectSpurt::initialize(Vec2d& deadPos) {
 	pos = deadPos;
-	radius = getRandomD(5, 10); //半径をランダムで取得
-	radian = getRadian(60, 120); //ラジアンをランダムで取得
+	radius = getRandomD(radiusRange.x, radiusRange.y); //半径をランダムで取得
+	radian = getRadian(radianRange.x, radianRange.y); //ラジアンをランダムで取得
 	isAlive = true; //生存状態をtrue
 }
 
@@ -39,17 +43,16 @@ void EffectSpurt::initialize(Vec2d& deadPos) {
 void EffectSpurt::occurrenceParticle(Vec2d& deadPos) {
 	generationTime++; //生存時間をカウント
 
-	movePos.dx = firstSpeed * cos(radian) * (generationTime / 10.0); //x方向の計算
-	movePos.dy = firstSpeed * sin(radian) * (generationTime / 10.0)
-		- (g * ((generationTime / 10.0) * (generationTime / 10.0))) / 2.0; //y方向の計算
+	movePos.dx = firstSpeed * cos(radian) * (generationTime / maxTime); //x方向の計算
+	movePos.dy = firstSpeed * sin(radian) * (generationTime / maxTime)
+		- (g * ((generationTime / maxTime) * (generationTime / maxTime))) / 2.0; //y方向の計算
 
 	pos += movePos; //移動ポジジョンを加算
 	moveDistance = pos - deadPos; //移動距離を計算
 
 	/* 移動距離がmaxRangeのとき */
-	if (abs(moveDistance.dy) >= 150.0) {
+	if (abs(moveDistance.dy) >= maxRange) {
 		generationTime = 0.0; //生存時間をリセット
-		pos = deadPos; //ポジションをリセット
 		isAlive = false; //生存状態をfalse
 	}
 
