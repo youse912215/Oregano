@@ -6,12 +6,12 @@
 #include "player.h"
 #include <vector>
 
-class GameUI : public DataSource {
+class GameUI {
 private:
 	Input& input; //入力クラス
 	Player& player;
 	MapDraw& map; //マップ描画クラス
-	DataSource source; //ソースクラス
+	DataSource& source; //ソースクラス
 
 	const int margin; //余白サイズ
 	const int eventSize; //イベント数
@@ -39,7 +39,7 @@ public:
 
 	int eventNum; //セーブフラグ
 
-	GameUI(Input& input, Player& player, MapDraw& map);
+	GameUI(Input& input, Player& player, MapDraw& map, DataSource& source);
 	~GameUI();
 
 

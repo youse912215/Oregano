@@ -60,6 +60,7 @@ void PlayerState::continuousDamage(const int& time, const int& value) {
 	//timeがtimeMaxのとき
 	if (time % timeMax == 0 && time != 0) {
 		coin[battleStyle] -= value; //value分コインを減らす
+		source__.playSe(source__.seDamage); //ダメージSE
 
 		if (time == poisonTime) poisonDamageFlag = true; //猛毒ダメージフラグをtrue
 		else roughDamageFlag = true; //凸凹ダメージフラグをtrue

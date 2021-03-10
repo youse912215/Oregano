@@ -10,9 +10,9 @@ using namespace std;
 //プレイヤー
 class Player {
 private:
-	Input& input; //入力クラスから
-	MapDraw& draw_;
-	DataSource source; //データソースクラスから
+	Input& input; //入力クラス
+	MapDraw& draw_; //マップ描画クラス
+	DataSource& source; //データソースクラス
 
 	Vec2d pos; //プレイヤー座標
 
@@ -37,7 +37,7 @@ public:
 
 	vector<bool> actionFlag; //アクションフラグ
 
-	Player(Input& input, MapDraw& draw_);
+	Player(Input& input, MapDraw& draw_, DataSource& source);
 	~Player();
 
 	int addDamage(const int& act); //敵へのダメージ

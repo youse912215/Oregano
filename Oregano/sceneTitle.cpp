@@ -16,16 +16,16 @@ void SceneTitle::update() {
 		if (input.A)
 			SceneLoad::gameScene = ROAD_SCENE; //ロードシーンへ
 
-		DrawGraph(0, 0, title, true); //背景
+		DrawGraph(0, 0, source.title, true); //背景
 
 		DrawRectGraph(0, WIN_HEIGHT - deviceSize.y,
 		              0, deviceSize.y * input.device,
 		              deviceSize.x, deviceSize.y,
-		              deviceChange1, true, false, false); //デバイス種類
+		              source.deviceChange1, true, false, false); //デバイス種類
 
 		DrawRectGraph(startPos.x, startPos.y,
 		              0, startSize.x * input.device,
 		              startSize.x, startSize.y,
-		              titleStart, true, false, false); //スタートボタン配置
+		              source.titleStart, true, false, false); //スタートボタン配置
 	}
 }

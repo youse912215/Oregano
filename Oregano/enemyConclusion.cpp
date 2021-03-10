@@ -4,17 +4,18 @@
 #include "effectSpurt.h"
 
 /* 敵 */
-vector<Enemy> enemies(20);
+vector<Enemy> enemies(25);
 
 /* 血のエフェクト */
 EffectBlood blood_;
-vector<EffectBlood> bloods_(100);
+vector<EffectBlood> bloods_(50);
 
 /* 噴き出しエフェクト */
 EffectSpurt spurt_;
-vector<EffectSpurt> spurts_(150);
+vector<EffectSpurt> spurts_(100);
 
-EnemyConclusion::EnemyConclusion(Player& player_) : player_(player_), showTime(20) {
+EnemyConclusion::EnemyConclusion(Player& player_, DataSource& source_) :
+	player_(player_), source_(source_), showTime(20) {
 }
 
 /// <summary>
@@ -32,8 +33,9 @@ void EnemyConclusion::update() {
 		//プレイヤーからダメージを受けたとき
 		if (i.intervalFlag[KNIFE] || i.intervalFlag[SLASH])
 			blood_.update(bloods_, source_, i.screenPos, i.attribute); //血のエフェクト
+
 		//死亡時間のとき
-		if (i.deadFlag && i.deadTime <= showTime)
-			spurt_.update(spurts_, i.screenPos); //噴き出し（コイン）エフェクト
+		if (!(i.deadFlag && i.deadTime <= showTime)) continue;
+		spurt_.update(spurts_, i.screenPos); //噴き出し（コイン）エフェクト
 	}
 }

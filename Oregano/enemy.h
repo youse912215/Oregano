@@ -40,6 +40,7 @@ private:
 	int life; //ライフ
 	int pattern; //出現パターン
 	int level; //レベル
+	const int maxLevel;
 
 	void setStatus(); //ステータスを設定
 
@@ -47,8 +48,11 @@ private:
 	vector<int> damageInterval; //ダメージ間隔
 	vector<bool> damageFlag; //ダメージフラグ
 
+	const double knifeRange; //ナイフの範囲
+	const int deadTimeMax; //最大死亡時間
+
 	void takeDamage(const int& act); //ダメージを受ける
-	void damageProcess(Player& player, const int& act); //ダメージ処理
+	void damageProcess(Player& player, const int& act, DataSource& source); //ダメージ処理
 	void noLife(Player& player); //0ライフ処理
 
 

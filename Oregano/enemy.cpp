@@ -3,18 +3,17 @@
 #include "constant.h"
 #include "random.h"
 #include "mapDraw.h"
-#include <cmath>
-
 #include "enemyTracking.h"
+#include <cmath>
 
 EnemyTracking tracking; //追跡クラス
 
 Enemy::Enemy() :
 	pos(0.0, 0.0), center(0.0, 0.0),
-	screenCenter(0.0, 0.0), relativeDistance(0.0, 0.0), lifeHeight(8), intervalMax(15),
-	initLife{1, 2, 3, 4}, possessionCoin{1, 2, 3, 4}, attackPower{1, 2, 4, 8},
-	attributeValue{1, 2, 3, 5},
-	life(0), pattern(0), level(0), damageInterval(2), damageFlag(2),
+	screenCenter(0.0, 0.0), relativeDistance(0.0, 0.0), lifeHeight(8), intervalMax(15), initLife{1, 2, 3, 4},
+	possessionCoin{1, 2, 3, 4}, attackPower{1, 2, 4, 8}, attributeValue{1, 2, 3, 5}, life(0),
+
+	pattern(0), level(0), maxLevel(4), damageInterval(2), damageFlag(2), knifeRange(80.0), deadTimeMax(40),
 
 	lissajousMaxTime(7200.0), lissajousX(800.0), lissajousY(450.0), controlSpeed(10.0), lissajousTime(0),
 
@@ -81,8 +80,8 @@ void Enemy::hitKnife(Player& player) {
 /// 刃ヒット時の処理
 /// </summary>
 void Enemy::hitSlash() {
-	//
-	if (abs(relativeDistance.dx) <= 80.0 && abs(relativeDistance.dy) <= 80.0) {
+	//knifeRange以下なら
+	if (abs(relativeDistance.dx) <= knifeRange && abs(relativeDistance.dy) <= knifeRange) {
 		takeDamage(SLASH); //ダメージを受ける
 	}
 }
@@ -93,8 +92,8 @@ void Enemy::hitSlash() {
 /// <param name="act">プレイヤーのアクション</param>
 void Enemy::takeDamage(const int& act) {
 	if (damageInterval[act] == 0) {
-		damageFlag[act] = true;
-		intervalFlag[act] = true;
+		damageFlag[act] = true; //ダメージフラグをtrue
+		intervalFlag[act] = true; //間隔フラグをtrue
 	}
 }
 
@@ -102,7 +101,7 @@ void Enemy::takeDamage(const int& act) {
 /// ダメージ処理
 /// </summary>
 /// <param name="act">プレイヤーのアクション</param>
-void Enemy::damageProcess(Player& player, const int& act) {
+void Enemy::damageProcess(Player& player, const int& act, DataSource& source) {
 	/* 間隔フラグがtrueのとき */
 	if (intervalFlag[act])
 		damageInterval[act]++; //ダメージ間隔時間をカウント
@@ -116,6 +115,7 @@ void Enemy::damageProcess(Player& player, const int& act) {
 	/* ダメージフラグがtrueのとき */
 	if (damageFlag[act]) {
 		life -= player.addDamage(act); //ダメージ
+		source.playSe(source.seHit); //ヒットSE
 		damageFlag[act] = false; //ダメージフラグをfalse
 	}
 }
@@ -148,10 +148,10 @@ void Enemy::collision(Player& player) {
 /// ステータスを設定
 /// </summary>
 void Enemy::setStatus() {
-	pattern = getRandom(0, 4); //敵のパターンをランダムで生成
+	pattern = getRandom(0, maxLevel); //敵のパターンをランダムで生成
 	lissajousRandom = getRandom(1, 15); //リサージュ曲線の種類をランダムで生成
-	attribute = getRandom(0, 3); //属性値
-	level = getRandom(0, 3); //レベル
+	attribute = getRandom(0, maxLevel - 1); //属性値
+	level = getRandom(0, maxLevel - 1); //レベル
 	life = initLife[level]; //ライフ
 }
 
@@ -159,10 +159,12 @@ void Enemy::setStatus() {
 /// 死亡時間をカウント
 /// </summary>
 void Enemy::countDeadTime() {
-	if (deadFlag) deadTime++;
-	if (deadTime >= 30) {
-		deadTime = 0;
-		deadFlag = false;
+	if (deadFlag) deadTime++; //時間をカウント
+
+	//deadTimeMaxが経過したら
+	if (deadTime >= deadTimeMax) {
+		deadTime = 0; //死亡時間をリセット
+		deadFlag = false; //死亡フラグをfalse
 	}
 }
 
@@ -214,20 +216,20 @@ double Enemy::getPopLocation(const int& mapDir, const int& coordinate1, const in
 void Enemy::update(Player& player, DataSource& source) {
 	relativeDistanceUpdate(player); //プレイヤーとの相対距離を取得
 
-	if (player.actionFlag[KNIFE]) hitKnife(player); //ナイフが当たったとき
-	if (player.actionFlag[SLASH]) hitSlash(); //刃が当たったとき
-
-	damageProcess(player, KNIFE); //ナイフダメージ処理
-	damageProcess(player, SLASH); //刃ダメージ処理
-
 	countDeadTime(); //死亡時間をカウント
 
 	/* 活動状態のとき */
 	if (activity) {
 		collision(player); //プレイヤーとの衝突処理
 
-		//パターンが0以外なら
-		if (pattern != 0) {
+		if (player.actionFlag[KNIFE]) hitKnife(player); //ナイフが当たったとき
+		if (player.actionFlag[SLASH]) hitSlash(); //刃が当たったとき
+
+		damageProcess(player, KNIFE, source); //ナイフダメージ処理
+		damageProcess(player, SLASH, source); //刃ダメージ処理
+
+		//ランダムパターンが偶数なら
+		if (pattern % 2 == 0) {
 			countTime(); //リサージュ用の時間カウント処理
 			lissajous(); //リサージュ曲線描画
 		}

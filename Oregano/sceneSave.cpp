@@ -23,13 +23,13 @@ void SceneSave::update() {
 		}
 
 		if (UI.eventNum == 0) {
-			DrawGraph(0, 0, event1, true);
+			DrawGraph(0, 0, source.event1, true);
 		}
 		else if (UI.eventNum == 1) {
-			DrawGraph(0, 0, event2, true);
+			DrawGraph(0, 0, source.event2, true);
 		}
 		else {
-			DrawGraph(0, 0, event3, true);
+			DrawGraph(0, 0, source.event3, true);
 		}
 	}
 }

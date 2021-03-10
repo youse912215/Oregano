@@ -3,9 +3,10 @@
 #include "dataSource.h"
 #include "vec2.h"
 
-class SceneMenu : public DataSource {
+class SceneMenu {
 private:
 	Input& input; //入力クラス
+	DataSource source; //データソースクラス
 
 	Vec2 devicePos; //デバイス文字位置
 	Vec2 deviceSize; //デバイス文字サイズ

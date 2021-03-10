@@ -3,9 +3,6 @@
 class DataSource {
 private:
 
-protected:
-	int actionUI; //アクションUI画像ファイルの読み込み
-
 public:
 	int enemyGraph;
 	int player; //プレイヤー
@@ -42,6 +39,14 @@ public:
 	int deviceChange2; //デバイス切替文字2
 	int gameOverEnd; //ゲームオーバーボタン文字
 
+	int mainBgm; //メインBGM
+	int seHit; //ヒット時のSE
+	int seDamage; //ダメージ時のSE
+	int seClear; //クリア時のSE
+
 	DataSource();
 	~DataSource();
+
+	void playBgm(); //BGMを流す
+	void playSe(const int& se); //SEを流す
 };

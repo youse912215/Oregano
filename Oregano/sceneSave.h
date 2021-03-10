@@ -4,11 +4,12 @@
 #include "gameUI.h"
 #include "dataSource.h"
 
-class SceneSave : public DataSource {
+class SceneSave {
 private:
 	DataSave& data; //データセーブクラス
 	Input& input; //入力クラス
 	GameUI& UI; //ゲームUIクラス
+	DataSource source; //データソースクラス
 
 	const int maxTime; //最大時間
 	const int changeTime; //切替時間

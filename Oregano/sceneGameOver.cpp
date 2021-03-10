@@ -25,16 +25,16 @@ void SceneGameOver::update() {
 			SceneLoad::gameScene = GAME_SCENE; //ÉQÅ[ÉÄÉVÅ[ÉìÇ÷
 		}
 
-		DrawGraph(0, 0, gameover, true); //îwåi
+		DrawGraph(0, 0, source.gameover, true); //îwåi
 
 		DrawRectGraph(charPos.x, charPos.y,
 		              0, charSize.y * input.device,
-		              charSize.x, charSize.y, gameOverEnd,
+		              charSize.x, charSize.y, source.gameOverEnd,
 		              true, false, false); //ç∂ë§ï∂éö
 
 		DrawRectGraph(charPos.x + charInterval, charPos.y,
 		              charSize.x, charSize.y * input.device,
-		              charSize.x, charSize.y, gameOverEnd,
+		              charSize.x, charSize.y, source.gameOverEnd,
 		              true, false, false); //âEë§ï∂éö
 	}
 }

@@ -7,6 +7,7 @@
 #include "mapDraw.h"
 #include "mapCollision.h"
 #include "dataSave.h"
+#include "dataSource.h"
 #include "gameUI.h"
 
 #include "sceneTitle.h"
@@ -21,12 +22,14 @@ void loopProcess() {
 
 	Input input; //入力クラス
 
+	DataSource source; //データソースクラス
+
 	MapDraw draw_; //マップクラス
 	MapCollision collision(draw_); //コリジョンクラス
-	Player player(input, draw_); //プレイヤークラス
-	EnemyConclusion enemy(player); //敵まとめクラス
+	Player player(input, draw_, source); //プレイヤークラス
+	EnemyConclusion enemy(player, source); //敵まとめクラス
 
-	GameUI gameUI(input, player, draw_); //ゲームUIクラス
+	GameUI gameUI(input, player, draw_, source); //ゲームUIクラス
 
 	PlayerState state; //プレイヤー状態クラス
 	DataSave data(state, gameUI); //セーブデータクラス
@@ -38,6 +41,8 @@ void loopProcess() {
 	SceneMenu menu(input); //メニューシーンクラス
 	SceneGameOver gameOver(data, input); //ゲームオーバークラス
 	SceneEnd end(input); //エンドシーンクラス
+
+	source.playBgm(); //初期BGM
 
 	while (true) {
 		ClearDrawScreen(); //画面クリア

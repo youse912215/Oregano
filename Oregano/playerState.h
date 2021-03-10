@@ -4,6 +4,8 @@
 
 class PlayerState {
 private:
+	DataSource source__;
+
 	int poisonTime; //–Ò“ÅŠÔ
 	int roughTime; //“Ê‰šŠÔ
 	const int attributeMax; //Å‘å‘Ï‹v’l

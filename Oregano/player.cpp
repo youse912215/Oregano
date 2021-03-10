@@ -11,8 +11,8 @@ PlayerSlash slashAct;
 PlayerShield shieldAct;
 PlayerState stateAct;
 
-Player::Player(Input& input, MapDraw& draw_) :
-	input(input), draw_(draw_), cooldown(4),
+Player::Player(Input& input, MapDraw& draw_, DataSource& source) :
+	input(input), draw_(draw_), source(source), cooldown(4),
 	cooldownFlag(4), damageFlag(false), knifeCenter(0.0, 0.0),
 	slashCenter(0.0, 0.0), actionFlag{false, false, false, false} {
 
@@ -87,6 +87,7 @@ void Player::lostPlayerCoin(const int& attackPower) {
 			-= attackPower * stateAct.addConditionDamage(); //コイン損失
 
 		damageFlag = true; //ダメージフラグをtrue
+		source.playSe(source.seDamage); //ダメージSE
 
 		//コインが0以下ならば、
 		if (PlayerState::coin[PlayerState::battleStyle] <= 0)

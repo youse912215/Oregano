@@ -3,10 +3,11 @@
 #include "inputProcess.h"
 #include "dataSource.h"
 
-class SceneGameOver : public DataSource {
+class SceneGameOver {
 private:
 	DataSave& data; //セーブデータクラス
 	Input& input; //入力クラス
+	DataSource source; //データソースクラス
 
 	Vec2 charSize; //文字サイズ
 	Vec2 charPos; //文字位置

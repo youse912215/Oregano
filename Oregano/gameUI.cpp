@@ -8,8 +8,8 @@
 DataText text_;
 PlayerState state__;
 
-GameUI::GameUI(Input& input, Player& player, MapDraw& map) :
-	input(input), player(player), map(map), margin(16), eventSize(9), eventLength(4),
+GameUI::GameUI(Input& input, Player& player, MapDraw& map, DataSource& source) :
+	input(input), player(player), map(map), source(source), margin(16), eventSize(9), eventLength(4),
 	/*　メニュー */
 	menuLength(256, 64), menuSize(WIN_WIDTH - menuLength.x - margin, margin),
 	/* パッシブ */
@@ -33,10 +33,10 @@ GameUI::~GameUI() {
 void GameUI::drawBlur() {
 	//マップ座標（3, 2）より右上以外は通常ぼかし
 	if (!(map.currentMap.x >= 3 && map.currentMap.y <= 2))
-		DrawGraph(0, 0, blurGraph1, true);
+		DrawGraph(0, 0, source.blurGraph1, true);
 		//さらに視界を狭めるぼかし
 	else
-		DrawGraph(0, 0, blurGraph2, true);
+		DrawGraph(0, 0, source.blurGraph2, true);
 }
 
 /// <summary>
@@ -45,23 +45,23 @@ void GameUI::drawBlur() {
 void GameUI::drawFilter() {
 	/* 現在の戦闘スタイル以外のパッシブUIをフィルターで隠す */
 	for (int i = 0; i <= BLOODING; ++i) {
-		if (PlayerState::battleStyle != i)
-			DrawGraph(passiveSize.x + BLOCK_SIZE * i,
-			          passiveSize.y + BLOCK_SIZE, filterGraph1, true);
+		if (PlayerState::battleStyle == i) continue;
+		DrawGraph(passiveSize.x + BLOCK_SIZE * i,
+		          passiveSize.y + BLOCK_SIZE, source.filterGraph1, true);
 	}
 	/* 現在の状態異常以外をフィルターで隠す */
 	for (int i = 0; i <= BLOODING; ++i) {
-		if (!PlayerState::condition[i])
-			DrawGraph(conditionSize.x + BLOCK_SIZE * i, conditionSize.y + BLOCK_SIZE,
-			          filterGraph1, true);
+		if (PlayerState::condition[i]) continue;
+		DrawGraph(conditionSize.x + BLOCK_SIZE * i, conditionSize.y + BLOCK_SIZE,
+		          source.filterGraph1, true);
 	}
 	/* 現在出来ないアクションをフィルターで隠す */
 	for (int i = 0; i < 3; ++i) {
-		if (player.actionFlag[i])
-			DrawGraph(actionSize.x + BLOCK_SIZE * 2 * i, actionSize.y, filterGraph2, true);
+		if (!player.actionFlag[i]) continue;
+		DrawGraph(actionSize.x + BLOCK_SIZE * 2 * i, actionSize.y, source.filterGraph2, true);
 	}
 	if (!state__.anyCondition())
-		DrawGraph(actionSize.x + BLOCK_SIZE * 6, actionSize.y, filterGraph2, true);
+		DrawGraph(actionSize.x + BLOCK_SIZE * 6, actionSize.y, source.filterGraph2, true);
 }
 
 /// <summary>
@@ -82,8 +82,8 @@ void GameUI::drawSpeechBalloon() {
 	//イベント数分繰り返す
 	for (int i = 0; i < eventSize; ++i) {
 		//プレイヤーとイベント位置が一致
-		if (!positionMatchDecision(i))
-			continue; //条件以外のとき、処理をスキップする
+		if (!positionMatchDecision(i)) continue; //条件以外のとき、処理をスキップする
+
 		DrawRectGraph(speechBalloonPos.x, speechBalloonPos.y,
 		              speechBalloonLength.x * input.device, 0,
 		              speechBalloonLength.x, speechBalloonLength.y, source.eventGraph,
@@ -91,12 +91,15 @@ void GameUI::drawSpeechBalloon() {
 
 		eventNum = i; //今いる位置のイベント番号を代入
 
-		if (input.VIEW) {
-			//目的地点のイベント番号(eventSize - 1)以外なら
-			if (eventNum != eventSize - 1) {
-				SceneLoad::gameScene = SAVE_SCENE; //VIEWボタンを押したとき、セーブシーンへ
-			}
-			else SceneLoad::gameScene = END_SCENE; //VIEWボタンを押したとき、エンドシーンへ
+		if (!input.VIEW) continue; //条件以外のとき、処理をスキップする
+
+		//目的地点のイベント番号(eventSize - 1)以外なら
+		if (eventNum != eventSize - 1) {
+			SceneLoad::gameScene = SAVE_SCENE; //VIEWボタンを押したとき、セーブシーンへ
+		}
+		else {
+			SceneLoad::gameScene = END_SCENE; //VIEWボタンを押したとき、エンドシーンへ
+			source.playSe(source.seClear); //クリアSE
 		}
 	}
 }
@@ -105,30 +108,30 @@ void GameUI::drawSpeechBalloon() {
 /// 描画処理
 /// </summary>
 void GameUI::draw() {
-	DrawGraph(margin, margin, coinGraph, true); //コイン
+	DrawGraph(margin, margin, source.coinGraph, true); //コイン
 
 	DrawRectGraph(menuSize.x, menuSize.y,
 	              0, menuLength.y * input.device,
-	              menuLength.x, menuLength.y, menuGraph,
+	              menuLength.x, menuLength.y, source.menuGraph,
 	              true, false, false); //メニュー
 
 	DrawRectGraph(passiveSize.x, passiveSize.y,
 	              0, passiveLength.y * input.device,
-	              passiveLength.x, passiveLength.y, passiveGraph,
+	              passiveLength.x, passiveLength.y, source.passiveGraph,
 	              true, false, false); //パッシブ
 
-	DrawGraph(conditionSize.x, conditionSize.y, conditionGraph, true); //状態異常
+	DrawGraph(conditionSize.x, conditionSize.y, source.conditionGraph, true); //状態異常
 
 	DrawRectGraph(actionSize.x, actionSize.y,
 	              0, actionLength.y * input.device,
-	              actionLength.x, actionLength.y, actionGraph,
+	              actionLength.x, actionLength.y, source.actionGraph,
 	              true, false, false); //アクション
 	drawFilter(); //フィルター描画
 }
 
 void GameUI::update() {
 	drawBlur(); //ぼかし
-	draw();
-	text_.drawText();
+	draw(); //UI描画処理
+	text_.drawText(); //テキスト描画
 	drawSpeechBalloon(); //イベント用噴き出し描画
 }

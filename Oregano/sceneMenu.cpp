@@ -21,11 +21,11 @@ void SceneMenu::update() {
 			SceneLoad::gameScene = GAME_SCENE; //ゲームシーンへ
 		}
 
-		DrawGraph(0, 0, menu, true); //背景
+		DrawGraph(0, 0, source.menu, true); //背景
 
 		DrawRectGraph(devicePos.x, devicePos.y,
 		              0, deviceSize.y * input.device,
-		              deviceSize.x, deviceSize.y, deviceChange2,
+		              deviceSize.x, deviceSize.y, source.deviceChange2,
 		              true, false, false); //デバイス種類
 	}
 }
