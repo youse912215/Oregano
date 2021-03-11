@@ -3,7 +3,7 @@
 
 SceneGameOver::SceneGameOver(DataSave& data, Input& input, SceneGame& game) :
 	data(data), input(input), game(game), charSize(128, 128), charPos(250, 575), charInterval(650),
-	maxTime(30), interval(0), pushFlag(false), endFlag(false) {
+	maxTime(40), interval(0), pushFlag(false), endFlag(false) {
 }
 
 /// <summary>
@@ -23,7 +23,6 @@ void SceneGameOver::countInterval() {
 void SceneGameOver::resetValue() {
 	for (unsigned int i = 0; i != PlayerState::condition.size(); ++i) {
 		PlayerState::condition[i] = false; //状態異常をfalse
-		PlayerState::attributeAccumulation[i] = 0; //耐久値をリセット
 	}
 
 	game.gameTime = 0; //ゲーム時間をリセット
@@ -56,13 +55,13 @@ void SceneGameOver::update() {
 
 		countInterval(); //間隔時間をカウント
 
-		//Rボタンを押したとき
-		if (input.RB) {
+		//Rボタンを押したときかつ、プッシュフラグがtrueのとき
+		if (input.RB && pushFlag) {
 			endFlag = true; //終了フラグをtrue
 		}
 
-		//Lボタンを押したとき
-		if (input.LB) {
+		//Lボタンを押したときかつ、プッシュフラグがtrueのとき
+		if (input.LB && pushFlag) {
 			resetValue(); //値のリセット
 
 			data.loadSaveData(); //前回のセーブデータを読み込み

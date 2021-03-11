@@ -11,7 +11,7 @@ EnemyTracking tracking; //í«ê’ÉNÉâÉX
 Enemy::Enemy() :
 	pos(0.0, 0.0), center(0.0, 0.0),
 	screenCenter(0.0, 0.0), relativeDistance(0.0, 0.0), lifeHeight(8), intervalMax(15), initLife{1, 2, 3, 4},
-	possessionCoin{1, 2, 3, 4}, attackPower{2, 6, 10, 14}, attributeValue{2, 3, 4, 5}, life(0),
+	possessionCoin{1, 2, 3, 4}, attackPower{4, 8, 10, 14}, attributeValue{2, 3, 4, 5}, life(0),
 
 	pattern(0), level(0), maxLevel(4), damageInterval(2), damageFlag(2), knifeRange(80.0), deadTimeMax(40),
 

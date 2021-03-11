@@ -34,7 +34,7 @@ const int KEY_BUFFER_MAX = 256; //キーのバッファの最大
 
 const int DIRECTION_SIZE = 4; //方向の種類（配列のサイズ）
 
-const int MOVING_DISTANCE = 8; //移動距離
+const int MOVING_DISTANCE = 6; //移動距離
 const double KNIFE_SPEED = 16.0; //ナイフ速度
 
 const int INITIAL_X = ONE_MAP_X * (TOTAL_MAPS_X - 1) + HALF_MAP_X; //初期マップのx座標
@@ -49,8 +49,6 @@ const int STATUS_INFORMATION_SIZE = PLAYER_STATUS_SIZE + 2; //ステータスのサイズ
 const int MAP_EVENT_SIZE = 36; //マップイベント格納サイズ
 
 const int ALL_COIN_TYPE = 4; //コインの種類
-
-const int TERMINAL_CHAR = 1;
 
 //ゲームシーン
 enum GAME_SCENE {
