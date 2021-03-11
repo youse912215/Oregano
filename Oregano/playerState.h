@@ -4,8 +4,6 @@
 
 class PlayerState {
 private:
-	DataSource source__;
-
 	int poisonTime; //猛毒時間
 	int roughTime; //凸凹時間
 	int crampsTime; //痙攣時間
@@ -20,7 +18,7 @@ private:
 	void getCondition(); //状態異常を取得
 	void getFloorState(MapDraw& draw_); //床上での状態を取得
 	void countStateTime(); //猛毒時間をカウント
-	void continuousDamage(const int& time, const int& value); //継続ダメージを付与
+	void continuousDamage(const int& time, const int& value, DataSource& source); //継続ダメージを付与
 	void resetCoin(); //コインを0にリセット
 	void countCrampsTime(); //痙攣時間をカウント
 
@@ -44,7 +42,7 @@ public:
 	void calculateValue(const int& attribute, const int& attributeValue); //属性蓄積値の計算
 	void valueReset(vector<bool>& actionFlag, vector<bool>& cooldownFlag); //属性耐久値等のリセット
 	void countCooldown(vector<int>& cooldown, vector<bool>& cooldownFlag); //状態のクールダウン処理
-	void conditionUpdate(MapDraw& draw_); //状態異常更新処理
+	void conditionUpdate(MapDraw& draw_, DataSource& source); //状態異常更新処理
 
 	PlayerState();
 };

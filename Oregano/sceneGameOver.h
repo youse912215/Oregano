@@ -13,7 +13,17 @@ private:
 
 	Vec2 charSize; //文字サイズ
 	Vec2 charPos; //文字位置
+
 	const int charInterval; //文字間隔
+
+	const int maxTime; //最大時間
+	int interval; //ボタンをプッシュ可能になるまでの間隔時間
+
+	bool pushFlag; //プッシュフラグ
+
+	void countInterval(); //間隔時間をカウント
+	void resetValue(); //値のリセット
+	void draw(); //描画処理
 
 public:
 	bool endFlag; //終了フラグ

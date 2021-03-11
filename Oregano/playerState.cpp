@@ -57,11 +57,11 @@ void PlayerState::countStateTime() {
 /// </summary>
 /// <param name="time">時間</param>
 /// <param name="value">ダメージ量</param>
-void PlayerState::continuousDamage(const int& time, const int& value) {
+void PlayerState::continuousDamage(const int& time, const int& value, DataSource& source) {
 	//timeがtimeMaxのとき
 	if (time % damageTimeMax == 0 && time != 0) {
 		coin[battleStyle] -= value; //value分コインを減らす
-		source__.playSe(source__.seDamage); //ダメージSE
+		source.playSe(source.seDamage); //ダメージSE
 
 		if (time == poisonTime) poisonDamageFlag = true; //猛毒ダメージフラグをtrue
 		else roughDamageFlag = true; //凸凹ダメージフラグをtrue
@@ -72,12 +72,12 @@ void PlayerState::continuousDamage(const int& time, const int& value) {
 /// 状態異常更新処理
 /// </summary>
 /// <param name="draw_"></param>
-void PlayerState::conditionUpdate(MapDraw& draw_) {
+void PlayerState::conditionUpdate(MapDraw& draw_, DataSource& source) {
 	getCondition(); //状態異常を取得
 	getFloorState(draw_); //猛毒状態を取得
 	countStateTime(); //猛毒時間をカウント
-	continuousDamage(poisonTime, poisonDamage); //猛毒ダメージを付与
-	continuousDamage(roughTime, roughDamage); //凸凹ダメージを付与
+	continuousDamage(poisonTime, poisonDamage, source); //猛毒ダメージを付与
+	continuousDamage(roughTime, roughDamage, source); //凸凹ダメージを付与
 	resetCoin(); //コインを0にリセット
 	countCrampsTime(); //痙攣時間をカウント
 }
@@ -210,7 +210,7 @@ void PlayerState::valueReset(vector<bool>& actionFlag, vector<bool>& cooldownFla
 			attributeAccumulation[battleStyle] = 0; //属性耐性値をリセット
 			condition[battleStyle] = false; //状態異常を解消
 			cooldownFlag[RECOVERY] = true; //クールダウンフラグをtrue
-			coin[battleStyle] -= recoveryCoin;
+			coin[battleStyle] -= recoveryCoin; //コイン支払い
 		}
 		actionFlag[RECOVERY] = false; //解消フラグをfalse
 	}

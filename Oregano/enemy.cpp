@@ -149,7 +149,7 @@ void Enemy::collision(Player& player) {
 /// </summary>
 void Enemy::setStatus() {
 	pattern = getRandom(0, maxLevel); //敵のパターンをランダムで生成
-	lissajousRandom = getRandom(1, 15); //リサージュ曲線の種類をランダムで生成
+	lissajousRandom = getRandom(1, 15); //リサージュ曲線の種類をランダムで15種類生成
 	attribute = getRandom(0, maxLevel - 1); //属性値
 	level = getRandom(0, maxLevel - 1); //レベル
 	life = initLife[level]; //ライフ

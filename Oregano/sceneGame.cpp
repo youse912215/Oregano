@@ -3,7 +3,7 @@
 SceneGame::SceneGame(Input& input, MapDraw& draw, MapCollision& collision, SceneLoad& load, Player& player,
                      EnemyConclusion& enemy, GameUI& gameUI) :
 	input(input), draw(draw), collision(collision), load(load), player(player), enemy(enemy), gameUI(gameUI),
-	timeMax(2147483646), popTime(150), enemyFlag(false), gameTime(0) {
+	timeMax(2147483646), popTime(150), gameTime(0), enemyFlag(false) {
 }
 
 /// <summary>

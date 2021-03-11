@@ -13,8 +13,8 @@ PlayerState stateAct;
 
 Player::Player(Input& input, MapDraw& draw_, DataSource& source) :
 	input(input), draw_(draw_), source(source), cooldown(4),
-	cooldownFlag(4), damageFlag(false), knifeCenter(0.0, 0.0),
-	slashCenter(0.0, 0.0), actionFlag{false, false, false, false} {
+	damageFlag(false), knifeCenter(0.0, 0.0), slashCenter(0.0, 0.0),
+	actionFlag{false, false, false, false}, cooldownFlag(4) {
 
 	this->pos.dx = static_cast<int>(WIN_WIDTH / 2 - BLOCK_SIZE / 2); //プレイヤーx座標
 	this->pos.dy = static_cast<int>(WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2); //プレイヤーy座標
@@ -143,7 +143,7 @@ void Player::knifeUpdate() {
 		knifeAct.setKnifePosition(this->pos); //ナイフのポジジョンセット
 		knifeAct.accelKnife(input); //ナイフの加速
 		knifeAct.resetKnifePosition(center, actionFlag); //ナイフのポジジョンリセット
-		knifeAct.calculateRadian(this->pos);
+		knifeAct.calculateRadian(this->pos); //ラジアン計算
 		knifeAct.draw(source); //描画処理
 	}
 }
@@ -153,7 +153,7 @@ void Player::knifeUpdate() {
 /// </summary>
 void Player::slashUpdate() {
 	slashAct.initialize(this->pos); //刃の初期化
-	slashAct.countCooldown(cooldown, cooldownFlag, actionFlag);
+	slashAct.countCooldown(cooldown, cooldownFlag, actionFlag); //クールダウン処理
 
 	//刃の入力があったとき
 	if (actionFlag[SLASH]) {
@@ -181,7 +181,7 @@ void Player::shieldUpdate() {
 void Player::stateUpdate() {
 	stateAct.valueReset(actionFlag, cooldownFlag); //状態異常等を解消
 	stateAct.countCooldown(cooldown, cooldownFlag); //状態解消のクールダウン処理
-	stateAct.conditionUpdate(draw_); //状態異常更新処理
+	stateAct.conditionUpdate(draw_, source); //状態異常更新処理
 	stateAct.switchStyleAutomatically(); //生存状態を更新
 }
 
