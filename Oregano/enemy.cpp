@@ -9,18 +9,25 @@
 EnemyTracking tracking; //追跡クラス
 
 Enemy::Enemy() :
+	/* 描画関係 */
 	pos(0.0, 0.0), center(0.0, 0.0),
-	screenCenter(0.0, 0.0), relativeDistance(0.0, 0.0), lifeHeight(8), intervalMax(15), initLife{1, 2, 3, 4},
-	possessionCoin{1, 2, 3, 4}, attackPower{4, 8, 10, 14}, attributeValue{2, 3, 4, 5}, life(0),
+	screenCenter(0.0, 0.0), relativeDistance(0.0, 0.0), lifeHeight(8),
 
-	pattern(0), level(0), maxLevel(4), damageInterval(2), damageFlag(2), knifeRange(80.0), deadTimeMax(40),
+	/* ステータス関係 */
+	initLife{1, 2, 3, 4}, possessionCoin{1, 2, 3, 4}, attackPower{4, 8, 10, 14}, attributeValue{2, 3, 4, 5}, life(0),
+	pattern(0), level(0), maxLevel(4),
 
+	/* ダメージ関係 */
+	damageInterval(2), damageFlag(2), knifeRange(80.0), deadTimeMax(40), intervalMax(15),
+
+	/* リサージュ関係 */
 	lissajousMaxTime(7200.0), lissajousX(800.0), lissajousY(450.0), controlSpeed(10.0), lissajousTime(0),
-
 	lissajousRandom(0), screenPos(0.0, 0.0),
 
+	/* その他 */
 	deadTime(0), attribute(0),
 
+	/* フラグ */
 	activity(false), deadFlag(false), intervalFlag(2) {
 
 }
@@ -147,12 +154,32 @@ void Enemy::collision(Player& player) {
 /// <summary>
 /// ステータスを設定
 /// </summary>
-void Enemy::setStatus() {
+void Enemy::setStatus(Player& player) {
 	pattern = getRandom(0, maxLevel); //敵のパターンをランダムで生成
 	lissajousRandom = getRandom(1, 15); //リサージュ曲線の種類をランダムで15種類生成
-	attribute = getRandom(0, maxLevel - 1); //属性値
+	getAttribute(player); //属性値を取得
 	level = getRandom(0, maxLevel - 1); //レベル
 	life = initLife[level]; //ライフ
+}
+
+/// <summary>
+/// 属性値を取得
+/// </summary>
+/// <param name="player"></param>
+void Enemy::getAttribute(Player& player) {
+
+	//現在のプレイヤーの位置が、全体マップのy座標が1以上のとき
+	if (player.currentMapPos(POSITION_Y) <= 1) {
+		attribute = getRandom(0, maxLevel - 1); //全ての種類の中からランダムで取得
+	}
+		//現在のプレイヤーの位置が、全体マップのx座標が2以下かつ、y座標が2以上のとき
+	else if (player.currentMapPos(POSITION_X) <= 2 && player.currentMapPos(POSITION_Y) >= 2) {
+		attribute = getRandom(CONFUSION, BLOODING); //混乱または出血属性を取得
+	}
+	else {
+		//それ以外
+		attribute = getRandom(DEADLY_POISON, CRAMPS); //猛毒または痙攣属性を取得
+	}
 }
 
 /// <summary>
@@ -251,7 +278,7 @@ void Enemy::update(Player& player, DataSource& source) {
 
 void Enemy::initialize(Player& player) {
 	initPosition(player); //初期位置の取得
-	setStatus(); //ステータスを設定
+	setStatus(player); //ステータスを設定
 	relativeDistanceUpdate(player); //プレイヤーとの相対距離を取得
 
 	//敵が画面サイズの2倍の範囲内にいるとき

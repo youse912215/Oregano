@@ -18,6 +18,7 @@ void EffectSpurt::draw() {
 
 	/* ‰~‚Ì•`‰æ */
 	DrawCircle(static_cast<int>(pos.dx), static_cast<int>(pos.dy), static_cast<int>(radius),
+	           //F‚Íƒ‰ƒ“ƒ_ƒ€‚Å•ÏX
 	           GetColor(getRandom(0, colorMax),
 	                    getRandom(0, colorMax),
 	                    getRandom(0, colorMax)), true);

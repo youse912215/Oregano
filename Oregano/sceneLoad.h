@@ -1,6 +1,6 @@
 #pragma once
 #include "dataSave.h"
-#include "mapLoad.h"
+#include "mapAutogeneration.h"
 #include <vector>
 
 using namespace std;
@@ -8,11 +8,12 @@ using namespace std;
 class SceneLoad {
 private:
 	DataSave& save; //データセーブクラスから
+	MapAutoGeneration& mapAuto;
 
 public:
 	static int gameScene; //ゲームシーン
 
-	SceneLoad(DataSave& save);
+	SceneLoad(DataSave& save, MapAutoGeneration& mapAuto);
 	~SceneLoad();
 
 	void update(); //タイトル処理

@@ -177,6 +177,14 @@ enum MAP_INFORMATION {
 	RANDOM_MAP1,
 	//ランダムマップ2(沼地)
 	RANDOM_MAP2,
+	//花萌葱床
+	FLOOR_GREEN,
+	//深支子床
+	FLOOR_YELLOW,
+	//燕子花床
+	FLOOR_BLUE,
+	//中紅花床
+	FLOOR_RED,
 	//壁
 	WALL,
 	//外海

@@ -1,9 +1,10 @@
 #include "mapCollision.h"
+#include "playerState.h"
 #include "constant.h"
 #include "mapDraw.h"
 
 MapCollision::MapCollision(MapDraw& map) :
-	map(map), collisionFlag(12), boundaryCriteria(9) {
+	map(map), collisionFlag(12), boundaryCriteria(9), needCoin(20) {
 }
 
 MapCollision::~MapCollision() {
@@ -291,26 +292,47 @@ bool MapCollision::collisionDetection(const int& dirXY, const int& dirX, const i
 	/* 判定箇所がWALL(壁)と重なっているならtrueを返す */
 	switch (dirXY) {
 	case MAP_TOP_LEFT: //左上マップ
-		return map.mapTopLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
+		return map.mapTopLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] >= collisionRange();
 	case MAP_TOP_CENTRAL: //中央上マップ
-		return map.mapTopCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
+		return map.mapTopCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= collisionRange();
 	case MAP_TOP_RIGHT: //右上マップ
-		return map.mapTopRight[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
+		return map.mapTopRight[map.currentCorner[dirY]][map.currentCorner[dirX]] >= collisionRange();
 	case MAP_LEFT_CENTRAL: //左中央マップ
-		return map.mapLeftCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
+		return map.mapLeftCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= collisionRange();
 	case MAP_CENTRAL: //中央マップ
-		return map.mapCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
+		return map.mapCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= collisionRange();
 	case MAP_RIGHT_CENTRAL: //右中央マップ
-		return map.mapRightCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
+		return map.mapRightCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= collisionRange();
 	case MAP_BOTTOM_LEFT: //左下マップ
-		return map.mapBottomLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
+		return map.mapBottomLeft[map.currentCorner[dirY]][map.currentCorner[dirX]] >= collisionRange();
 	case MAP_BOTTOM_CENTRAL: //中央下マップ
-		return map.mapBottomCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
+		return map.mapBottomCentral[map.currentCorner[dirY]][map.currentCorner[dirX]] >= collisionRange();
 	case MAP_BOTTOM_RIGHT: //右下マップ
-		return map.mapBottomRight[map.currentCorner[dirY]][map.currentCorner[dirX]] >= WALL;
+		return map.mapBottomRight[map.currentCorner[dirY]][map.currentCorner[dirX]] >= collisionRange();
 	default:
 		return false; //それ以外はfalseを返す
 	}
+}
+
+/// <summary>
+/// 衝突範囲を返す
+/// </summary>
+/// <returns></returns>
+int MapCollision::collisionRange() {
+	//花萌葱のコインが枚以上なら
+	if (PlayerState::coin[DEADLY_POISON] >= needCoin)
+		return FLOOR_YELLOW; //深支子床
+	//深支子のコインが枚以上なら
+	if (PlayerState::coin[CRAMPS] >= needCoin)
+		return FLOOR_BLUE; //燕子花床
+	//燕子花のコインが枚以上なら
+	if (PlayerState::coin[CONFUSION] >= needCoin)
+		return FLOOR_RED; //中紅花床
+	//中紅花のコインが枚以上なら
+	if (PlayerState::coin[BLOODING] >= needCoin)
+		return WALL; //壁
+	//それ以外
+	return FLOOR_GREEN; //花萌葱床
 }
 
 //左上（3点）方向の衝突判定

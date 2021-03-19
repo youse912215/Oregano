@@ -6,7 +6,7 @@ int MapDraw::mapY = INITIAL_Y; //y方向
 
 MapDraw::MapDraw() :
 	/* マップ情報数 */
-	informationSize(15),
+	informationSize(19),
 
 	/* 各角のマップ座標 */
 	currentCorner(8),

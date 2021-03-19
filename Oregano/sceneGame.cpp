@@ -29,9 +29,12 @@ void SceneGame::countTime() {
 	}
 }
 
+/// <summary>
+/// 更新処理
+/// </summary>
 void SceneGame::update() {
 	if (SceneLoad::gameScene == GAME_SCENE) {
-		countTime();
+		countTime(); //ゲーム時間をカウント
 
 		draw.update(load.roadingMap()); //マップ更新処理
 

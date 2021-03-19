@@ -8,12 +8,12 @@ using namespace std;
 
 class Enemy {
 private:
+	/* 描画関係 */
 	Vec2d pos; //全体マップの座標
 	Vec2d center; //全体マップの中心座標
 	Vec2d screenCenter; //画面上の中心座標
 	Vec2d relativeDistance; //プレイヤーとの相対距離
-	const int lifeHeight; //縦幅
-	const int intervalMax; //最大間隔時間
+	const int lifeHeight; //ライフ画像の縦幅
 
 	/* 処理系 */
 	void initPosition(Player& player); //初期位置の取得
@@ -40,9 +40,10 @@ private:
 	int life; //ライフ
 	int pattern; //出現パターン
 	int level; //レベル
-	const int maxLevel;
+	const int maxLevel; //最大レベル
 
-	void setStatus(); //ステータスを設定
+	void setStatus(Player& player); //ステータスを設定
+	void getAttribute(Player& player); //属性値を取得
 
 	/* ダメージ関係 */
 	vector<int> damageInterval; //ダメージ間隔
@@ -50,6 +51,7 @@ private:
 
 	const double knifeRange; //ナイフの範囲
 	const int deadTimeMax; //最大死亡時間
+	const int intervalMax; //最大間隔時間
 
 	void takeDamage(const int& act); //ダメージを受ける
 	void damageProcess(Player& player, const int& act, DataSource& source); //ダメージ処理

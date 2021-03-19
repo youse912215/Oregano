@@ -1,15 +1,16 @@
 #include "sceneLoad.h"
 #include "constant.h"
-#include "mapAutogeneration.h"
+//#include "mapAutogeneration.h"
+#include "mapLoad.h"
 #include "dataSource.h"
 
-MapAutoGeneration autogeneration; //マップ自動生成クラス
+//MapAutoGeneration autogeneration; //マップ自動生成クラス
 MapLoad load; //ロードクラス
 DataSource source; //データソースクラス
 
 int SceneLoad::gameScene = TITLE_SCENE; //タイトルシーン
 
-SceneLoad::SceneLoad(DataSave& save) : save(save) {
+SceneLoad::SceneLoad(DataSave& save, MapAutoGeneration& mapAuto) : save(save), mapAuto(mapAuto) {
 }
 
 SceneLoad::~SceneLoad() {
@@ -24,11 +25,11 @@ void SceneLoad::update() {
 
 		save.loadInitSaveData(); //セーブデータ読み込み
 
-		autogeneration.writeRandomMap(); //マップ自動生成
+		mapAuto.writeRandomMap(); //マップ自動生成
 
 		load.loadMapData(); //マップデータ読み込み
 
-		autogeneration.resetFile(); //CSVファイルのリセット
+		mapAuto.resetFile(); //CSVファイルのリセット
 
 		gameScene = GAME_SCENE; //ゲームシーンへ
 	}

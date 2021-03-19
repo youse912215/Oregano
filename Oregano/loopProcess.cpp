@@ -6,9 +6,9 @@
 #include "enemyConclusion.h"
 #include "mapDraw.h"
 #include "mapCollision.h"
+#include "mapAutogeneration.h"
 #include "dataSave.h"
 #include "dataSource.h"
-#include "dataText.h"
 #include "gameUI.h"
 
 #include "sceneTitle.h"
@@ -27,6 +27,8 @@ void loopProcess() {
 
 	MapDraw draw_; //マップクラス
 	MapCollision collision(draw_); //コリジョンクラス
+	MapAutoGeneration autoGeneration;
+
 	Player player(input, draw_, source); //プレイヤークラス
 	EnemyConclusion enemy(player, source); //敵まとめクラス
 
@@ -36,7 +38,7 @@ void loopProcess() {
 	DataSave data(state, gameUI); //セーブデータクラス
 
 	SceneTitle title(input); //タイトルシーンクラス
-	SceneLoad load(data); //ロードシーンクラス
+	SceneLoad load(data, autoGeneration); //ロードシーンクラス
 	SceneGame game(input, draw_, collision, load, player, enemy, gameUI); //ゲームシーンクラス
 	SceneSave save(data, input, gameUI); //セーブシーンクラス
 	SceneMenu menu(input); //メニューシーンクラス

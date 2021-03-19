@@ -5,6 +5,7 @@
 #include <sstream>
 
 MapAutoGeneration::MapAutoGeneration() :
+	index(0),
 	roadMap(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
 	copyMap(TOTAL_MAPS_X * TOTAL_MAPS_Y, vector<vector<int>>(AREA_HEIGHT, vector<int>(AREA_WIDTH))) {
 }
@@ -18,7 +19,7 @@ MapAutoGeneration::~MapAutoGeneration() {
 /// <param name="random">ランダム関数の値</param>
 /// <param name="randomMapNum">ランダムマップ名（番号）</param>
 /// <returns></returns>
-int MapAutoGeneration::autogenerationMap(const int& random, const int& randomMapNum) {
+int MapAutoGeneration::autoGenerationMap(const int& random, const int& randomMapNum) {
 	/* ランダムマップ1 */
 	if (randomMapNum == RANDOM_MAP1) {
 		if (random < 25) return FLOOR_NORMAL;
@@ -39,22 +40,26 @@ int MapAutoGeneration::autogenerationMap(const int& random, const int& randomMap
 /// <param name="randomMapNum"></param>
 void MapAutoGeneration::assigningRandomNum(const int& randomMapNum) {
 	vector<int>::iterator itr;
-	int index = 0;
-	bool loop = false;
-	while (!loop) {
+
+	bool assingingLoop = false; //割り当てループ
+
+	//割り当てループがfalseであれば繰り返す
+	while (!assingingLoop) {
+
+		//読み込みマップの配列分繰り返す
 		for (unsigned int i = 0; i != roadMap.size();) {
 
 			itr = find(roadMap[i].begin(), roadMap[i].end(), randomMapNum); //対象のイテレーターを見つける
 
 			if (itr != roadMap[i].end()) {
 				index = distance(roadMap[i].begin(), itr); //ランダムマップのインデックスを入手
-				roadMap[i][index] = autogenerationMap(getRandom(0, 30), randomMapNum); //マップの自動生成
+				roadMap[i][index] = autoGenerationMap(getRandom(0, 30), randomMapNum); //マップの自動生成
 			}
 			else {
 				++i; //加算
 			}
 		}
-		loop = true; //whileを抜ける
+		assingingLoop = true; //whileを抜ける
 	}
 }
 
@@ -82,6 +87,7 @@ void MapAutoGeneration::writeFile(const int& x, const int& y, vector<vector<int>
 /// </summary>
 void MapAutoGeneration::writeRandomMap() {
 
+	//縦横合わせたマップ総数分繰り返す
 	for (unsigned int y = 0; y < TOTAL_MAPS_Y; ++y) {
 		for (unsigned int x = 0; x < TOTAL_MAPS_X; ++x) {
 			fileImport(x, y, roadMap); //マップデータのファイル読み込み

@@ -3,7 +3,9 @@
 
 class MapAutoGeneration : public MapBase {
 private:
-	int autogenerationMap(const int& random, const int& randomMapNum); //マップの自動生成
+	int index; //インデックス
+
+	int autoGenerationMap(const int& random, const int& randomMapNum); //マップの自動生成
 
 	void assigningRandomNum(const int& randomMapNum); //ランダムマップの数字をランダムに割り当て
 	void writeFile(const int& x, const int& y, vector<vector<int>>& map); //csvファイルの書き込み

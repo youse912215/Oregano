@@ -4,15 +4,21 @@
 
 MoveProcess move_;
 
-vector<bool> PlayerState::condition = {false, false, false, false};
-vector<int> PlayerState::coin = {10, 10, 10, 10};
-vector<int> PlayerState::attributeAccumulation = {0, 0, 0, 0};
-int PlayerState::battleStyle = 0;
+vector<bool> PlayerState::condition = {false, false, false, false}; //状態異常
+vector<int> PlayerState::coin = {10, 10, 10, 10}; //コイン
+vector<int> PlayerState::attributeAccumulation = {0, 0, 0, 0}; //属性耐久値
+int PlayerState::battleStyle = 0; //戦闘スタイル
 
-PlayerState::PlayerState() : poisonTime(0), roughTime(0), crampsTime(0), attributeMax(10), damageTimeMax(100),
-                             cooldownMax(120), poisonDamage(1),
-                             roughDamage(2), recoveryCoin(10), crampsTimeMax(60),
-                             poisonDamageFlag(false), roughDamageFlag(false) {
+PlayerState::PlayerState() :
+	/* 初期値 */
+	poisonTime(0), roughTime(0), crampsTime(0),
+
+	/* 固定値 */
+	damageTimeMax(100), crampsTimeMax(60), cooldownMax(120),
+	attributeMax(10), poisonDamage(1), roughDamage(2), recoveryCoin(10),
+
+	/* ダメージフラグ */
+	poisonDamageFlag(false), roughDamageFlag(false) {
 }
 
 /// <summary>
