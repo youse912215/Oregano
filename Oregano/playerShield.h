@@ -5,7 +5,7 @@
 
 class PlayerShield {
 private:
-	Vec2 gaugePos;
+	Vec2 gaugePos; //シールドゲージの座標
 
 	const int shieldQuantity; //通常のシールド量
 	const int addQuantity; //追加のシールド量

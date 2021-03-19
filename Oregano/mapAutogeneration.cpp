@@ -4,12 +4,12 @@
 #include <fstream>
 #include <sstream>
 
-MapAutogeneration::MapAutogeneration() :
+MapAutoGeneration::MapAutoGeneration() :
 	roadMap(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
 	copyMap(TOTAL_MAPS_X * TOTAL_MAPS_Y, vector<vector<int>>(AREA_HEIGHT, vector<int>(AREA_WIDTH))) {
 }
 
-MapAutogeneration::~MapAutogeneration() {
+MapAutoGeneration::~MapAutoGeneration() {
 }
 
 /// <summary>
@@ -18,7 +18,7 @@ MapAutogeneration::~MapAutogeneration() {
 /// <param name="random">ランダム関数の値</param>
 /// <param name="randomMapNum">ランダムマップ名（番号）</param>
 /// <returns></returns>
-int MapAutogeneration::autogenerationMap(const int& random, const int& randomMapNum) {
+int MapAutoGeneration::autogenerationMap(const int& random, const int& randomMapNum) {
 	/* ランダムマップ1 */
 	if (randomMapNum == RANDOM_MAP1) {
 		if (random < 25) return FLOOR_NORMAL;
@@ -37,7 +37,7 @@ int MapAutogeneration::autogenerationMap(const int& random, const int& randomMap
 /// ランダムマップの数字をランダムに割り当て
 /// </summary>
 /// <param name="randomMapNum"></param>
-void MapAutogeneration::AssigningRandomNum(const int& randomMapNum) {
+void MapAutoGeneration::assigningRandomNum(const int& randomMapNum) {
 	vector<int>::iterator itr;
 	int index = 0;
 	bool loop = false;
@@ -63,7 +63,7 @@ void MapAutogeneration::AssigningRandomNum(const int& randomMapNum) {
 /// </summary>
 /// <param name="x">マップのx座標</param>
 /// <param name="y">マップのy座標</param>
-void MapAutogeneration::writeFile(const int& x, const int& y, vector<vector<int>>& map) {
+void MapAutoGeneration::writeFile(const int& x, const int& y, vector<vector<int>>& map) {
 	ofstream fileWrite(mapConfirmation(x, y, initialCsv));
 	if (!fileWrite) return;
 
@@ -80,7 +80,7 @@ void MapAutogeneration::writeFile(const int& x, const int& y, vector<vector<int>
 /// <summary>
 /// ランダムマップのファイル書き込み
 /// </summary>
-void MapAutogeneration::writeRandomMap() {
+void MapAutoGeneration::writeRandomMap() {
 
 	for (unsigned int y = 0; y < TOTAL_MAPS_Y; ++y) {
 		for (unsigned int x = 0; x < TOTAL_MAPS_X; ++x) {
@@ -88,8 +88,8 @@ void MapAutogeneration::writeRandomMap() {
 
 			saveInitMap(x, y); //最初のマップをコピー（一時保存）
 
-			AssigningRandomNum(RANDOM_MAP1); //ランダムマップ1の数字をランダムに割り当て
-			AssigningRandomNum(RANDOM_MAP2); //ランダムマップ2の数字をランダムに割り当て
+			assigningRandomNum(RANDOM_MAP1); //ランダムマップ1の数字をランダムに割り当て
+			assigningRandomNum(RANDOM_MAP2); //ランダムマップ2の数字をランダムに割り当て
 
 			writeFile(x, y, roadMap); //csvファイルの書き込み
 		}
@@ -101,7 +101,7 @@ void MapAutogeneration::writeRandomMap() {
 /// </summary>
 /// <param name="x">マップのx座標</param>
 /// <param name="y">マップのy座標</param>
-void MapAutogeneration::saveInitMap(const int& x, const int& y) {
+void MapAutoGeneration::saveInitMap(const int& x, const int& y) {
 	copyMap[x + y * TOTAL_MAPS_Y].clear(); //中身を一旦クリア
 
 	for (auto& i : roadMap) //読み込んだ2次元配列データを
@@ -111,7 +111,7 @@ void MapAutogeneration::saveInitMap(const int& x, const int& y) {
 /// <summary>
 /// CSVファイルを最初の状態にリセット
 /// </summary>
-void MapAutogeneration::resetFile() {
+void MapAutoGeneration::resetFile() {
 	for (unsigned int y = 0; y < TOTAL_MAPS_Y; ++y) {
 		for (unsigned int x = 0; x < TOTAL_MAPS_X; ++x) {
 			writeFile(x, y, copyMap[x + y * TOTAL_MAPS_Y]);

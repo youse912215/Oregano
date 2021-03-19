@@ -1,11 +1,13 @@
 #pragma once
 
+/* ウインドウ関係 */
 const int WIN_MAGNIFICATION = 100; //ウインドウ倍率
 const int WIN_WIDTH = 16 * WIN_MAGNIFICATION; //ウィンドウ横幅
 const int WIN_HEIGHT = 9 * WIN_MAGNIFICATION; //ウィンドウ縦幅
 const int HALF_WIN_WIDTH = WIN_WIDTH / 2; //ウィンドウ横幅の半分
 const int HALF_WIN_HEIGHT = WIN_HEIGHT / 2; //ウィンドウ縦幅の半分
 
+/* ブロック関係 */
 const int BLOCK_SIZE = 64; //ブロックサイズ（int型）
 const int HALF_BLOCK_SIZE = 32; //ブロックサイズの1/2（int型）
 const int QUARTER_BLOCK_SIZE = 16; //ブロックサイズの1/2（int型）
@@ -21,6 +23,7 @@ const double QUARTER_BLOCK_SIZE_D = HALF_BLOCK_SIZE_D / 2.0; //ブロックサイズの1
 const double ENEMY_COLLISION_DISTANCE = 32.0; //敵との衝突距離
 const double WEAPON_COLLISION_DISTANCE = HALF_BLOCK_SIZE_D; //敵と武器との衝突距離
 
+/* マップ関係 */
 const int TOTAL_MAPS_X = 5; //横方向のマップ総数
 const int TOTAL_MAPS_Y = 5; //縦方向のマップ総数
 
@@ -30,20 +33,22 @@ const int ONE_MAP_Y = BLOCK_SIZE * AREA_HEIGHT; //1マップの縦幅
 const int HALF_MAP_X = ONE_MAP_X / 2; //1マップの半分サイズ
 const int HALF_MAP_Y = ONE_MAP_Y / 2; //1マップの半分サイズ
 
-const int KEY_BUFFER_MAX = 256; //キーのバッファの最大
+const int INITIAL_X = ONE_MAP_X * (TOTAL_MAPS_X - 1) + HALF_MAP_X; //初期マップのx座標
+const int INITIAL_Y = ONE_MAP_Y * (TOTAL_MAPS_Y - 1) + HALF_MAP_Y / 2 + BLOCK_SIZE; //初期マップのy座標
 
+/*　処理関係  */
 const int DIRECTION_SIZE = 4; //方向の種類（配列のサイズ）
 
 const int MOVING_DISTANCE = 6; //移動距離
 const double KNIFE_SPEED = 16.0; //ナイフ速度
 
-const int INITIAL_X = ONE_MAP_X * (TOTAL_MAPS_X - 1) + HALF_MAP_X; //初期マップのx座標
-const int INITIAL_Y = ONE_MAP_Y * (TOTAL_MAPS_Y - 1) + HALF_MAP_Y / 2 + BLOCK_SIZE; //初期マップのy座標
-
 const int MOVE_RANGE = 1000; //移動範囲（この数字のマップチップまで移動可能）
 
 const int GAME_HOUR = 1200; //1時間あたりのgameTime
 
+const int KEY_BUFFER_MAX = 256; //入力キーの最大バッファ
+
+/* データ関係 */
 const int PLAYER_STATUS_SIZE = 9; //プレイヤーステータス(距離以外)のサイズ
 const int STATUS_INFORMATION_SIZE = PLAYER_STATUS_SIZE + 2; //ステータスのサイズ
 const int MAP_EVENT_SIZE = 36; //マップイベント格納サイズ
@@ -68,6 +73,7 @@ enum GAME_SCENE {
 	END_SCENE,
 };
 
+//デバイスのモード情報
 enum DEVICE_MODE {
 	JOY_PAD,
 	KEYBOARD
@@ -197,6 +203,7 @@ enum BUTTON {
 	STICK_DOWN
 };
 
+//ポジション情報
 enum POSITION_INFORMATION {
 	POSITION_X,
 	POSITION_Y,

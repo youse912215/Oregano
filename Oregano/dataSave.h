@@ -13,12 +13,12 @@ private:
 
 	vector<int> currentStatus; //現在までのステータス格納用
 	vector<int> lastTimeStatus; //前回までのステータス格納用
-	string statusData; //セーブデータのバイナリファイル
 
 	vector<int> roadMap; //マップバッファ確保用
 	vector<int> storeMap; //マップ格納用
-	string mapData; //セーブデータのバイナリファイル
 
+	string statusData; //セーブデータのバイナリファイル
+	string mapData; //セーブデータのバイナリファイル
 	string initStatusData; //初期のセーブデータのバイナリファイル
 
 	int getFileSize(string fileName); //ファイルサイズを取得
@@ -39,7 +39,7 @@ public:
 
 	void writeSaveData(); //セーブデータの書き込み
 	void loadSaveData(); //セーブデータの読み込み
-	void initLoadSaveData(); //初期セーブデータの読み込み
+	void loadInitSaveData(); //初期セーブデータの読み込み
 
 	void loadMapData(); //マップデータの読み込み
 };

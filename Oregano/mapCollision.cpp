@@ -2,12 +2,11 @@
 #include "constant.h"
 #include "mapDraw.h"
 
-MapCollision::MapCollision(MapDraw& map) : map(map), collisionFlag(12),
-                                           boundaryCriteria(9) {
+MapCollision::MapCollision(MapDraw& map) :
+	map(map), collisionFlag(12), boundaryCriteria(9) {
 }
 
 MapCollision::~MapCollision() {
-
 }
 
 /// <summary>
@@ -16,52 +15,61 @@ MapCollision::~MapCollision() {
 void MapCollision::initialize() {
 	boundaryCriteria = {
 			//左条件
-			map.currentCorner[LEFT] == AREA_MAX && map.currentCorner[RIGHT] ==
-			AREA_MIN
-			&& map.currentMap.x >= map.currentBoundaryMap1.x && map.currentMap.x ==
-			map.currentBoundaryMap2.x,
+			map.currentCorner[LEFT] == AREA_MAX
+			&& map.currentCorner[RIGHT] == AREA_MIN
+			&& map.currentMap.x >= map.currentBoundaryMap1.x
+			&& map.currentMap.x == map.currentBoundaryMap2.x,
+
 			//右条件
-			map.currentCorner[LEFT] == AREA_MAX && map.currentCorner[RIGHT] ==
-			AREA_MIN
-			&& map.currentMap.x == map.currentBoundaryMap1.x && map.currentMap.x <=
-			map.currentBoundaryMap2.x,
+			map.currentCorner[LEFT] == AREA_MAX
+			&& map.currentCorner[RIGHT] == AREA_MIN
+			&& map.currentMap.x == map.currentBoundaryMap1.x
+			&& map.currentMap.x <= map.currentBoundaryMap2.x,
+
 			//上条件
-			map.currentCorner[UP] == AREA_MAX && map.currentCorner[DOWN] == AREA_MIN
-			&& map.currentMap.y >= map.currentBoundaryMap1.y && map.currentMap.y ==
+			map.currentCorner[UP] == AREA_MAX
+			&& map.currentCorner[DOWN] == AREA_MIN
+			&& map.currentMap.y >= map.currentBoundaryMap1.y
+			&& map.currentMap.y ==
 			map.currentBoundaryMap2.y,
+
 			//下条件
-			map.currentCorner[UP] == AREA_MAX && map.currentCorner[DOWN] == AREA_MIN
-			&& map.currentMap.y == map.currentBoundaryMap1.y && map.currentMap.y <=
-			map.currentBoundaryMap2.y,
+			map.currentCorner[UP] == AREA_MAX
+			&& map.currentCorner[DOWN] == AREA_MIN
+			&& map.currentMap.y == map.currentBoundaryMap1.y
+			&& map.currentMap.y <= map.currentBoundaryMap2.y,
+
 			//中央横1条件
-			map.currentCorner[CENTER_X1] == AREA_MAX && map.currentCorner[CENTER_X2]
-			== AREA_MIN
-			&& map.currentMap.x >= map.currentBoundaryMap1.x && map.currentMap.x ==
-			map.currentBoundaryMap2.x,
+			map.currentCorner[CENTER_X1] == AREA_MAX
+			&& map.currentCorner[CENTER_X2] == AREA_MIN
+			&& map.currentMap.x >= map.currentBoundaryMap1.x
+			&& map.currentMap.x == map.currentBoundaryMap2.x,
+
 			//中央横2条件
-			map.currentCorner[CENTER_X1] == AREA_MAX && map.currentCorner[CENTER_X2]
-			== AREA_MIN
-			&& map.currentMap.x == map.currentBoundaryMap1.x && map.currentMap.x <=
-			map.currentBoundaryMap2.x,
+			map.currentCorner[CENTER_X1] == AREA_MAX
+			&& map.currentCorner[CENTER_X2] == AREA_MIN
+			&& map.currentMap.x == map.currentBoundaryMap1.x
+			&& map.currentMap.x <= map.currentBoundaryMap2.x,
+
 			//中央縦1条件
-			map.currentCorner[CENTER_Y1] == AREA_MAX && map.currentCorner[CENTER_Y2]
-			== AREA_MIN
-			&& map.currentMap.y >= map.currentBoundaryMap1.y && map.currentMap.y ==
-			map.currentBoundaryMap2.y,
+			map.currentCorner[CENTER_Y1] == AREA_MAX
+			&& map.currentCorner[CENTER_Y2] == AREA_MIN
+			&& map.currentMap.y >= map.currentBoundaryMap1.y
+			&& map.currentMap.y == map.currentBoundaryMap2.y,
+
 			//中央縦2条件
-			map.currentCorner[CENTER_Y1] == AREA_MAX && map.currentCorner[CENTER_Y2]
-			== AREA_MIN
-			&& map.currentMap.y == map.currentBoundaryMap1.y && map.currentMap.y <=
-			map.currentBoundaryMap2.y,
-			//境界線交差時の特殊条件
-			map.currentCorner[LEFT] == AREA_MAX && map.currentCorner[RIGHT] ==
-			AREA_MIN
-			&& map.currentCorner[UP] == AREA_MAX && map.currentCorner[DOWN] ==
-			AREA_MIN
-			&& map.currentMap.x == map.currentBoundaryMap1.x && map.currentMap.y >
-			map.currentBoundaryMap1.y
-			&& map.currentMap.x < map.currentBoundaryMap2.x && map.currentMap.y ==
-			map.currentBoundaryMap2.y
+			map.currentCorner[CENTER_Y1] == AREA_MAX
+			&& map.currentCorner[CENTER_Y2] == AREA_MIN
+			&& map.currentMap.y == map.currentBoundaryMap1.y
+			&& map.currentMap.y <= map.currentBoundaryMap2.y,
+
+			//境界線交差時の条件
+			map.currentCorner[LEFT] == AREA_MAX && map.currentCorner[RIGHT] == AREA_MIN
+			&& map.currentCorner[UP] == AREA_MAX && map.currentCorner[DOWN] == AREA_MIN
+			&& map.currentMap.x == map.currentBoundaryMap1.x
+			&& map.currentMap.y > map.currentBoundaryMap1.y
+			&& map.currentMap.x < map.currentBoundaryMap2.x
+			&& map.currentMap.y == map.currentBoundaryMap2.y
 		};
 }
 
@@ -88,6 +96,9 @@ void MapCollision::update() {
 	collisionDetectionCenterDown1(); //中央下1
 	collisionDetectionCenterDown2(); //中央下2
 }
+
+//--- 各衝突判定部分における衝突フラグ ---//
+//現在位置におけるcollisionDetection関数がtrueかfalseかを更新する
 
 /// <summary>
 /// 左上の衝突判定
@@ -255,14 +266,18 @@ void MapCollision::collisionDetectionCenterDown1() {
 /// 下中央2の衝突判定
 /// </summary>
 void MapCollision::collisionDetectionCenterDown2() {
+	//マップの境界線が中央右のとき
 	if (boundaryCriteria[CENTER_X2])
 		collisionFlag[CENTER_DOWN2] = (collisionDetection(MAP_RIGHT_CENTRAL, CENTER_X2, DOWN)) ? true : false;
+		//マップの境界線が下のとき
 	else if (boundaryCriteria[DOWN])
 		collisionFlag[CENTER_DOWN2] = (collisionDetection(MAP_BOTTOM_CENTRAL, CENTER_X2, DOWN)) ? true : false;
 		//それ以外
 	else
 		collisionFlag[CENTER_DOWN2] = (collisionDetection(MAP_CENTRAL, CENTER_X2, DOWN)) ? true : false;
 }
+
+//----------------------------------------//
 
 /// <summary>
 /// 判定を行うマップとそのマップの座標の組み合わせで衝突判定をとる

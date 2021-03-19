@@ -1,16 +1,16 @@
 #pragma once
 #include "mapBase.h"
 
-class MapAutogeneration : public MapBase {
+class MapAutoGeneration : public MapBase {
 private:
 	int autogenerationMap(const int& random, const int& randomMapNum); //マップの自動生成
 
-	void AssigningRandomNum(const int& randomMapNum); //ランダムマップの数字をランダムに割り当て
+	void assigningRandomNum(const int& randomMapNum); //ランダムマップの数字をランダムに割り当て
 	void writeFile(const int& x, const int& y, vector<vector<int>>& map); //csvファイルの書き込み
 
 public:
-	MapAutogeneration();
-	~MapAutogeneration();
+	MapAutoGeneration();
+	~MapAutoGeneration();
 
 	vector<vector<int>> roadMap; //読み込んだマップを格納
 	vector<vector<vector<int>>> copyMap; //コピーした全マップを格納

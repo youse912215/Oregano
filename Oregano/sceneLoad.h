@@ -8,7 +8,7 @@ using namespace std;
 class SceneLoad {
 private:
 	DataSave& save; //データセーブクラスから
-	//MapLoad& load; //マップロードクラスから
+
 public:
 	static int gameScene; //ゲームシーン
 

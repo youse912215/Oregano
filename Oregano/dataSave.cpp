@@ -7,12 +7,17 @@
 #include <cmath>
 #include "DxLib.h"
 
-DataSave::DataSave(PlayerState& player, GameUI& UI)
-	: player(player), UI(UI),
-	  currentStatus(STATUS_INFORMATION_SIZE), roadMap(MAP_EVENT_SIZE) {
-	statusData = "resource\\Data\\statusData.bin";
-	mapData = "resource\\Data\\mapData.bin";
-	initStatusData = "resource\\Data\\initStatusData.bin";
+DataSave::DataSave(PlayerState& player, GameUI& UI) :
+	player(player), UI(UI),
+
+	/* サイズ確保 */
+	currentStatus(STATUS_INFORMATION_SIZE),
+	roadMap(MAP_EVENT_SIZE),
+
+	/* バイナリデータファイル */
+	statusData("resource\\Data\\statusData.bin"),
+	mapData("resource\\Data\\mapData.bin"),
+	initStatusData("resource\\Data\\initStatusData.bin") {
 }
 
 DataSave::~DataSave() {
@@ -73,11 +78,14 @@ void DataSave::getCurrentStatus() {
 	//現在の各コインを代入
 	for (unsigned int i = 0; i != PlayerState::coin.size(); ++i)
 		currentStatus[i] = PlayerState::coin[i];
+
 	//現在の属性耐久値を代入
 	for (unsigned int i = 0; i != PlayerState::attributeAccumulation.size(); ++i)
 		currentStatus[i + PlayerState::coin.size()] = PlayerState::attributeAccumulation[i];
+
 	//現在の戦闘スタイルを代入
 	currentStatus[PlayerState::coin.size() + PlayerState::attributeAccumulation.size()] = PlayerState::battleStyle;
+
 	//各マップ座標
 	currentStatus[9] = MapDraw::mapX; //現在のマップx座標を代入
 	currentStatus[10] = MapDraw::mapY; //現在のマップy座標を代入
@@ -90,11 +98,14 @@ void DataSave::getLastTimeStatus() {
 	//前回までの各コインを代入
 	for (unsigned int i = 0; i != PlayerState::coin.size(); ++i)
 		PlayerState::coin[i] = lastTimeStatus[i];
+
 	//前回までの属性耐久値を代入
 	for (unsigned int i = 0; i != PlayerState::attributeAccumulation.size(); ++i)
 		PlayerState::attributeAccumulation[i] = lastTimeStatus[i + PlayerState::coin.size()];
+
 	//前回までの戦闘スタイルを代入
 	PlayerState::battleStyle = lastTimeStatus[PlayerState::coin.size() + PlayerState::attributeAccumulation.size()];
+
 	//各マップ座標
 	MapDraw::mapX = lastTimeStatus[9]; //前回までのマップx座標を代入
 	MapDraw::mapY = lastTimeStatus[10]; //前回までのマップy座標を代入
@@ -131,7 +142,7 @@ void DataSave::loadSaveData() {
 /// <summary>
 /// 初期セーブデータの読み込み
 /// </summary>
-void DataSave::initLoadSaveData() {
+void DataSave::loadInitSaveData() {
 	/* ステータス */
 	loadBinaryFile(currentStatus, lastTimeStatus, initStatusData);
 	getLastTimeStatus();

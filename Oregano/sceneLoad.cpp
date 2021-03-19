@@ -2,12 +2,10 @@
 #include "constant.h"
 #include "mapAutogeneration.h"
 #include "dataSource.h"
-#include "dataText.h"
 
-MapAutogeneration autogeneration;
-MapLoad load;
-DataSource source;
-DataText text;
+MapAutoGeneration autogeneration; //マップ自動生成クラス
+MapLoad load; //ロードクラス
+DataSource source; //データソースクラス
 
 int SceneLoad::gameScene = TITLE_SCENE; //タイトルシーン
 
@@ -23,11 +21,14 @@ SceneLoad::~SceneLoad() {
 void SceneLoad::update() {
 	if (gameScene == ROAD_SCENE) {
 		save.loadMapData(); //マップデータの読み込み
-		save.initLoadSaveData(); //セーブデータ読み込み
+
+		save.loadInitSaveData(); //セーブデータ読み込み
+
 		autogeneration.writeRandomMap(); //マップ自動生成
+
 		load.loadMapData(); //マップデータ読み込み
+
 		autogeneration.resetFile(); //CSVファイルのリセット
-		text.loadFont(); //フォントのロード
 
 		gameScene = GAME_SCENE; //ゲームシーンへ
 	}

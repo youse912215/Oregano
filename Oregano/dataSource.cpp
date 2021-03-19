@@ -45,7 +45,11 @@ DataSource::DataSource() {
 	seDamage = LoadSoundMem("resource\\Music\\se_damage.mp3");
 }
 
+/// <summary>
+/// ƒnƒ“ƒhƒ‹‚Ìíœ
+/// </summary>
 DataSource::~DataSource() {
+	/* ‰æ‘œ */
 	DeleteGraph(player);
 	DeleteGraph(playerDamage);
 	DeleteGraph(mapChip);
@@ -80,6 +84,8 @@ DataSource::~DataSource() {
 	DeleteGraph(deviceChange1);
 	DeleteGraph(deviceChange2);
 	DeleteGraph(gameOverEnd);
+
+	/* ‰¹ */
 	DeleteMusicMem(mainBgm);
 	DeleteMusicMem(seHit);
 	DeleteMusicMem(seClear);

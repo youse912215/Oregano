@@ -10,10 +10,10 @@ private:
 	const int fontSize; //フォントサイズ
 	std::vector<unsigned int> color; //色
 
+	void drawText(); //テキストの描画
+
 public:
 	DataText();
 
-	void drawText(); //テキストの描画
 	void loadFont(); //フォントのロード
-
 };

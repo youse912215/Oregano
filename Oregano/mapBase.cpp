@@ -7,8 +7,7 @@ using namespace std;
 
 //初期化
 MapBase::MapBase() :
-	comma{","}, csvNum{"00", "01", "02", "03", "04", "05"} {
-	initialCsv = "resource/csv/map_x00y00.csv"; //初期地点のマップ(中央)
+	comma{","}, csvNum{"00", "01", "02", "03", "04", "05"}, initialCsv("resource/csv/map_x00y00.csv") {
 }
 
 MapBase::~MapBase() {

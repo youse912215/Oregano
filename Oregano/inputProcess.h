@@ -20,7 +20,7 @@ private:
 	bool mode; //入力モード
 
 	vector<bool> padNum; //ジョイパッド番号
-	vector<bool> oldPadNum;
+	vector<bool> oldPadNum; //ジョイパッドの前の番号
 	vector<bool> inputButton; //入力ボタン
 
 	bool getInputButton(const int& buttonName); //ボタン入力を返す

@@ -2,7 +2,7 @@
 #include "constant.h"
 #include "mapBase.h"
 
-MapBase map;
+MapBase map; //マップベースクラス
 
 MapLoad::MapLoad() :
 	vecMap(AREA_HEIGHT, vector<int>(AREA_WIDTH)),

@@ -5,8 +5,9 @@
 #include "dataText.h"
 #include "sceneLoad.h"
 
-DataText text_;
-PlayerState state__;
+PlayerState state__; //プレイヤー状態クラス
+
+DataText text_; //テキストクラス
 
 GameUI::GameUI(Input& input, Player& player, MapDraw& map, DataSource& source) :
 	input(input), player(player), map(map), source(source), margin(16), eventSize(9), eventLength(4),
@@ -132,6 +133,6 @@ void GameUI::draw() {
 void GameUI::update() {
 	drawBlur(); //ぼかし
 	draw(); //UI描画処理
-	text_.drawText(); //テキスト描画
+	text_.loadFont(); //フォント読み込み、テキスト描画
 	drawSpeechBalloon(); //イベント用噴き出し描画
 }

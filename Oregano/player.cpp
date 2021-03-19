@@ -6,19 +6,21 @@
 #include "playerSlash.h"
 #include "playerState.h"
 
-PlayerKnife knifeAct;
-PlayerSlash slashAct;
-PlayerShield shieldAct;
-PlayerState stateAct;
+PlayerKnife knifeAct; //ナイフクラス
+PlayerSlash slashAct; //刃クラス
+PlayerShield shieldAct; //シールドクラス
+PlayerState stateAct; //プレイヤー状態クラス
 
 Player::Player(Input& input, MapDraw& draw_, DataSource& source) :
-	input(input), draw_(draw_), source(source), cooldown(4),
-	damageFlag(false), knifeCenter(0.0, 0.0), slashCenter(0.0, 0.0),
-	actionFlag{false, false, false, false}, cooldownFlag(4) {
+	input(input), draw_(draw_), source(source),
 
-	this->pos.dx = static_cast<int>(WIN_WIDTH / 2 - BLOCK_SIZE / 2); //プレイヤーx座標
-	this->pos.dy = static_cast<int>(WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2); //プレイヤーy座標
-	center = HALF_BLOCK_SIZE_D + pos; //プレイヤーの中心座標
+	pos(static_cast<int>(WIN_WIDTH / 2 - BLOCK_SIZE / 2), static_cast<int>(WIN_HEIGHT / 2 - BLOCK_SIZE / 2 - 2)),
+
+	cooldown(4), damageFlag(false), center(HALF_BLOCK_SIZE_D + pos),
+
+	knifeCenter(0.0, 0.0), slashCenter(0.0, 0.0),
+
+	actionFlag{false, false, false, false}, cooldownFlag(4) {
 }
 
 Player::~Player() {
@@ -28,15 +30,16 @@ Player::~Player() {
 /// 描画処理
 /// </summary>
 void Player::draw() {
-
+	//各ダメージフラグがfalseのとき
 	if (!(stateAct.poisonDamageFlag || stateAct.roughDamageFlag || damageFlag)) {
-		//プレイヤー
+		//通常時のプレイヤー画像
 		DrawRectGraph(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy),
 		              BLOCK_SIZE * input.moveDirection, BLOCK_SIZE * PlayerState::battleStyle,
 		              BLOCK_SIZE, BLOCK_SIZE,
 		              source.player, true, false);
 	}
 	else {
+		//ダメージ受けたときのプレイヤー画像
 		DrawRectGraph(static_cast<int>(this->pos.dx), static_cast<int>(this->pos.dy),
 		              BLOCK_SIZE * input.moveDirection, BLOCK_SIZE * PlayerState::battleStyle,
 		              BLOCK_SIZE, BLOCK_SIZE,

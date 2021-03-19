@@ -8,6 +8,7 @@
 #include "mapCollision.h"
 #include "dataSave.h"
 #include "dataSource.h"
+#include "dataText.h"
 #include "gameUI.h"
 
 #include "sceneTitle.h"

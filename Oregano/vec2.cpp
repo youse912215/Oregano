@@ -1,11 +1,12 @@
 #include "vec2.h"
 
+/*int型*/
+
+//コンストラクタ
 Vec2::Vec2(int x, int y) : x(x), y(y) {
 }
 
-/*int型*/
-
-//ベクター同士の和
+//ベクター同士の+演算子
 Vec2 Vec2::operator+(const Vec2& other) const {
 	Vec2 v;
 	v.x = this->x + other.x;
@@ -13,7 +14,7 @@ Vec2 Vec2::operator+(const Vec2& other) const {
 	return v;
 }
 
-//ベクター同士の差
+//ベクター同士の-演算子
 Vec2 Vec2::operator-(const Vec2& other) const {
 	Vec2 v;
 	v.x = this->x - other.x;
@@ -21,7 +22,7 @@ Vec2 Vec2::operator-(const Vec2& other) const {
 	return v;
 }
 
-//ベクター同士の積
+//ベクター同士の*演算子
 Vec2 Vec2::operator*(const Vec2& other) const {
 	Vec2 v;
 	v.x = this->x * other.x;
@@ -29,7 +30,7 @@ Vec2 Vec2::operator*(const Vec2& other) const {
 	return v;
 }
 
-//ベクター同士の商
+//ベクター同士の/演算子
 Vec2 Vec2::operator/(const Vec2& other) const {
 	Vec2 v;
 	v.x = this->x / other.x;
@@ -37,24 +38,28 @@ Vec2 Vec2::operator/(const Vec2& other) const {
 	return v;
 }
 
+//ベクター同士の=演算子
 Vec2& Vec2::operator=(const Vec2& other) {
 	x = other.x;
 	y = other.y;
 	return *this;
 }
 
+//ベクター同士の+=演算子
 Vec2& Vec2::operator+=(const Vec2& other) {
 	x += other.x;
 	y += other.y;
 	return *this;
 }
 
+//ベクター同士の-=演算子
 Vec2& Vec2::operator-=(const Vec2& other) {
 	x -= other.x;
 	y -= other.y;
 	return *this;
 }
 
+//ベクターと他の変数との+演算子
 Vec2 operator+(const int& a, Vec2& other) {
 	Vec2 v;
 	v.x = a + other.x;
@@ -63,11 +68,14 @@ Vec2 operator+(const int& a, Vec2& other) {
 }
 
 //------------------------------------------------//
+
 /* double型 */
 
+//コンストラクタ
 Vec2d::Vec2d(double dx, double dy) : dx(dx), dy(dy) {
 }
 
+//ベクター同士の+演算子
 Vec2d Vec2d::operator+(const Vec2d& other) const {
 	Vec2d v;
 	v.dx = this->dx + other.dx;
@@ -75,6 +83,7 @@ Vec2d Vec2d::operator+(const Vec2d& other) const {
 	return v;
 }
 
+//ベクター同士の-演算子
 Vec2d Vec2d::operator-(const Vec2d& other) const {
 	Vec2d v;
 	v.dx = this->dx - other.dx;
@@ -82,6 +91,7 @@ Vec2d Vec2d::operator-(const Vec2d& other) const {
 	return v;
 }
 
+//ベクター同士の*演算子
 Vec2d Vec2d::operator*(const Vec2d& other) const {
 	Vec2d v;
 	v.dx = this->dx * other.dx;
@@ -89,6 +99,7 @@ Vec2d Vec2d::operator*(const Vec2d& other) const {
 	return v;
 }
 
+//ベクター同士の/演算子
 Vec2d Vec2d::operator/(const Vec2d& other) const {
 	Vec2d v;
 	v.dx = this->dx / other.dx;
@@ -96,24 +107,28 @@ Vec2d Vec2d::operator/(const Vec2d& other) const {
 	return v;
 }
 
+//ベクター同士の=演算子
 Vec2d& Vec2d::operator=(const Vec2d& other) {
 	dx = other.dx;
 	dy = other.dy;
 	return *this;
 }
 
+//ベクター同士の+=演算子
 Vec2d& Vec2d::operator+=(const Vec2d& other) {
 	dx += other.dx;
 	dy += other.dy;
 	return *this;
 }
 
+//ベクター同士の-=演算子
 Vec2d& Vec2d::operator-=(const Vec2d& other) {
 	dx -= other.dx;
 	dy -= other.dy;
 	return *this;
 }
 
+//ベクターと他の変数との+演算子
 Vec2d operator+(const double& a, Vec2d& other) {
 	Vec2d v;
 	v.dx = a + other.dx;
@@ -121,6 +136,7 @@ Vec2d operator+(const double& a, Vec2d& other) {
 	return v;
 }
 
+//ベクターと他の変数との‐演算子
 Vec2d operator-(Vec2d& other, const double& a) {
 	Vec2d v;
 	v.dx = other.dx - a;
@@ -128,6 +144,7 @@ Vec2d operator-(Vec2d& other, const double& a) {
 	return v;
 }
 
+//ベクターと他の変数との*演算子
 Vec2d operator*(const double& a, Vec2d& other) {
 	Vec2d v;
 	v.dx = a * other.dx;
@@ -135,6 +152,7 @@ Vec2d operator*(const double& a, Vec2d& other) {
 	return v;
 }
 
+//ベクターと他の変数との/演算子
 Vec2d operator/(const double& a, Vec2d& other) {
 	Vec2d v;
 	v.dx = a / other.dx;

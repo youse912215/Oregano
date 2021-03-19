@@ -4,14 +4,14 @@
 #include "effectSpurt.h"
 
 /* 敵 */
-vector<Enemy> enemies(40);
+vector<Enemy> enemies(20);
 
 /* 血のエフェクト */
-EffectBlood blood_;
+EffectBlood blood_; //血エフェクトクラス
 vector<EffectBlood> bloods_(50);
 
 /* 噴き出しエフェクト */
-EffectSpurt spurt_;
+EffectSpurt spurt_; //噴き出しエフェクトクラス
 vector<EffectSpurt> spurts_(100);
 
 EnemyConclusion::EnemyConclusion(Player& player_, DataSource& source_) :
@@ -35,7 +35,7 @@ void EnemyConclusion::update() {
 			blood_.update(bloods_, source_, i.screenPos, i.attribute); //血のエフェクト
 
 		//死亡時間のとき
-		if (!(i.deadFlag && i.deadTime <= showTime)) continue;
+		if (!(i.deadFlag && i.deadTime <= showTime)) continue; //条件以外のとき、処理をスキップする
 		spurt_.update(spurts_, i.screenPos); //噴き出し（コイン）エフェクト
 	}
 }

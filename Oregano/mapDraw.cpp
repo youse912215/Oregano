@@ -4,21 +4,23 @@
 int MapDraw::mapX = INITIAL_X; //x方向
 int MapDraw::mapY = INITIAL_Y; //y方向
 
-MapDraw::MapDraw() : informationSize(15),
+MapDraw::MapDraw() :
+	/* マップ情報数 */
+	informationSize(15),
 
-                     /* 各角のマップ座標 */
-                     currentCorner(8),
+	/* 各角のマップ座標 */
+	currentCorner(8),
 
-                     /* 9か所のマップ配列 */
-                     mapTopLeft(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-                     mapTopCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-                     mapTopRight(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-                     mapLeftCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-                     mapCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-                     mapRightCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-                     mapBottomLeft(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-                     mapBottomCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
-                     mapBottomRight(AREA_HEIGHT, vector<int>(AREA_WIDTH)) {
+	/* 9か所のマップ配列 */
+	mapTopLeft(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
+	mapTopCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
+	mapTopRight(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
+	mapLeftCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
+	mapCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
+	mapRightCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
+	mapBottomLeft(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
+	mapBottomCentral(AREA_HEIGHT, vector<int>(AREA_WIDTH)),
+	mapBottomRight(AREA_HEIGHT, vector<int>(AREA_WIDTH)) {
 }
 
 MapDraw::~MapDraw() {
@@ -28,26 +30,33 @@ void MapDraw::initialize() {
 	/* 画面上の座標 */
 	screen.x = INITIAL_X - mapX;
 	screen.y = INITIAL_Y - mapY;
+
 	/* 1マップあたりの配列サイズ */
 	mapAspectSize.x = mapCentral.at(0).size();
 	mapAspectSize.y = mapCentral.size();
+
 	/* 現在のマップ座標 */
 	currentMap.x = mapX / (BLOCK_SIZE * mapAspectSize.x);
 	currentMap.y = mapY / (BLOCK_SIZE * mapAspectSize.y);
+
 	/* 現在のマップの境界座標 */
 	currentBoundaryMap1.x = (mapX - HALF_BLOCK_SIZE) / (BLOCK_SIZE * mapAspectSize.x); //左端
 	currentBoundaryMap1.y = (mapY - BLOCK_SIZE - QUARTER_BLOCK_SIZE) / (BLOCK_SIZE * mapAspectSize.y); //上端
 	currentBoundaryMap2.x = (mapX + HALF_BLOCK_SIZE - 1) / (BLOCK_SIZE * mapAspectSize.x); //右端
 	currentBoundaryMap2.y = (mapY + QUARTER_BLOCK_SIZE - 1) / (BLOCK_SIZE * mapAspectSize.y); //下端
+
 	/* マップの中央位置 */
 	centerPos.x = currentMap.x - (TOTAL_MAPS_X - 1);
 	centerPos.y = currentMap.y - (TOTAL_MAPS_Y - 1);
+
 	/* マップ間距離（1600px） */
 	mapBetweenDistance = BLOCK_SIZE * AREA_WIDTH;
+
 	/* 1ブロック区画（マップ）内の座標 */
 	blockArea.x = (mapX / BLOCK_SIZE) % AREA_WIDTH;
 	blockArea.y = (mapY / BLOCK_SIZE) % AREA_HEIGHT;
 
+	/* 現在の各角のマップ座標 */
 	currentCorner = {
 			((mapX - 32) / BLOCK_SIZE) % AREA_WIDTH, ((mapX + 31) / BLOCK_SIZE) % AREA_WIDTH,
 			((mapY - 48) / BLOCK_SIZE) % AREA_HEIGHT, ((mapY + 15) / BLOCK_SIZE) % AREA_HEIGHT,
@@ -107,6 +116,7 @@ vector<vector<int>> MapDraw::drawCurrentMaps(const int& dirX, const int& dirY,
                                              vector<vector<vector<int>>>& mapAll) {
 	/*マップチップの描画*/
 	for (auto i = 0; i < informationSize; ++i) //マップ情報（名称）の数だけ繰り返す
+		//読み込んだマップチップ画像からマップ描画する
 		drawMapChips(i, centerPos.x + dirX, centerPos.y + dirY,
 		             mapAll[(currentMap.x + dirX) + (currentMap.y + dirY) * TOTAL_MAPS_Y]);
 
