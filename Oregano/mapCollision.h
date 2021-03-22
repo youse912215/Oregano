@@ -11,7 +11,9 @@ private:
 	vector<bool> collisionFlag; //衝突フラグ
 	vector<bool> boundaryCriteria; //各方向の境界条件
 
-	const int needCoin; //（特定の床通過に）必要なコイン
+	vector<int> needCoin; //（特定の床通過に）必要なコイン
+
+	int index; //インデックス
 
 	int collisionRange(); //衝突範囲を返す
 

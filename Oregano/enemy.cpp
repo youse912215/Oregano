@@ -14,7 +14,7 @@ Enemy::Enemy() :
 	screenCenter(0.0, 0.0), relativeDistance(0.0, 0.0), lifeHeight(8),
 
 	/* ステータス関係 */
-	initLife{1, 2, 3, 4}, possessionCoin{1, 2, 3, 4}, attackPower{4, 8, 10, 14}, attributeValue{2, 3, 4, 5}, life(0),
+	initLife{1, 2, 3, 4}, possessionCoin{1, 2, 4, 8}, attackPower{3, 5, 7, 9}, attributeValue{2, 3, 4, 5}, life(0),
 	pattern(0), level(0), maxLevel(4),
 
 	/* ダメージ関係 */

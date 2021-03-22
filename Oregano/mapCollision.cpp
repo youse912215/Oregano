@@ -2,9 +2,10 @@
 #include "playerState.h"
 #include "constant.h"
 #include "mapDraw.h"
+#include <algorithm>
 
 MapCollision::MapCollision(MapDraw& map) :
-	map(map), collisionFlag(12), boundaryCriteria(9), needCoin(20) {
+	map(map), collisionFlag(12), boundaryCriteria(9), needCoin{70, 55, 40, 25}, index(0) {
 }
 
 MapCollision::~MapCollision() {
@@ -319,18 +320,21 @@ bool MapCollision::collisionDetection(const int& dirXY, const int& dirX, const i
 /// </summary>
 /// <returns></returns>
 int MapCollision::collisionRange() {
-	//花萌葱のコインが枚以上なら
-	if (PlayerState::coin[DEADLY_POISON] >= needCoin)
-		return FLOOR_YELLOW; //深支子床
-	//深支子のコインが枚以上なら
-	if (PlayerState::coin[CRAMPS] >= needCoin)
-		return FLOOR_BLUE; //燕子花床
-	//燕子花のコインが枚以上なら
-	if (PlayerState::coin[CONFUSION] >= needCoin)
-		return FLOOR_RED; //中紅花床
-	//中紅花のコインが枚以上なら
-	if (PlayerState::coin[BLOODING] >= needCoin)
-		return WALL; //壁
+	vector<int>::iterator itr; //イテレータ宣言
+
+	//いずれかのコインがj枚以上であれば、その枚数に対応する床の通過を許可
+	for (auto j : needCoin) {
+		for (unsigned int i = 0; i != PlayerState::coin.size(); ++i) {
+
+			itr = find(needCoin.begin(), needCoin.end(), j); //必要コインがj枚であるか探索する
+
+			//コインiがj毎未満のとき
+			if (PlayerState::coin[i] < j) continue; //条件以外なら、処理をスキップする
+
+			index = distance(needCoin.begin(), itr); //イテレータのインデックスを取得
+			return WALL - index; //必要のコインの枚数に対応する床を返す
+		}
+	}
 	//それ以外
 	return FLOOR_GREEN; //花萌葱床
 }
